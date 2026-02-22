@@ -415,7 +415,8 @@ html {
 /* ════════════════════════════════════════════ */
 .tilt-card {
   transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform: perspective(800px) translateZ(0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  will-change: transform, box-shadow;
 }
 
 .tilt-card:hover {

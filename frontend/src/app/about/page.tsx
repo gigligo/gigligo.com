@@ -71,8 +71,8 @@ export default function AboutPage() {
             {/* ═══ Hero Banner ═══ */}
             <section className="relative pt-32 pb-20 overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-20 left-10 w-72 h-72 bg-teal-vibrant/10 rounded-full blur-[100px]" data-parallax-y="-0.05" />
-                    <div className="absolute bottom-0 right-10 w-96 h-96 bg-indigo-accent/10 rounded-full blur-[120px]" data-parallax-y="0.03" />
+                    <div className="absolute top-20 left-10 w-72 h-72 bg-[radial-gradient(circle_at_center,rgba(0,245,212,0.1)_0%,transparent_70%)] rounded-full" data-parallax-y="-0.05" />
+                    <div className="absolute bottom-0 right-10 w-96 h-96 bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.1)_0%,transparent_70%)] rounded-full" data-parallax-y="0.03" />
                 </div>
                 <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-vibrant/10 border border-teal-vibrant/30 text-teal-vibrant text-xs font-bold uppercase tracking-widest mb-6" data-scroll="fade-up">About Gigligo</div>
@@ -83,7 +83,7 @@ export default function AboutPage() {
 
             {/* ═══ Founder Section ═══ */}
             <section className="py-24 bg-white dark:bg-slate-900 relative overflow-hidden transition-colors duration-300">
-                <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-teal-vibrant/5 rounded-full blur-[120px] pointer-events-none" />
+                <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(0,245,212,0.05)_0%,transparent_70%)] rounded-full pointer-events-none" />
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div className="flex justify-center" data-scroll="fade-right">
@@ -113,7 +113,7 @@ export default function AboutPage() {
 
             {/* ═══ Mission / Goals ═══ */}
             <section className="py-24 bg-slate-50 dark:bg-slate-950 relative overflow-hidden transition-colors duration-300">
-                <div className="absolute inset-0 pointer-events-none"><div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-vibrant/3 rounded-full blur-[120px]" /></div>
+                <div className="absolute inset-0 pointer-events-none"><div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,rgba(0,245,212,0.03)_0%,transparent_70%)] rounded-full" /></div>
                 <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
                     <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-accent/20 border border-indigo-accent/40 text-indigo-accent text-xs font-bold uppercase tracking-widest" data-scroll="fade-up">Our Mission</div>
                     <h2 className="font-display text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6" data-scroll="fade-up" data-scroll-delay="100">Building Pakistan&apos;s <span className="text-teal-vibrant">Talent Economy</span></h2>

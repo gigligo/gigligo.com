@@ -141,7 +141,7 @@ export default function PricingPage() {
                         <div>
                             <h2 className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA] mb-8">Freelancer Pro Subscription</h2>
                             <div className="bg-white dark:bg-[#000] border border-slate-200 dark:border-[#273F4F] rounded-3xl p-8 relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-[#273F4F] opacity-10 dark:opacity-20 blur-[50px]"></div>
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.3)_0%,transparent_70%)] pointer-events-none"></div>
 
                                 <h3 className="text-2xl font-bold text-slate-900 dark:text-[#EFEEEA]">Pro Plan</h3>
                                 <div className="flex items-baseline gap-2 mt-4 mb-8">

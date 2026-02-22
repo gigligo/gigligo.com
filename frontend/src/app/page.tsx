@@ -53,7 +53,6 @@ function MorphBlob({ size, color, className = '' }: { size: number; color: strin
     <div className={`morph ${className}`} style={{
       width: size, height: size,
       background: `radial-gradient(circle at 30% 30%, ${color}, transparent 70%)`,
-      filter: 'blur(1px)',
     }} />
   );
 }
@@ -159,6 +158,7 @@ export default function Home() {
   const progressRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const floatElsRef = useRef<HTMLElement[]>([]);
   const rafRef = useRef(0);
   const lastY = useRef(0);
 
@@ -188,13 +188,13 @@ export default function Home() {
       headerRef.current?.classList.toggle('header-solid', y > 60);
       if (heroRef.current) {
         const factor = Math.min(y / 800, 1);
-        heroRef.current.style.transform = `scale(${1 - factor * 0.05})`;
+        heroRef.current.style.transform = `scale(${1 - factor * 0.05}) translateZ(0)`;
         heroRef.current.style.opacity = `${1 - factor * 0.3}`;
       }
-      document.querySelectorAll<HTMLElement>('[data-float]').forEach((el) => {
+      floatElsRef.current.forEach((el) => {
         const sp = parseFloat(el.dataset.sp || '0');
         const rt = parseFloat(el.dataset.rt || '0');
-        el.style.transform = `translateY(${y * sp}px) rotate(${y * rt}deg)`;
+        el.style.transform = `translate3d(0, ${y * sp}px, 0) rotate(${y * rt}deg)`;
       });
     });
   }, []);
@@ -212,6 +212,9 @@ export default function Home() {
       { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
     document.querySelectorAll('[data-scroll]').forEach((el) => obs.observe(el));
+
+    floatElsRef.current = Array.from(document.querySelectorAll<HTMLElement>('[data-float]'));
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => { obs.disconnect(); window.removeEventListener('scroll', handleScroll); cancelAnimationFrame(rafRef.current); };
@@ -347,8 +350,8 @@ export default function Home() {
           <div ref={heroRef} className="relative flex-1 flex flex-col items-center justify-center px-8 py-28 md:px-16 persona-hover group overflow-hidden bg-linear-to-br from-orange-50 via-white to-orange-50/50 dark:from-[#1a0800] dark:via-black dark:to-[#0d0400]">
             {/* Orange glow */}
             <div className="absolute inset-0 bg-linear-to-br from-orange/12 via-transparent to-orange-dark/5 pointer-events-none" />
-            <div className="absolute -top-20 -left-20 w-80 h-80 bg-orange/10 rounded-full blur-[100px]" />
-            <div className="absolute bottom-1/4 right-0 w-60 h-60 bg-orange-light/5 rounded-full blur-[60px]" />
+            <div className="absolute -top-20 -left-20 w-80 h-80 bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.12)_0%,transparent_70%)] rounded-full pointer-events-none" />
+            <div className="absolute bottom-1/4 right-0 w-60 h-60 bg-[radial-gradient(circle_at_center,rgba(255,154,118,0.10)_0%,transparent_70%)] rounded-full pointer-events-none" />
 
             <div className="relative z-10 w-full max-w-lg" data-scroll="fade-right" data-delay="200">
               <div className="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange/15 border border-orange/30 text-orange text-xs font-bold uppercase tracking-widest">
@@ -386,8 +389,8 @@ export default function Home() {
           <div className="relative flex-1 flex flex-col items-center justify-center px-8 py-28 md:px-16 persona-hover group overflow-hidden bg-linear-to-tl from-teal-50 via-white to-teal-50/50 dark:from-[#0d1a22] dark:via-black dark:to-[#091318]">
             {/* Teal glow */}
             <div className="absolute inset-0 bg-linear-to-tl from-teal/20 via-transparent to-teal-light/5 pointer-events-none" />
-            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-teal/12 rounded-full blur-[100px]" />
-            <div className="absolute top-1/4 left-0 w-60 h-60 bg-teal-light/5 rounded-full blur-[60px]" />
+            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.15)_0%,transparent_70%)] rounded-full pointer-events-none" />
+            <div className="absolute top-1/4 left-0 w-60 h-60 bg-[radial-gradient(circle_at_center,rgba(58,90,110,0.10)_0%,transparent_70%)] rounded-full pointer-events-none" />
 
             <div className="relative z-10 w-full max-w-lg" data-scroll="fade-left" data-delay="400">
               <div className="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal/25 border border-teal-light/30 text-teal-light text-xs font-bold uppercase tracking-widest">
@@ -481,8 +484,8 @@ export default function Home() {
             CURATED TALENT — TEAL DOMINANT SECTION
             ════════════════════════════════════════════ */}
         <section className="py-28 relative overflow-hidden bg-slate-50 dark:bg-linear-to-b dark:from-[#0d1a22] dark:via-[#152a36] dark:to-[#0d1a22]">
-          <div className="absolute top-20 -left-40 w-96 h-96 bg-orange/5 rounded-full blur-[120px] pointer-events-none" data-float="" data-sp="-0.02" data-rt="0" />
-          <div className="absolute bottom-0 -right-40 w-[500px] h-[500px] bg-teal-light/8 rounded-full blur-[120px] pointer-events-none" data-float="" data-sp="0.03" data-rt="0" />
+          <div className="absolute top-20 -left-40 w-96 h-96 bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.06)_0%,transparent_70%)] rounded-full pointer-events-none" data-float="" data-sp="-0.02" data-rt="0" />
+          <div className="absolute bottom-0 -right-40 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(58,90,110,0.08)_0%,transparent_70%)] rounded-full pointer-events-none" data-float="" data-sp="0.03" data-rt="0" />
 
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
@@ -525,7 +528,7 @@ export default function Home() {
             HOW IT WORKS — STEP-BY-STEP (ScrollReveal)
             ════════════════════════════════════════════ */}
         <section className="py-28 relative overflow-hidden bg-white dark:bg-[#0a0a0a]">
-          <div className="absolute top-0 right-1/3 w-[500px] h-[500px] bg-indigo-accent/5 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-0 right-1/3 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.06)_0%,transparent_70%)] rounded-full pointer-events-none" />
 
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             <div className="text-center mb-20">
@@ -588,8 +591,8 @@ export default function Home() {
             ════════════════════════════════════════════ */}
         <section className="py-28 relative overflow-hidden bg-white dark:bg-black">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-orange/4 rounded-full blur-[150px]" />
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-teal/5 rounded-full blur-[100px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.05)_0%,transparent_70%)] rounded-full pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.06)_0%,transparent_70%)] rounded-full pointer-events-none" />
           </div>
           <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
             <div className="mb-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal/20 border border-teal-light/20 text-teal-light text-xs font-bold uppercase tracking-widest" data-scroll="fade-up">Our Mission</div>
@@ -634,8 +637,8 @@ export default function Home() {
             DUAL CTA — OFF-WHITE / LIGHT SECTION
             ════════════════════════════════════════════ */}
         <section className="py-28 relative overflow-hidden bg-slate-50 dark:bg-[#EFEEEA]">
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-orange/8 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-teal/6 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.08)_0%,transparent_70%)] rounded-full pointer-events-none" />
+          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.08)_0%,transparent_70%)] rounded-full pointer-events-none" />
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="grid md:grid-cols-2 gap-12 perspective-1000">
               {/* Student CTA — orange */}
