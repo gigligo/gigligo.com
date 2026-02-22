@@ -1,0 +1,8 @@
+# Backend Docker ignore
+node_modules
+dist
+.env
+.env.local
+uploads
+.git
+*.md

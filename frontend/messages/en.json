@@ -1,0 +1,35 @@
+{
+    "common": {
+        "login": "Login",
+        "register": "Join Free",
+        "dashboard": "Dashboard",
+        "findTalent": "Find Talent",
+        "browseJobs": "Browse Jobs",
+        "pricing": "Pricing",
+        "postGig": "Post a Gig",
+        "about": "About",
+        "privacy": "Privacy",
+        "loading": "Loading..."
+    },
+    "landing": {
+        "heroStudents": "Students & Graduates",
+        "heroBusinesses": "Businesses & Startups",
+        "taglineStudents": "Empowering 30 million university students to earn while they learn. No international fees, no barriers.",
+        "taglineBusinesses": "Instant, affordable access to Pakistan's top talent. Secure payments and verified results.",
+        "startEarning": "Start Earning Today",
+        "hireTalent": "Hire Talent Now",
+        "curatedTalent": "Curated Local Talent",
+        "ourMission": "Our Mission",
+        "missionTitle": "Building Pakistan's Talent Economy",
+        "missionDesc": "Pakistan is home to more than 30 million university students and an ever-growing small-business sector. Gigligo bridges the gap between untapped talent and businesses that need reliable, cost-effective help.",
+        "builtForPakistan": "Built for Pakistan"
+    },
+    "dashboard": {
+        "wallet": "Wallet",
+        "totalEarnings": "Total Earnings",
+        "activeOrders": "Active Orders",
+        "completedOrders": "Completed Orders",
+        "pendingReviews": "Pending Reviews",
+        "quickActions": "Quick Actions"
+    }
+}
