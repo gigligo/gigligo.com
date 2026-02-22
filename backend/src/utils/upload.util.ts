@@ -1,22 +1,13 @@
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import * as fs from 'fs';
-import { S3Client } from '@aws-sdk/client-s3';
-import multerS3 from 'multer-s3';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
-// S3 Client Initialization (Lazy)
-let s3Client: S3Client | null = null;
-if (process.env.AWS_S3_BUCKET && process.env.AWS_REGION && process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
-    s3Client = new S3Client({
-        region: process.env.AWS_REGION,
-        credentials: {
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        },
-    });
-    console.log('[Storage] AWS S3 initialized for uploads');
+if (process.env.CLOUDINARY_URL) {
+    console.log('[Storage] Cloudinary initialized for uploads');
 } else {
-    console.log('[Storage] AWS S3 credentials missing, falling back to local disk storage');
+    console.log('[Storage] CLOUDINARY_URL missing, falling back to local disk storage');
 }
 
 /**
@@ -25,16 +16,14 @@ if (process.env.AWS_S3_BUCKET && process.env.AWS_REGION && process.env.AWS_ACCES
  * @param {string} s3Prefix The prefix folder in S3 bucket if using S3
  */
 export const getStorageOptions = (localSubfolder: string, s3Prefix: string) => {
-    if (s3Client && process.env.AWS_S3_BUCKET) {
-        // Use AWS S3
-        return multerS3({
-            s3: s3Client,
-            bucket: process.env.AWS_S3_BUCKET,
-            contentType: multerS3.AUTO_CONTENT_TYPE,
-            key: function (req, file, cb) {
-                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-                cb(null, `${s3Prefix}/${file.fieldname}-${uniqueSuffix}${extname(file.originalname)}`);
-            }
+    if (process.env.CLOUDINARY_URL) {
+        // Use Cloudinary
+        return new CloudinaryStorage({
+            cloudinary: cloudinary,
+            params: {
+                folder: `gigligo/${s3Prefix}`,
+                resource_type: 'auto',
+            } as any,
         });
     } else {
         // Use Local Disk
@@ -58,8 +47,12 @@ export const getStorageOptions = (localSubfolder: string, s3Prefix: string) => {
  * If local, it prepends `/uploads/...` 
  */
 export const getFileUrl = (file: any, localSubfolder: string) => {
+    if (file.path && file.path.includes('cloudinary.com')) {
+        // Cloudinary file
+        return file.path;
+    }
     if (file.location) {
-        // S3 file
+        // Fallback for S3 if any old usage exists (optional)
         return file.location;
     }
     // Local file
