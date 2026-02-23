@@ -60,6 +60,26 @@ export class UsersService {
         });
     }
 
+    // --- WebAuthn Autofill Challenges ---
+
+    async saveAuthChallenge(challenge: string, expiresAt: Date) {
+        return this.prisma.authChallenge.create({
+            data: { challenge, expiresAt },
+        });
+    }
+
+    async getAuthChallenge(id: string) {
+        return this.prisma.authChallenge.findUnique({
+            where: { id },
+        });
+    }
+
+    async deleteAuthChallenge(id: string) {
+        return this.prisma.authChallenge.delete({
+            where: { id },
+        }).catch(() => null); // Ignore if already deleted
+    }
+
     async create(data: { email: string; passwordHash?: string | null; googleId?: string; fullName: string; role?: string; phone?: string; nationalId?: string; kycStatus?: any; termsAcceptedAt?: Date }) {
         const assignedRole = (data.role as any) || 'FREE';
 

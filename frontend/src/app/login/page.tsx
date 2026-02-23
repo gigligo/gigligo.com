@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/Input';
@@ -16,6 +16,48 @@ function LoginContent() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    // Trigger Conditional WebAuthn (Autofill) on mount
+    React.useEffect(() => {
+        const initAutofill = async () => {
+            try {
+                const { startAuthentication } = await import('@simplewebauthn/browser');
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+
+                const optsRes = await fetch(`${apiUrl}/api/auth/webauthn/autofill/options`, {
+                    method: 'POST',
+                });
+                if (!optsRes.ok) return; // Silent fail if not supported/available
+
+                const { options, sessionId } = await optsRes.json();
+
+                // Wait for the user to select the passkey from the autofill dropdown
+                const asseResp = await startAuthentication({ ...options, mediation: 'conditional' });
+
+                setIsLoading(true);
+                const res = await signIn('credentials', {
+                    redirect: false,
+                    webauthnSessionId: sessionId,
+                    webauthnResponse: JSON.stringify(asseResp),
+                });
+
+                if (res?.error) {
+                    setError(res.error);
+                    setIsLoading(false);
+                } else {
+                    router.push(callbackUrl);
+                    router.refresh();
+                }
+            } catch (err: any) {
+                // Ignore AbortError which happens naturally when navigating away or falling back
+                if (err.name !== 'AbortError') {
+                    console.error('Conditional WebAuthn error', err);
+                }
+            }
+        };
+
+        initAutofill();
+    }, [router, callbackUrl]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -64,8 +106,8 @@ function LoginContent() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <Input label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" />
-                    <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" />
+                    <Input label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" autoComplete="username webauthn" />
+                    <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" autoComplete="current-password" />
 
                     <div className="flex items-center justify-between text-xs py-2">
                         <label className="flex items-center text-slate-600 dark:text-slate-400">

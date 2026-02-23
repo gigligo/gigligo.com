@@ -54,6 +54,16 @@ export class AuthController {
         return this.authService.verifyWebAuthnAuthentication(requestBody.email, requestBody.response);
     }
 
+    @Post('webauthn/autofill/options')
+    async getWebAuthnAutofillOptions() {
+        return this.authService.getWebAuthnAutofillOptions();
+    }
+
+    @Post('webauthn/autofill/verify')
+    async verifyWebAuthnAutofill(@Body() requestBody: { sessionId: string; response: any }) {
+        return this.authService.verifyWebAuthnAutofill(requestBody.sessionId, requestBody.response);
+    }
+
     // ═══════════════════════════════════════
     // GOOGLE AUTH
     // ═══════════════════════════════════════

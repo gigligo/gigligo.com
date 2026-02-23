@@ -279,6 +279,6 @@ export class AuthService {
                 user: { ...safeUser },
             };
         }
-        throw new UnauthorizedException('Authentication failed');
+        throw new BadRequestException('Authentication failed');
     }
 }

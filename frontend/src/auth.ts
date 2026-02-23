@@ -14,14 +14,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             credentials: {
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
-                webauthnResponse: { label: "WebAuthn", type: "text" }
+                webauthnResponse: { label: "WebAuthn", type: "text" },
+                webauthnSessionId: { label: "WebAuthnSessionId", type: "text" }
             },
             async authorize(credentials: any) {
                 try {
                     let endpoint = "/api/auth/login";
                     let payload = credentials;
 
-                    if (credentials?.webauthnResponse) {
+                    if (credentials?.webauthnSessionId) {
+                        endpoint = "/api/auth/webauthn/autofill/verify";
+                        payload = {
+                            sessionId: credentials.webauthnSessionId,
+                            response: JSON.parse(credentials.webauthnResponse)
+                        };
+                    } else if (credentials?.webauthnResponse) {
                         endpoint = "/api/auth/webauthn/login/verify";
                         payload = {
                             email: credentials.email,
