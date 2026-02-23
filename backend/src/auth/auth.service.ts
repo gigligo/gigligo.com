@@ -281,4 +281,66 @@ export class AuthService {
         }
         throw new BadRequestException('Authentication failed');
     }
+
+    // --- WebAuthn Autofill (Conditional UI) ---
+
+    async getWebAuthnAutofillOptions() {
+        const options = await generateAuthenticationOptions({
+            rpID,
+            userVerification: 'preferred',
+        });
+
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+        const challengeRec = await this.usersService.saveAuthChallenge(options.challenge, expiresAt);
+
+        return {
+            options,
+            sessionId: challengeRec.id,
+        };
+    }
+
+    async verifyWebAuthnAutofill(sessionId: string, body: any) {
+        const challengeRec = await this.usersService.getAuthChallenge(sessionId);
+        if (!challengeRec) throw new UnauthorizedException('Challenge expired or invalid');
+
+        await this.usersService.deleteAuthChallenge(sessionId);
+
+        const authenticator = await this.usersService.getWebAuthnCredential(body.id);
+        if (!authenticator) throw new UnauthorizedException('Authenticator not registered');
+
+        const user = authenticator.user;
+        if (!user) throw new UnauthorizedException('User not found');
+
+        let verification;
+        try {
+            verification = await verifyAuthenticationResponse({
+                response: body,
+                expectedChallenge: challengeRec.challenge,
+                expectedOrigin: origin,
+                expectedRPID: rpID,
+                credential: {
+                    id: authenticator.credentialID,
+                    publicKey: new Uint8Array(authenticator.credentialPublicKey),
+                    counter: Number(authenticator.counter),
+                    transports: authenticator.transports ? JSON.parse(authenticator.transports) : undefined,
+                },
+            });
+        } catch (error: any) {
+            this.logger.error(`WebAuthn verifyAutofill failed: ${error.message}`);
+            throw new UnauthorizedException(`Authentication validation failed: ${error.message}`);
+        }
+
+        if (verification.verified && verification.authenticationInfo) {
+            await this.usersService.updateCredentialCounter(authenticator.credentialID, verification.authenticationInfo.newCounter);
+
+            const payload = { email: user.email, sub: user.id, role: user.role };
+            const { passwordHash, ...safeUser } = user;
+            return {
+                verified: true,
+                access_token: this.jwtService.sign(payload),
+                user: { ...safeUser },
+            };
+        }
+        throw new BadRequestException('Authentication failed');
+    }
 }
