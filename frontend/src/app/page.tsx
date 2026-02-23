@@ -233,7 +233,7 @@ export default function Home() {
         <nav className="hidden md:flex items-center gap-6">
           <Link href="/search" className="text-sm font-medium text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors">Find Talent</Link>
           <Link href="/jobs" className="text-sm font-medium text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors">Browse Jobs</Link>
-          <Link href="/register?role=SELLER" className="text-sm font-medium text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors">Post a Gig</Link>
+          <Link href={session ? '/dashboard' : '/register?role=SELLER'} className="text-sm font-medium text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors">Post a Gig</Link>
 
           <div className="relative group p-2">
             <button className="text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors flex items-center">
@@ -291,7 +291,7 @@ export default function Home() {
             <Link href="/search" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Find Talent</Link>
             <Link href="/jobs" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Browse Jobs</Link>
             <Link href="/pricing" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Pricing</Link>
-            <Link href="/register?role=SELLER" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Post a Gig</Link>
+            <Link href={session ? '/dashboard' : '/register?role=SELLER'} className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Post a Gig</Link>
             <div className="h-px w-1/3 bg-slate-200 dark:bg-white/10 my-4"></div>
             {session ? (
               <Link href="/dashboard" className="w-full max-w-[200px] py-4 text-center rounded-full text-lg font-bold bg-orange text-white" onClick={() => setMenuOpen(false)}>Dashboard</Link>

@@ -149,20 +149,20 @@ export default function SettingsPage() {
     if (!session) return null;
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#000]">
+        <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#000]">
             <Navbar />
 
             <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-8" style={{ paddingTop: 100 }}>
-                <h1 className="text-3xl font-bold text-[#EFEEEA] mb-8">Account Settings</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA] mb-8">Account Settings</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
                     {/* Settings Navigation Sidebar */}
                     <div className="space-y-2">
-                        <button className="w-full text-left px-4 py-3 bg-[#111] border border-[#FE7743]/50 text-[#FE7743] font-semibold rounded-xl flex items-center gap-3">
+                        <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#111] border-slate-200 dark:border-[#FE7743]/50 text-slate-900 dark:text-[#FE7743] font-semibold rounded-xl flex items-center gap-3">
                             <ShieldCheck className="w-5 h-5" /> Security & Login
                         </button>
-                        <button disabled className="w-full text-left px-4 py-3 bg-transparent text-[#EFEEEA]/50 font-semibold rounded-xl flex items-center gap-3 hover:bg-white/5 transition opacity-50 cursor-not-allowed">
+                        <button disabled className="w-full text-left px-4 py-3 bg-transparent text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 font-semibold rounded-xl flex items-center gap-3 hover:bg-white/5 transition opacity-50 cursor-not-allowed">
                             <Activity className="w-5 h-5" /> Activity Log
                         </button>
                     </div>
@@ -170,25 +170,25 @@ export default function SettingsPage() {
                     {/* Main Settings Panel */}
                     <div className="md:col-span-2 space-y-6">
 
-                        <div className="bg-[#111] p-6 rounded-2xl border border-white/10">
+                        <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
                             <div className="flex items-center gap-4 mb-2">
-                                <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+                                <div className="p-3 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/10">
                                     <Fingerprint className="w-6 h-6 text-teal-vibrant" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-bold text-[#EFEEEA]">Biometric Login (Passkeys)</h2>
-                                    <p className="text-sm text-[#EFEEEA]/60">Sign in securely using Face ID, Touch ID, or Windows Hello.</p>
+                                    <h2 className="text-xl font-bold text-slate-900 dark:text-[#EFEEEA]">Biometric Login (Passkeys)</h2>
+                                    <p className="text-sm text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/60">Sign in securely using Face ID, Touch ID, or Windows Hello.</p>
                                 </div>
                             </div>
 
-                            <hr className="border-white/10 my-6" />
+                            <hr className="border-slate-200 dark:border-white/10 my-6" />
 
                             {errorMsg && <div className="bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl text-sm mb-4">{errorMsg}</div>}
                             {successMsg && <div className="bg-green-500/10 text-green-400 border border-green-500/20 p-4 rounded-xl text-sm mb-4 font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> {successMsg}</div>}
 
-                            <div className="bg-white/2 rounded-xl border border-white/5 p-5">
-                                <h3 className="font-semibold text-[#EFEEEA] mb-1">Add a new device</h3>
-                                <p className="text-xs text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
+                            <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
+                                <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-1">Add a new device</h3>
+                                <p className="text-xs text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
                                     Register this current device to allow passwordless sign-ins in the future. You can register multiple devices (e.g., your phone and laptop).
                                 </p>
                                 <button
@@ -202,30 +202,30 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Two-Factor Authentication Section */}
-                        <div className="bg-[#111] p-6 rounded-2xl border border-white/10">
+                        <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
                             <div className="flex justify-between items-start mb-2">
                                 <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+                                    <div className="p-3 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/10">
                                         <KeyRound className="w-6 h-6 text-purple-400" />
                                     </div>
                                     <div>
-                                        <h2 className="text-xl font-bold text-[#EFEEEA] flex items-center gap-2">
+                                        <h2 className="text-xl font-bold text-slate-900 dark:text-[#EFEEEA] flex items-center gap-2">
                                             Two-Factor Authentication (2FA)
                                             {is2FAEnabled && <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">Enabled</span>}
                                         </h2>
-                                        <p className="text-sm text-[#EFEEEA]/60">Secure your account with a TOTP authenticator app like Google Authenticator.</p>
+                                        <p className="text-sm text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/60">Secure your account with a TOTP authenticator app like Google Authenticator.</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <hr className="border-white/10 my-6" />
+                            <hr className="border-slate-200 dark:border-white/10 my-6" />
 
                             {is2FAEnabled === null ? (
-                                <div className="text-sm text-white/50 animate-pulse">Checking 2FA status...</div>
+                                <div className="text-sm text-slate-500 dark:text-white/50 animate-pulse">Checking 2FA status...</div>
                             ) : is2FAEnabled ? (
-                                <div className="bg-white/2 rounded-xl border border-white/5 p-5">
-                                    <h3 className="font-semibold text-[#EFEEEA] mb-1">Disable 2FA</h3>
-                                    <p className="text-xs text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
+                                <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
+                                    <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-1">Disable 2FA</h3>
+                                    <p className="text-xs text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
                                         To disable 2FA, please enter a code from your authenticator app to verify it is you.
                                     </p>
                                     <div className="flex flex-col sm:flex-row gap-4">
@@ -234,7 +234,7 @@ export default function SettingsPage() {
                                             placeholder="6-digit code"
                                             value={twoFactorCode}
                                             onChange={(e) => setTwoFactorCode(e.target.value)}
-                                            className="bg-black border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-400"
+                                            className="bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg px-4 py-2 text-slate-900 dark:text-white focus:outline-none focus:border-purple-400"
                                             maxLength={6}
                                         />
                                         <button
@@ -247,9 +247,9 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
                             ) : setupMode && qrCodeUrl ? (
-                                <div className="bg-white/2 rounded-xl border border-white/5 p-5">
-                                    <h3 className="font-semibold text-[#EFEEEA] mb-4">Complete 2FA Setup</h3>
-                                    <ol className="text-sm text-[#EFEEEA]/70 space-y-3 mb-6 list-decimal list-inside">
+                                <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
+                                    <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-4">Complete 2FA Setup</h3>
+                                    <ol className="text-sm text-slate-900 dark:text-slate-600 dark:text-[#EFEEEA]/70 space-y-3 mb-6 list-decimal list-inside">
                                         <li>Open your Authenticator app (e.g., Google Authenticator, Authy).</li>
                                         <li>Scan the QR code below.</li>
                                         <li>Enter the 6-digit code generated by the app.</li>
@@ -267,7 +267,7 @@ export default function SettingsPage() {
                                                     placeholder="123456"
                                                     value={twoFactorCode}
                                                     onChange={(e) => setTwoFactorCode(e.target.value)}
-                                                    className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-400 text-lg tracking-[0.2em] font-mono placeholder:tracking-normal"
+                                                    className="w-full bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-purple-400 text-lg tracking-[0.2em] font-mono placeholder:tracking-normal"
                                                     maxLength={6}
                                                 />
                                             </div>
@@ -290,9 +290,9 @@ export default function SettingsPage() {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="bg-white/2 rounded-xl border border-white/5 p-5">
-                                    <h3 className="font-semibold text-[#EFEEEA] mb-1">Protect your account</h3>
-                                    <p className="text-xs text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
+                                <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
+                                    <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-1">Protect your account</h3>
+                                    <p className="text-xs text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
                                         Enabling 2FA adds an extra layer of security to your account. You will need to provide a code from your authenticator app when making major withdrawals.
                                     </p>
                                     <button
@@ -308,10 +308,10 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Traditional Password Section Placeholder */}
-                        <div className="bg-[#111] p-6 rounded-2xl border border-white/10 opacity-70">
-                            <h2 className="text-lg font-bold text-[#EFEEEA] mb-1">Change Password</h2>
-                            <p className="text-sm text-[#EFEEEA]/50 mb-6">Update your conventional account password.</p>
-                            <button className="px-6 py-2.5 bg-white/5 border border-white/10 text-[#EFEEEA] font-semibold rounded-lg text-sm">
+                        <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none opacity-70">
+                            <h2 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA] mb-1">Change Password</h2>
+                            <p className="text-sm text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-6">Update your conventional account password.</p>
+                            <button className="px-6 py-2.5 bg-white/5 border border-white/10 text-slate-900 dark:text-[#EFEEEA] font-semibold rounded-lg text-sm">
                                 Reset Password
                             </button>
                         </div>

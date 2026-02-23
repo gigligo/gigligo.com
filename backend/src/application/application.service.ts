@@ -20,6 +20,12 @@ export class ApplicationService {
         if (job.status !== 'OPEN') throw new BadRequestException('This job is no longer accepting applications');
         if (job.employerId === freelancerId) throw new BadRequestException('Cannot apply to your own job');
 
+        // KYC check: freelancer must be verified before applying
+        const freelancer = await this.prisma.user.findUnique({ where: { id: freelancerId } });
+        if (!freelancer || freelancer.kycStatus !== 'APPROVED') {
+            throw new BadRequestException('You must complete KYC verification before applying to jobs. Go to Dashboard → KYC Verification.');
+        }
+
         // Check not already applied
         const existing = await this.prisma.jobApplication.findUnique({
             where: { jobId_freelancerId: { jobId: data.jobId, freelancerId } },

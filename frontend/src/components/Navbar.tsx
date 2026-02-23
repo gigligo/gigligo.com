@@ -57,7 +57,7 @@ export function Navbar() {
     const mainLinks = [
         { label: 'Find Talent', href: '/search' },
         { label: 'Browse Jobs', href: '/jobs' },
-        { label: 'Post a Gig', href: '/register?role=SELLER' },
+        { label: 'Post a Gig', href: session ? '/dashboard' : '/register?role=SELLER' },
     ];
 
     const moreLinks = [
