@@ -57,9 +57,9 @@ export default function KYCVerificationPage() {
             formData.append('cnicBack', idBackFile);
 
             const token = (session as any)?.accessToken;
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-            const res = await fetch(`${apiUrl}/kyc/submit`, {
+            const res = await fetch(`${apiUrl}/api/kyc/submit`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`

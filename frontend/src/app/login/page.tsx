@@ -99,10 +99,10 @@ function LoginContent() {
                             setError('');
                             try {
                                 const { startAuthentication } = await import('@simplewebauthn/browser');
-                                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+                                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
                                 // 1. Get auth options from server
-                                const optsRes = await fetch(`${apiUrl}/auth/webauthn/login/options`, {
+                                const optsRes = await fetch(`${apiUrl}/api/auth/webauthn/login/options`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ email })

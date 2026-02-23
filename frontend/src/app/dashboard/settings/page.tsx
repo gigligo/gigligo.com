@@ -19,11 +19,11 @@ export default function SettingsPage() {
     const [setupMode, setSetupMode] = useState(false); // When they click enable
 
     const token = (session as any)?.accessToken;
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
     useEffect(() => {
         if (token) {
-            fetch(`${apiUrl}/auth/profile`, {
+            fetch(`${apiUrl}/api/auth/profile`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
                 .then(res => res.json())
@@ -43,7 +43,7 @@ export default function SettingsPage() {
             const { startRegistration } = await import('@simplewebauthn/browser');
 
             // 1. Get exact options from the server
-            const optsRes = await fetch(`${apiUrl}/auth/webauthn/register/options`, {
+            const optsRes = await fetch(`${apiUrl}/api/auth/webauthn/register/options`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (!optsRes.ok) throw new Error('Failed to get registration options');
@@ -53,7 +53,7 @@ export default function SettingsPage() {
             const attResp = await startRegistration(options);
 
             // 3. Send the created passkey back to the server for verification
-            const verifyRes = await fetch(`${apiUrl}/auth/webauthn/register/verify`, {
+            const verifyRes = await fetch(`${apiUrl}/api/auth/webauthn/register/verify`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default function SettingsPage() {
         setIs2FALoading(true);
         setErrorMsg('');
         try {
-            const res = await fetch(`${apiUrl}/auth/2fa/generate`, {
+            const res = await fetch(`${apiUrl}/api/auth/2fa/generate`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -96,7 +96,7 @@ export default function SettingsPage() {
         setErrorMsg('');
         setSuccessMsg('');
         try {
-            const res = await fetch(`${apiUrl}/auth/2fa/verify`, {
+            const res = await fetch(`${apiUrl}/api/auth/2fa/verify`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ export default function SettingsPage() {
         setErrorMsg('');
         setSuccessMsg('');
         try {
-            const res = await fetch(`${apiUrl}/auth/2fa/disable`, {
+            const res = await fetch(`${apiUrl}/api/auth/2fa/disable`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

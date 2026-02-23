@@ -363,8 +363,8 @@ function KycInboxTab({ token }: { token: string }) {
     useEffect(() => {
         const fetchKyc = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-                const res = await fetch(`${apiUrl}/admin/kyc/pending`, {
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+                const res = await fetch(`${apiUrl}/api/admin/kyc/pending`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (!res.ok) throw new Error('Failed to load pending KYC');
@@ -382,8 +382,8 @@ function KycInboxTab({ token }: { token: string }) {
     const handleDecision = async (kycId: string, status: 'APPROVED' | 'REJECTED') => {
         setSubmittingKycId(kycId);
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-            const res = await fetch(`${apiUrl}/admin/kyc/decide`, {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            const res = await fetch(`${apiUrl}/api/admin/kyc/decide`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
