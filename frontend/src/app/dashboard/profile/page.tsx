@@ -243,11 +243,12 @@ export default function ProfileEditorPage() {
                                 ) : (
                                     <div className="grid sm:grid-cols-2 gap-6">
                                         {profile.portfolioItems?.map((port: any) => (
-                                            <div key={port.id} className="border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden group relative bg-slate-50 dark:bg-black flex flex-col">
+                                            <div key={port.id} className="border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden relative bg-slate-50 dark:bg-black flex flex-col">
                                                 <div className="h-40 bg-slate-200 dark:bg-[#111] overflow-hidden">
                                                     {port.imageUrl ? (
-                                                         
-                                                        <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                                        <a href={port.imageUrl} target="_blank" rel="noreferrer" title="Click to view full image">
+                                                            <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover hover:scale-105 transition duration-500 cursor-pointer" />
+                                                        </a>
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center text-slate-400"><ImageIcon size={40} /></div>
                                                     )}
@@ -262,7 +263,7 @@ export default function ProfileEditorPage() {
                                                                 <LinkIcon size={14} /> View Project
                                                             </a>
                                                         )}
-                                                        <button onClick={() => deletePort(port.id)} className="p-2 text-red-500 opacity-0 group-hover:opacity-100 transition absolute top-2 right-2 bg-white dark:bg-black rounded-full shadow-lg">
+                                                        <button onClick={() => deletePort(port.id)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition ml-auto" title="Delete">
                                                             <Trash2 size={16} />
                                                         </button>
                                                     </div>
