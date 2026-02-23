@@ -287,9 +287,6 @@ export default function Home() {
       {/* MOBILE MENU */}
       {menuOpen && (
         <div className="fixed inset-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-8 md:hidden">
-          <button className="absolute top-6 right-6 text-slate-900 dark:text-offwhite" onClick={() => setMenuOpen(false)}>
-            <X size={32} />
-          </button>
           <nav className="flex flex-col items-center gap-8 w-full">
             <Link href="/search" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Find Talent</Link>
             <Link href="/jobs" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Browse Jobs</Link>

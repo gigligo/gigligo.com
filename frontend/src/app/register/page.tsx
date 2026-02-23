@@ -33,8 +33,8 @@ function RegisterContent() {
         }
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-            const res = await fetch(`${apiUrl}/auth/register`, {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            const res = await fetch(`${apiUrl}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -75,9 +75,9 @@ function RegisterContent() {
 
             // Now perform device registration
             const { startRegistration } = await import('@simplewebauthn/browser');
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-            const optsRes = await fetch(`${apiUrl}/auth/webauthn/register/options`, {
+            const optsRes = await fetch(`${apiUrl}/api/auth/webauthn/register/options`, {
                 headers: { Authorization: `Bearer ${(res as any)?.accessToken || ''}` } // NextAuth doesn't return token directly here on client side, we might need a workaround or just fetch session
             });
 
@@ -87,7 +87,7 @@ function RegisterContent() {
             const session = await getSession();
             const token = (session as any)?.accessToken;
 
-            const optsResWithToken = await fetch(`${apiUrl}/auth/webauthn/register/options`, {
+            const optsResWithToken = await fetch(`${apiUrl}/api/auth/webauthn/register/options`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (!optsResWithToken.ok) throw new Error('Failed to start passkey setup.');
@@ -95,7 +95,7 @@ function RegisterContent() {
 
             const attResp = await startRegistration(options);
 
-            const verifyRes = await fetch(`${apiUrl}/auth/webauthn/register/verify`, {
+            const verifyRes = await fetch(`${apiUrl}/api/auth/webauthn/register/verify`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
