@@ -62,7 +62,10 @@ export default function SettingsPage() {
                 body: JSON.stringify(attResp)
             });
 
-            if (!verifyRes.ok) throw new Error('Failed to verify new passkey');
+            if (!verifyRes.ok) {
+                const errData = await verifyRes.json();
+                throw new Error(errData.message || 'Failed to verify new passkey');
+            }
 
             setSuccessMsg('Biometric login is now enabled for this device!');
         } catch (err: any) {

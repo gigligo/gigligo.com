@@ -193,12 +193,18 @@ export class AuthService {
         const user = await this.usersService.findById(userReq.id);
         if (!user || !user.currentChallenge) throw new BadRequestException('Validation failed');
 
-        const verification = await verifyRegistrationResponse({
-            response: body,
-            expectedChallenge: user.currentChallenge,
-            expectedOrigin: origin,
-            expectedRPID: rpID,
-        });
+        let verification;
+        try {
+            verification = await verifyRegistrationResponse({
+                response: body,
+                expectedChallenge: user.currentChallenge,
+                expectedOrigin: origin,
+                expectedRPID: rpID,
+            });
+        } catch (error: any) {
+            this.logger.error(`WebAuthn verifyRegistrationResponse failed: ${error.message}`);
+            throw new BadRequestException(`Registration validation failed: ${error.message}`);
+        }
 
         if (verification.verified && verification.registrationInfo) {
             const { credential, credentialDeviceType, credentialBackedUp } = verification.registrationInfo;
@@ -242,18 +248,24 @@ export class AuthService {
             throw new UnauthorizedException('Authenticator not registered for this user');
         }
 
-        const verification = await verifyAuthenticationResponse({
-            response: body,
-            expectedChallenge: user.currentChallenge,
-            expectedOrigin: origin,
-            expectedRPID: rpID,
-            credential: {
-                id: authenticator.credentialID,
-                publicKey: new Uint8Array(authenticator.credentialPublicKey),
-                counter: Number(authenticator.counter),
-                transports: authenticator.transports ? JSON.parse(authenticator.transports) : undefined,
-            },
-        });
+        let verification;
+        try {
+            verification = await verifyAuthenticationResponse({
+                response: body,
+                expectedChallenge: user.currentChallenge,
+                expectedOrigin: origin,
+                expectedRPID: rpID,
+                credential: {
+                    id: authenticator.credentialID,
+                    publicKey: new Uint8Array(authenticator.credentialPublicKey),
+                    counter: Number(authenticator.counter),
+                    transports: authenticator.transports ? JSON.parse(authenticator.transports) : undefined,
+                },
+            });
+        } catch (error: any) {
+            this.logger.error(`WebAuthn verifyAuthenticationResponse failed: ${error.message}`);
+            throw new UnauthorizedException(`Authentication validation failed: ${error.message}`);
+        }
 
         if (verification.verified && verification.authenticationInfo) {
             await this.usersService.updateCredentialCounter(authenticator.credentialID, verification.authenticationInfo.newCounter);
