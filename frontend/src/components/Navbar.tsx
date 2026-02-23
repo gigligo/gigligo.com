@@ -136,7 +136,7 @@ export function Navbar() {
                                         <Link href="/dashboard/profile" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Profile</Link>
                                         <Link href="/dashboard/settings" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Settings</Link>
                                         <div className="h-px bg-slate-100 dark:bg-white/5 my-2" />
-                                        <button onClick={() => signOut()} className="px-4 py-2 hover:bg-red-50 dark:hover:bg-red-500/10 text-sm font-semibold text-red-600 dark:text-red-400 text-left w-full transition-colors">Logout</button>
+                                        <button onClick={() => signOut({ callbackUrl: '/' })} className="px-4 py-2 hover:bg-red-50 dark:hover:bg-red-500/10 text-sm font-semibold text-red-600 dark:text-red-400 text-left w-full transition-colors">Logout</button>
                                     </div>
                                 </div>
                             </>
@@ -203,7 +203,7 @@ export function Navbar() {
                                     <Link href="/dashboard/settings" className="text-lg font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-3 border-b border-slate-200 dark:border-white/10" onClick={() => setMenuOpen(false)}>
                                         Settings
                                     </Link>
-                                    <button onClick={() => { signOut(); setMenuOpen(false); }} className="text-lg font-medium text-red-500 dark:text-red-400 py-3 border-b border-slate-200 dark:border-white/10 text-left">
+                                    <button onClick={() => { signOut({ callbackUrl: '/' }); setMenuOpen(false); }} className="text-lg font-medium text-red-500 dark:text-red-400 py-3 border-b border-slate-200 dark:border-white/10 text-left">
                                         Logout
                                     </button>
                                 </>

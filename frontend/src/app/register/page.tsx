@@ -19,7 +19,6 @@ function RegisterContent() {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [hasRegistered, setHasRegistered] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -51,110 +50,27 @@ function RegisterContent() {
                 throw new Error(data.message || 'Registration failed');
             }
 
-            // Temporarily store the email to allow WebAuthn registration
-            setHasRegistered(true);
-        } catch (err: any) {
-            setError(err.message);
-            setIsLoading(false);
-        }
-    };
-
-    const handleWebAuthnSetup = async () => {
-        setIsLoading(true);
-        setError('');
-        try {
-            // First we need to login to get a token to register the passkey
-            const { signIn } = await import('next-auth/react');
-            const res = await signIn('credentials', {
+            // Auto-login immediately after registration
+            const loginRes = await signIn('credentials', {
                 redirect: false,
                 email,
                 password,
             });
 
-            if (res?.error) throw new Error('Could not auto-login to set up Passkey.');
+            if (loginRes?.error) {
+                // If auto-login fails, send them to login page
+                router.push('/login?registered=true');
+                return;
+            }
 
-            // Now perform device registration
-            const { startRegistration } = await import('@simplewebauthn/browser');
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-
-            const optsRes = await fetch(`${apiUrl}/api/auth/webauthn/register/options`, {
-                headers: { Authorization: `Bearer ${(res as any)?.accessToken || ''}` } // NextAuth doesn't return token directly here on client side, we might need a workaround or just fetch session
-            });
-
-            // To be entirely safe, we should rely on the session if we just signed in, 
-            // but NextAuth `signIn` without redirect requires page refresh or `getSession()`.
-            const { getSession } = await import('next-auth/react');
-            const session = await getSession();
-            const token = (session as any)?.accessToken;
-
-            const optsResWithToken = await fetch(`${apiUrl}/api/auth/webauthn/register/options`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            if (!optsResWithToken.ok) throw new Error('Failed to start passkey setup.');
-            const options = await optsResWithToken.json();
-
-            const attResp = await startRegistration(options);
-
-            const verifyRes = await fetch(`${apiUrl}/api/auth/webauthn/register/verify`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(attResp)
-            });
-
-            if (!verifyRes.ok) throw new Error('Passkey verification failed.');
-
+            // Redirect straight to dashboard
             router.push('/dashboard');
+            router.refresh();
         } catch (err: any) {
-            console.error(err);
-            // If it fails or they cancel, just send them to login
-            router.push('/login?registered=true');
-        } finally {
+            setError(err.message);
             setIsLoading(false);
         }
     };
-
-    if (hasRegistered) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-12 relative">
-                <div className="absolute top-4 right-4">
-                    <ThemeToggle />
-                </div>
-                <div className="bg-white dark:bg-slate-900 p-10 rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 max-w-md w-full text-center">
-                    <div className="w-16 h-16 bg-teal-vibrant/10 text-teal-vibrant rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Account Created!</h2>
-                    <p className="text-slate-500 dark:text-slate-400 mb-8 text-sm">
-                        Would you like to enable Face ID or Touch ID for faster, passwordless sign-ins in the future?
-                    </p>
-
-                    <button
-                        onClick={handleWebAuthnSetup}
-                        disabled={isLoading}
-                        className="w-full py-3 mb-3 bg-teal-vibrant text-slate-950 font-bold rounded-xl hover:bg-teal-vibrant/90 transition shadow-lg shadow-teal-vibrant/20 disabled:opacity-50 flex items-center justify-center gap-2"
-                    >
-                        {isLoading ? 'Setting up...' : (
-                            <>
-                                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" /></svg>
-                                Enable Biometric Login
-                            </>
-                        )}
-                    </button>
-                    <button
-                        onClick={() => router.push('/login?registered=true')}
-                        className="w-full py-3 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-slate-200 dark:hover:bg-white/10 transition"
-                    >
-                        Skip for now
-                    </button>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-12 relative">
