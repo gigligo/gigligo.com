@@ -85,7 +85,7 @@ export class UsersService {
 
         // 1. Determine if this user qualifies for the First 500 Founding Member rewards
         let isFoundingMember = false;
-        let foundingMemberType = null;
+        let foundingMemberType: string | null = null;
         let initialCredits = 0;
 
         // Grouping for the 500 limit:
