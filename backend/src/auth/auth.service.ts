@@ -14,8 +14,9 @@ import {
 } from '@simplewebauthn/server';
 
 const rpName = 'Gigligo Platform';
-const rpID = process.env.NODE_ENV === 'production' ? 'gigligo.com' : 'localhost';
-const origin = process.env.NODE_ENV === 'production' ? ['https://gigligo.com', 'https://www.gigligo.com'] : 'http://localhost:3000';
+const isProd = process.env.NODE_ENV === 'production' || process.env.FRONTEND_URL?.includes('gigligo.com') || process.env.CORS_ORIGINS?.includes('gigligo.com');
+const rpID = isProd ? 'gigligo.com' : 'localhost';
+const origin = isProd ? ['https://gigligo.com', 'https://www.gigligo.com'] : 'http://localhost:3000';
 
 @Injectable()
 export class AuthService {
