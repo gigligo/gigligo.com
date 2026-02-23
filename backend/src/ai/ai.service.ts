@@ -29,7 +29,8 @@ export class AiService implements OnModuleInit {
 
         try {
             // url must be absolute for SSEClientTransport
-            const url = new URL('http://localhost:3000/api/mcp/sse');
+            const port = process.env.PORT || 3000;
+            const url = new URL(`http://127.0.0.1:${port}/api/mcp/sse`);
             this.transport = new SSEClientTransport(url);
 
             await this.mcpClient.connect(this.transport);
