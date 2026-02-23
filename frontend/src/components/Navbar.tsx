@@ -70,7 +70,7 @@ export function Navbar() {
         <>
             <header
                 className={`fixed top-0 z-50 w-full transition-all duration-400 ${scrolled
-                    ? 'bg-white/80 dark:bg-[#0a0a0a]/80 border-b border-black/5 dark:border-white/5 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/10'
+                    ? 'bg-white dark:bg-[#0a0a0a]/90 border-b border-black/5 dark:border-white/5 backdrop-blur-xl shadow-md'
                     : 'bg-transparent'
                     }`}
                 style={{ height: 68 }}

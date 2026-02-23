@@ -147,8 +147,7 @@ function RegisterContent() {
                     </button>
                     <button
                         onClick={() => router.push('/login?registered=true')}
-                        disabled={isLoading}
-                        className="w-full py-3 bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-bold rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 transition disabled:opacity-50"
+                        className="w-full py-3 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-slate-200 dark:hover:bg-white/10 transition"
                     >
                         Skip for now
                     </button>
