@@ -363,7 +363,7 @@ function KycInboxTab({ token }: { token: string }) {
     useEffect(() => {
         const fetchKyc = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
                 const res = await fetch(`${apiUrl}/api/admin/kyc/pending`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -382,7 +382,7 @@ function KycInboxTab({ token }: { token: string }) {
     const handleDecision = async (kycId: string, status: 'APPROVED' | 'REJECTED') => {
         setSubmittingKycId(kycId);
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
             const res = await fetch(`${apiUrl}/api/admin/kyc/decide`, {
                 method: 'POST',
                 headers: {
@@ -419,7 +419,7 @@ function KycInboxTab({ token }: { token: string }) {
         );
     }
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:3001';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || '';
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">

@@ -129,7 +129,7 @@ export function Footer() {
                         <form className="flex group" onSubmit={(e) => {
                             e.preventDefault();
                             const email = (e.target as any).email.value;
-                            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/newsletter/subscribe`, {
+                            fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/newsletter/subscribe`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ email })

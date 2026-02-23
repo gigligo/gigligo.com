@@ -33,7 +33,7 @@ function RegisterContent() {
         }
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
             const res = await fetch(`${apiUrl}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -75,7 +75,7 @@ function RegisterContent() {
 
             // Now perform device registration
             const { startRegistration } = await import('@simplewebauthn/browser');
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
             const optsRes = await fetch(`${apiUrl}/api/auth/webauthn/register/options`, {
                 headers: { Authorization: `Bearer ${(res as any)?.accessToken || ''}` } // NextAuth doesn't return token directly here on client side, we might need a workaround or just fetch session

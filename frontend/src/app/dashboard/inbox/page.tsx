@@ -47,7 +47,7 @@ function InboxContent() {
     }, [messages]);
 
     const initSocket = () => {
-        const socketInstance = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001', {
+        const socketInstance = io(process.env.NEXT_PUBLIC_API_URL || '', {
             auth: { token },
         });
 

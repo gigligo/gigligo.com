@@ -64,7 +64,7 @@ export default function PublicProfilePage({ params }: { params: { id: string } }
                         <div className="w-32 h-32 md:w-40 md:h-40 shrink-0 rounded-full border-4 border-white dark:border-[#111] overflow-hidden bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
                             {profile.avatarUrl ? (
                                  
-                                <img src={`http://localhost:3001${profile.avatarUrl}`} alt={profile.fullName} className="w-full h-full object-cover" />
+                                <img src={`${profile.avatarUrl}`} alt={profile.fullName} className="w-full h-full object-cover" />
                             ) : (
                                 <span className="text-4xl font-bold text-slate-400">{profile.fullName?.charAt(0)}</span>
                             )}
@@ -124,7 +124,7 @@ export default function PublicProfilePage({ params }: { params: { id: string } }
                                             <div className="h-48 overflow-hidden bg-slate-200 dark:bg-[#111]">
                                                 {port.imageUrl ? (
                                                      
-                                                    <img src={`http://localhost:3001${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                                    <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                                                 ) : <div className="w-full h-full flex items-center justify-center text-slate-400">No Image</div>}
                                             </div>
                                             <div className="p-5">

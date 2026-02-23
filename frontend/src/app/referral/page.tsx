@@ -2,7 +2,7 @@
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API = process.env.NEXT_PUBLIC_API_URL || '';
 
 export default function ReferralPage() {
     const { data: session } = useSession();

@@ -28,7 +28,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         };
                     }
 
-                    const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001") + endpoint, {
+                    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-api.onrender.com';
+                    const res = await fetch(backendUrl + endpoint, {
                         method: 'POST',
                         body: JSON.stringify(payload),
                         headers: { "Content-Type": "application/json" }
@@ -61,7 +62,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async signIn({ user, account, profile }) {
             if (account?.provider === 'google') {
                 try {
-                    const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001") + "/api/auth/google/callback", {
+                    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-api.onrender.com';
+                    const res = await fetch(backendUrl + "/api/auth/google/callback", {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

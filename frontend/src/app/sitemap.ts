@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Dynamic gig pages (fetch from API)
     let gigPages: MetadataRoute.Sitemap = [];
     try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
         const res = await fetch(`${apiUrl}/api/gig/featured`, { next: { revalidate: 3600 } });
         if (res.ok) {
             const gigs = await res.json();

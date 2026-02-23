@@ -25,7 +25,7 @@ export default function RoleSelectionPage() {
         setIsLoading(true);
         setError('');
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
             const res = await fetch(`${apiUrl}/api/auth/role`, {
                 method: 'PUT',
                 headers: {

@@ -19,7 +19,7 @@ export default function SettingsPage() {
     const [setupMode, setSetupMode] = useState(false); // When they click enable
 
     const token = (session as any)?.accessToken;
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
     useEffect(() => {
         if (token) {
