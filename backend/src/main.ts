@@ -25,12 +25,25 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   // ── CORS ──
-  const allowedOrigins = process.env.CORS_ORIGINS
-    ? process.env.CORS_ORIGINS.split(',').map(o => o.trim())
-    : ['http://localhost:3000'];
+  const allowedOrigins: string[] = ['http://localhost:3000', 'http://localhost:3001'];
+  if (process.env.CORS_ORIGINS) {
+    allowedOrigins.push(...process.env.CORS_ORIGINS.split(',').map(o => o.trim()));
+  }
+  if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+  }
+  // Also allow common Vercel preview deployments
+  allowedOrigins.push('https://gigligo.com', 'https://www.gigligo.com');
 
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' ? allowedOrigins : true,
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.some(o => origin === o || origin.endsWith('.vercel.app'))) {
+        return callback(null, true);
+      }
+      callback(null, false);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
