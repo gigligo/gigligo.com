@@ -31,6 +31,22 @@
     ],
     "rewrites": [
         {
+            "source": "/api/auth/register",
+            "destination": "https://gigligo-api.onrender.com/api/auth/register"
+        },
+        {
+            "source": "/api/auth/profile",
+            "destination": "https://gigligo-api.onrender.com/api/auth/profile"
+        },
+        {
+            "source": "/api/auth/2fa/:path*",
+            "destination": "https://gigligo-api.onrender.com/api/auth/2fa/:path*"
+        },
+        {
+            "source": "/api/auth/webauthn/:path*",
+            "destination": "https://gigligo-api.onrender.com/api/auth/webauthn/:path*"
+        },
+        {
             "source": "/api/auth/:path*",
             "destination": "/api/auth/:path*"
         },
