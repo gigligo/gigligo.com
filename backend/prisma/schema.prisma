@@ -581,3 +581,14 @@ model NewsletterSubscriber {
   subscribedAt  DateTime @default(now())
   isActive      Boolean  @default(true)
 }
+
+// ═══════════════════════════════════════
+// WEBAUTHN AUTOFILL CHALLENGES
+// ═══════════════════════════════════════
+
+model AuthChallenge {
+  id        String   @id @default(cuid())
+  challenge String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
