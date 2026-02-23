@@ -15,7 +15,7 @@ import {
 
 const rpName = 'Gigligo Platform';
 const rpID = process.env.NODE_ENV === 'production' ? 'gigligo.com' : 'localhost';
-const origin = process.env.NODE_ENV === 'production' ? 'https://gigligo.com' : 'http://localhost:3000';
+const origin = process.env.NODE_ENV === 'production' ? ['https://gigligo.com', 'https://www.gigligo.com'] : 'http://localhost:3000';
 
 @Injectable()
 export class AuthService {
