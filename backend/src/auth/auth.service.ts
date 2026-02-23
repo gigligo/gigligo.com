@@ -14,9 +14,9 @@ import {
 } from '@simplewebauthn/server';
 
 const rpName = 'Gigligo Platform';
-const isProd = process.env.NODE_ENV === 'production' || process.env.FRONTEND_URL?.includes('gigligo.com') || process.env.CORS_ORIGINS?.includes('gigligo.com');
-const rpID = isProd ? 'gigligo.com' : 'localhost';
-const origin = isProd ? ['https://gigligo.com', 'https://www.gigligo.com'] : 'http://localhost:3000';
+// HARDCODED: Never rely on NODE_ENV which Render doesn't set by default
+const rpID = 'gigligo.com';
+const origin = ['https://gigligo.com', 'https://www.gigligo.com', 'http://localhost:3000'];
 
 @Injectable()
 export class AuthService {
@@ -260,9 +260,11 @@ export class AuthService {
             await this.usersService.updateChallenge(user.id, null);
 
             const payload = { email: user.email, sub: user.id, role: user.role };
+            const { passwordHash, ...safeUser } = user;
             return {
+                verified: true,
                 access_token: this.jwtService.sign(payload),
-                user: { id: user.id, email: user.email, role: user.role },
+                user: { ...safeUser },
             };
         }
         throw new UnauthorizedException('Authentication failed');
