@@ -72,7 +72,7 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
 
                             <div className="w-full aspect-video rounded-2xl overflow-hidden bg-gray-200 mb-8 border border-gray-100 flex items-center justify-center">
                                 {gig.images && gig.images.length > 0 ? (
-                                    <img src={gig.images[0]} alt="Gig Thumbnail" className="w-full h-full object-cover" />
+                                    <img src={gig.images[0]} alt="Gig Thumbnail" className="w-full h-full object-cover" loading="lazy" />
                                 ) : (
                                     <span className="text-muted font-bold">No Image</span>
                                 )}

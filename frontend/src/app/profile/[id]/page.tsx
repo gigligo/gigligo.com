@@ -63,8 +63,8 @@ export default function PublicProfilePage({ params }: { params: { id: string } }
                         {/* Avatar */}
                         <div className="w-32 h-32 md:w-40 md:h-40 shrink-0 rounded-full border-4 border-white dark:border-[#111] overflow-hidden bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
                             {profile.avatarUrl ? (
-                                 
-                                <img src={`${profile.avatarUrl}`} alt={profile.fullName} className="w-full h-full object-cover" />
+
+                                <img src={`${profile.avatarUrl}`} alt={profile.fullName} className="w-full h-full object-cover" loading="lazy" />
                             ) : (
                                 <span className="text-4xl font-bold text-slate-400">{profile.fullName?.charAt(0)}</span>
                             )}
@@ -123,8 +123,8 @@ export default function PublicProfilePage({ params }: { params: { id: string } }
                                         <div key={port.id} className="border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden group bg-slate-50 dark:bg-black">
                                             <div className="h-48 overflow-hidden bg-slate-200 dark:bg-[#111]">
                                                 {port.imageUrl ? (
-                                                     
-                                                    <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+
+                                                    <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" />
                                                 ) : <div className="w-full h-full flex items-center justify-center text-slate-400">No Image</div>}
                                             </div>
                                             <div className="p-5">

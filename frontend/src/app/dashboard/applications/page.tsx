@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { applicationApi, jobApi } from '@/lib/api';
+import { applicationApi, jobApi, chatApi } from '@/lib/api';
 import Link from 'next/link';
 
 function ApplicationsContent() {
@@ -149,6 +149,22 @@ function ApplicationsContent() {
                                         <div className="md:w-48 flex flex-col gap-2 justify-center border-t md:border-t-0 md:border-l border-white/5 pt-4 md:pt-0 md:pl-6">
                                             {isEmployer && ['PENDING', 'SHORTLISTED'].includes(app.status) && (
                                                 <>
+                                                    <button onClick={async () => {
+                                                        try {
+                                                            setActionLoading(app.id);
+                                                            const myId = (session as any).user.id;
+                                                            const res: any = await chatApi.findOrCreate(token, app.freelancer.id, myId, undefined, app.jobId);
+                                                            const convId = res?.data?.id || res?.id;
+                                                            if (convId) router.push(`/dashboard/inbox?c=${convId}`);
+                                                        } catch (error) {
+                                                            console.error("Failed to start chat", error);
+                                                        } finally {
+                                                            setActionLoading(null);
+                                                        }
+                                                    }} disabled={!!actionLoading}
+                                                        className="w-full py-2 bg-white/5 border border-white/10 text-white font-semibold rounded-lg text-xs hover:bg-white/10 transition disabled:opacity-50">
+                                                        {actionLoading === app.id ? '...' : 'Message'}
+                                                    </button>
                                                     <button onClick={() => handleAction(app.id, 'hire')} disabled={!!actionLoading}
                                                         className="w-full py-2 bg-[#22c55e]/20 text-[#22c55e] font-semibold rounded-lg text-xs hover:bg-[#22c55e]/30 transition disabled:opacity-50">
                                                         {actionLoading === app.id ? '...' : 'Hire Candidate'}

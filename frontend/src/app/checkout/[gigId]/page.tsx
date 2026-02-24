@@ -30,7 +30,7 @@ export default function CheckoutPage({ params, searchParams }: { params: { gigId
 
                             <div className="flex gap-4 mb-6">
                                 <div className="w-24 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=200&h=150&fit=crop" alt="Gig" className="w-full h-full object-cover" />
+                                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=200&h=150&fit=crop" alt="Gig" className="w-full h-full object-cover" loading="lazy" />
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-primary">Custom Next.js eCommerce Site</h3>

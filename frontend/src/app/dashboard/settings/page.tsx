@@ -260,7 +260,7 @@ export default function SettingsPage() {
                                     <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                                         <div className="bg-white p-2 rounded-xl inline-block">
                                             { }
-                                            <img src={qrCodeUrl} alt="2FA QR Code" className="w-32 h-32" />
+                                            <img src={qrCodeUrl} alt="2FA QR Code" className="w-32 h-32" loading="lazy" />
                                         </div>
                                         <div className="flex-1 w-full space-y-4">
                                             <div>

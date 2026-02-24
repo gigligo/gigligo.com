@@ -89,7 +89,19 @@ export default function AboutPage() {
                         <div className="flex justify-center" data-scroll="fade-right">
                             <div className="relative">
                                 <div className="absolute -inset-1 bg-linear-to-br from-teal-vibrant/40 to-indigo-accent/40 rounded-3xl blur-lg" />
-                                <img alt="Ali Noman — Founder & CEO" className="relative w-72 h-80 md:w-80 md:h-88 object-cover object-top rounded-3xl border-2 border-white/10 shadow-2xl" src="/founder-ali-noman.jpg" loading="eager" />
+                                <picture>
+                                    <source srcSet="/images/hero/hero.webp" type="image/webp" />
+                                    <source srcSet="/images/hero/hero.jpg" type="image/jpeg" />
+                                    <img
+                                        alt="Ali Noman — Founder & CEO"
+                                        className="relative w-72 h-80 md:w-80 md:h-88 object-cover object-top rounded-3xl border-2 border-white/10 shadow-2xl"
+                                        src="/images/hero/hero.jpg"
+                                        loading="eager"
+                                        width={320}
+                                        height={352}
+                                        style={{ aspectRatio: '320/352' }}
+                                    />
+                                </picture>
                                 <div className="absolute -bottom-4 -right-4 bg-slate-900 border border-white/10 rounded-2xl px-5 py-3 shadow-xl">
                                     <p className="text-teal-vibrant font-bold text-sm">Founder & CEO</p>
                                     <p className="text-white text-xs">Gigligo</p>

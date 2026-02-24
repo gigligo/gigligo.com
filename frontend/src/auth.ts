@@ -8,6 +8,63 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || "MOCK_CLIENT_ID",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || "MOCK_CLIENT_SECRET"
+        }),
+        CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+                email: { label: "Email", type: "text" },
+                password: { label: "Password", type: "password" },
+                accessToken: { label: "AccessToken", type: "text" },
+                userId: { label: "UserId", type: "text" },
+                role: { label: "Role", type: "text" },
+                kycStatus: { label: "KYCStatus", type: "text" },
+                name: { label: "Name", type: "text" },
+            },
+            async authorize(credentials) {
+                if (!credentials?.email) return null;
+
+                // Mode 1: Pre-verified via OTP (frontend already called verify-otp)
+                if (credentials.accessToken && credentials.userId) {
+                    return {
+                        id: credentials.userId as string,
+                        email: credentials.email as string,
+                        name: (credentials.name as string) || undefined,
+                        accessToken: credentials.accessToken as string,
+                        role: (credentials.role as string) || 'FREE',
+                        kycStatus: (credentials.kycStatus as string) || 'UNVERIFIED',
+                    };
+                }
+
+                // Mode 2: Fallback direct login (backward compat)
+                if (!credentials.password) return null;
+                try {
+                    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
+                    const res = await fetch(backendUrl + "/api/auth/login", {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: credentials.email,
+                            password: credentials.password
+                        })
+                    });
+                    const data = await res.json();
+
+                    if (res.ok && data.access_token) {
+                        return {
+                            id: data.user.id,
+                            email: data.user.email,
+                            name: data.user.profile?.fullName,
+                            accessToken: data.access_token,
+                            role: data.user.role,
+                            kycStatus: data.user.kycStatus
+                        };
+                    }
+                    return null;
+                } catch (e) {
+                    console.error("Credentials error:", e);
+                    return null;
+                }
+            }
         })
     ],
     callbacks: {
@@ -27,7 +84,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     });
                     const data = await res.json();
                     if (res.ok && data.user) {
-                        // Mutate user object so `jwt` callback can pick up the backend data
                         (user as any).accessToken = data.access_token;
                         (user as any).role = data.user.role;
                         (user as any).kycStatus = data.user.kycStatus;
@@ -41,11 +97,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     return false;
                 }
             }
-            return true; // For credentials provider
+            return true;
         },
         async jwt({ token, user, trigger, session }) {
             if (trigger === "update" && session) {
-                // Allows us to patch kycStatus or role manually from client-side via update()
                 if (session.kycStatus) token.kycStatus = session.kycStatus;
                 if (session.role) token.role = session.role;
                 if (session.isNewGoogleUser !== undefined) token.isNewGoogleUser = session.isNewGoogleUser;

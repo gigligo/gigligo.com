@@ -247,7 +247,7 @@ export default function ProfileEditorPage() {
                                                 <div className="h-40 bg-slate-200 dark:bg-[#111] overflow-hidden">
                                                     {port.imageUrl ? (
                                                         <a href={port.imageUrl} target="_blank" rel="noreferrer" title="Click to view full image">
-                                                            <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover hover:scale-105 transition duration-500 cursor-pointer" />
+                                                            <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover hover:scale-105 transition duration-500 cursor-pointer" loading="lazy" />
                                                         </a>
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center text-slate-400"><ImageIcon size={40} /></div>
