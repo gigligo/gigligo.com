@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req, Param } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { AdminAnalyticsService } from './admin-analytics.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -42,5 +42,16 @@ export class AdminController {
     @Get('analytics')
     async getAnalytics() {
         return this.analyticsService.getPlatformOverview();
+    }
+
+    @Post('users/:userId/credits')
+    async addCredits(
+        @Req() req: any,
+        @Param('userId') targetUserId: string,
+        @Body() body: { amount: number }
+    ) {
+        // Admin ID comes from the JWT payload
+        const adminId = req.user.id;
+        return this.adminService.addCreditsToUser(targetUserId, body.amount, adminId);
     }
 }

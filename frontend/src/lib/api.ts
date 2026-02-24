@@ -110,6 +110,8 @@ export const adminApi = {
     getStats: (token: string) => apiFetch('/api/admin/stats', { token }),
     getActivity: (token: string) => apiFetch('/api/admin/activity', { token }),
     getFounders: (token: string) => apiFetch('/api/admin/founders', { token }),
+    addCredits: (token: string, userId: string, amount: number) =>
+        apiFetch(`/api/admin/users/${userId}/credits`, { method: 'POST', token, body: JSON.stringify({ amount }) }),
 };
 
 // Payment APIs

@@ -136,4 +136,27 @@ export class AdminService {
 
         return updatedKyc;
     }
+
+    async addCreditsToUser(userId: string, amount: number, adminId: string) {
+        if (amount <= 0) throw new Error('Amount must be greater than 0');
+
+        return this.prisma.$transaction(async (tx) => {
+            const user = await tx.user.update({
+                where: { id: userId },
+                data: { credits: { increment: amount } },
+            });
+
+            await tx.creditLedger.create({
+                data: {
+                    userId,
+                    amount,
+                    type: 'BONUS',
+                    reason: `Manual addition by Admin (${adminId})`,
+                    balanceAfter: user.credits,
+                },
+            });
+
+            return { success: true, newBalance: user.credits };
+        });
+    }
 }

@@ -18,8 +18,33 @@ export default function AdminDashboardPage() {
     const [error, setError] = useState('');
     const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'kyc' | 'transactions' | 'disputes'>('overview');
 
+    // Credit Modal State
+    const [selectedUserForCredits, setSelectedUserForCredits] = useState<any>(null);
+    const [creditAmount, setCreditAmount] = useState<string>('');
+    const [addingCredit, setAddingCredit] = useState(false);
+
     const token = (session as any)?.accessToken;
     const role = (session as any)?.role;
+
+    const handleAddCredits = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedUserForCredits || !creditAmount || !token) return;
+
+        try {
+            setAddingCredit(true);
+            await adminApi.addCredits(token, selectedUserForCredits.id, parseInt(creditAmount, 10));
+            setSelectedUserForCredits(null);
+            setCreditAmount('');
+            alert('Credits added successfully!');
+            // Quick refresh
+            const a = await adminApi.getActivity(token);
+            setActivity(a);
+        } catch (err: any) {
+            alert(err.message || 'Failed to add credits');
+        } finally {
+            setAddingCredit(false);
+        }
+    };
 
     useEffect(() => {
         if (status === 'unauthenticated') router.push('/login');
@@ -212,6 +237,12 @@ export default function AdminDashboardPage() {
                                         </div>
                                     </div>
                                     <div className="text-right flex items-center gap-3">
+                                        <button
+                                            onClick={() => setSelectedUserForCredits(u)}
+                                            className="px-3 py-1 text-xs font-bold bg-[#FE7743]/10 text-[#FE7743] border border-[#FE7743]/20 rounded-lg hover:bg-[#FE7743]/20 transition"
+                                        >
+                                            Add Credits
+                                        </button>
                                         <RoleBadge role={u.role} />
                                         {u.isFoundingMember && (
                                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">FOUNDER</span>
@@ -259,6 +290,54 @@ export default function AdminDashboardPage() {
                     </div>
                 )}
             </main>
+
+            {/* ADD CREDITS MODAL */}
+            {selectedUserForCredits && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-[#111] border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+                        <h3 className="text-xl font-bold text-[#EFEEEA] mb-2">Add Credits</h3>
+                        <p className="text-sm text-[#EFEEEA]/60 mb-6">
+                            Manually inject credits into <strong>{selectedUserForCredits.profile?.fullName || selectedUserForCredits.email}</strong>'s wallet.
+                        </p>
+
+                        <form onSubmit={handleAddCredits} className="flex flex-col gap-4">
+                            <div>
+                                <label className="block text-xs font-bold text-[#EFEEEA]/50 uppercase tracking-wider mb-2">Amount (Credits)</label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    required
+                                    value={creditAmount}
+                                    onChange={e => setCreditAmount(e.target.value)}
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#FE7743] transition"
+                                    placeholder="e.g. 50"
+                                />
+                            </div>
+
+                            <div className="flex gap-3 mt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSelectedUserForCredits(null);
+                                        setCreditAmount('');
+                                    }}
+                                    className="flex-1 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={addingCredit || !creditAmount}
+                                    className="flex-1 py-3 bg-[#FE7743] hover:bg-[#FE7743]/90 disabled:opacity-50 text-white rounded-xl font-bold transition flex items-center justify-center"
+                                >
+                                    {addingCredit ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Add Credits'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             <Footer />
         </div>
     );
