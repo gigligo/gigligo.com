@@ -8,62 +8,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || "MOCK_CLIENT_ID",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || "MOCK_CLIENT_SECRET"
-        }),
-        CredentialsProvider({
-            name: "Credentials",
-            credentials: {
-                email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" },
-                webauthnResponse: { label: "WebAuthn", type: "text" },
-                webauthnSessionId: { label: "WebAuthnSessionId", type: "text" }
-            },
-            async authorize(credentials: any) {
-                try {
-                    let endpoint = "/api/auth/login";
-                    let payload = credentials;
-
-                    if (credentials?.webauthnSessionId) {
-                        endpoint = "/api/auth/webauthn/autofill/verify";
-                        payload = {
-                            sessionId: credentials.webauthnSessionId,
-                            response: JSON.parse(credentials.webauthnResponse)
-                        };
-                    } else if (credentials?.webauthnResponse) {
-                        endpoint = "/api/auth/webauthn/login/verify";
-                        payload = {
-                            email: credentials.email,
-                            response: JSON.parse(credentials.webauthnResponse)
-                        };
-                    }
-
-                    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
-                    const res = await fetch(backendUrl + endpoint, {
-                        method: 'POST',
-                        body: JSON.stringify(payload),
-                        headers: { "Content-Type": "application/json" }
-                    });
-
-                    const data = await res.json();
-
-                    if (res.ok && (data.user || data.verified)) {
-                        // WebAuthn endpoint returns `{ verified: true, user: ... }` or similar
-                        // Standard login returns `{ access_token: ..., user: ... }`
-                        const userObj = data.user || data;
-
-                        return {
-                            id: userObj.id,
-                            email: userObj.email,
-                            name: userObj.profile?.fullName || 'User',
-                            role: userObj.role,
-                            accessToken: data.access_token || userObj.access_token,
-                            kycStatus: userObj.kycStatus,
-                        };
-                    }
-                    return null;
-                } catch (e) {
-                    return null;
-                }
-            }
         })
     ],
     callbacks: {
