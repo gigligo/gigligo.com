@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { KycService } from '../kyc/kyc.service';
 import { EmailService } from '../email/email.service';
+import { OtpService } from '../otp/otp.service';
 import * as bcrypt from 'bcryptjs';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -27,6 +28,7 @@ export class AuthService {
         private jwtService: JwtService,
         private kycService: KycService,
         private emailService: EmailService,
+        private otpService: OtpService,
     ) { }
 
     async validateUser(email: string, pass: string): Promise<any> {
@@ -43,11 +45,67 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException('Invalid credentials');
         }
+
+        // Step 1: Send OTP to user's email
+        await this.otpService.generateAndSend(user.email, 'LOGIN');
+
+        // Return a short-lived temp token (2 minutes) that identifies the user
+        // but does NOT grant full access — only used for the verify-otp step
+        const tempPayload = { email: user.email, sub: user.id, purpose: 'otp-verification' };
+        const tempToken = this.jwtService.sign(tempPayload, { expiresIn: '2m' });
+
+        return {
+            requiresOtp: true,
+            tempToken,
+            message: 'Verification code sent to your email.',
+        };
+    }
+
+    /**
+     * Step 2 of login: Verify the OTP code and issue the real access token.
+     */
+    async verifyLoginOtp(tempToken: string, code: string) {
+        let decoded: any;
+        try {
+            decoded = this.jwtService.verify(tempToken);
+        } catch {
+            throw new UnauthorizedException('Session expired. Please log in again.');
+        }
+
+        if (decoded.purpose !== 'otp-verification') {
+            throw new UnauthorizedException('Invalid token.');
+        }
+
+        // Verify the OTP code
+        await this.otpService.verify(decoded.email, code, 'LOGIN');
+
+        // OTP valid — issue full access token
+        const user = await this.usersService.findByEmail(decoded.email);
+        if (!user) throw new UnauthorizedException();
+
         const payload = { email: user.email, sub: user.id, role: user.role };
+        const { passwordHash, ...safeUser } = user;
+
         return {
             access_token: this.jwtService.sign(payload),
-            user,
+            user: safeUser,
         };
+    }
+
+    /**
+     * Resend OTP for a login attempt (uses the temp token to identify the user).
+     */
+    async resendLoginOtp(tempToken: string) {
+        let decoded: any;
+        try {
+            decoded = this.jwtService.verify(tempToken);
+        } catch {
+            throw new UnauthorizedException('Session expired. Please log in again.');
+        }
+        if (decoded.purpose !== 'otp-verification') {
+            throw new UnauthorizedException('Invalid token.');
+        }
+        return this.otpService.generateAndSend(decoded.email, 'LOGIN');
     }
 
     async register(registerDto: RegisterDto) {

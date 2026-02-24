@@ -128,13 +128,13 @@ const HERO_FLOATS = [
    TALENT CATEGORIES
    ═══════════════════════════════════════════════ */
 const TALENTS = [
-  { title: 'Development', sub: 'Web, Python, Apps', icon: 'code', color: 'text-teal-vibrant', bg: 'from-teal-vibrant/5 to-transparent', hoverBg: 'group-hover:bg-teal-vibrant/10', border: 'group-hover:border-teal-vibrant/30', element: '< >' },
-  { title: 'Arts & Design', sub: 'UI/UX, Branding', icon: 'pen', color: 'text-orange-light', bg: 'from-orange-light/5 to-transparent', hoverBg: 'group-hover:bg-orange-light/10', border: 'group-hover:border-orange-light/30', element: '✨' },
-  { title: 'Analytics', sub: 'SEO, Research', icon: 'chart', color: 'text-teal-light', bg: 'from-teal-light/5 to-transparent', hoverBg: 'group-hover:bg-teal-light/10', border: 'group-hover:border-teal-light/30', element: '📈' },
-  { title: 'Video & Media', sub: 'Motion, Editing', icon: 'video', color: 'text-orange', bg: 'from-orange/5 to-transparent', hoverBg: 'group-hover:bg-orange/10', border: 'group-hover:border-orange/30', element: '▶' },
-  { title: 'Writing', sub: 'Copy, Translation', icon: 'chat', color: 'text-teal-vibrant', bg: 'from-teal-vibrant/5 to-transparent', hoverBg: 'group-hover:bg-teal-vibrant/10', border: 'group-hover:border-teal-vibrant/30', element: '✎' },
-  { title: 'Tech Support', sub: 'IT, Networks', icon: 'zap', color: 'text-orange-light', bg: 'from-orange-light/5 to-transparent', hoverBg: 'group-hover:bg-orange-light/10', border: 'group-hover:border-orange-light/30', element: '⚙' },
-  { title: 'Business', sub: 'Virtual Admin, Legal', icon: 'case', color: 'text-teal-light', bg: 'from-teal-light/5 to-transparent', hoverBg: 'group-hover:bg-teal-light/10', border: 'group-hover:border-teal-light/30', element: '❖' },
+  { title: 'Development', sub: 'React, Node, iOS/Android', icon: 'code', color: 'text-teal-vibrant', bg: 'from-teal-vibrant/5 to-transparent', hoverBg: 'group-hover:bg-teal-vibrant/10', border: 'group-hover:border-teal-vibrant/30', element: '< >' },
+  { title: 'Arts & Design', sub: 'Figma, Logo, 3D Models', icon: 'pen', color: 'text-orange-light', bg: 'from-orange-light/5 to-transparent', hoverBg: 'group-hover:bg-orange-light/10', border: 'group-hover:border-orange-light/30', element: '✨' },
+  { title: 'Analytics', sub: 'Data Entry, Research', icon: 'chart', color: 'text-teal-light', bg: 'from-teal-light/5 to-transparent', hoverBg: 'group-hover:bg-teal-light/10', border: 'group-hover:border-teal-light/30', element: '📈' },
+  { title: 'Video & Media', sub: 'Editing, Animation', icon: 'video', color: 'text-orange', bg: 'from-orange/5 to-transparent', hoverBg: 'group-hover:bg-orange/10', border: 'group-hover:border-orange/30', element: '▶' },
+  { title: 'Writing', sub: 'Content, Proofreading', icon: 'chat', color: 'text-teal-vibrant', bg: 'from-teal-vibrant/5 to-transparent', hoverBg: 'group-hover:bg-teal-vibrant/10', border: 'group-hover:border-teal-vibrant/30', element: '✎' },
+  { title: 'Tech Support', sub: 'QA Testing, Cloud Ops', icon: 'zap', color: 'text-orange-light', bg: 'from-orange-light/5 to-transparent', hoverBg: 'group-hover:bg-orange-light/10', border: 'group-hover:border-orange-light/30', element: '⚙' },
+  { title: 'Business', sub: 'Virtual Admin, Support', icon: 'case', color: 'text-teal-light', bg: 'from-teal-light/5 to-transparent', hoverBg: 'group-hover:bg-teal-light/10', border: 'group-hover:border-teal-light/30', element: '❖' },
 ];
 
 /* ═══════════════════════════════════════════════
@@ -142,11 +142,11 @@ const TALENTS = [
    ═══════════════════════════════════════════════ */
 const STATS = [
   { val: '30M+', label: 'Students in Pakistan' },
-  { val: '4x', label: 'Cost Advantage vs Global' },
-  { val: '<2%', label: 'Dispute Rate' },
-  { val: '24hr', label: 'Average Delivery' },
-  { val: '100K', label: 'Year 1 Target' },
-  { val: 'PKR 30M', label: 'Transaction Goal' },
+  { val: '0%', label: 'Freelancer Commission' },
+  { val: '100%', label: 'Escrow Protection' },
+  { val: 'Direct', label: 'JazzCash / Easypaisa' },
+  { val: 'Verified', label: 'Campus Talent' },
+  { val: '24/7', label: 'Local Support' },
 ];
 
 /* ═══════════════════════════════════════════════
@@ -522,6 +522,67 @@ export default function Home() {
         </section>
 
         {/* ════════════════════════════════════════════
+            FEATURED TALENT PREVIEW (Show the Product!)
+            ════════════════════════════════════════════ */}
+        <section className="py-20 bg-white dark:bg-[#0a0a0a] border-b border-slate-200 dark:border-white/5 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex justify-between items-end mb-12">
+              <div>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-offwhite mb-2">Top Rated Students</h2>
+                <p className="text-slate-600 dark:text-offwhite/50 text-sm">Hire verified talent from Pakistan's top universities immediately.</p>
+              </div>
+              <Link href="/search" className="hidden md:inline-flex px-6 py-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-sm font-bold text-slate-900 dark:text-offwhite transition-colors">
+                View All Freelancers
+              </Link>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { name: 'Ahsan M.', uni: 'FAST-NU', role: 'Full Stack Web Developer', rate: 'PKR 15,000', img: 'A', tags: ['React', 'Node.js', 'Next.js'] },
+                { name: 'Fatima Z.', uni: 'LUMS', role: 'UI/UX Designer', rate: 'PKR 12,000', img: 'F', tags: ['Figma', 'Prototyping', 'Web Design'] },
+                { name: 'Usman T.', uni: 'NUST', role: 'Data Scientist', rate: 'PKR 20,000', img: 'U', tags: ['Python', 'Machine Learning', 'SQL'] },
+              ].map((freelancer, i) => (
+                <div key={i} className="bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-2xl p-6 hover:-translate-y-1 hover:shadow-xl transition-all group" data-scroll="fade-up" data-delay={i * 100}>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 rounded-full bg-linear-to-tr from-teal to-teal-light flex items-center justify-center text-white font-black text-xl shadow-md">
+                      {freelancer.img}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        {freelancer.name} <Icon name="checkCircle" size={14} className="text-orange" />
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-white/40 flex items-center gap-1 mt-0.5">
+                        <Icon name="school" size={12} className="text-teal" /> {freelancer.uni}
+                      </p>
+                    </div>
+                  </div>
+                  <h5 className="font-medium text-slate-800 dark:text-white/90 text-sm mb-3">{freelancer.role}</h5>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {freelancer.tags.map(tag => (
+                      <span key={tag} className="px-2 py-1 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-md text-[10px] font-medium text-slate-600 dark:text-white/60">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-white/10">
+                    <div className="space-y-0.5">
+                      <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Starting at</p>
+                      <p className="font-bold text-slate-900 dark:text-white">{freelancer.rate}</p>
+                    </div>
+                    <Link href="/search" className="px-4 py-2 bg-orange text-white text-xs font-bold rounded-lg shadow-md hover:bg-orange-light transition-colors">
+                      View Profile
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Link href="/search" className="md:hidden mt-6 flex justify-center w-full px-6 py-3 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-xl text-sm font-bold text-slate-900 dark:text-offwhite transition-colors">
+              View All Freelancers
+            </Link>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════════════
             HOW IT WORKS — STEP-BY-STEP (ScrollReveal)
             ════════════════════════════════════════════ */}
         <section className="py-28 relative overflow-hidden bg-white dark:bg-[#0a0a0a]">
@@ -598,9 +659,9 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-8 mb-20 perspective-1000">
               {[
-                { num: '01', title: '100K Users', desc: 'Connect 100,000 active users (50/50 Students & Businesses) in year one.', icon: 'users', accent: 'orange' },
-                { num: '02', title: 'PKR 30M+', desc: 'Achieve PKR 30M+ in transactions with less than 2% disputes.', icon: 'chart', accent: 'teal-light' },
-                { num: '03', title: 'PKR 2M Grants', desc: 'Launch PKR 2M scholarship fund in up-skilling courses for top performers.', icon: 'school', accent: 'orange' },
+                { num: '01', title: '0% Commission', desc: 'Unlike global platforms that take 20%, we let talent keep 100% of their earnings.', icon: 'trend', accent: 'orange' },
+                { num: '02', title: 'Direct Local Payouts', desc: 'No more Payoneer fees. Withdraw directly via IBFT, JazzCash or Easypaisa.', icon: 'zap', accent: 'teal-light' },
+                { num: '03', title: 'Verified Univ Talent', desc: 'We partner directly with university societies at LUMS, NUST & FAST for top quality.', icon: 'school', accent: 'orange' },
               ].map((item, i) => (
                 <div key={i} className="tilt-card bg-teal/15 rounded-3xl p-8 border border-teal-light/15 text-left hover:border-orange/20 transition-all group" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-up" data-delay={`${i * 150}`}>
                   <div className="flex items-center gap-4 mb-6">

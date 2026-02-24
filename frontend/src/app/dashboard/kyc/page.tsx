@@ -142,7 +142,7 @@ export default function KYCVerificationPage() {
                                         videoConstraints={{ facingMode: "user" }}
                                     />
                                 ) : (
-                                    <img src={selfiePreview} alt="Selfie" className="w-full h-full object-cover" />
+                                    <img src={selfiePreview} alt="Selfie" className="w-full h-full object-cover" loading="lazy" />
                                 )}
                             </div>
 

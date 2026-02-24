@@ -22,6 +22,16 @@ export class AuthController {
         return this.authService.login(loginDto);
     }
 
+    @Post('login/verify-otp')
+    async verifyLoginOtp(@Body() body: { tempToken: string; code: string }) {
+        return this.authService.verifyLoginOtp(body.tempToken, body.code);
+    }
+
+    @Post('otp/resend')
+    async resendOtp(@Body() body: { tempToken: string }) {
+        return this.authService.resendLoginOtp(body.tempToken);
+    }
+
     @UseGuards(JwtAuthGuard)
     @Get('profile')
     async getProfile(@Req() req: any) {

@@ -516,20 +516,20 @@ function KycInboxTab({ token }: { token: string }) {
                         <div>
                             <p className="text-[10px] text-[#EFEEEA]/40 mb-1.5 font-semibold uppercase tracking-wider">Live Selfie Verification</p>
                             <a href={`${apiUrl}/uploads/${app.selfieUrl}`} target="_blank" rel="noreferrer" className="block relative h-32 bg-black rounded-lg overflow-hidden border border-white/10 group cursor-pointer">
-                                <img src={`${apiUrl}/uploads/${app.selfieUrl}`} alt="Selfie" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                <img src={`${apiUrl}/uploads/${app.selfieUrl}`} alt="Selfie" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                             </a>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
                                 <p className="text-[10px] text-[#EFEEEA]/40 mb-1.5 font-semibold uppercase tracking-wider">ID Front</p>
                                 <a href={`${apiUrl}/uploads/${app.cnicFrontUrl}`} target="_blank" rel="noreferrer" className="block relative h-20 bg-black rounded-lg overflow-hidden border border-white/10 group cursor-pointer">
-                                    <img src={`${apiUrl}/uploads/${app.cnicFrontUrl}`} alt="ID Front" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                    <img src={`${apiUrl}/uploads/${app.cnicFrontUrl}`} alt="ID Front" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                                 </a>
                             </div>
                             <div>
                                 <p className="text-[10px] text-[#EFEEEA]/40 mb-1.5 font-semibold uppercase tracking-wider">ID Back</p>
                                 <a href={`${apiUrl}/uploads/${app.cnicBackUrl}`} target="_blank" rel="noreferrer" className="block relative h-20 bg-black rounded-lg overflow-hidden border border-white/10 group cursor-pointer">
-                                    <img src={`${apiUrl}/uploads/${app.cnicBackUrl}`} alt="ID Back" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                    <img src={`${apiUrl}/uploads/${app.cnicBackUrl}`} alt="ID Back" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                                 </a>
                             </div>
                         </div>

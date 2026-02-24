@@ -61,10 +61,24 @@ export default function TermsOfServicePage() {
                             <li>Harass, threaten, or discriminate against other users</li>
                             <li>Upload malicious content or attempt to breach platform security</li>
                             <li>Copy or resell another user&apos;s gig content</li>
+                            <li><strong>Create duplicate accounts</strong> or use fake/altered identity documents</li>
+                            <li><strong>Freelancers may not self-post jobs</strong> — this prevents fake reviews and manipulation</li>
                         </ul>
                     </Section>
 
-                    <Section title="8. Intellectual Property">
+                    <Section title="8. Platform Security & Trust Rules">
+                        <p>The following rules are <strong>mandatory</strong> for all users and are strictly enforced:</p>
+                        <ul>
+                            <li><strong>KYC Verification:</strong> All accounts must pass identity verification (KYC) before posting jobs, submitting proposals, chatting, or leaving reviews. This includes a live selfie and government ID card (front &amp; back)</li>
+                            <li><strong>Two-Factor Authentication:</strong> 2FA via email OTP is mandatory for every login to protect account security</li>
+                            <li><strong>No Fake Profiles:</strong> Submitting fake, altered, or stolen identity documents will result in immediate and permanent account termination</li>
+                            <li><strong>Communication Logging:</strong> All in-platform communications are logged. Harassment, threats, or abusive language will lead to immediate ban</li>
+                            <li><strong>Escrow Protection:</strong> All payments are held in escrow until the employer marks the contract as completed and the freelancer confirms</li>
+                            <li><strong>Review Integrity:</strong> Reviews can only be submitted after a contract is completed. You may not review your own work or solicit fake reviews</li>
+                        </ul>
+                    </Section>
+
+                    <Section title="9. Intellectual Property">
                         <p>Upon full payment and order completion, intellectual property rights for the delivered work transfer to the buyer unless otherwise agreed. Sellers retain the right to showcase completed work in their portfolio unless the buyer requests otherwise.</p>
                     </Section>
 

@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class ReviewService {
+    private readonly logger = new Logger(ReviewService.name);
     constructor(private prisma: PrismaService) { }
 
     async submitReview(
@@ -115,6 +116,6 @@ export class ReviewService {
             select: { id: true }
         });
         await Promise.all(sellers.map(s => this.recalculateSellerLevel(s.id)));
-        console.log(`[Cron] Recalculated levels for ${sellers.length} sellers`);
+        this.logger.log(`[Cron] Recalculated levels for ${sellers.length} sellers`);
     }
 }

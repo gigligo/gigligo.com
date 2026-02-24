@@ -9,7 +9,56 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 function RegisterContent() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('SELLER');
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const handleCredentialsRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setError('');
+        try {
+            const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
+            const roleParam = searchParams.get('role') || role;
+            const payload = {
+                fullName,
+                email,
+                password,
+                role: roleParam,
+                termsAccepted: acceptedTerms
+            };
+            const res = await fetch(backendUrl + '/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                const signInRes = await signIn('credentials', {
+                    email,
+                    password,
+                    callbackUrl,
+                    redirect: false
+                });
+                if (signInRes?.error) {
+                    setError('Account created, but failed to log in automatically.');
+                } else if (signInRes?.url) {
+                    window.location.href = signInRes.url;
+                }
+            } else {
+                setError(data.message || 'Failed to create account. Email may already exist.');
+            }
+        } catch (e) {
+            setError('An error occurred. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-12 relative">
@@ -35,6 +84,84 @@ function RegisterContent() {
                     <p className="text-xs text-slate-600 dark:text-slate-400 leading-snug max-w-[90%] mx-auto">
                         By continuing, you agree to the <Link href="/terms" className="text-teal-vibrant hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-teal-vibrant hover:underline">Privacy Policy</Link>.
                     </p>
+                </div>
+
+                {error && (
+                    <div className="mb-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-xl text-red-600 dark:text-red-400 text-sm text-center">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleCredentialsRegister} className="space-y-4 mb-6">
+                    <div>
+                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
+                        <input
+                            type="text"
+                            required
+                            value={fullName}
+                            onChange={e => setFullName(e.target.value)}
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] dark:focus:border-[#FE7743]/50 transition-colors"
+                            placeholder="John Doe"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
+                        <input
+                            type="email"
+                            required
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] dark:focus:border-[#FE7743]/50 transition-colors"
+                            placeholder="you@example.com"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+                        <input
+                            type="password"
+                            required
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] dark:focus:border-[#FE7743]/50 transition-colors"
+                            placeholder="••••••••"
+                            minLength={6}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Account Role</label>
+                        <select
+                            value={role}
+                            onChange={e => setRole(e.target.value)}
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] transition-colors"
+                        >
+                            <option value="SELLER">Freelancer / Seller</option>
+                            <option value="BUYER">Employer / Buyer</option>
+                        </select>
+                    </div>
+                    <div className="flex items-center gap-2 mt-4 mb-6">
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            checked={acceptedTerms}
+                            onChange={e => setAcceptedTerms(e.target.checked)}
+                            className="w-4 h-4 rounded border-slate-300 text-teal-vibrant focus:ring-teal-vibrant/20 cursor-pointer"
+                        />
+                        <label htmlFor="terms" className="text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
+                            I accept the <Link href="/terms" className="text-teal-vibrant hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-teal-vibrant hover:underline">Privacy Policy</Link>
+                        </label>
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full py-3.5 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20 disabled:opacity-50"
+                    >
+                        {isLoading ? 'Creating account...' : 'Create Account'}
+                    </button>
+                </form>
+
+                <div className="relative mb-6">
+                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200 dark:border-white/10"></div></div>
+                    <div className="relative flex justify-center text-xs"><span className="bg-white dark:bg-slate-900 px-2 text-slate-500">or continue with</span></div>
                 </div>
 
                 <button

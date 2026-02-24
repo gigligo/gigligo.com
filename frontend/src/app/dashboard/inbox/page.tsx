@@ -38,7 +38,7 @@ function InboxContent() {
         return () => {
             if (socket) socket.disconnect();
         };
-         
+
     }, [status, token]);
 
     // Scroll to bottom when messages change
@@ -52,7 +52,7 @@ function InboxContent() {
         });
 
         socketInstance.on('connect', () => {
-            console.log('Connected to Chat Server');
+            // Connected to chat server
         });
 
         socketInstance.on('newMessage', (msg) => {
