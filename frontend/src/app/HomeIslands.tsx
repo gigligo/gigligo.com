@@ -84,23 +84,56 @@ export function Navbar() {
 
             {/* MOBILE MENU */}
             {menuOpen && (
-                <div className="fixed inset-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-8 md:hidden">
-                    <nav className="flex flex-col items-center gap-8 w-full">
-                        <Link href="/search" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Find Talent</Link>
-                        <Link href="/jobs" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Browse Jobs</Link>
-                        <Link href="/pricing" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Pricing</Link>
-                        <Link href={session ? '/dashboard' : '/register?role=SELLER'} className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Post a Gig</Link>
-                        <div className="h-px w-1/3 bg-slate-200 dark:bg-white/10 my-4"></div>
-                        {session ? (
-                            <Link href="/dashboard" className="w-full max-w-[200px] py-4 text-center rounded-full text-lg font-bold bg-orange text-white" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-                        ) : (
-                            <div className="flex flex-col gap-4 w-full max-w-[200px]">
-                                <Link href="/login" className="w-full py-4 text-center rounded-full text-lg font-bold bg-slate-100 dark:bg-offwhite/10 border border-slate-200 dark:border-offwhite/15 text-slate-900 dark:text-offwhite" onClick={() => setMenuOpen(false)}>Login</Link>
-                                <Link href="/register" className="w-full py-4 text-center rounded-full text-lg font-bold bg-orange text-white" onClick={() => setMenuOpen(false)}>Join Free</Link>
+                <>
+                    <div className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm" onClick={() => setMenuOpen(false)} />
+                    <div className="fixed top-0 right-0 w-[85%] max-w-sm h-dvh bg-white/95 dark:bg-[#111]/95 backdrop-blur-2xl z-50 md:hidden shadow-2xl flex flex-col p-8 pt-20 border-l border-slate-200 dark:border-white/10">
+                        <div className="flex-1 overflow-y-auto">
+                            <Link href="/search" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>Find Talent</Link>
+                            <Link href="/jobs" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>Browse Jobs</Link>
+                            <Link href={session ? '/dashboard' : '/register?role=SELLER'} className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>Post a Gig</Link>
+                            <Link href="/pricing" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>Pricing</Link>
+                            <Link href="/referral" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>Refer & Earn</Link>
+                            <Link href="/faq" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>FAQ</Link>
+
+                            {session ? (
+                                <>
+                                    {(session as any)?.role === 'ADMIN' && (
+                                        <Link href="/admin" className="block text-base font-medium text-orange py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange/80 transition-colors" onClick={() => setMenuOpen(false)}>
+                                            Admin Dashboard
+                                        </Link>
+                                    )}
+                                    <Link href="/dashboard" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>
+                                        Dashboard
+                                    </Link>
+                                    <Link href="/dashboard/profile" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>
+                                        Profile
+                                    </Link>
+                                    <Link href="/dashboard/settings" className="block text-base font-medium text-slate-700 dark:text-offwhite/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-orange transition-colors" onClick={() => setMenuOpen(false)}>
+                                        Settings
+                                    </Link>
+                                    <button onClick={() => { signOut({ callbackUrl: '/' }); setMenuOpen(false); }} className="block w-full text-base font-medium text-red-500 dark:text-red-400 py-2.5 border-b border-slate-200 dark:border-white/10 text-left hover:text-red-600 transition-colors">
+                                        Logout
+                                    </button>
+                                </>
+                            ) : null}
+                        </div>
+
+                        {!session && (
+                            <div className="mt-auto pt-8 border-t border-slate-200 dark:border-white/10 flex flex-col gap-4">
+                                <Link href="/login" className="w-full py-3 text-center text-lg font-bold text-slate-700 dark:text-offwhite bg-slate-100 dark:bg-white/5 rounded-xl hover:bg-slate-200 dark:hover:bg-white/10 transition-colors" onClick={() => setMenuOpen(false)}>
+                                    Login
+                                </Link>
+                                <Link
+                                    href="/register"
+                                    className="w-full py-3 bg-linear-to-r from-orange to-orange-light text-white text-center text-lg font-bold rounded-xl shadow-lg shadow-orange/20 hover:shadow-orange/40 transition-shadow"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Get Started
+                                </Link>
                             </div>
                         )}
-                    </nav>
-                </div>
+                    </div>
+                </>
             )}
         </>
     );
