@@ -49,6 +49,10 @@ model User {
   disputesInitiated Dispute[] @relation("DisputeInitiator")
   disputesDefended  Dispute[] @relation("DisputeDefendant")
 
+  // Contracts
+  contractsAsFreelancer Contract[] @relation("FreelancerContracts")
+  contractsAsEmployer   Contract[] @relation("EmployerContracts")
+
   // WebAuthn
   currentChallenge    String?
   webAuthnCredentials WebAuthnCredential[]
@@ -200,6 +204,7 @@ model Job {
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   applications JobApplication[]
+  contracts    Contract[]
   Conversation Conversation[]
   disputes     Dispute[]
 
@@ -219,9 +224,37 @@ model JobApplication {
   status       ApplicationStatus @default(PENDING)
   appliedAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
+  contract     Contract?
 
   @@unique([jobId, freelancerId])
 }
+
+// ═══════════════════════════════════════
+// CONTRACTS (Business ↔ Freelancer Agreements)
+// ═══════════════════════════════════════
+
+model Contract {
+  id              String         @id @default(cuid())
+  job             Job            @relation(fields: [jobId], references: [id])
+  jobId           String
+  application     JobApplication @relation(fields: [applicationId], references: [id])
+  applicationId   String         @unique
+  freelancer      User           @relation("FreelancerContracts", fields: [freelancerId], references: [id])
+  freelancerId    String
+  employer        User           @relation("EmployerContracts", fields: [employerId], references: [id])
+  employerId      String
+  amount          Int
+  status          ContractStatus @default(ACTIVE)
+  completedAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([freelancerId])
+  @@index([employerId])
+  @@index([status])
+}
+
+
 
 // ═══════════════════════════════════════
 // ORDERS & REVIEWS
@@ -418,6 +451,13 @@ enum ApplicationStatus {
   WITHDRAWN
 }
 
+enum ContractStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  DISPUTED
+}
+
 enum CreditTxType {
   PURCHASE
   DEDUCTION
@@ -591,4 +631,26 @@ model AuthChallenge {
   challenge String
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+// ═══════════════════════════════════════
+// OTP CODES (Email-based login verification)
+// ═══════════════════════════════════════
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  type      OtpType
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email, type, used])
+}
+
+enum OtpType {
+  LOGIN
+  EMAIL_VERIFY
+  PHONE_VERIFY
 }

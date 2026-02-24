@@ -165,7 +165,7 @@ export default function SettingsPage() {
                         <button className="w-full text-left px-4 py-3 bg-white dark:bg-[#111] border-slate-200 dark:border-[#FE7743]/50 text-slate-900 dark:text-[#FE7743] font-semibold rounded-xl flex items-center gap-3">
                             <ShieldCheck className="w-5 h-5" /> Security & Login
                         </button>
-                        <button disabled className="w-full text-left px-4 py-3 bg-transparent text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 font-semibold rounded-xl flex items-center gap-3 hover:bg-white/5 transition opacity-50 cursor-not-allowed">
+                        <button disabled className="w-full text-left px-4 py-3 bg-transparent text-slate-900 dark:text-[#EFEEEA]/50 font-semibold rounded-xl flex items-center gap-3 hover:bg-white/5 transition opacity-50 cursor-not-allowed">
                             <Activity className="w-5 h-5" /> Activity Log
                         </button>
                     </div>
@@ -180,7 +180,7 @@ export default function SettingsPage() {
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-slate-900 dark:text-[#EFEEEA]">Biometric Login (Passkeys)</h2>
-                                    <p className="text-sm text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/60">Sign in securely using Face ID, Touch ID, or Windows Hello.</p>
+                                    <p className="text-sm text-slate-900 dark:text-[#EFEEEA]/60">Sign in securely using Face ID, Touch ID, or Windows Hello.</p>
                                 </div>
                             </div>
 
@@ -191,7 +191,7 @@ export default function SettingsPage() {
 
                             <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
                                 <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-1">Add a new device</h3>
-                                <p className="text-xs text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
+                                <p className="text-xs text-slate-900 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
                                     Register this current device to allow passwordless sign-ins in the future. You can register multiple devices (e.g., your phone and laptop).
                                 </p>
                                 <button
@@ -216,7 +216,7 @@ export default function SettingsPage() {
                                             Two-Factor Authentication (2FA)
                                             {is2FAEnabled && <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">Enabled</span>}
                                         </h2>
-                                        <p className="text-sm text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/60">Secure your account with a TOTP authenticator app like Google Authenticator.</p>
+                                        <p className="text-sm text-slate-900 dark:text-[#EFEEEA]/60">Secure your account with a TOTP authenticator app like Google Authenticator.</p>
                                     </div>
                                 </div>
                             </div>
@@ -228,7 +228,7 @@ export default function SettingsPage() {
                             ) : is2FAEnabled ? (
                                 <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
                                     <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-1">Disable 2FA</h3>
-                                    <p className="text-xs text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
+                                    <p className="text-xs text-slate-900 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
                                         To disable 2FA, please enter a code from your authenticator app to verify it is you.
                                     </p>
                                     <div className="flex flex-col sm:flex-row gap-4">
@@ -252,7 +252,7 @@ export default function SettingsPage() {
                             ) : setupMode && qrCodeUrl ? (
                                 <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
                                     <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-4">Complete 2FA Setup</h3>
-                                    <ol className="text-sm text-slate-900 dark:text-slate-600 dark:text-[#EFEEEA]/70 space-y-3 mb-6 list-decimal list-inside">
+                                    <ol className="text-sm text-slate-900 dark:text-[#EFEEEA]/70 space-y-3 mb-6 list-decimal list-inside">
                                         <li>Open your Authenticator app (e.g., Google Authenticator, Authy).</li>
                                         <li>Scan the QR code below.</li>
                                         <li>Enter the 6-digit code generated by the app.</li>
@@ -295,7 +295,7 @@ export default function SettingsPage() {
                             ) : (
                                 <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
                                     <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-1">Protect your account</h3>
-                                    <p className="text-xs text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
+                                    <p className="text-xs text-slate-900 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
                                         Enabling 2FA adds an extra layer of security to your account. You will need to provide a code from your authenticator app when making major withdrawals.
                                     </p>
                                     <button
@@ -313,7 +313,7 @@ export default function SettingsPage() {
                         {/* Traditional Password Section Placeholder */}
                         <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none opacity-70">
                             <h2 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA] mb-1">Change Password</h2>
-                            <p className="text-sm text-slate-900 dark:text-slate-500 dark:text-[#EFEEEA]/50 mb-6">Update your conventional account password.</p>
+                            <p className="text-sm text-slate-900 dark:text-[#EFEEEA]/50 mb-6">Update your conventional account password.</p>
                             <button className="px-6 py-2.5 bg-white/5 border border-white/10 text-slate-900 dark:text-[#EFEEEA] font-semibold rounded-lg text-sm">
                                 Reset Password
                             </button>

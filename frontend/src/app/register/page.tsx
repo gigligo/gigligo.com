@@ -12,6 +12,8 @@ function RegisterContent() {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('SELLER');
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -21,10 +23,18 @@ function RegisterContent() {
         setError('');
         try {
             const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
+            const roleParam = searchParams.get('role') || role;
+            const payload = {
+                fullName,
+                email,
+                password,
+                role: roleParam,
+                termsAccepted: acceptedTerms
+            };
             const res = await fetch(backendUrl + '/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fullName, email, password })
+                body: JSON.stringify(payload)
             });
             const data = await res.json();
 
@@ -116,6 +126,29 @@ function RegisterContent() {
                             placeholder="••••••••"
                             minLength={6}
                         />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Account Role</label>
+                        <select
+                            value={role}
+                            onChange={e => setRole(e.target.value)}
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] transition-colors"
+                        >
+                            <option value="SELLER">Freelancer / Seller</option>
+                            <option value="BUYER">Employer / Buyer</option>
+                        </select>
+                    </div>
+                    <div className="flex items-center gap-2 mt-4 mb-6">
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            checked={acceptedTerms}
+                            onChange={e => setAcceptedTerms(e.target.checked)}
+                            className="w-4 h-4 rounded border-slate-300 text-teal-vibrant focus:ring-teal-vibrant/20 cursor-pointer"
+                        />
+                        <label htmlFor="terms" className="text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
+                            I accept the <Link href="/terms" className="text-teal-vibrant hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-teal-vibrant hover:underline">Privacy Policy</Link>
+                        </label>
                     </div>
                     <button
                         type="submit"

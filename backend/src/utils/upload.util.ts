@@ -3,11 +3,14 @@ import { extname } from 'path';
 import * as fs from 'fs';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { Logger } from '@nestjs/common';
+
+const logger = new Logger('StorageUtil');
 
 if (process.env.CLOUDINARY_URL) {
-    console.log('[Storage] Cloudinary initialized for uploads');
+    logger.log('Cloudinary initialized for uploads');
 } else {
-    console.log('[Storage] CLOUDINARY_URL missing, falling back to local disk storage');
+    logger.warn('CLOUDINARY_URL missing, falling back to local disk storage');
 }
 
 /**

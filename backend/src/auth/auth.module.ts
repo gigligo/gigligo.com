@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './jwt.strategy';
 import { KycModule } from '../kyc/kyc.module';
 import { EmailModule } from '../email/email.module';
+import { OtpModule } from '../otp/otp.module';
 import { TwoFactorService } from './twoFactor.service';
 import { PrismaModule } from '../prisma/prisma.module';
 
@@ -15,6 +16,7 @@ import { PrismaModule } from '../prisma/prisma.module';
     UsersModule,
     KycModule,
     EmailModule,
+    OtpModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'super-secret-jwt-key',

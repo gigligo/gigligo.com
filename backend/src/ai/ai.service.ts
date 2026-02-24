@@ -1,9 +1,10 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 
 @Injectable()
 export class AiService implements OnModuleInit {
+    private readonly logger = new Logger(AiService.name);
     private mcpClient: Client;
     private transport: SSEClientTransport;
 
@@ -34,7 +35,7 @@ export class AiService implements OnModuleInit {
             this.transport = new SSEClientTransport(url);
 
             await this.mcpClient.connect(this.transport);
-            console.log("AI Service successfully connected to local MCP Server");
+            this.logger.log('AI Service successfully connected to local MCP Server');
 
             // Example: const tools = await this.mcpClient.listTools();
         } catch (error) {
