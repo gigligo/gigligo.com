@@ -190,20 +190,20 @@ export function Navbar() {
                             {session ? (
                                 <>
                                     {(session as any)?.role === 'ADMIN' && (
-                                        <Link href="/admin" className="text-lg font-medium text-[#FE7743] py-3 border-b border-slate-200 dark:border-white/10" onClick={() => setMenuOpen(false)}>
+                                        <Link href="/admin" className="block w-full text-base font-medium text-[#FE7743] py-2.5 border-b border-slate-200 dark:border-white/10" onClick={() => setMenuOpen(false)}>
                                             Admin Dashboard
                                         </Link>
                                     )}
-                                    <Link href="/dashboard" className="text-lg font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-3 border-b border-slate-200 dark:border-white/10" onClick={() => setMenuOpen(false)}>
+                                    <Link href="/dashboard" className="block w-full text-base font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743] transition-colors" onClick={() => setMenuOpen(false)}>
                                         Dashboard
                                     </Link>
-                                    <Link href="/dashboard/profile" className="text-lg font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-3 border-b border-slate-200 dark:border-white/10" onClick={() => setMenuOpen(false)}>
+                                    <Link href="/dashboard/profile" className="block w-full text-base font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743] transition-colors" onClick={() => setMenuOpen(false)}>
                                         Profile Layout
                                     </Link>
-                                    <Link href="/dashboard/settings" className="text-lg font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-3 border-b border-slate-200 dark:border-white/10" onClick={() => setMenuOpen(false)}>
+                                    <Link href="/dashboard/settings" className="block w-full text-base font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743] transition-colors" onClick={() => setMenuOpen(false)}>
                                         Settings
                                     </Link>
-                                    <button onClick={() => { signOut({ callbackUrl: '/' }); setMenuOpen(false); }} className="text-lg font-medium text-red-500 dark:text-red-400 py-3 border-b border-slate-200 dark:border-white/10 text-left">
+                                    <button onClick={() => { signOut({ callbackUrl: '/' }); setMenuOpen(false); }} className="block w-full text-base font-medium text-red-500 dark:text-red-400 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-red-600 transition-colors text-left">
                                         Logout
                                     </button>
                                 </>
