@@ -1,26 +1,58 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
+import { useSession } from 'next-auth/react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { profileApi, reviewApi } from '@/lib/api';
 import { Loader2, MapPin, Link as LinkIcon, Briefcase, GraduationCap, CheckCircle, ExternalLink, Globe, Github, Linkedin, Calendar, Star } from 'lucide-react';
 
-export default function PublicProfilePage({ params }: { params: { id: string } }) {
+export default function PublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
+    const resolvedParams = use(params);
+    const { data: session } = useSession();
     const [profile, setProfile] = useState<any>(null);
     const [reviews, setReviews] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
+    // Resolve the actual ID: if 'me', we'll use the authenticated endpoint instead
+    const isSelf = resolvedParams.id === 'me';
+    const resolvedId = isSelf ? (session?.user?.id || null) : resolvedParams.id;
+    const token = (session as any)?.accessToken;
+
     useEffect(() => {
+        if (isSelf && !token) {
+            // Wait for session to load
+            if (session === undefined) return;
+            setLoading(false);
+            return;
+        }
+        if (!isSelf && !resolvedId) {
+            setLoading(false);
+            return;
+        }
         loadData();
-    }, [params.id]);
+    }, [resolvedId, token, session]);
 
     const loadData = async () => {
         try {
-            const pData = await profileApi.getPublic(params.id);
+            let pData;
+            if (isSelf && token) {
+                // Use authenticated endpoint to fetch own profile
+                pData = await profileApi.getMine(token);
+            } else if (resolvedId) {
+                pData = await profileApi.getPublic(resolvedId);
+            } else {
+                setLoading(false);
+                return;
+            }
             setProfile(pData);
-            const rData = await reviewApi.getForSeller(pData.user.id);
-            setReviews(rData);
+            try {
+                const userId = pData.user?.id || pData.userId;
+                if (userId) {
+                    const rData = await reviewApi.getForSeller(userId);
+                    setReviews(rData);
+                }
+            } catch { /* reviews may fail silently */ }
         } catch (error) {
             console.error(error);
         } finally {
