@@ -20,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 kycStatus: { label: "KYCStatus", type: "text" },
                 name: { label: "Name", type: "text" },
             },
-            async authorize(credentials) {
+            async authorize(credentials: Record<string, string> | undefined) {
                 if (!credentials?.email) return null;
 
                 // Only pre-verified mode (frontend already called verify-otp)
@@ -41,7 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         })
     ],
     callbacks: {
-        async signIn({ user, account, profile }) {
+        async signIn({ user, account, profile }: { user: any; account: any; profile?: any }) {
             if (account?.provider === 'google') {
                 try {
                     const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -69,7 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return true;
         },
-        async jwt({ token, user, trigger, session }) {
+        async jwt({ token, user, trigger, session }: { token: any; user?: any; trigger?: string; session?: any }) {
             if (trigger === "update" && session) {
                 if (session.kycStatus) token.kycStatus = session.kycStatus;
                 if (session.role) token.role = session.role;
@@ -86,7 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token }: { session: any; token: any }) {
             if (session?.user) {
                 session.user.id = token.id as string;
                 (session as any).accessToken = token.accessToken;
