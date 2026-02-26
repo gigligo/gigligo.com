@@ -144,3 +144,10 @@ frontend/ios/
 *.njsproj
 *.sln
 *.sw?
+backend/backend_log.txt
+frontend/frontend_log.txt
+backend/node_modules_bad_*/
+frontend/node_modules_bad_*/
+backend_test/
+frontend_test/
+frontend_install.txt
