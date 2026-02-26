@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { Navbar } from '@/components/Navbar';
-import { Fingerprint, ShieldCheck, Activity, KeyRound, QrCode } from 'lucide-react';
+import { ShieldCheck, Activity, KeyRound, QrCode } from 'lucide-react';
 
 export default function SettingsPage() {
     const { data: session } = useSession();
-    const [isRegistering, setIsRegistering] = useState(false);
+
     const [successMsg, setSuccessMsg] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
 
@@ -34,46 +34,7 @@ export default function SettingsPage() {
         }
     }, [token, apiUrl]);
 
-    const registerPasskey = async () => {
-        setIsRegistering(true);
-        setErrorMsg('');
-        setSuccessMsg('');
 
-        try {
-            const { startRegistration } = await import('@simplewebauthn/browser');
-
-            // 1. Get exact options from the server
-            const optsRes = await fetch(`${apiUrl}/api/auth/webauthn/register/options`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            if (!optsRes.ok) throw new Error('Failed to get registration options');
-            const options = await optsRes.json();
-
-            // 2. Prompt user to create a passkey in their browser/OS
-            const attResp = await startRegistration(options);
-
-            // 3. Send the created passkey back to the server for verification
-            const verifyRes = await fetch(`${apiUrl}/api/auth/webauthn/register/verify`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(attResp)
-            });
-
-            if (!verifyRes.ok) {
-                const errData = await verifyRes.json();
-                throw new Error(errData.message || 'Failed to verify new passkey');
-            }
-
-            setSuccessMsg('Biometric login is now enabled for this device!');
-        } catch (err: any) {
-            setErrorMsg(err.message || 'Passkey registration failed or cancelled.');
-        } finally {
-            setIsRegistering(false);
-        }
-    };
 
     const handleGenerate2FA = async () => {
         setIs2FALoading(true);
@@ -173,36 +134,9 @@ export default function SettingsPage() {
                     {/* Main Settings Panel */}
                     <div className="md:col-span-2 space-y-6">
 
-                        <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
-                            <div className="flex items-center gap-4 mb-2">
-                                <div className="p-3 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/10">
-                                    <Fingerprint className="w-6 h-6 text-teal-vibrant" />
-                                </div>
-                                <div>
-                                    <h2 className="text-xl font-bold text-slate-900 dark:text-[#EFEEEA]">Biometric Login (Passkeys)</h2>
-                                    <p className="text-sm text-slate-900 dark:text-[#EFEEEA]/60">Sign in securely using Face ID, Touch ID, or Windows Hello.</p>
-                                </div>
-                            </div>
+                        {errorMsg && <div className="bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl text-sm mb-4">{errorMsg}</div>}
+                        {successMsg && <div className="bg-green-500/10 text-green-400 border border-green-500/20 p-4 rounded-xl text-sm mb-4 font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> {successMsg}</div>}
 
-                            <hr className="border-slate-200 dark:border-white/10 my-6" />
-
-                            {errorMsg && <div className="bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl text-sm mb-4">{errorMsg}</div>}
-                            {successMsg && <div className="bg-green-500/10 text-green-400 border border-green-500/20 p-4 rounded-xl text-sm mb-4 font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> {successMsg}</div>}
-
-                            <div className="bg-slate-50 dark:bg-white/2 rounded-xl border border-slate-200 dark:border-white/5 p-5">
-                                <h3 className="font-semibold text-slate-900 dark:text-[#EFEEEA] mb-1">Add a new device</h3>
-                                <p className="text-xs text-slate-900 dark:text-[#EFEEEA]/50 mb-4 leading-relaxed tracking-wide">
-                                    Register this current device to allow passwordless sign-ins in the future. You can register multiple devices (e.g., your phone and laptop).
-                                </p>
-                                <button
-                                    onClick={registerPasskey}
-                                    disabled={isRegistering}
-                                    className="px-6 py-2.5 bg-teal-vibrant text-slate-950 font-bold rounded-lg text-sm hover:bg-teal-vibrant/90 transition shadow-lg shadow-teal-vibrant/20 disabled:opacity-50 flex items-center justify-center min-w-[160px]"
-                                >
-                                    {isRegistering ? 'Following prompt...' : 'Enable Biometric Login'}
-                                </button>
-                            </div>
-                        </div>
 
                         {/* Two-Factor Authentication Section */}
                         <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
@@ -324,3 +258,4 @@ export default function SettingsPage() {
         </div>
     );
 }
+// Force IDE cache refresh

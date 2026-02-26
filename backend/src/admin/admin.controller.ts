@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Req, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req, Param, Query } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { AdminAnalyticsService } from './admin-analytics.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -35,8 +35,8 @@ export class AdminController {
     }
 
     @Post('kyc/decide')
-    async decideKyc(@Body() body: { kycId: string; status: 'APPROVED' | 'REJECTED' }) {
-        return this.adminService.decideKyc(body.kycId, body.status);
+    async decideKyc(@Req() req: any, @Body() body: { kycId: string; status: 'APPROVED' | 'REJECTED' }) {
+        return this.adminService.decideKyc(body.kycId, body.status, req.user.id);
     }
 
     @Get('analytics')
@@ -50,8 +50,16 @@ export class AdminController {
         @Param('userId') targetUserId: string,
         @Body() body: { amount: number }
     ) {
-        // Admin ID comes from the JWT payload
-        const adminId = req.user.id;
-        return this.adminService.addCreditsToUser(targetUserId, body.amount, adminId);
+        return this.adminService.addCreditsToUser(targetUserId, body.amount, req.user.id);
+    }
+
+    @Post('users/:userId/suspend')
+    async suspendUser(@Req() req: any, @Param('userId') userId: string) {
+        return this.adminService.suspendUser(userId, req.user.id);
+    }
+
+    @Get('audit-logs')
+    async getAuditLogs(@Query('page') page?: string, @Query('limit') limit?: string) {
+        return this.adminService.getAuditLogs(page ? +page : 1, limit ? +limit : 50);
     }
 }

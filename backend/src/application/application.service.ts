@@ -32,6 +32,19 @@ export class ApplicationService {
         });
         if (existing) throw new BadRequestException('You have already applied to this job');
 
+        // Daily proposal rate limit (5/day free, 15/day for Pro)
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const todayCount = await this.prisma.jobApplication.count({
+            where: { freelancerId, appliedAt: { gte: startOfDay } },
+        });
+        const subscription = await this.prisma.subscription.findUnique({ where: { userId: freelancerId } });
+        const isPro = subscription?.endDate && subscription.endDate > new Date();
+        const dailyLimit = isPro ? 15 : 5;
+        if (todayCount >= dailyLimit) {
+            throw new BadRequestException(`Daily proposal limit reached (${dailyLimit}/day). ${isPro ? '' : 'Upgrade to Pro for 15 proposals/day!'}`);
+        }
+
         // Deduct 1 credit
         await this.creditService.deductCredit(freelancerId, `Applied to job: ${job.title}`);
 

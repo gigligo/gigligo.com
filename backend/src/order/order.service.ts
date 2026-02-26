@@ -9,22 +9,35 @@ export class OrderService {
     async createOrder(buyerId: string, data: { gigId: string; packageSelected: 'STARTER' | 'STANDARD' | 'PREMIUM'; price: number; escrowAmount: number; deadline: Date }) {
         const gig = await this.prisma.gig.findUnique({ where: { id: data.gigId } });
         if (!gig) throw new NotFoundException('Gig not found');
+        if (gig.sellerId === buyerId) throw new BadRequestException('Cannot order your own gig');
 
-        // Mock payment intent success by moving funds to Escrow directly
-        // We'll increment the seller's pendingPKR to simulate escrow
-        await this.prisma.wallet.upsert({
-            where: { userId: gig.sellerId },
-            create: { userId: gig.sellerId, balancePKR: 0, pendingPKR: data.escrowAmount },
-            update: { pendingPKR: { increment: data.escrowAmount } }
-        });
+        return this.prisma.$transaction(async (tx) => {
+            // Atomic: verify buyer has funds and deduct
+            let buyerWallet;
+            try {
+                buyerWallet = await tx.wallet.update({
+                    where: { userId: buyerId, balancePKR: { gte: data.escrowAmount } },
+                    data: { balancePKR: { decrement: data.escrowAmount } },
+                });
+            } catch {
+                throw new BadRequestException(`Insufficient wallet balance. Required: PKR ${data.escrowAmount}. Please add funds.`);
+            }
 
-        return this.prisma.order.create({
-            data: {
-                ...data,
-                buyerId,
-                sellerId: gig.sellerId,
-                status: 'PENDING',
-            },
+            // Credit escrow to seller's pendingPKR
+            await tx.wallet.upsert({
+                where: { userId: gig.sellerId },
+                create: { userId: gig.sellerId, balancePKR: 0, pendingPKR: data.escrowAmount },
+                update: { pendingPKR: { increment: data.escrowAmount } }
+            });
+
+            return tx.order.create({
+                data: {
+                    ...data,
+                    buyerId,
+                    sellerId: gig.sellerId,
+                    status: 'PENDING',
+                },
+            });
         });
     }
 

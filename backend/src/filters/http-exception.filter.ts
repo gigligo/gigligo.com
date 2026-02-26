@@ -20,8 +20,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 ? exceptionResponse
                 : (exceptionResponse as any).message || exceptionResponse;
         } else if (exception instanceof Error) {
-            message = exception.message;
+            // Log full error for server-side debugging
             this.logger.error(`Unhandled error: ${exception.message}`, exception.stack);
+            // Never expose internal error details to the client
+            message = 'Internal server error';
         }
 
         response.status(status).json({

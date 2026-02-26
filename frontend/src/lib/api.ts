@@ -110,8 +110,16 @@ export const adminApi = {
     getStats: (token: string) => apiFetch('/api/admin/stats', { token }),
     getActivity: (token: string) => apiFetch('/api/admin/activity', { token }),
     getFounders: (token: string) => apiFetch('/api/admin/founders', { token }),
+    getPendingKyc: (token: string) => apiFetch('/api/admin/kyc/pending', { token }),
+    decideKyc: (token: string, kycId: string, status: 'APPROVED' | 'REJECTED') =>
+        apiFetch('/api/admin/kyc/decide', { method: 'POST', token, body: JSON.stringify({ kycId, status }) }),
+    getAnalytics: (token: string) => apiFetch('/api/admin/analytics', { token }),
     addCredits: (token: string, userId: string, amount: number) =>
         apiFetch(`/api/admin/users/${userId}/credits`, { method: 'POST', token, body: JSON.stringify({ amount }) }),
+    suspendUser: (token: string, userId: string) =>
+        apiFetch(`/api/admin/users/${userId}/suspend`, { method: 'POST', token }),
+    getAuditLogs: (token: string, page = 1) =>
+        apiFetch(`/api/admin/audit-logs?page=${page}`, { token }),
 };
 
 // Payment APIs
@@ -201,5 +209,12 @@ export const profileApi = {
     },
     deletePortfolioItem: (token: string, id: string) =>
         apiFetch(`/api/profile/portfolio/${id}`, { method: 'DELETE', token }),
+};
+
+// Subscription APIs
+export const subscriptionApi = {
+    getStatus: (token: string) => apiFetch('/api/subscription/status', { token }),
+    subscribe: (token: string) =>
+        apiFetch('/api/subscription/subscribe', { method: 'POST', token }),
 };
 

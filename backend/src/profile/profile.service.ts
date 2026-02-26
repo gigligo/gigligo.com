@@ -34,9 +34,22 @@ export class ProfileService {
     }
 
     async updateProfile(userId: string, data: any) {
+        // Mass assignment protection — only allow whitelisted fields
+        const allowedFields = [
+            'fullName', 'bio', 'avatarUrl', 'title', 'skills', 'hourlyRate',
+            'phone', 'city', 'country', 'languages', 'website', 'linkedin',
+            'github', 'twitter', 'university', 'department', 'graduationYear',
+        ];
+        const safeData: Record<string, any> = {};
+        for (const key of allowedFields) {
+            if (data[key] !== undefined) {
+                safeData[key] = data[key];
+            }
+        }
+
         return this.prisma.profile.update({
             where: { userId },
-            data,
+            data: safeData,
         });
     }
 

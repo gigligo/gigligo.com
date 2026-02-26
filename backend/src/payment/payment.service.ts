@@ -51,13 +51,21 @@ export class PaymentService {
         const { userId, amount, status, method, reference, packageId } = data;
 
         if (status === 'COMPLETED') {
+            // Idempotency: check if this reference was already processed
+            if (reference) {
+                const existing = await this.prisma.transaction.findFirst({
+                    where: { reference, status: 'COMPLETED' },
+                });
+                if (existing) {
+                    return { received: true, status: 'ALREADY_PROCESSED' };
+                }
+            }
+
             // First hit the Wallet to track the PKR transaction
             await this.walletService.addFunds(userId, parseFloat(amount));
 
             // If this was a credit package purchase, we must also award the credits
             if (packageId) {
-                // To avoid circular dependency inject CreditService or handle it in the controller loop
-                // Since CreditService might rely on Wallet, we can just do a direct Prisma update for the mock
                 const pkg = await this.prisma.creditPackage.findUnique({ where: { id: packageId } });
                 if (pkg) {
                     await this.prisma.$transaction(async (tx) => {
@@ -78,6 +86,19 @@ export class PaymentService {
                     });
                 }
             }
+
+            // Log transaction with reference for dedup
+            await this.prisma.transaction.create({
+                data: {
+                    userId,
+                    amountPKR: parseFloat(amount),
+                    type: 'CREDIT_PURCHASE',
+                    status: 'COMPLETED',
+                    method: method as any || null,
+                    reference: reference || `WH-${Date.now()}`,
+                    description: packageId ? `Credit purchase via ${method || 'Gateway'}` : `Payment via ${method || 'Gateway'}`,
+                },
+            });
         }
         return { received: true, status: 'PROCESSED' };
     }

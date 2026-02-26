@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import NotificationBell from './NotificationBell';
 import { ThemeToggle } from './ui/ThemeToggle';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Coins } from 'lucide-react';
+import { creditApi } from '@/lib/api';
 
 /* ─── Gradient G Logo (shared across site) ─── */
 function GigligoMark({ size = 28 }: { size?: number }) {
@@ -43,6 +44,12 @@ export function Navbar() {
     const { data: session } = useSession();
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [credits, setCredits] = useState<number | null>(null);
+
+    const token = (session as any)?.accessToken;
+    const role = (session as any)?.role;
+    const isFreelancer = ['SELLER', 'STUDENT', 'FREE'].includes(role);
+    const isEmployer = ['BUYER', 'EMPLOYER'].includes(role);
 
     const handleScroll = useCallback(() => {
         setScrolled(window.scrollY > 60);
@@ -54,10 +61,18 @@ export function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll]);
 
+    useEffect(() => {
+        if (token && isFreelancer) {
+            creditApi.getBalance(token).then(res => setCredits(res.credits)).catch(() => { });
+        }
+    }, [token, isFreelancer]);
+
     const mainLinks = [
         { label: 'Find Talent', href: '/search' },
         { label: 'Browse Jobs', href: '/jobs' },
-        { label: 'Post a Gig', href: session ? '/dashboard' : '/register?role=SELLER' },
+        ...(session && isEmployer ? [{ label: 'Post a Job', href: '/jobs/post' }] : []),
+        ...(session && isFreelancer ? [{ label: 'My Gigs', href: '/dashboard' }] : []),
+        ...(!session ? [{ label: 'Post a Gig', href: '/register?role=SELLER' }] : []),
     ];
 
     const moreLinks = [
@@ -118,6 +133,12 @@ export function Navbar() {
                         <ThemeToggle />
                         {session ? (
                             <>
+                                {isFreelancer && credits !== null && (
+                                    <Link href="/dashboard/credits" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400 text-sm font-bold hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors">
+                                        <Coins size={16} />
+                                        {credits}
+                                    </Link>
+                                )}
                                 <NotificationBell />
                                 <div className="relative group ml-1">
                                     <div className="w-9 h-9 rounded-full bg-linear-to-tr from-[#FE7743] to-[#FE7743]/50 flex items-center justify-center text-white font-bold text-sm shadow-lg cursor-pointer hover:scale-105 transition-transform">

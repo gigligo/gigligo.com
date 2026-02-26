@@ -23,7 +23,7 @@ export class OtpService {
     async generateAndSend(email: string, type: 'LOGIN' | 'EMAIL_VERIFY' | 'PHONE_VERIFY'): Promise<{ message: string }> {
         // ── Rate limiting ──
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-        const recentCount = await this.prisma.otpCode.count({
+        const recentCount = await (this.prisma as any).otpCode.count({
             where: {
                 email,
                 type,
@@ -39,7 +39,7 @@ export class OtpService {
         }
 
         // ── Invalidate previous unused OTPs for this email/type ──
-        await this.prisma.otpCode.updateMany({
+        await (this.prisma as any).otpCode.updateMany({
             where: { email, type, used: false },
             data: { used: true },
         });
@@ -48,7 +48,7 @@ export class OtpService {
         const code = randomInt(100000, 999999).toString();
         const expiresAt = new Date(Date.now() + this.OTP_TTL_MINUTES * 60 * 1000);
 
-        await this.prisma.otpCode.create({
+        await (this.prisma as any).otpCode.create({
             data: { email, code, type, expiresAt },
         });
 
@@ -83,7 +83,7 @@ export class OtpService {
      * Returns true if valid, throws otherwise.
      */
     async verify(email: string, code: string, type: 'LOGIN' | 'EMAIL_VERIFY' | 'PHONE_VERIFY'): Promise<boolean> {
-        const otp = await this.prisma.otpCode.findFirst({
+        const otp = await (this.prisma as any).otpCode.findFirst({
             where: {
                 email,
                 code,
@@ -99,7 +99,7 @@ export class OtpService {
         }
 
         // Mark as used
-        await this.prisma.otpCode.update({
+        await (this.prisma as any).otpCode.update({
             where: { id: otp.id },
             data: { used: true },
         });

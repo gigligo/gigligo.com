@@ -59,19 +59,18 @@ export class CreditService {
     }
 
     async deductCredit(userId: string, reason: string) {
-        const user = await this.prisma.user.findUnique({
-            where: { id: userId },
-            select: { credits: true },
-        });
-        if (!user || user.credits < 1) {
-            throw new BadRequestException('Insufficient credits. Please purchase more credits to apply.');
-        }
-
         return this.prisma.$transaction(async (tx) => {
-            const updated = await tx.user.update({
-                where: { id: userId },
-                data: { credits: { decrement: 1 } },
-            });
+            // Atomic: decrement only if credits >= 1 (prevents race condition)
+            let updated;
+            try {
+                updated = await tx.user.update({
+                    where: { id: userId, credits: { gte: 1 } },
+                    data: { credits: { decrement: 1 } },
+                });
+            } catch {
+                // Prisma throws if the WHERE clause doesn't match any records
+                throw new BadRequestException('Insufficient credits. Please purchase more credits to apply.');
+            }
 
             await tx.creditLedger.create({
                 data: {
@@ -98,6 +97,7 @@ export class CreditService {
 
             return { credits: updated.credits };
         });
+
     }
 
     async refundCredit(userId: string, reason: string) {
