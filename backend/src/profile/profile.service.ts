@@ -20,7 +20,7 @@ export class ProfileService {
     }
 
     async getPublicProfile(profileId: string) {
-        const profile = await this.prisma.profile.findFirst({
+        let profile = await this.prisma.profile.findFirst({
             where: {
                 OR: [
                     { id: profileId },
@@ -28,13 +28,33 @@ export class ProfileService {
                 ]
             },
             include: {
-                user: { select: { id: true, role: true, createdAt: true } },
+                user: { select: { id: true, role: true, createdAt: true, isFoundingMember: true, subscriptionStatus: true, kycStatus: true } },
                 experiences: { orderBy: { startDate: 'desc' } },
                 educations: { orderBy: { startYear: 'desc' } },
                 portfolioItems: { orderBy: { createdAt: 'desc' } }
             },
         });
-        if (!profile) throw new NotFoundException('Profile not found');
+
+        // If no full profile exists, try to return basic user info
+        if (!profile) {
+            const user = await this.prisma.user.findUnique({
+                where: { id: profileId },
+                select: { id: true, email: true, role: true, createdAt: true, isFoundingMember: true, subscriptionStatus: true, kycStatus: true }
+            });
+            if (!user) throw new NotFoundException('Profile not found');
+
+            // Return a mock profile wrapper around the user
+            return {
+                id: 'draft',
+                userId: user.id,
+                fullName: 'Anonymous User',
+                user: user,
+                experiences: [],
+                educations: [],
+                portfolioItems: [],
+            };
+        }
+
         return profile;
     }
 
