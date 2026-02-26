@@ -44,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async signIn({ user, account, profile }) {
             if (account?.provider === 'google') {
                 try {
-                    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
+                    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
                     const res = await fetch(backendUrl + "/api/auth/google/callback", {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },

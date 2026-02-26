@@ -21,7 +21,7 @@ function LoginContent() {
     const [resendCooldown, setResendCooldown] = useState(0);
     const otpRefs = Array.from({ length: 6 }, () => React.createRef<HTMLInputElement>());
 
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
     // Step 1: Submit email + password
     const handleCredentialsLogin = async (e: React.FormEvent) => {

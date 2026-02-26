@@ -22,7 +22,7 @@ function RegisterContent() {
         setIsLoading(true);
         setError('');
         try {
-            const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
+            const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
             const roleParam = searchParams.get('role') || role;
             const payload = {
                 fullName,
