@@ -80,6 +80,33 @@ export default function PublicProfilePage({ params }: { params: { id: string } }
                                     </h1>
                                     <p className="text-lg text-slate-600 dark:text-slate-400 mt-1">{isSeller ? 'Freelancer' : 'Employer'}</p>
 
+                                    {/* Membership Badges */}
+                                    <div className="flex flex-wrap gap-2 mt-3 cursor-default">
+                                        {user.isFoundingMember && (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20" title="Part of the Gigligo Founding Community">
+                                                <Star size={14} className="fill-amber-500 text-amber-500" />
+                                                Founding Member
+                                            </span>
+                                        )}
+                                        {user.subscriptionStatus === 'ACTIVE' && (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20" title="Active Pro Subscription">
+                                                <Star size={14} className="fill-amber-500 text-amber-500" />
+                                                Pro Member
+                                            </span>
+                                        )}
+                                        {user.kycStatus === 'APPROVED' ? (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20" title="Identity & Payments Verified">
+                                                <CheckCircle size={14} className="text-green-600 dark:text-green-400" />
+                                                Verified Payments
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10" title="Identity Verification Pending">
+                                                <CheckCircle size={14} />
+                                                Unverified Payments
+                                            </span>
+                                        )}
+                                    </div>
+
                                     <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-slate-500 dark:text-slate-400">
                                         {profile.location && <span className="flex items-center gap-1"><MapPin size={16} /> {profile.location}</span>}
                                         <span className="flex items-center gap-1"><Calendar size={16} /> Joined {joinedDate}</span>

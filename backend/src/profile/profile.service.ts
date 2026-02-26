@@ -20,8 +20,13 @@ export class ProfileService {
     }
 
     async getPublicProfile(profileId: string) {
-        const profile = await this.prisma.profile.findUnique({
-            where: { id: profileId },
+        const profile = await this.prisma.profile.findFirst({
+            where: {
+                OR: [
+                    { id: profileId },
+                    { userId: profileId }
+                ]
+            },
             include: {
                 user: { select: { id: true, role: true, createdAt: true } },
                 experiences: { orderBy: { startDate: 'desc' } },

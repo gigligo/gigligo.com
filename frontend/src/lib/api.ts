@@ -168,6 +168,18 @@ export const profileApi = {
     getMine: (token: string) => apiFetch('/api/profile/me', { token }),
     updateMine: (token: string, data: any) =>
         apiFetch('/api/profile/me', { method: 'PUT', token, body: JSON.stringify(data) }),
+    updateAvatar: (token: string, data: FormData) =>
+        fetch(`${API_URL}/api/profile/avatar`, {
+            method: 'PUT',
+            headers: { Authorization: `Bearer ${token}` },
+            body: data
+        }).then(async res => {
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.message || 'Avatar upload failed');
+            }
+            return res.json();
+        }),
     getPublic: (id: string) => apiFetch(`/api/profile/public/${id}`),
 
     // Experience

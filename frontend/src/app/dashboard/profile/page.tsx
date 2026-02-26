@@ -104,6 +104,39 @@ export default function ProfileEditorPage() {
                         {activeTab === 'basic' && (
                             <form onSubmit={handleBasicSubmit} className="space-y-6">
                                 <h2 className="text-xl font-bold mb-4">Basic Information</h2>
+                                <div className="mb-8 flex flex-col items-center sm:flex-row sm:items-start gap-6">
+                                    <div className="relative group shrink-0">
+                                        <div className="w-32 h-32 rounded-full overflow-hidden bg-slate-200 dark:bg-[#111] border-4 border-white dark:border-[#222] shadow-lg flex items-center justify-center relative">
+                                            {profile.avatarUrl ? (
+                                                <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <User size={48} className="text-slate-400" />
+                                            )}
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer">
+                                                <label className="text-white text-sm font-bold cursor-pointer">
+                                                    Change Image
+                                                    <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
+                                                        if (!e.target.files || !e.target.files[0]) return;
+                                                        const fd = new FormData();
+                                                        fd.append('image', e.target.files[0]);
+                                                        try {
+                                                            await profileApi.updateAvatar(token, fd);
+                                                            toast.success('Avatar updated successfully!');
+                                                            loadProfile();
+                                                        } catch (err: any) {
+                                                            toast.error(err.message);
+                                                        }
+                                                    }} />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 space-y-2 text-center sm:text-left pt-2">
+                                        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">Profile Picture</h3>
+                                        <p className="text-sm text-slate-500">Upload a professional photo. Recommended size is 400x400px.</p>
+                                    </div>
+                                </div>
+
                                 <div className="grid sm:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-semibold mb-2 text-slate-600 dark:text-slate-400">Full Name</label>

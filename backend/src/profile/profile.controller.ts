@@ -20,6 +20,18 @@ export class ProfileController {
         return this.profileService.updateProfile(req.user.id, body);
     }
 
+    // Avatar Upload
+    @Put('avatar')
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FileInterceptor('image', {
+        storage: getStorageOptions('avatars', 'avatar'),
+    }))
+    async uploadAvatar(@Request() req: any, @UploadedFile() file: Express.Multer.File) {
+        if (!file) throw new BadRequestException('No image file provided');
+        const avatarUrl = getFileUrl(file, 'avatars');
+        return this.profileService.updateProfile(req.user.id, { avatarUrl });
+    }
+
     // Public Profile
     @Get('public/:id')
     getPublicProfile(@Param('id') id: string) {
