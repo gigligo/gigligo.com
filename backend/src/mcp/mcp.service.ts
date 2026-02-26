@@ -173,6 +173,7 @@ export class McpService implements OnModuleInit {
             res.status(404).json({ error: "Session not found" });
             return;
         }
-        await transport.handlePostMessage(req, res);
+        // Pass the already-parsed body from NestJS to the MCP SDK
+        await transport.handlePostMessage(req, res, req.body);
     }
 }
