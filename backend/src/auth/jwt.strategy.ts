@@ -6,10 +6,14 @@ import { UsersService } from '../users/users.service';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(private usersService: UsersService) {
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            throw new Error('FATAL: JWT_SECRET environment variable is not set. Server cannot start without it.');
+        }
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET || 'super-secret-jwt-key',
+            secretOrKey: jwtSecret,
         });
     }
 
@@ -18,6 +22,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (!user) {
             throw new UnauthorizedException();
         }
-        return user;
+        // Strip sensitive fields — never expose to downstream handlers
+        const { passwordHash, twoFactorSecret, ...safeUser } = user as any;
+        // Block suspended users at the JWT level
+        if (safeUser.isSuspended) {
+            throw new UnauthorizedException('Your account has been suspended. Contact support.');
+        }
+        return safeUser;
     }
 }

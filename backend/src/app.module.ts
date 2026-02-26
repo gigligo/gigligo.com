@@ -3,6 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { BlockedUserGuard } from './auth/blocked-user.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -31,6 +32,7 @@ import { HealthModule } from './health/health.module';
 import { ReferralModule } from './referral/referral.module';
 import { NewsletterModule } from './newsletter/newsletter.module';
 import { ContractModule } from './contract/contract.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 @Module({
   imports: [
@@ -68,6 +70,7 @@ import { ContractModule } from './contract/contract.module';
     ReferralModule,
     NewsletterModule,
     ContractModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [
@@ -75,6 +78,10 @@ import { ContractModule } from './contract/contract.module';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: BlockedUserGuard,
     },
   ],
 })

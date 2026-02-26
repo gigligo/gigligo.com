@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { GigService } from './gig.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 
 @Controller('api/gigs')
 export class GigController {
@@ -23,14 +25,15 @@ export class GigController {
     }
 
     @Post()
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('SELLER', 'STUDENT', 'FREE')
     create(@Request() req: any, @Body() data: any) {
-        // In production, validate user role is SELLER or STUDENT
         return this.gigService.create(req.user.id, data);
     }
 
     @Put(':id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('SELLER', 'STUDENT', 'FREE')
     update(@Request() req: any, @Param('id') id: string, @Body() data: any) {
         return this.gigService.update(id, req.user.id, data);
     }

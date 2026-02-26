@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
 import { TwoFactorService } from './twoFactor.service';
 
 @Controller('api/auth')
@@ -38,56 +40,48 @@ export class AuthController {
         return this.authService.getProfile(req.user.id);
     }
 
-    // ═══════════════════════════════════════
-    // WEBAUTHN ENDPOINTS
-    // ═══════════════════════════════════════
 
-    @UseGuards(JwtAuthGuard)
-    @Get('webauthn/register/options')
-    async getWebAuthnRegisterOptions(@Req() req: any) {
-        return this.authService.getWebAuthnRegistrationOptions(req.user);
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Post('webauthn/register/verify')
-    async verifyWebAuthnRegistration(@Req() req: any, @Body() body: any) {
-        return this.authService.verifyWebAuthnRegistration(req.user, body);
-    }
-
-    @Post('webauthn/login/options')
-    async getWebAuthnLoginOptions(@Body('email') email: string) {
-        return this.authService.getWebAuthnAuthenticationOptions(email);
-    }
-
-    @Post('webauthn/login/verify')
-    async verifyWebAuthnLogin(@Body() requestBody: { email: string; response: any }) {
-        return this.authService.verifyWebAuthnAuthentication(requestBody.email, requestBody.response);
-    }
-
-    @Post('webauthn/autofill/options')
-    async getWebAuthnAutofillOptions() {
-        return this.authService.getWebAuthnAutofillOptions();
-    }
-
-    @Post('webauthn/autofill/verify')
-    async verifyWebAuthnAutofill(@Body() requestBody: { sessionId: string; response: any }) {
-        return this.authService.verifyWebAuthnAutofill(requestBody.sessionId, requestBody.response);
-    }
 
     // ═══════════════════════════════════════
     // GOOGLE AUTH
     // ═══════════════════════════════════════
 
     @Post('google/callback')
-    async googleCallback(@Body() body: { email: string, name: string, picture?: string, googleId: string }) {
-        return this.authService.googleLogin(body);
+    async googleCallback(@Body() body: { credential: string }) {
+        // Verify the Google ID token server-side before trusting any claims
+        if (!body.credential) {
+            throw new Error('Missing Google credential token');
+        }
+
+        // Validate token via Google's tokeninfo endpoint
+        const googleRes = await fetch(
+            `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(body.credential)}`
+        );
+        if (!googleRes.ok) {
+            throw new Error('Invalid Google token — verification failed');
+        }
+        const googleProfile = await googleRes.json();
+
+        // Ensure the token was issued for our client ID
+        const expectedClientId = process.env.GOOGLE_CLIENT_ID;
+        if (expectedClientId && googleProfile.aud !== expectedClientId) {
+            throw new Error('Google token audience mismatch — potential forgery');
+        }
+
+        return this.authService.googleLogin({
+            email: googleProfile.email,
+            name: googleProfile.name || googleProfile.email.split('@')[0],
+            picture: googleProfile.picture,
+            googleId: googleProfile.sub,
+        });
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('ADMIN')
     @Put('role')
-    async updateRole(@Req() req: any, @Body() body: { role: string }) {
-        // Normally handled by UsersService, we can inject and use it directly or via AuthService
-        return this.authService.updateRole(req.user.id, body.role);
+    async updateRole(@Req() req: any, @Body() body: { userId: string; role: string }) {
+        // ADMIN-only: change another user's role
+        return this.authService.updateRole(body.userId, body.role);
     }
 
     // ═══════════════════════════════════════

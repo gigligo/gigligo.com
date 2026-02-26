@@ -118,32 +118,13 @@ export class DisputeService {
                     });
 
                 } else if (data.status === 'RESOLVED_SELLER') {
-                    // Pay Seller: We need to use normal commission logic, but wallet service does this natively
-                    // Since walletService isn't easily called inside tx without refactoring WalletService,
-                    // we'll duplicate the base logic or just call the wallet service outside the TX if possible.
-                    // Wait, we can just do it in the TX manually or rely on `addEarning` after.
-                    // Let's manually release escrow as a raw earning to avoid nested Transactions if WalletService uses them.
-
+                    // Release escrow — use WalletService.addEarning logic for proper founding-member handling
                     const grossAmount = order.escrowAmount;
-                    const commission = Math.round(grossAmount * 0.10);
-                    const netAmount = grossAmount - commission;
 
+                    // Move escrow from pending to zero (earnings will be added via addEarning after tx)
                     await tx.wallet.update({
                         where: { userId: order.sellerId },
-                        data: {
-                            pendingPKR: { decrement: grossAmount },
-                            balancePKR: { increment: netAmount }
-                        }
-                    });
-
-                    await tx.transaction.create({
-                        data: {
-                            userId: order.sellerId,
-                            amountPKR: netAmount,
-                            type: 'EARNING',
-                            status: 'COMPLETED',
-                            description: `Dispute Resolved in favor for Order ${order.id}`
-                        }
+                        data: { pendingPKR: { decrement: grossAmount } },
                     });
 
                     await tx.order.update({
@@ -151,13 +132,19 @@ export class DisputeService {
                         data: {
                             status: 'COMPLETED',
                             escrowReleased: true,
-                            commission
-                        }
+                        },
                     });
                 }
             }
 
             return resolvedDispute;
         });
+
+        // After transaction: if seller won, use WalletService.addEarning for correct commission
+        if (data.status === 'RESOLVED_SELLER' && dispute?.order) {
+            await this.walletService.addEarning(dispute!.order!.sellerId, dispute!.order!.escrowAmount, false);
+        }
+
+        return { success: true, disputeId };
     }
 }

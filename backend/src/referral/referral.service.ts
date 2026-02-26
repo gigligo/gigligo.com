@@ -66,20 +66,43 @@ export class ReferralService {
 
         const BONUS_CREDITS = 10;
 
-        // Create referral record and award credits to BOTH users
+        // Create referral record and award credits to BOTH users with ledger tracking
         const [referral] = await this.prisma.$transaction([
             this.prisma.referral.create({
                 data: { referrerId: referrer.id, refereeId: newUserId, bonusGiven: BONUS_CREDITS },
             }),
             this.prisma.user.update({
                 where: { id: referrer.id },
-                data: { credits: { increment: BONUS_CREDITS }, referredById: undefined },
+                data: { credits: { increment: BONUS_CREDITS } },
             }),
             this.prisma.user.update({
                 where: { id: newUserId },
                 data: { credits: { increment: BONUS_CREDITS }, referredById: referrer.id },
             }),
         ]);
+
+        // Log both credit ledger entries (outside batch for proper balanceAfter)
+        const referrerUser = await this.prisma.user.findUnique({ where: { id: referrer.id }, select: { credits: true } });
+        const refereeUser = await this.prisma.user.findUnique({ where: { id: newUserId }, select: { credits: true } });
+
+        await this.prisma.creditLedger.createMany({
+            data: [
+                {
+                    userId: referrer.id,
+                    amount: BONUS_CREDITS,
+                    type: 'BONUS',
+                    reason: `Referral bonus — referred a new user`,
+                    balanceAfter: referrerUser?.credits ?? BONUS_CREDITS,
+                },
+                {
+                    userId: newUserId,
+                    amount: BONUS_CREDITS,
+                    type: 'BONUS',
+                    reason: `Referral bonus — joined via referral code`,
+                    balanceAfter: refereeUser?.credits ?? BONUS_CREDITS,
+                },
+            ],
+        });
 
         this.logger.log(`Referral processed: ${referrer.id} → ${newUserId} (+${BONUS_CREDITS} credits each)`);
         return referral;

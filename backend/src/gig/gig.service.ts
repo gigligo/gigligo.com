@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -16,31 +16,29 @@ export class GigService {
             ];
         }
 
-        // Fetch gigs along with any active boosts
+        // Optimized: use _count instead of loading all review objects
         const now = new Date();
         const gigs = await this.prisma.gig.findMany({
             where,
             include: {
                 seller: { select: { id: true, profile: true } },
-                reviews: true,
+                _count: { select: { reviews: true } },
                 boosts: { where: { expiresAt: { gt: now } } }
             },
             orderBy: { createdAt: 'desc' }
         });
 
-        // Map to include review stats
-        const mappedGigs = gigs.map(gig => ({
-            ...gig,
-            reviewCount: gig.reviews.length,
-            avgRating: gig.reviews.length > 0 ? gig.reviews.reduce((sum, r) => sum + r.rating, 0) / gig.reviews.length : 0
-        }));
-
         // Sort so that gigs with active boosts appear first
-        return mappedGigs.sort((a, b) => {
-            const aBoosted = a.boosts.length > 0 ? 1 : 0;
-            const bBoosted = b.boosts.length > 0 ? 1 : 0;
-            return bBoosted - aBoosted;
-        });
+        return gigs
+            .map(gig => ({
+                ...gig,
+                reviewCount: (gig as any)._count.reviews,
+            }))
+            .sort((a, b) => {
+                const aBoosted = a.boosts.length > 0 ? 1 : 0;
+                const bBoosted = b.boosts.length > 0 ? 1 : 0;
+                return bBoosted - aBoosted;
+            });
     }
 
     async findOne(id: string) {
@@ -80,6 +78,12 @@ export class GigService {
     }
 
     async create(sellerId: string, data: any) {
+        // KYC check: seller must be verified before creating gigs
+        const seller = await this.prisma.user.findUnique({ where: { id: sellerId }, select: { kycStatus: true } });
+        if (!seller || seller.kycStatus !== 'APPROVED') {
+            throw new BadRequestException('You must complete KYC verification before creating gigs. Go to Dashboard → KYC Verification.');
+        }
+
         return this.prisma.gig.create({
             data: {
                 ...data,

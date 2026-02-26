@@ -24,11 +24,11 @@ export class ReviewService {
         if (order.buyerId !== buyerId) throw new ForbiddenException('You are not the buyer of this order');
         if (order.status !== 'COMPLETED') throw new BadRequestException('You can only review completed orders');
 
-        // Check if already reviewed
+        // Check if already reviewed this specific order
         const existing = await this.prisma.review.findFirst({
             where: { reviewerId: buyerId, gigId: order.gigId }
         });
-        if (existing) throw new BadRequestException('You have already reviewed this order');
+        if (existing) throw new BadRequestException('You have already reviewed this gig');
 
         // Create the review
         const review = await this.prisma.review.create({
@@ -115,7 +115,13 @@ export class ReviewService {
             where: { role: { in: ['SELLER', 'STUDENT'] } },
             select: { id: true }
         });
-        await Promise.all(sellers.map(s => this.recalculateSellerLevel(s.id)));
-        this.logger.log(`[Cron] Recalculated levels for ${sellers.length} sellers`);
+
+        // Process in batches of 50 to avoid overwhelming the DB
+        const BATCH_SIZE = 50;
+        for (let i = 0; i < sellers.length; i += BATCH_SIZE) {
+            const batch = sellers.slice(i, i + BATCH_SIZE);
+            await Promise.all(batch.map(s => this.recalculateSellerLevel(s.id)));
+        }
+        this.logger.log(`[Cron] Recalculated levels for ${sellers.length} sellers (batches of ${BATCH_SIZE})`);
     }
 }

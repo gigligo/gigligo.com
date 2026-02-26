@@ -23,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             async authorize(credentials) {
                 if (!credentials?.email) return null;
 
-                // Mode 1: Pre-verified via OTP (frontend already called verify-otp)
+                // Only pre-verified mode (frontend already called verify-otp)
                 if (credentials.accessToken && credentials.userId) {
                     return {
                         id: credentials.userId as string,
@@ -35,35 +35,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     };
                 }
 
-                // Mode 2: Fallback direct login (backward compat)
-                if (!credentials.password) return null;
-                try {
-                    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://gigligo-com.onrender.com';
-                    const res = await fetch(backendUrl + "/api/auth/login", {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            email: credentials.email,
-                            password: credentials.password
-                        })
-                    });
-                    const data = await res.json();
-
-                    if (res.ok && data.access_token) {
-                        return {
-                            id: data.user.id,
-                            email: data.user.email,
-                            name: data.user.profile?.fullName,
-                            accessToken: data.access_token,
-                            role: data.user.role,
-                            kycStatus: data.user.kycStatus
-                        };
-                    }
-                    return null;
-                } catch (e) {
-                    console.error("Credentials error:", e);
-                    return null;
-                }
+                // No fallback — login must go through OTP flow
+                return null;
             }
         })
     ],
@@ -76,10 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            email: user.email,
-                            name: user.name,
-                            picture: user.image,
-                            googleId: account.providerAccountId
+                            credential: account.id_token || account.access_token,
                         })
                     });
                     const data = await res.json();
@@ -130,5 +100,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
     },
     session: { strategy: 'jwt' },
-    secret: process.env.AUTH_SECRET || "super-secret-next-auth-key-for-gigligo-platform-123456",
+    secret: (() => {
+        const secret = process.env.AUTH_SECRET;
+        if (!secret) throw new Error('FATAL: AUTH_SECRET environment variable is required');
+        return secret;
+    })(),
 });

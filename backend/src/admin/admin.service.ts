@@ -118,23 +118,35 @@ export class AdminService {
         });
     }
 
-    async decideKyc(kycId: string, status: 'APPROVED' | 'REJECTED') {
+    async decideKyc(kycId: string, status: 'APPROVED' | 'REJECTED', adminId: string) {
         const kycRecord = await this.prisma.kYC.findUnique({ where: { id: kycId } });
         if (!kycRecord) throw new Error('KYC Record not found');
 
-        // Update the KYC Table
-        const updatedKyc = await this.prisma.kYC.update({
-            where: { id: kycId },
-            data: { status }
-        });
+        return this.prisma.$transaction(async (tx) => {
+            // Update the KYC Table
+            const updatedKyc = await tx.kYC.update({
+                where: { id: kycId },
+                data: { status, reviewedAt: new Date(), reviewerId: adminId }
+            });
 
-        // Update the User's `kycStatus` field so the global platform constraints know about the decision
-        await this.prisma.user.update({
-            where: { id: kycRecord.userId },
-            data: { kycStatus: status }
-        });
+            // Update the User's kycStatus
+            await tx.user.update({
+                where: { id: kycRecord.userId },
+                data: { kycStatus: status }
+            });
 
-        return updatedKyc;
+            // Audit log
+            await tx.auditLog.create({
+                data: {
+                    adminId,
+                    action: `KYC_${status}`,
+                    targetId: kycRecord.userId,
+                    details: `KYC ${status.toLowerCase()} for user ${kycRecord.userId}`,
+                },
+            });
+
+            return updatedKyc;
+        });
     }
 
     async addCreditsToUser(userId: string, amount: number, adminId: string) {
@@ -156,7 +168,51 @@ export class AdminService {
                 },
             });
 
+            // Audit log
+            await tx.auditLog.create({
+                data: {
+                    adminId,
+                    action: 'CREDIT_ADJUSTMENT',
+                    targetId: userId,
+                    details: `Added ${amount} credits to user ${userId}. New balance: ${user.credits}`,
+                },
+            });
+
             return { success: true, newBalance: user.credits };
         });
+    }
+
+    async suspendUser(userId: string, adminId: string) {
+        await this.prisma.$transaction(async (tx) => {
+            await tx.user.update({
+                where: { id: userId },
+                data: { isSuspended: true },
+            });
+
+            await tx.auditLog.create({
+                data: {
+                    adminId,
+                    action: 'USER_SUSPENDED',
+                    targetId: userId,
+                    details: `User ${userId} suspended by admin ${adminId}`,
+                },
+            });
+        });
+
+        return { success: true, message: 'User suspended' };
+    }
+
+    async getAuditLogs(page = 1, limit = 50) {
+        const skip = (page - 1) * limit;
+        const [items, total] = await Promise.all([
+            this.prisma.auditLog.findMany({
+                include: { admin: { select: { email: true, profile: { select: { fullName: true } } } } },
+                orderBy: { createdAt: 'desc' },
+                skip,
+                take: limit,
+            }),
+            this.prisma.auditLog.count(),
+        ]);
+        return { items, total, page, limit };
     }
 }

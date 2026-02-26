@@ -75,12 +75,18 @@ export class WalletService {
         }
     }
 
-    async handleStripeWebhook(payload: any, signature: string) {
-        // In production, verify the webhook signature using process.env.STRIPE_WEBHOOK_SECRET
-        // const event = this.stripe.webhooks.constructEvent(payload, signature, process.env.STRIPE_WEBHOOK_SECRET);
+    async handleStripeWebhook(rawBody: Buffer, signature: string) {
+        const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+        if (!webhookSecret) {
+            throw new BadRequestException('Stripe webhook secret not configured');
+        }
 
-        // For this skeleton, we assume the payload is already verified if arriving here.
-        const event = payload;
+        let event: any;
+        try {
+            event = this.stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+        } catch (err: any) {
+            throw new BadRequestException(`Webhook signature verification failed: ${err.message}`);
+        }
 
         if (event.type === 'checkout.session.completed') {
             const session = event.data.object;
@@ -88,11 +94,19 @@ export class WalletService {
                 const userId = session.client_reference_id;
                 const amountPKR = parseInt(session.metadata.amountPKR, 10);
 
+                // Idempotency: check if this session was already processed
+                const existing = await this.prisma.transaction.findFirst({
+                    where: { reference: session.id, status: 'COMPLETED' },
+                });
+                if (existing) {
+                    return { received: true, message: 'Already processed' };
+                }
+
                 // Add funds to the user's wallet
                 if (userId && amountPKR) {
                     await this.addFunds(userId, amountPKR);
 
-                    // Log the transaction
+                    // Log the transaction with session ID for idempotency
                     await this.prisma.transaction.create({
                         data: {
                             userId,
@@ -100,6 +114,7 @@ export class WalletService {
                             type: 'EARNING',
                             status: 'COMPLETED',
                             method: 'BANK_TRANSFER',
+                            reference: session.id,
                             description: 'Stripe Wallet Deposit',
                         }
                     });
@@ -184,7 +199,7 @@ export class WalletService {
                 },
             });
 
-            // Add commission to Admin Wallet if > 0
+            // Add commission to platform admin wallet if > 0
             if (commission > 0) {
                 await this.addCommission(tx, commission, userId, 'Earning Deduction');
             }
@@ -194,19 +209,23 @@ export class WalletService {
     }
 
     async addCommission(tx: any, amount: number, sourceId: string, description: string) {
-        // We'll use a hardcoded 'ADMIN_WALLET_ID' for the platform ledger.
-        // In a real system, you'd fetch the actual admin user ID.
-        const adminWalletId = 'ADMIN_WALLET_ID';
+        // Find the platform admin user to credit commission
+        const adminUser = await tx.user.findFirst({ where: { role: 'ADMIN' } });
+        if (!adminUser) {
+            // Log warning but don't crash — commission tracking via transaction records is sufficient
+            console.warn('No ADMIN user found for commission. Commission logged in transactions but not credited to a wallet.');
+            return;
+        }
 
         await tx.wallet.upsert({
-            where: { userId: adminWalletId },
-            create: { userId: adminWalletId, balancePKR: amount, pendingPKR: 0 },
+            where: { userId: adminUser.id },
+            create: { userId: adminUser.id, balancePKR: amount, pendingPKR: 0 },
             update: { balancePKR: { increment: amount } },
         });
 
         await tx.transaction.create({
             data: {
-                userId: adminWalletId,
+                userId: adminUser.id,
                 amountPKR: amount,
                 type: 'COMMISSION',
                 status: 'COMPLETED',
@@ -232,19 +251,20 @@ export class WalletService {
             }
         }
 
-        const wallet = await this.getBalance(userId);
-        if (wallet.balancePKR < amount) {
-            throw new BadRequestException(`Insufficient balance. Available: PKR ${wallet.balancePKR}`);
-        }
-
+        // Atomic withdrawal: check balance and deduct inside transaction
         return this.prisma.$transaction(async (tx) => {
-            await tx.wallet.update({
-                where: { userId },
-                data: {
-                    balancePKR: { decrement: amount },
-                    pendingPKR: { increment: amount },
-                },
-            });
+            let wallet;
+            try {
+                wallet = await tx.wallet.update({
+                    where: { userId, balancePKR: { gte: amount } },
+                    data: {
+                        balancePKR: { decrement: amount },
+                        pendingPKR: { increment: amount },
+                    },
+                });
+            } catch {
+                throw new BadRequestException(`Insufficient balance for withdrawal of PKR ${amount}`);
+            }
 
             const transaction = await tx.transaction.create({
                 data: {

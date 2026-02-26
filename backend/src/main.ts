@@ -25,24 +25,23 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   // ── CORS ──
-  const allowedOrigins: string[] = ['http://localhost:3000', 'http://localhost:3001'];
-  if (process.env.CORS_ORIGINS) {
-    allowedOrigins.push(...process.env.CORS_ORIGINS.split(',').map(o => o.trim()));
-  }
-  if (process.env.FRONTEND_URL) {
-    allowedOrigins.push(process.env.FRONTEND_URL);
-  }
-  // Also allow common Vercel preview deployments
-  allowedOrigins.push('https://gigligo.com', 'https://www.gigligo.com');
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://gigligo.com',
+    'https://www.gigligo.com',
+    ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
+  ];
 
   app.enableCors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      // Allow requests with no origin (mobile apps, curl, etc.)
+      // Allow requests with no origin (mobile apps, curl, server-to-server)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.some(o => origin === o || origin.endsWith('.vercel.app'))) {
-        return callback(null, true);
-      }
-      callback(null, false);
+      // Check explicit allowlist
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      // Allow the app's own Vercel preview domains (gigligo-*.vercel.app only)
+      if (/^https:\/\/gigligo(-[a-z0-9]+)?\.vercel\.app$/.test(origin)) return callback(null, true);
+      return callback(new Error(`CORS: Origin ${origin} not allowed`));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

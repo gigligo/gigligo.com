@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -16,6 +16,12 @@ export class JobService {
         location?: string;
         jobType?: 'REMOTE' | 'ONSITE' | 'HYBRID';
     }) {
+        // KYC check: employer must be verified before posting jobs
+        const employer = await this.prisma.user.findUnique({ where: { id: employerId }, select: { kycStatus: true } });
+        if (!employer || employer.kycStatus !== 'APPROVED') {
+            throw new BadRequestException('You must complete KYC verification before posting jobs. Go to Dashboard → KYC Verification.');
+        }
+
         return this.prisma.job.create({
             data: {
                 employerId,

@@ -12,72 +12,11 @@ export class UsersService {
         });
     }
 
-    async updateChallenge(userId: string, currentChallenge: string | null) {
-        return this.prisma.user.update({
-            where: { id: userId },
-            data: { currentChallenge },
-        });
-    }
-
-    async getWebAuthnCredential(credentialID: string) {
-        return this.prisma.webAuthnCredential.findUnique({
-            where: { credentialID },
-            include: { user: true },
-        });
-    }
-
-    async getUserCredentials(userId: string) {
-        return this.prisma.webAuthnCredential.findMany({
-            where: { userId },
-        });
-    }
-
-    async saveWebAuthnCredential(userId: string, data: any) {
-        return this.prisma.webAuthnCredential.create({
-            data: {
-                userId,
-                credentialID: data.credentialID,
-                credentialPublicKey: data.credentialPublicKey,
-                counter: data.counter,
-                credentialDeviceType: data.credentialDeviceType,
-                credentialBackedUp: data.credentialBackedUp,
-                transports: data.transports ? JSON.stringify(data.transports) : null,
-            },
-        });
-    }
-
-    async updateCredentialCounter(credentialID: string, counter: number | bigint) {
-        return this.prisma.webAuthnCredential.update({
-            where: { credentialID },
-            data: { counter },
-        });
-    }
-
     async findById(id: string) {
         return this.prisma.user.findUnique({
             where: { id },
             include: { profile: true, wallet: true },
         });
-    }
-
-    // --- WebAuthn Autofill Challenges ---
-
-    async saveAuthChallenge(challenge: string, expiresAt: Date) {
-        return this.prisma.authChallenge.create({
-            data: { challenge, expiresAt },
-        });
-    }
-
-    async getAuthChallenge(id: string) {
-        return this.prisma.authChallenge.findUnique({
-            where: { id },
-        });
-    }
-
-    async deleteAuthChallenge(id: string) {
-        return this.prisma.authChallenge.delete({
-            where: { id },
-        }).catch(() => null); // Ignore if already deleted
     }
 
     async create(data: { email: string; passwordHash?: string | null; googleId?: string; fullName: string; role?: string; phone?: string; nationalId?: string; kycStatus?: any; termsAcceptedAt?: Date }) {
@@ -157,7 +96,7 @@ export class UsersService {
             }
 
             return user;
-        });
+        }, { timeout: 15000 });
     }
 
     async updateRole(userId: string, role: string) {
