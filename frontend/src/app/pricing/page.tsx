@@ -191,14 +191,7 @@ export default function PricingPage() {
                     </div>
                 </div>
 
-                {/* Call to Action */}
-                <div className="py-24 text-center px-6">
-                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-[#EFEEEA] mb-6">Ready to accelerate your career?</h2>
-                    <p className="text-lg text-slate-600 dark:text-[#EFEEEA]/60 mb-10 max-w-2xl mx-auto">Secure your spot as a Founding Member today and unlock lifetime benefits.</p>
-                    <Link href="/register" className="inline-block px-8 py-4 bg-[#FE7743] text-white font-bold rounded-xl text-lg hover:bg-[#FE7743]/90 transition shadow-[0_0_20px_rgba(254,119,67,0.4)]">
-                        Join Now
-                    </Link>
-                </div>
+
             </main>
             <Footer />
         </div>

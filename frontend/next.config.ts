@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: blob: https: http:",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://gigligo-com.onrender.com https://www.google-analytics.com wss: ws:",
+              "connect-src 'self' http://localhost:8000 https://gigligo-com.onrender.com https://www.google-analytics.com https://res.cloudinary.com wss: ws:",
               "frame-ancestors 'none'",
             ].join('; '),
           },

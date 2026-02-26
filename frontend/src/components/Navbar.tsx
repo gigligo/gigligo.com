@@ -85,7 +85,7 @@ export function Navbar() {
         <>
             <header
                 className={`fixed top-0 z-50 w-full transition-all duration-400 ${scrolled
-                    ? 'bg-white dark:bg-[#0a0a0a]/90 border-b border-black/5 dark:border-white/5 backdrop-blur-xl shadow-md'
+                    ? 'bg-white/95 dark:bg-[#0a0a0a]/90 border-b border-black/5 dark:border-white/5 backdrop-blur-xl shadow-md'
                     : 'bg-transparent'
                     }`}
                 style={{ height: 68 }}
@@ -96,7 +96,8 @@ export function Navbar() {
                             <div className="logo-glow transition-transform group-hover:scale-105">
                                 <GigligoMark size={32} />
                             </div>
-                            <span className="font-display text-xl font-black tracking-tighter text-slate-900 dark:text-white">
+                            <span className="font-display text-xl font-black tracking-tighter text-slate-900 dark:text-white
+                                transition-colors duration-300">
                                 gigligo<span className="text-teal-vibrant opacity-80 dark:opacity-60">.com</span>
                             </span>
                         </Link>
@@ -154,7 +155,8 @@ export function Navbar() {
                                         )}
                                         <Link href="/dashboard" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Dashboard</Link>
                                         <Link href="/dashboard/inbox" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Inbox</Link>
-                                        <Link href="/dashboard/profile" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Profile</Link>
+                                        <Link href={`/profile/${session?.user?.id || 'me'}`} className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">View Profile</Link>
+                                        <Link href="/dashboard/profile" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Edit Profile</Link>
                                         <Link href="/dashboard/settings" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Settings</Link>
                                         <div className="h-px bg-slate-100 dark:bg-white/5 my-2" />
                                         <button onClick={() => signOut({ callbackUrl: '/' })} className="px-4 py-2 hover:bg-red-50 dark:hover:bg-red-500/10 text-sm font-semibold text-red-600 dark:text-red-400 text-left w-full transition-colors">Logout</button>

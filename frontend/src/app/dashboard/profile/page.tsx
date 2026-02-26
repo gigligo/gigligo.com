@@ -83,9 +83,9 @@ export default function ProfileEditorPage() {
                 <div className="flex flex-col md:flex-row gap-8">
                     {/* Sidebar Tabs */}
                     <div className="w-full md:w-64 shrink-0 space-y-2">
-                        <h1 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Profile Editor</h1>
+                        <h1 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Profile</h1>
 
-                        <TabButton active={activeTab === 'basic'} onClick={() => setActiveTab('basic')} icon={<User size={18} />} label="Basic Info" />
+                        <TabButton active={activeTab === 'basic'} onClick={() => setActiveTab('basic')} icon={<User size={18} />} label="Info" />
                         <TabButton active={activeTab === 'experience'} onClick={() => setActiveTab('experience')} icon={<Briefcase size={18} />} label="Experience" />
                         <TabButton active={activeTab === 'education'} onClick={() => setActiveTab('education')} icon={<GraduationCap size={18} />} label="Education" />
                         <TabButton active={activeTab === 'portfolio'} onClick={() => setActiveTab('portfolio')} icon={<ImageIcon size={18} />} label="Portfolio" />
@@ -103,7 +103,7 @@ export default function ProfileEditorPage() {
                         {/* ══ BASIC INFO TAB ══ */}
                         {activeTab === 'basic' && (
                             <form onSubmit={handleBasicSubmit} className="space-y-6">
-                                <h2 className="text-xl font-bold mb-4">Basic Information</h2>
+                                <h2 className="text-xl font-bold mb-4">Information</h2>
                                 <div className="mb-8 flex flex-col items-center sm:flex-row sm:items-start gap-6">
                                     <div className="relative group shrink-0">
                                         <div className="w-32 h-32 rounded-full overflow-hidden bg-slate-200 dark:bg-[#111] border-4 border-white dark:border-[#222] shadow-lg flex items-center justify-center relative">
