@@ -41,7 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         })
     ],
     callbacks: {
-        async signIn({ user, account, profile }: { user: any; account: any; profile?: any }) {
+        async signIn({ user, account, profile }: { user: any; account?: any; profile?: any }) {
             if (account?.provider === 'google') {
                 try {
                     const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
