@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { creditApi, walletApi, applicationApi, jobApi, orderApi, disputeApi, reviewApi, analyticsApi } from '@/lib/api';
+import { creditApi, walletApi, applicationApi, jobApi, orderApi, disputeApi, reviewApi, analyticsApi, kycApi } from '@/lib/api';
 import Link from 'next/link';
 import { Loader2, Star } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function DashboardPage() {
-    const { data: session, status } = useSession();
+    const { data: session, status, update: updateSession } = useSession();
     const router = useRouter();
     const [credits, setCredits] = useState(0);
     const [wallet, setWallet] = useState<any>(null);
@@ -34,10 +34,31 @@ export default function DashboardPage() {
 
     const [analytics, setAnalytics] = useState<any[]>([]);
 
+    // ── Live KYC status from backend (not from cached JWT) ──
+    const [liveKycStatus, setLiveKycStatus] = useState<string | null>(null);
+
     const token = (session as any)?.accessToken;
     const role = (session as any)?.role;
     const isFreelancer = ['SELLER', 'STUDENT', 'FREE'].includes(role);
     const isEmployer = ['BUYER', 'EMPLOYER'].includes(role);
+
+    // Fetch fresh KYC status from backend on every page load
+    useEffect(() => {
+        if (!token || !isFreelancer) return;
+        kycApi.getStatus(token)
+            .then((data: any) => {
+                const freshStatus = data?.kycStatus || data?.status || 'UNVERIFIED';
+                setLiveKycStatus(freshStatus);
+                // If approved, update the NextAuth session so future navigations use the fresh status
+                if (freshStatus === 'APPROVED' && (session as any)?.kycStatus !== 'APPROVED') {
+                    updateSession({ kycStatus: 'APPROVED' });
+                }
+            })
+            .catch(() => {
+                // Fallback to session value if backend call fails
+                setLiveKycStatus((session as any)?.kycStatus || 'UNVERIFIED');
+            });
+    }, [token, isFreelancer]);
 
     useEffect(() => {
         if (status === 'unauthenticated') router.push('/login');
@@ -129,8 +150,18 @@ export default function DashboardPage() {
     const hiredApps = applications.filter(a => a.status === 'HIRED').length;
     const totalApplicants = myJobs.reduce((sum: number, j: any) => sum + (j._count?.applications || 0), 0);
 
-    const kycStatus = (session as any)?.kycStatus || 'UNVERIFIED';
+    // Use live backend KYC status instead of cached JWT value
+    const kycStatus = liveKycStatus || (session as any)?.kycStatus || 'UNVERIFIED';
     const showKycBlocker = isFreelancer && kycStatus !== 'APPROVED';
+    const kycLoading = isFreelancer && liveKycStatus === null;
+
+    if (kycLoading) {
+        return (
+            <div className="min-h-screen bg-slate-50 dark:bg-[#000] flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-[#FE7743] border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     if (showKycBlocker) {
         return (

@@ -85,6 +85,26 @@ export class AuthController {
     }
 
     // ═══════════════════════════════════════
+    // PASSWORD RESET (Public)
+    // ═══════════════════════════════════════
+
+    @Post('forgot-password')
+    async forgotPassword(@Body() body: { email: string }) {
+        return this.authService.forgotPassword(body.email);
+    }
+
+    @Post('reset-password')
+    async resetPassword(@Body() body: { email: string; code: string; newPassword: string }) {
+        return this.authService.resetPassword(body.email, body.code, body.newPassword);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('change-password')
+    async changePassword(@Req() req: any, @Body() body: { currentPassword: string; newPassword: string }) {
+        return this.authService.changePassword(req.user.id, body.currentPassword, body.newPassword);
+    }
+
+    // ═══════════════════════════════════════
     // TWO-FACTOR AUTHENTICATION (2FA)
     // ═══════════════════════════════════════
 

@@ -21,6 +21,15 @@ function LoginContent() {
     const [resendCooldown, setResendCooldown] = useState(0);
     const otpRefs = Array.from({ length: 6 }, () => React.createRef<HTMLInputElement>());
 
+    // Forgot Password states
+    const [forgotStep, setForgotStep] = useState<'idle' | 'email' | 'code' | 'done'>('idle');
+    const [resetEmail, setResetEmail] = useState('');
+    const [resetCode, setResetCode] = useState('');
+    const [resetNewPassword, setResetNewPassword] = useState('');
+    const [resetConfirmPassword, setResetConfirmPassword] = useState('');
+    const [resetLoading, setResetLoading] = useState(false);
+    const [resetSuccess, setResetSuccess] = useState('');
+
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
     // Step 1: Submit email + password
@@ -158,6 +167,55 @@ function LoginContent() {
         if (pasted.length === 6) setTimeout(() => handleVerifyOtp(), 100);
     };
 
+    // ── Forgot Password Handlers ──
+    const handleForgotSubmitEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setResetLoading(true);
+        setError('');
+        try {
+            const res = await fetch(backendUrl + '/api/auth/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: resetEmail }),
+            });
+            await res.json();
+            setForgotStep('code');
+        } catch {
+            setError('Failed to send reset code. Please try again.');
+        } finally {
+            setResetLoading(false);
+        }
+    };
+
+    const handleForgotResetPassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (resetNewPassword.length < 8) {
+            setError('Password must be at least 8 characters.');
+            return;
+        }
+        if (resetNewPassword !== resetConfirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+        setResetLoading(true);
+        setError('');
+        try {
+            const res = await fetch(backendUrl + '/api/auth/reset-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: resetEmail, code: resetCode, newPassword: resetNewPassword }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Reset failed');
+            setForgotStep('done');
+            setResetSuccess('Password reset successful! You can now sign in.');
+        } catch (err: any) {
+            setError(err.message || 'Failed to reset password.');
+        } finally {
+            setResetLoading(false);
+        }
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 relative">
             <div className="absolute top-4 right-4">
@@ -175,7 +233,18 @@ function LoginContent() {
                         <span className="font-display text-xl font-black tracking-tighter text-slate-900 dark:text-white">gigligo<span className="text-teal-vibrant opacity-60">.com</span></span>
                     </Link>
 
-                    {!otpStep ? (
+                    {forgotStep !== 'idle' ? (
+                        <>
+                            <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-8 tracking-tight">
+                                {forgotStep === 'done' ? 'Password Reset!' : 'Reset Password'}
+                            </h1>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">
+                                {forgotStep === 'email' && 'Enter your email to receive a reset code'}
+                                {forgotStep === 'code' && <>We sent a code to <strong className="text-slate-700 dark:text-white">{resetEmail}</strong></>}
+                                {forgotStep === 'done' && 'You can now sign in with your new password'}
+                            </p>
+                        </>
+                    ) : !otpStep ? (
                         <>
                             <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-8 tracking-tight">Welcome</h1>
                             <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">Sign in to continue</p>
@@ -194,7 +263,91 @@ function LoginContent() {
                     </div>
                 )}
 
-                {!otpStep ? (
+                {forgotStep === 'email' ? (
+                    <form onSubmit={handleForgotSubmitEmail} className="space-y-4 mb-6">
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email Address</label>
+                            <input
+                                type="email"
+                                required
+                                value={resetEmail}
+                                onChange={e => setResetEmail(e.target.value)}
+                                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] dark:focus:border-[#FE7743]/50 transition-colors"
+                                placeholder="you@example.com"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={resetLoading}
+                            className="w-full py-3.5 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20 disabled:opacity-50"
+                        >
+                            {resetLoading ? 'Sending Code...' : 'Send Reset Code'}
+                        </button>
+                        <button type="button" onClick={() => { setForgotStep('idle'); setError(''); }} className="w-full py-2 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-white transition">
+                            ← Back to Sign In
+                        </button>
+                    </form>
+                ) : forgotStep === 'code' ? (
+                    <form onSubmit={handleForgotResetPassword} className="space-y-4 mb-6">
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Reset Code</label>
+                            <input
+                                type="text"
+                                required
+                                value={resetCode}
+                                onChange={e => setResetCode(e.target.value)}
+                                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#FE7743] dark:focus:border-[#FE7743]/50 transition-colors text-center tracking-[0.3em] font-mono text-lg"
+                                placeholder="000000"
+                                maxLength={6}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">New Password</label>
+                            <input
+                                type="password"
+                                required
+                                value={resetNewPassword}
+                                onChange={e => setResetNewPassword(e.target.value)}
+                                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] dark:focus:border-[#FE7743]/50 transition-colors"
+                                placeholder="Minimum 8 characters"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Confirm New Password</label>
+                            <input
+                                type="password"
+                                required
+                                value={resetConfirmPassword}
+                                onChange={e => setResetConfirmPassword(e.target.value)}
+                                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#FE7743] dark:focus:border-[#FE7743]/50 transition-colors"
+                                placeholder="Re-enter new password"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={resetLoading}
+                            className="w-full py-3.5 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20 disabled:opacity-50"
+                        >
+                            {resetLoading ? 'Resetting...' : 'Reset Password'}
+                        </button>
+                        <button type="button" onClick={() => { setForgotStep('email'); setError(''); }} className="w-full py-2 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-white transition">
+                            ← Change Email
+                        </button>
+                    </form>
+                ) : forgotStep === 'done' ? (
+                    <div className="text-center space-y-4 mb-6">
+                        <div className="w-16 h-16 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto">
+                            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                        </div>
+                        <p className="text-green-500 font-semibold">{resetSuccess}</p>
+                        <button
+                            onClick={() => { setForgotStep('idle'); setError(''); setResetEmail(''); setResetCode(''); setResetNewPassword(''); setResetConfirmPassword(''); }}
+                            className="w-full py-3.5 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20"
+                        >
+                            Back to Sign In
+                        </button>
+                    </div>
+                ) : !otpStep ? (
                     <>
                         <form onSubmit={handleCredentialsLogin} className="space-y-4 mb-6">
                             <div>
@@ -209,7 +362,12 @@ function LoginContent() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+                                <div className="flex justify-between items-center mb-1.5">
+                                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">Password</label>
+                                    <button type="button" onClick={() => { setForgotStep('email'); setResetEmail(email); setError(''); }} className="text-xs text-[#FE7743] hover:text-[#FE7743]/80 font-semibold transition">
+                                        Forgot Password?
+                                    </button>
+                                </div>
                                 <input
                                     type="password"
                                     required

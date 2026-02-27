@@ -185,4 +185,59 @@ export class EmailService {
         `;
         return this.sendMail(to, `Dispute Opened — Action Required`, html);
     }
+
+    async sendKycApprovedEmail(to: string, fullName: string) {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gigligo.com';
+        const html = `
+            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #0d9488;">Identity Verified ✅</h2>
+                <p>Hello ${fullName},</p>
+                <p>Great news! Your identity verification (KYC) has been <strong style="color: #0d9488;">approved</strong>.</p>
+                <p>You now have full access to all platform features including applying to jobs and receiving payments.</p>
+                <br>
+                <a href="${appUrl}/dashboard" style="background-color: #0d9488; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Go to Dashboard</a>
+                <br><br>
+                <p>Best Regards,</p>
+                <p><strong>The Gigligo Team</strong></p>
+            </div>
+        `;
+        return this.sendMail(to, 'KYC Approved — You\'re Verified! ✅', html);
+    }
+
+    async sendKycRejectedEmail(to: string, fullName: string) {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://gigligo.com';
+        const html = `
+            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #dc2626;">Verification Update ⚠️</h2>
+                <p>Hello ${fullName},</p>
+                <p>Unfortunately, your identity verification (KYC) was <strong style="color: #dc2626;">not approved</strong>.</p>
+                <p>This is usually because the documents were unclear or didn't match. Please re-submit clear, valid documents.</p>
+                <br>
+                <a href="${appUrl}/dashboard/kyc" style="background-color: #dc2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Re-Submit Documents</a>
+                <br><br>
+                <p>Best Regards,</p>
+                <p><strong>The Gigligo Team</strong></p>
+            </div>
+        `;
+        return this.sendMail(to, 'KYC Update — Action Required', html);
+    }
+
+    async sendPasswordResetEmail(to: string, fullName: string, code: string) {
+        const html = `
+            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #0d9488;">Password Reset Request</h2>
+                <p>Hello ${fullName || 'there'},</p>
+                <p>We received a request to reset your password. Use the code below to complete the process:</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #0d9488; background: #f0fdfa; padding: 15px 30px; border-radius: 12px; border: 2px dashed #0d9488;">${code}</span>
+                </div>
+                <p>This code expires in <strong>10 minutes</strong>.</p>
+                <p>If you didn't request a password reset, you can safely ignore this email.</p>
+                <br>
+                <p>Best Regards,</p>
+                <p><strong>The Gigligo Team</strong></p>
+            </div>
+        `;
+        return this.sendMail(to, 'Password Reset Code — Gigligo', html);
+    }
 }

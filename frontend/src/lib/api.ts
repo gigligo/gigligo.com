@@ -94,6 +94,18 @@ export const orderApi = {
 export const authApi = {
     getProfile: (token: string) =>
         apiFetch('/api/auth/profile', { token }),
+    forgotPassword: (email: string) =>
+        apiFetch('/api/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) }),
+    resetPassword: (email: string, code: string, newPassword: string) =>
+        apiFetch('/api/auth/reset-password', { method: 'POST', body: JSON.stringify({ email, code, newPassword }) }),
+    changePassword: (token: string, currentPassword: string, newPassword: string) =>
+        apiFetch('/api/auth/change-password', { method: 'POST', token, body: JSON.stringify({ currentPassword, newPassword }) }),
+};
+
+// KYC APIs
+export const kycApi = {
+    getStatus: (token: string) =>
+        apiFetch('/api/kyc/status', { token }),
 };
 
 // Gig APIs

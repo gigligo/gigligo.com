@@ -1,9 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { EmailService } from '../email/email.service';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class AdminService {
-    constructor(private prisma: PrismaService) { }
+    private readonly logger = new Logger(AdminService.name);
+
+    constructor(
+        private prisma: PrismaService,
+        private emailService: EmailService,
+        private notificationService: NotificationService,
+    ) { }
 
     async getDashboardStats() {
         const [
@@ -122,9 +130,9 @@ export class AdminService {
         const kycRecord = await this.prisma.kYC.findUnique({ where: { id: kycId } });
         if (!kycRecord) throw new Error('KYC Record not found');
 
-        return this.prisma.$transaction(async (tx) => {
+        const updatedKyc = await this.prisma.$transaction(async (tx) => {
             // Update the KYC Table
-            const updatedKyc = await tx.kYC.update({
+            const updated = await tx.kYC.update({
                 where: { id: kycId },
                 data: { status, reviewedAt: new Date(), reviewerId: adminId }
             });
@@ -145,8 +153,47 @@ export class AdminService {
                 },
             });
 
-            return updatedKyc;
+            return updated;
         });
+
+        // ── Post-transaction: Send email + in-app notification (fire-and-forget) ──
+        try {
+            const user = await this.prisma.user.findUnique({
+                where: { id: kycRecord.userId },
+                include: { profile: { select: { fullName: true } } },
+            });
+
+            if (user) {
+                const fullName = user.profile?.fullName || 'User';
+
+                // Email notification
+                if (status === 'APPROVED') {
+                    this.emailService.sendKycApprovedEmail(user.email, fullName).catch(e =>
+                        this.logger.error(`Failed to send KYC approved email to ${user.email}`, e)
+                    );
+                } else {
+                    this.emailService.sendKycRejectedEmail(user.email, fullName).catch(e =>
+                        this.logger.error(`Failed to send KYC rejected email to ${user.email}`, e)
+                    );
+                }
+
+                // In-app notification
+                this.notificationService.create(user.id, {
+                    type: 'SYSTEM',
+                    title: status === 'APPROVED' ? 'KYC Approved ✅' : 'KYC Rejected ⚠️',
+                    message: status === 'APPROVED'
+                        ? 'Your identity has been verified. You now have full access to the platform.'
+                        : 'Your verification was not approved. Please re-submit clear, valid documents.',
+                    link: status === 'APPROVED' ? '/dashboard' : '/dashboard/kyc',
+                }).catch(e =>
+                    this.logger.error(`Failed to create KYC notification for user ${user.id}`, e)
+                );
+            }
+        } catch (e) {
+            this.logger.error(`Post-KYC notification error`, e);
+        }
+
+        return updatedKyc;
     }
 
     async addCreditsToUser(userId: string, amount: number, adminId: string) {

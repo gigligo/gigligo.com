@@ -68,17 +68,22 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
         );
     }
 
-    if (!profile) {
+    if (!profile || !profile.user) {
         return (
-            <div className="min-h-screen bg-slate-50 dark:bg-[#000] flex items-center justify-center text-slate-500">
-                <h2>Profile not found.</h2>
+            <div className="min-h-screen bg-slate-50 dark:bg-[#000] flex flex-col items-center justify-center text-slate-500 gap-4">
+                <h2 className="text-xl font-semibold">Profile not found.</h2>
+                <p className="text-sm text-slate-400">The profile you're looking for doesn't exist or has been removed.</p>
             </div>
         );
     }
 
-    const { user, experiences, educations, portfolioItems, skills } = profile;
+    const user = profile.user;
+    const experiences = profile.experiences || [];
+    const educations = profile.educations || [];
+    const portfolioItems = profile.portfolioItems || [];
+    const skills = profile.skills || [];
     const isSeller = user.role === 'SELLER' || user.role === 'STUDENT';
-    const joinedDate = new Date(user.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    const joinedDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '';
 
     return (
         <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-slate-200">

@@ -106,6 +106,13 @@ export class UsersService {
         });
     }
 
+    async updatePassword(userId: string, passwordHash: string) {
+        return this.prisma.user.update({
+            where: { id: userId },
+            data: { passwordHash },
+        });
+    }
+
     async getAllUsers(page = 1, limit = 20) {
         const skip = (page - 1) * limit;
         const [items, total] = await Promise.all([
