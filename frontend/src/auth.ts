@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -20,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 kycStatus: { label: "KYCStatus", type: "text" },
                 name: { label: "Name", type: "text" },
             },
-            async authorize(credentials) {
+            async authorize(credentials: any) {
                 if (!credentials?.email) return null;
 
                 // Only pre-verified mode (frontend already called verify-otp)

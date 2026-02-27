@@ -1,3 +1,4 @@
+/// <reference types="node" />
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function apiFetch(path: string, options: RequestInit & { token?: string } = {}) {
@@ -106,6 +107,12 @@ export const authApi = {
 export const kycApi = {
     getStatus: (token: string) =>
         apiFetch('/api/kyc/status', { token }),
+};
+
+// User State API
+export const userStateApi = {
+    getState: (token: string) =>
+        apiFetch('/api/user/state', { token }),
 };
 
 // Gig APIs

@@ -33,6 +33,7 @@ import { ReferralModule } from './referral/referral.module';
 import { NewsletterModule } from './newsletter/newsletter.module';
 import { ContractModule } from './contract/contract.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { UserStateModule } from './user-state/user-state.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { SubscriptionModule } from './subscription/subscription.module';
     NewsletterModule,
     ContractModule,
     SubscriptionModule,
+    UserStateModule,
   ],
   controllers: [AppController],
   providers: [
