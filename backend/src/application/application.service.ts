@@ -200,7 +200,7 @@ export class ApplicationService {
             await tx.notification.create({
                 data: {
                     userId: app.freelancerId,
-                    type: 'APPLICATION_SHORTLISTED',
+                    type: 'SYSTEM',
                     title: 'Application Shortlisted! ⭐',
                     message: `Your application for "${app.job.title}" has been shortlisted`,
                     link: `/dashboard/applications`,
