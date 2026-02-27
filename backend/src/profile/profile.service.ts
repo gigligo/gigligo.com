@@ -28,7 +28,7 @@ export class ProfileService {
                 ]
             },
             include: {
-                user: { select: { id: true, role: true, createdAt: true, isFoundingMember: true, subscriptionStatus: true, kycStatus: true } },
+                user: { select: { id: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true } },
                 experiences: { orderBy: { startDate: 'desc' } },
                 educations: { orderBy: { startYear: 'desc' } },
                 portfolioItems: { orderBy: { createdAt: 'desc' } }
@@ -39,7 +39,7 @@ export class ProfileService {
         if (!profile) {
             const user = await this.prisma.user.findUnique({
                 where: { id: profileId },
-                select: { id: true, email: true, role: true, createdAt: true, isFoundingMember: true, subscriptionStatus: true, kycStatus: true }
+                select: { id: true, email: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true }
             });
             if (!user) throw new NotFoundException('Profile not found');
 

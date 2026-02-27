@@ -190,9 +190,24 @@ export class ApplicationService {
         if (!app) throw new NotFoundException('Application not found');
         if (app.job.employerId !== employerId) throw new ForbiddenException('Not your job posting');
 
-        return this.prisma.jobApplication.update({
-            where: { id: applicationId },
-            data: { status: 'SHORTLISTED' },
+        return this.prisma.$transaction(async (tx) => {
+            const updated = await tx.jobApplication.update({
+                where: { id: applicationId },
+                data: { status: 'SHORTLISTED' },
+            });
+
+            // Notify freelancer
+            await tx.notification.create({
+                data: {
+                    userId: app.freelancerId,
+                    type: 'APPLICATION_SHORTLISTED',
+                    title: 'Application Shortlisted! ⭐',
+                    message: `Your application for "${app.job.title}" has been shortlisted`,
+                    link: `/dashboard/applications`,
+                },
+            });
+
+            return updated;
         });
     }
 
