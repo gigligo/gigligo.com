@@ -20,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 kycStatus: { label: "KYCStatus", type: "text" },
                 name: { label: "Name", type: "text" },
             },
-            async authorize(credentials: Record<string, string> | undefined) {
+            async authorize(credentials) {
                 if (!credentials?.email) return null;
 
                 // Only pre-verified mode (frontend already called verify-otp)
