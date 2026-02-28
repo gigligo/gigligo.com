@@ -25,6 +25,8 @@ jobs:
             - run: npm run build
               env:
                   NEXT_PUBLIC_API_URL: http://localhost:3001
+                  AUTH_SECRET: ci-build-dummy-secret-not-real
+                  AUTH_URL: http://localhost:3000
 
     backend:
         name: Backend Lint & Build
