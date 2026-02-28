@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useParams, useRouter } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { jobApi, applicationApi, creditApi, chatApi } from '@/lib/api';
+import { jobApi, applicationApi, creditApi } from '@/lib/api';
 import Link from 'next/link';
 
 export default function JobDetailPage() {
@@ -107,6 +107,9 @@ export default function JobDetailPage() {
                             <p className="text-sm text-[#EFEEEA]/40 mt-2">
                                 Posted by {job.employer?.profile?.fullName || 'Employer'} • {job.employer?.profile?.location || 'Pakistan'}
                             </p>
+                            <p className="text-xs text-[#EFEEEA]/30 mt-1">
+                                📅 Posted on {new Date(job.createdAt).toLocaleDateString('en-PK', { year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(job.createdAt).toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' })}
+                            </p>
                         </div>
                         <div className="text-right flex flex-col items-end gap-2">
                             <p className="text-xl font-bold text-[#FE7743]">PKR {job.budgetMin?.toLocaleString()} – {job.budgetMax?.toLocaleString()}</p>
@@ -130,7 +133,10 @@ export default function JobDetailPage() {
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                        <InfoBox label="Applicants" value={`${job._count?.applications || 0}`} />
+                        <div className="bg-[#FE7743]/5 border border-[#FE7743]/20 rounded-xl p-3">
+                            <p className="text-[10px] text-[#FE7743]/70 uppercase tracking-wider font-semibold">Applicants</p>
+                            <p className="text-sm font-bold text-[#FE7743] mt-1">{job._count?.applications || 0} applied</p>
+                        </div>
                         <InfoBox label="Status" value={job.status} />
                         <InfoBox label="Type" value={job.jobType} />
                         <InfoBox label="Deadline" value={job.deadline ? new Date(job.deadline).toLocaleDateString() : 'Open'} />
@@ -140,10 +146,27 @@ export default function JobDetailPage() {
                     <div className="text-[#EFEEEA]/70 text-sm leading-relaxed whitespace-pre-wrap">{job.description}</div>
                 </div>
 
-                {/* Apply Section */}
-                {isFreelancer && job.status === 'OPEN' && (
+                {/* Apply Section — visible to all when job is OPEN */}
+                {job.status === 'OPEN' && (
                     <div className="bg-[#111] rounded-2xl border border-white/10 p-8">
-                        {success ? (
+                        {!session ? (
+                            <div className="text-center">
+                                <p className="text-[#EFEEEA] font-semibold mb-2">Want to apply for this job?</p>
+                                <p className="text-xs text-[#EFEEEA]/40 mb-4">Create a freelancer account to apply and submit your proposal.</p>
+                                <div className="flex gap-3 justify-center">
+                                    <Link href="/login" className="px-6 py-3 bg-white/5 border border-white/10 text-[#EFEEEA] font-semibold rounded-xl text-sm hover:bg-white/10 transition">
+                                        Log In
+                                    </Link>
+                                    <Link href="/register?role=SELLER" className="px-6 py-3 bg-[#FE7743] text-white font-semibold rounded-xl text-sm hover:bg-[#FE7743]/90 transition">
+                                        Create Account
+                                    </Link>
+                                </div>
+                            </div>
+                        ) : !isFreelancer ? (
+                            <div className="text-center">
+                                <p className="text-[#EFEEEA]/50 text-sm">⚠️ Only freelancers can apply to jobs. You are logged in as an employer.</p>
+                            </div>
+                        ) : success ? (
                             <div className="text-center">
                                 <p className="text-green-400 font-semibold text-lg mb-2">✅ {success}</p>
                                 <Link href="/dashboard/applications" className="text-sm text-[#FE7743] hover:underline">View My Applications</Link>
@@ -210,15 +233,6 @@ export default function JobDetailPage() {
                                 </div>
                             </form>
                         )}
-                    </div>
-                )}
-
-                {!session && job.status === 'OPEN' && (
-                    <div className="bg-[#111] rounded-2xl border border-white/10 p-8 text-center">
-                        <p className="text-[#EFEEEA] font-semibold mb-2">Want to apply?</p>
-                        <Link href="/register?role=SELLER" className="px-6 py-3 bg-[#FE7743] text-white font-semibold rounded-xl text-sm hover:bg-[#FE7743]/90 transition inline-block">
-                            Create Account
-                        </Link>
                     </div>
                 )}
             </main>
