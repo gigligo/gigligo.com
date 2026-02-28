@@ -89,11 +89,11 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
     const joinedDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '';
 
     return (
-        <div className="min-h-screen bg-background-light text-text-main font-sans antialiased">
+        <div className="min-h-screen bg-background-light dark:bg-background-dark text-text-main dark:text-slate-100 font-sans antialiased">
             <Navbar />
 
             {/* Profile Hero Header */}
-            <section className="relative bg-nav-bg text-white overflow-hidden" style={{ paddingTop: 96 }}>
+            <section className="relative bg-slate-900 dark:bg-slate-950 text-white overflow-hidden" style={{ paddingTop: 96 }}>
                 {/* Abstract Background */}
                 <div className="absolute inset-0 opacity-[0.03]">
                     <div className="absolute top-0 right-0 w-96 h-96 border border-white/20 rounded-full -translate-y-1/2 translate-x-1/3"></div>
@@ -185,7 +185,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         {/* Specialization */}
                         {profile.skills && profile.skills.length > 0 && (
-                            <div className="bg-surface-light border border-border-light rounded-xl p-6">
+                            <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
                                 <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
                                     <span className="material-symbols-outlined text-primary text-lg">category</span>
                                     Specialization
@@ -220,7 +220,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                         )}
 
                         {/* Verification */}
-                        <div className="bg-surface-light border border-border-light rounded-xl p-6">
+                        <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
                             <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary text-lg">verified_user</span>
                                 Verifications
@@ -263,7 +263,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                     {/* Right Content Area */}
                     <div className="lg:col-span-2 space-y-8">
                         {/* About */}
-                        <div className="bg-surface-light border border-border-light rounded-xl p-8">
+                        <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
                             <h2 className="text-xl font-bold text-text-main mb-5 tracking-tight">About</h2>
                             <p className="text-text-muted leading-relaxed text-[15px] whitespace-pre-line">
                                 {user.profile?.bio || `${user.fullName} hasn't added a bio yet.`}
