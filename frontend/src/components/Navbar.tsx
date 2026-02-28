@@ -12,6 +12,22 @@ export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [credits, setCredits] = useState<number | null>(null);
+    const [darkMode, setDarkMode] = useState(false);
+
+    useEffect(() => {
+        const stored = localStorage.getItem('gigligo_dark_mode');
+        if (stored === 'true') {
+            document.documentElement.classList.add('dark');
+            setDarkMode(true);
+        }
+    }, []);
+
+    const toggleDarkMode = () => {
+        const newVal = !darkMode;
+        setDarkMode(newVal);
+        document.documentElement.classList.toggle('dark', newVal);
+        localStorage.setItem('gigligo_dark_mode', String(newVal));
+    };
 
     const token = (session as any)?.accessToken;
     const role = (session as any)?.role;
@@ -46,6 +62,9 @@ export function Navbar() {
         { label: 'Pricing', href: '/pricing' },
         { label: 'Refer & Earn', href: '/referral' },
         { label: 'FAQ', href: '/faq' },
+        { label: 'Blog', href: '/blog' },
+        { label: 'About', href: '/about' },
+        { label: 'Contact', href: '/contact' },
     ];
 
     return (
@@ -104,6 +123,9 @@ export function Navbar() {
                                     </Link>
                                 )}
                                 <NotificationBell />
+                                <button onClick={toggleDarkMode} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-[#C9A227] hover:border-[#C9A227]/30 transition-colors" aria-label="Toggle dark mode">
+                                    <span className="material-symbols-outlined text-[18px]">{darkMode ? 'light_mode' : 'dark_mode'}</span>
+                                </button>
                                 <div className="relative group ml-2">
                                     <div className="w-10 h-10 rounded-full bg-[#C9A227] flex items-center justify-center text-[#1E1E1E] font-bold text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform">
                                         {session.user?.name?.[0] || 'U'}
@@ -155,14 +177,21 @@ export function Navbar() {
                         <button onClick={() => setMenuOpen(false)} className="text-white"><X size={28} /></button>
                     </div>
                     <nav className="flex flex-col gap-6">
-                        {['Browse Jobs', 'Find Gigs', 'Pricing', 'Refer & Earn'].map((item) => (
+                        {[
+                            { label: 'Browse Jobs', href: '/jobs' },
+                            { label: 'Find Gigs', href: '/search' },
+                            { label: 'Pricing', href: '/pricing' },
+                            { label: 'Refer & Earn', href: '/referral' },
+                            { label: 'Blog', href: '/blog' },
+                            { label: 'About', href: '/about' },
+                        ].map((item) => (
                             <Link
-                                key={item}
-                                href="#"
+                                key={item.label}
+                                href={item.href}
                                 className="text-xl font-bold text-white/90"
                                 onClick={() => setMenuOpen(false)}
                             >
-                                {item}
+                                {item.label}
                             </Link>
                         ))}
                     </nav>

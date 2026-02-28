@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 const faqs = [
     {
@@ -48,52 +50,73 @@ export default function FAQPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     return (
-        <main className="min-h-screen bg-slate-50 dark:bg-[#0A0A0F] py-20 px-4">
-            <div className="max-w-3xl mx-auto">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-                        Frequently Asked <span className="text-[#FE7743]">Questions</span>
-                    </h1>
-                    <p className="text-slate-600 dark:text-slate-400 text-lg">
-                        Everything you need to know about Gigligo
-                    </p>
-                </div>
+        <div className="flex flex-col min-h-screen bg-background-light font-sans text-text-main antialiased selection:bg-primary/30">
+            <Navbar />
 
-                <div className="space-y-3">
-                    {faqs.map((faq, i) => (
-                        <div
-                            key={i}
-                            className="border border-slate-200 dark:border-slate-700/50 rounded-xl overflow-hidden bg-white dark:bg-slate-800/50 backdrop-blur-sm transition-all"
-                        >
-                            <button
-                                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"
-                            >
-                                <span className="font-semibold text-slate-900 dark:text-white pr-4">{faq.q}</span>
-                                <span className={`text-[#FE7743] text-2xl transition-transform duration-300 ${openIndex === i ? 'rotate-45' : ''}`}>
-                                    +
-                                </span>
-                            </button>
-                            <div
-                                className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-96 pb-5 px-5' : 'max-h-0'}`}
-                            >
-                                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{faq.a}</p>
-                            </div>
+            <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
+
+                {/* Ultra-Premium Header Section */}
+                <div className="relative pt-20 pb-20 overflow-hidden bg-nav-bg text-white">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.05)_0%,transparent_70%)] pointer-events-none" />
+
+                    <div className="max-w-4xl mx-auto px-6 text-center relative z-10 animate-fade-in">
+                        <div className="inline-block px-5 py-2 bg-primary/10 text-primary font-bold text-xs uppercase tracking-[0.2em] rounded-full mb-8 border border-primary/20 shadow-lg shadow-primary/5">
+                            Knowledge Base
                         </div>
-                    ))}
+                        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+                            Frequently Asked <span className="text-primary italic font-serif">Questions.</span>
+                        </h1>
+                        <p className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto font-normal leading-relaxed">
+                            Everything you need to know about navigating the Gigligo ecosystem.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="mt-16 text-center p-8 rounded-2xl bg-linear-to-r from-[#FE7743]/10 to-teal-500/10 border border-[#FE7743]/20">
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Still have questions?</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4">Our support team is here to help you.</p>
-                    <a
-                        href="/contact"
-                        className="inline-block px-6 py-3 bg-[#FE7743] text-white font-semibold rounded-xl hover:bg-[#FE7743]/90 transition-colors"
-                    >
-                        Contact Support
-                    </a>
+                <div className="max-w-3xl mx-auto px-6 py-24 -mt-16 relative z-10">
+                    <div className="space-y-4 animate-fade-in" style={{ animationDelay: '200ms' }}>
+                        {faqs.map((faq, i) => (
+                            <div
+                                key={i}
+                                className="border border-border-light rounded-2xl overflow-hidden bg-surface-light shadow-sm hover:border-primary/30 transition-all duration-300"
+                            >
+                                <button
+                                    onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                                    className="w-full flex items-center justify-between p-6 sm:p-8 text-left bg-background-light hover:bg-surface-light transition-colors group"
+                                >
+                                    <span className="font-bold text-text-main text-lg group-hover:text-primary transition-colors pr-8">{faq.q}</span>
+                                    <span className={`material-symbols-outlined text-primary text-2xl transition-transform duration-500 ease-in-out shrink-0 ${openIndex === i ? 'rotate-135' : ''}`}>
+                                        add
+                                    </span>
+                                </button>
+                                <div
+                                    className={`overflow-hidden transition-all duration-500 ease-in-out ${openIndex === i ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
+                                >
+                                    <div className="p-6 sm:p-8 pt-0 border-t border-border-light text-text-muted leading-relaxed font-medium">
+                                        {faq.a}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-20 text-center p-12 rounded-3xl bg-surface-light border border-border-light shadow-2xl animate-fade-in" style={{ animationDelay: '400ms' }}>
+                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-6">
+                            <span className="material-symbols-outlined text-3xl">support_agent</span>
+                        </div>
+                        <h3 className="text-2xl font-bold text-text-main mb-3 tracking-tight">Still have questions?</h3>
+                        <p className="text-text-muted mb-8 font-medium">Our world-class support concierge is here to assist you.</p>
+                        <a
+                            href="/contact"
+                            className="inline-flex px-8 py-4 bg-primary text-white text-sm font-bold uppercase tracking-wide rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20 items-center justify-center gap-2"
+                        >
+                            Contact Concierge
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </main>
+            </main>
+
+            <Footer />
+        </div>
     );
 }
+

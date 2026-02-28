@@ -1,104 +1,183 @@
 'use client';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
+import Link from 'next/link';
+import { useState } from 'react';
 
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import Link from "next/link";
-import { ArrowLeft, Clock, User } from "lucide-react";
+// Mock CMS Data tailored for Gigligo's executive audience
+const BLOG_POSTS = [
+    {
+        id: '1',
+        title: 'The Future of Remote Executive Consulting in 2025',
+        category: 'Market Insights',
+        date: 'Oct 24, 2024',
+        readTime: '6 min read',
+        image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80',
+        excerpt: 'How top-tier enterprises are leveraging fractional C-suite executives and specialized tech architects via private networks instead of traditional sourcing.',
+        featured: true
+    },
+    {
+        id: '2',
+        title: 'Navigating Cross-Border Escrow Regulations',
+        category: 'Platform & Trust',
+        date: 'Oct 18, 2024',
+        readTime: '4 min read',
+        image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
+        excerpt: 'An deep dive into how Gigligo handles milestone locking, AML compliance, and biometric KYC protocols to guarantee zero counter-party risk.',
+        featured: false
+    },
+    {
+        id: '3',
+        title: 'Designing High-Converting E-Commerce Architectures',
+        category: 'Engineering',
+        date: 'Oct 12, 2024',
+        readTime: '8 min read',
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+        excerpt: 'A technical review of modern high-scale React architectures utilized by the top 1% of frontend engineers on our platform.',
+        featured: false
+    },
+    {
+        id: '4',
+        title: 'Optimizing Your Profile for Enterprise Discovery',
+        category: 'Growth Strategies',
+        date: 'Oct 05, 2024',
+        readTime: '5 min read',
+        image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=800&q=80',
+        excerpt: 'Learn exactly which keywords and portfolio presentation metrics the Gigligo algorithm relies on to rank elite freelancers.',
+        featured: false
+    }
+];
 
-export default function BlogPost() {
+export default function BlogPage() {
+    const [activeFilter, setActiveFilter] = useState('All');
+    const filters = ['All', 'Market Insights', 'Platform & Trust', 'Engineering', 'Growth Strategies'];
+
+    const featuredPost = BLOG_POSTS.find(p => p.featured);
+    const standardPosts = BLOG_POSTS.filter(p => !p.featured && (activeFilter === 'All' || p.category === activeFilter));
+
     return (
-        <div className="flex flex-col min-h-screen bg-light">
+        <div className="flex flex-col min-h-screen bg-background-light font-sans text-text-main antialiased selection:bg-primary/30">
             <Navbar />
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
-                {/* Hero Section */}
-                <div className="bg-white border-b border-gray-100 py-16">
-                    <div className="max-w-[800px] mx-auto px-6">
-                        <Link href="/search" className="inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-accent transition-colors mb-8">
-                            <ArrowLeft className="w-4 h-4" /> Back to Home
-                        </Link>
-
-                        <div className="mb-6 flex items-center gap-3">
-                            <span className="px-3 py-1 bg-accent/10 text-accent text-xs font-bold uppercase tracking-wider rounded-full">Freelancing</span>
-                            <span className="px-3 py-1 bg-orange/10 text-orange text-xs font-bold uppercase tracking-wider rounded-full">Guides</span>
-                        </div>
-
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-primary leading-tight mb-6">
-                            Top 5 Freelance Skills High-Paying Clients Are Looking For in 2026
+                {/* Header Section */}
+                <div className="max-w-7xl mx-auto px-6 pt-16 pb-12 animate-fade-in flex flex-col md:flex-row justify-between items-end gap-8 border-b border-border-light">
+                    <div className="max-w-3xl">
+                        <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
+                            Platform <span className="text-primary italic font-serif">Intelligence.</span>
                         </h1>
-
-                        <div className="flex items-center gap-6 text-sm text-muted font-medium">
-                            <div className="flex items-center gap-2">
-                                <User className="w-4 h-4" /> Gigligo Team
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Clock className="w-4 h-4" /> 5 min read
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> Oct 24, 2026
-                            </div>
-                        </div>
+                        <p className="text-lg md:text-xl text-text-muted font-medium">
+                            Executive insights, architectural breakdowns, and platform trust mechanics sourced directly from the Gigligo network.
+                        </p>
                     </div>
                 </div>
 
-                {/* Article Content */}
-                <div className="max-w-[800px] mx-auto px-6 py-12">
-                    <article className="prose prose-lg prose-slate max-w-none text-muted leading-relaxed">
-                        <p className="text-xl leading-relaxed text-primary/80 font-medium mb-8">
-                            The gig economy in Pakistan is booming. With over 30 million university students and
-                            a rapidly digitizing small business landscape, the demand for specialized, vetted
-                            local talent has never been higher.
-                        </p>
+                <div className="max-w-7xl mx-auto px-6 py-12">
 
-                        <h2 className="text-2xl font-bold text-primary mt-12 mb-4">1. Full-Stack Web Development (Next.js & Supabase)</h2>
-                        <p>
-                            We&apos;re seeing a massive transition away from traditional WordPress sites. Startups
-                            and even brick-and-mortar stores are looking for highly performant, custom-built web
-                            applications. Specializing in modern React frameworks like Next.js makes you highly
-                            valuable.
-                        </p>
+                    {/* Filter Navigation */}
+                    <div className="flex flex-wrap gap-3 mb-12 animate-fade-in" style={{ animationDelay: '100ms' }}>
+                        {filters.map(filter => (
+                            <button
+                                key={filter}
+                                onClick={() => setActiveFilter(filter)}
+                                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeFilter === filter
+                                        ? 'bg-nav-bg text-white shadow-lg'
+                                        : 'bg-surface-light text-text-muted border border-border-light hover:border-primary/50'
+                                    }`}
+                            >
+                                {filter}
+                            </button>
+                        ))}
+                    </div>
 
-                        <h2 className="text-2xl font-bold text-primary mt-10 mb-4">2. AI Prompt Engineering & Automation</h2>
-                        <p>
-                            You don&apos;t necessarily need a PhD in Machine Learning to capitalize on the AI boom.
-                            Businesses need freelancers who know how to wire up tools like OpenAI, Anthropic, and
-                            Make/Zapier to automate their customer service and lead generation.
-                        </p>
-
-                        <h2 className="text-2xl font-bold text-primary mt-10 mb-4">3. UI/UX Product Design</h2>
-                        <p>
-                            A beautiful website that doesn&apos;t convert is useless. Understanding user psychology,
-                            creating wireframes in Figma, and designing intuitive user journeys is one of the highest
-                            paying skills on Gigligo right now.
-                        </p>
-
-                        <div className="bg-accent/5 border border-accent/20 rounded-2xl p-8 my-10">
-                            <h3 className="text-xl font-bold text-primary mb-3">Ready to start earning?</h3>
-                            <p className="mb-6 text-primary/70">Join thousands of Pakistani students and graduates making a full-time living on their own terms.</p>
-                            <Link href="/register?role=SELLER" className="inline-block px-6 py-3 bg-accent text-white font-bold rounded-xl hover:-translate-y-1 transition-transform shadow-lg shadow-accent/20">
-                                Create Your Freelancer Profile
-                            </Link>
+                    {/* Featured Post (Only show if 'All' or matches category) */}
+                    {(activeFilter === 'All' || activeFilter === featuredPost?.category) && featuredPost && (
+                        <div className="mb-16 group cursor-pointer animate-fade-in" style={{ animationDelay: '200ms' }}>
+                            <div className="bg-surface-light border border-border-light rounded-3xl overflow-hidden flex flex-col lg:flex-row shadow-sm hover:shadow-2xl transition-all duration-500">
+                                <div className="lg:w-3/5 h-[300px] lg:h-[500px] relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
+                                    <img
+                                        src={featuredPost.image}
+                                        alt={featuredPost.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                    <div className="absolute top-6 left-6 z-20">
+                                        <span className="px-4 py-1.5 bg-primary text-white text-xs font-bold uppercase tracking-wider rounded-md shadow-lg">
+                                            Featured
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="lg:w-2/5 p-8 lg:p-12 flex flex-col justify-center">
+                                    <div className="flex items-center gap-4 text-xs font-bold text-text-muted uppercase tracking-wider mb-4">
+                                        <span className="text-primary">{featuredPost.category}</span>
+                                        <span>•</span>
+                                        <span>{featuredPost.date}</span>
+                                    </div>
+                                    <h2 className="text-3xl md:text-4xl font-bold text-text-main mb-6 leading-tight group-hover:text-primary transition-colors">
+                                        {featuredPost.title}
+                                    </h2>
+                                    <p className="text-text-muted text-lg mb-8 leading-relaxed">
+                                        {featuredPost.excerpt}
+                                    </p>
+                                    <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider group-hover:gap-4 transition-all w-fit">
+                                        Read Deep Dive <span className="material-symbols-outlined text-[18px]">east</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    )}
 
-                        <h2 className="text-2xl font-bold text-primary mt-10 mb-4">4. Short-Form Video Editing (Reels & TikToks)</h2>
-                        <p>
-                            Attention is the new currency. E-commerce brands are desperate for editors who understand
-                            pacing, sound design, and hooks for Instagram Reels and TikTok.
-                        </p>
+                    {/* Standard Posts Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                        {standardPosts.map((post) => (
+                            <div key={post.id} className="group cursor-pointer flex flex-col">
+                                <div className="relative h-64 rounded-2xl overflow-hidden border border-border-light mb-6">
+                                    <img
+                                        src={post.image}
+                                        alt={post.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                </div>
+                                <div className="flex flex-col flex-1 pl-2">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <span className="text-xs font-bold text-primary uppercase tracking-wider">{post.category}</span>
+                                        <span className="text-xs text-text-muted font-medium">{post.readTime}</span>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-text-main leading-snug mb-3 group-hover:text-primary transition-colors">
+                                        {post.title}
+                                    </h3>
+                                    <p className="text-text-muted text-sm leading-relaxed mb-6 line-clamp-3">
+                                        {post.excerpt}
+                                    </p>
+                                    <div className="mt-auto pt-4 border-t border-border-light">
+                                        <span className="text-text-muted text-xs font-bold uppercase tracking-wider">{post.date}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
-                        <h2 className="text-2xl font-bold text-primary mt-10 mb-4">5. SEO & Copywriting</h2>
-                        <p>
-                            Getting to the first page of Google is still the holy grail for local businesses. Being able
-                            to write persuasive landing page copy that is also search engine optimized is a dual-threat
-                            skill that commands premium rates.
-                        </p>
+                    {/* Newsletter CTA */}
+                    <div className="bg-nav-bg text-white rounded-3xl p-10 md:p-16 text-center relative overflow-hidden animate-fade-in border border-white/5">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.15)_0%,transparent_60%)] pointer-events-none" />
+                        <div className="relative z-10 max-w-2xl mx-auto">
+                            <h2 className="text-3xl font-black mb-4">Command the Market.</h2>
+                            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+                                Subscribe to the Gigligo dispatch. Receive high-signal engineering patterns and elite freelance strategies bi-weekly.
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                                <input
+                                    type="email"
+                                    placeholder="Enter your executive email"
+                                    className="flex-1 px-4 py-3.5 rounded-lg bg-surface-dark border border-white/10 text-white placeholder:text-white/30 focus:outline-none focus:border-primary transition-colors"
+                                />
+                                <button className="px-8 py-3.5 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition-colors shrink-0">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-                        <hr className="my-12 border-gray-100" />
-
-                        <p className="font-medium text-primary">
-                            <em>Have these skills? Or looking to hire someone who does? Head over to the Gigligo <Link href="/search" className="text-accent hover:underline">Talent Marketplace</Link> today.</em>
-                        </p>
-                    </article>
                 </div>
             </main>
 

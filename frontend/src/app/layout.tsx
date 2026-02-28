@@ -16,12 +16,31 @@ export const metadata: Metadata = {
     template: "%s | Gigligo"
   },
   description: "Gigligo is a hybrid freelance marketplace for professionals. Create, Chat, and Start your projects today.",
-  keywords: ["freelance", "marketplace", "jobs", "talent", "gigligo"],
+  keywords: ["freelance", "marketplace", "jobs", "talent", "gigligo", "freelancer", "gig economy", "hire talent"],
   authors: [{ name: "Gigligo Team" }],
   creator: "Gigligo",
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://gigligo.com',
+    siteName: 'Gigligo',
+    title: 'Gigligo | Create • Chat • Start',
+    description: 'Access an exclusive network of high-end talent and serious business opportunities. Elevate your projects with GIGLIGO\'s curated elite.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gigligo | Create • Chat • Start',
+    description: 'Access an exclusive network of high-end talent and serious business opportunities.',
+    creator: '@gigligo',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 import { Providers } from "@/components/Providers";
+import CookieConsent from "@/components/CookieConsent";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -42,6 +61,7 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased bg-background-light text-text-main dark:bg-background-dark dark:text-slate-100 font-sans`}>
         <Providers>
           {children}
+          <CookieConsent />
         </Providers>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"} />
         <Analytics />

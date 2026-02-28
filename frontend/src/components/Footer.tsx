@@ -91,6 +91,7 @@ export function Footer() {
                             <li><Link href="/register?role=SELLER" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Become a Freelancer</Link></li>
                             <li><Link href="/search" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Gigs</Link></li>
                             <li><Link href="/jobs" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Jobs</Link></li>
+                            <li><Link href="/referral" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Refer &amp; Earn</Link></li>
                         </ul>
                     </div>
 
@@ -100,6 +101,8 @@ export function Footer() {
                         <ul className="space-y-4 text-[15px] mb-12">
                             <li><Link href="/about" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">About Us</Link></li>
                             <li><Link href="/faq" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">FAQ</Link></li>
+                            <li><Link href="/blog" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Blog</Link></li>
+                            <li><Link href="/help" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Help Center</Link></li>
                             <li><Link href="/privacy" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Privacy Policy</Link></li>
                             <li><Link href="/terms" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Terms of Service</Link></li>
                             <li><Link href="/contact" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Contact</Link></li>

@@ -1,116 +1,91 @@
 'use client';
-
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import Link from 'next/link';
 
-export default function TermsOfServicePage() {
+export default function TermsPage() {
     return (
-        <div className="flex flex-col min-h-screen bg-[#0a0a0a]">
+        <div className="flex flex-col min-h-screen bg-background-light font-sans text-text-main antialiased selection:bg-primary/30">
             <Navbar />
-            <main className="flex-1 max-w-[800px] mx-auto px-6 py-8 w-full" style={{ paddingTop: 96 }}>
-                <h1 className="text-3xl font-black text-[#EFEEEA] mb-2">Terms of Service</h1>
-                <p className="text-sm text-[#EFEEEA]/40 mb-10">Last updated: February 21, 2026</p>
 
-                <div className="prose-custom space-y-8">
-                    <Section title="1. Acceptance of Terms">
-                        <p>By accessing or using Gigligo.com (&quot;the Platform&quot;), you agree to be bound by these Terms of Service. If you do not agree, you may not use the Platform.</p>
-                    </Section>
+            <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
+                {/* Executive Header Section */}
+                <div className="relative border-b border-border-light bg-surface-light overflow-hidden">
+                    <div className="absolute inset-0 bg-pattern opacity-[0.02] pointer-events-none"></div>
+                    <div className="max-w-4xl mx-auto px-6 py-20 relative z-10 animate-fade-in">
+                        <div className="flex items-center gap-3 mb-6">
+                            <span className="w-12 h-[2px] bg-primary"></span>
+                            <span className="text-primary font-bold text-xs uppercase tracking-[0.2em]">Legal Contract</span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
+                            Terms of Service
+                        </h1>
+                        <p className="text-lg text-text-muted max-w-2xl font-medium leading-relaxed">
+                            These Terms of Service ("Agreement") govern your access to and utilization of the Gigligo elite talent network. Effective Date: October 14, 2024.
+                        </p>
+                    </div>
+                </div>
 
-                    <Section title="2. Eligibility">
-                        <p>You must be at least 18 years of age (or 16 with parental consent for students) and a legal resident of Pakistan or an authorized user to create an account on Gigligo.</p>
-                    </Section>
+                <div className="max-w-4xl mx-auto px-6 py-16 animate-fade-in flex flex-col md:flex-row gap-12">
 
-                    <Section title="3. Account Responsibilities">
-                        <ul>
-                            <li>You are responsible for maintaining the confidentiality of your account credentials</li>
-                            <li>You must provide accurate and complete information when creating your account</li>
-                            <li>You may not create multiple accounts or impersonate others</li>
-                            <li>You are responsible for all activity that occurs under your account</li>
-                        </ul>
-                    </Section>
+                    {/* Navigation Sidebar */}
+                    <div className="w-full md:w-64 shrink-0 hidden md:block">
+                        <div className="sticky top-32 space-y-4 border-l-2 border-border-light pl-6">
+                            <a href="#acceptance" className="block text-sm font-bold text-primary hover:text-primary-dark transition-colors">1. Acceptance of Terms</a>
+                            <a href="#escrow" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">2. Escrow & Wallet Holds</a>
+                            <a href="#disputes" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">3. Arbitration & Disputes</a>
+                            <a href="#milestones" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">4. Milestone Payouts</a>
+                            <a href="#liability" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">5. Limitation of Liability</a>
+                        </div>
+                    </div>
 
-                    <Section title="4. Platform Services">
-                        <p>Gigligo provides a marketplace connecting freelancers (sellers) with clients (buyers). We offer:</p>
-                        <ul>
-                            <li><strong>Gig Marketplace:</strong> Sellers list services; buyers purchase them</li>
-                            <li><strong>Job Board:</strong> Employers post jobs; freelancers apply</li>
-                            <li><strong>Escrow Payments:</strong> Funds are held securely until work is delivered and approved</li>
-                            <li><strong>Gig Promotion:</strong> Sellers can boost gigs for greater visibility</li>
-                        </ul>
-                    </Section>
+                    {/* Content Body */}
+                    <div className="flex-1 space-y-12 text-text-muted leading-relaxed font-medium">
 
-                    <Section title="5. Fees & Commissions">
-                        <ul>
-                            <li><strong>Standard Commission:</strong> 10% is deducted from freelancer earnings on completed orders and jobs</li>
-                            <li><strong>Founding Members:</strong> First 500 freelancers/students enjoy 0% commission on their first 3 projects</li>
-                            <li><strong>Credits:</strong> Required for job applications. Available in packages (Starter: PKR 5,000 for 25 credits, Growth: PKR 10,000 for 60, Pro: PKR 20,000 for 150)</li>
-                            <li><strong>Gig Boosts:</strong> PKR 500/day for featured placement in search results</li>
-                        </ul>
-                    </Section>
+                        <section id="acceptance" className="scroll-mt-32">
+                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">1. Acceptance of Terms</h2>
+                            <p>
+                                By registering on the Gigligo platform (the "Site") as either a verified Client or an Executive Consultant, you expressly agree to be bound by these Terms. If you are accepting these Terms on behalf of an enterprise entity, you represent that you possess the requisite legal authority to bind that entity to this Agreement.
+                            </p>
+                        </section>
 
-                    <Section title="6. Payment & Escrow">
-                        <p>When a buyer purchases a gig, the payment is placed in escrow. Funds are released to the seller only after the buyer confirms satisfactory delivery. The platform commission is deducted at the time of release. Disputes are handled by our support team.</p>
-                    </Section>
+                        <section id="escrow" className="scroll-mt-32">
+                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">2. Escrow & Wallet Holds</h2>
+                            <p className="mb-4">
+                                Gigligo operates a strictly regulated marketplace framework. To initiate an Executive Contract, the Client must deposit the full sum—or the agreed upon First Milestone block—into the Gigligo Corporate Escrow infrastructure.
+                            </p>
+                            <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-xl my-6">
+                                <h4 className="text-primary font-bold mb-2">Notice on Asset Freezes</h4>
+                                <p className="text-sm text-text-main">Funds placed in Escrow are strictly bound. They cannot be mutually withdrawn by the Client without the Consultant's authorization unless a formal Dispute is arbitrated via the Gigligo Resolution Center.</p>
+                            </div>
+                        </section>
 
-                    <Section title="7. Prohibited Conduct">
-                        <p>You agree not to:</p>
-                        <ul>
-                            <li>Use the Platform for any unlawful purpose</li>
-                            <li>Submit fake reviews or manipulate rankings</li>
-                            <li>Take transactions off-platform to avoid commissions</li>
-                            <li>Harass, threaten, or discriminate against other users</li>
-                            <li>Upload malicious content or attempt to breach platform security</li>
-                            <li>Copy or resell another user&apos;s gig content</li>
-                            <li><strong>Create duplicate accounts</strong> or use fake/altered identity documents</li>
-                            <li><strong>Freelancers may not self-post jobs</strong> — this prevents fake reviews and manipulation</li>
-                        </ul>
-                    </Section>
+                        <section id="disputes" className="scroll-mt-32">
+                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">3. Arbitration & Disputes</h2>
+                            <p>
+                                Should a disagreement arise regarding the quality or execution of deliverables, either party may invoke the formal Dispute process. Upon invocation, all Escrow funds remaining for the active milestone are immediately locked. An internal Gigligo arbitrator will review uploaded communications, GitHub repositories, and specified deliverables against the precise scope defined in the <Link href="/dashboard/contracts/sign" className="text-primary font-bold hover:underline">Executive Contract Interface</Link>. The arbitrator's decision is final and binding.
+                            </p>
+                        </section>
 
-                    <Section title="8. Platform Security & Trust Rules">
-                        <p>The following rules are <strong>mandatory</strong> for all users and are strictly enforced:</p>
-                        <ul>
-                            <li><strong>KYC Verification:</strong> All accounts must pass identity verification (KYC) before posting jobs, submitting proposals, chatting, or leaving reviews. This includes a live selfie and government ID card (front &amp; back)</li>
-                            <li><strong>Two-Factor Authentication:</strong> 2FA via email OTP is mandatory for every login to protect account security</li>
-                            <li><strong>No Fake Profiles:</strong> Submitting fake, altered, or stolen identity documents will result in immediate and permanent account termination</li>
-                            <li><strong>Communication Logging:</strong> All in-platform communications are logged. Harassment, threats, or abusive language will lead to immediate ban</li>
-                            <li><strong>Escrow Protection:</strong> All payments are held in escrow until the employer marks the contract as completed and the freelancer confirms</li>
-                            <li><strong>Review Integrity:</strong> Reviews can only be submitted after a contract is completed. You may not review your own work or solicit fake reviews</li>
-                        </ul>
-                    </Section>
+                        <section id="milestones" className="scroll-mt-32">
+                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">4. Milestone Payouts</h2>
+                            <p>
+                                For enterprise contracts exceeding standard thresholds, execution is governed by Milestone Payouts. Consultants are prohibited from demanding upfront compensation outside of the platform Escrow. Gigligo releases Escrow blocks linearly upon the Client's manual approval of the submitted milestone artifacts.
+                            </p>
+                        </section>
 
-                    <Section title="9. Intellectual Property">
-                        <p>Upon full payment and order completion, intellectual property rights for the delivered work transfer to the buyer unless otherwise agreed. Sellers retain the right to showcase completed work in their portfolio unless the buyer requests otherwise.</p>
-                    </Section>
+                        <section id="liability" className="scroll-mt-32">
+                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">5. Limitation of Liability</h2>
+                            <p>
+                                In no event shall Gigligo, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service.
+                            </p>
+                        </section>
 
-                    <Section title="9. Termination">
-                        <p>We may suspend or terminate your account if you violate these Terms, engage in fraudulent activity, or harm the platform community. You may also delete your account at any time through your dashboard settings.</p>
-                    </Section>
-
-                    <Section title="10. Limitation of Liability">
-                        <p>Gigligo is a marketplace platform and does not guarantee the quality of work delivered by freelancers. We are not liable for disputes between buyers and sellers beyond providing our dispute resolution process. Our total liability is limited to the amount of fees you have paid to the Platform in the preceding 12 months.</p>
-                    </Section>
-
-                    <Section title="11. Governing Law">
-                        <p>These Terms are governed by the laws of Pakistan. Any disputes shall be resolved in the courts of Islamabad, Pakistan.</p>
-                    </Section>
-
-                    <Section title="12. Contact">
-                        <p>For questions about these Terms, contact us at <a href="mailto:giglido.com@gmail.com" className="text-[#FE7743] hover:underline">giglido.com@gmail.com</a>.</p>
-                    </Section>
+                    </div>
                 </div>
             </main>
+
             <Footer />
         </div>
-    );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-    return (
-        <section>
-            <h2 className="text-xl font-bold text-[#EFEEEA] mb-3">{title}</h2>
-            <div className="text-sm text-[#EFEEEA]/70 leading-relaxed space-y-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_strong]:text-[#EFEEEA]">
-                {children}
-            </div>
-        </section>
     );
 }
