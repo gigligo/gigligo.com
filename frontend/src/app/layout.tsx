@@ -5,14 +5,14 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "600"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 const lora = Lora({
   variable: "--font-lora",
   subsets: ["latin"],
-  weight: ["500"],
+  weight: ["400"],
   style: ["italic"],
   display: "swap",
 });
@@ -44,9 +44,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#DAA520" />
+        <meta name="theme-color" content="#1E1E1E" />
       </head>
-      <body className={`${inter.variable} ${lora.variable} antialiased bg-white text-[#212121]`}>
+      <body className={`${inter.variable} ${lora.variable} antialiased bg-white text-[#1E1E1E]`}>
         <Providers>
           {children}
         </Providers>

@@ -1,18 +1,12 @@
 import Link from 'next/link';
 
-/* ─── Gradient G Logo ─── */
+/* ─── Premium G Logo (Charcoal & Gold) ─── */
 function GigligoMark({ size = 24 }: { size?: number }) {
     return (
         <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
-            <defs>
-                <linearGradient id="footGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#00f5d4" />
-                    <stop offset="1" stopColor="#4f46e5" />
-                </linearGradient>
-            </defs>
-            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="url(#footGrad)" strokeWidth="3.5" strokeLinecap="round" />
-            <path d="M19 18 H30" stroke="url(#footGrad)" strokeWidth="3.5" strokeLinecap="round" />
-            <circle cx="19" cy="18" r="2" fill="#00f5d4" />
+            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="#C9A227" strokeWidth="3" strokeLinecap="round" />
+            <path d="M19 18 H30" stroke="#C9A227" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="19" cy="18" r="2" fill="#C9A227" />
         </svg>
     );
 }
@@ -53,20 +47,19 @@ function SocialIcon({ name }: { name: string }) {
 
 export function Footer() {
     return (
-        <footer className="py-16 text-offwhite/50 border-t border-offwhite/8 bg-black">
-            <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
+        <footer className="py-20 text-white/50 bg-[#1E1E1E] border-t border-[#3A3A3A]">
+            <div className="max-container pt-8 pb-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
                     {/* About */}
-                    <div className="md:col-span-1">
-                        <div className="flex items-center gap-2 mb-4">
-                            <GigligoMark size={28} />
-                            <span className="font-display text-xl font-black tracking-tighter text-white">gigligo<span className="text-teal-vibrant opacity-60">.com</span></span>
+                    <div className="md:col-span-1 border-gray-800 pr-8">
+                        <div className="flex items-center gap-3 mb-6">
+                            <GigligoMark size={32} />
+                            <span className="font-sans text-xl font-bold tracking-tight text-[#FFFFFF]">gigligo<span className="text-[#C9A227] opacity-80">.com</span></span>
                         </div>
-                        <p className="mt-4 text-sm max-w-xs text-offwhite/40">
-                            Pakistan's premium freelance marketplace connecting top talent with ambitious projects.
-                            Zero international fees — local talent, global quality.
+                        <p className="mt-4 text-[15px] leading-relaxed max-w-xs text-[#F7F7F6]/60">
+                            The professional arena where verified talent meets serious business.
                         </p>
-                        <div className="flex gap-4 mt-6">
+                        <div className="flex gap-4 mt-8">
                             {(['twitter', 'linkedin', 'instagram', 'github'] as const).map(social => {
                                 const urls: Record<string, string> = {
                                     twitter: 'https://twitter.com/gigligo',
@@ -80,7 +73,7 @@ export function Footer() {
                                         href={urls[social]}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-offwhite/40 hover:bg-[#FE7743] hover:text-white transition-all duration-300"
+                                        className="w-10 h-10 rounded-full border border-[#3A3A3A] bg-transparent flex items-center justify-center text-[#F7F7F6]/60 hover:border-[#C9A227] hover:text-[#C9A227] hover:bg-[#C9A227]/5 transition-all duration-300"
                                         aria-label="Social Link"
                                     >
                                         <SocialIcon name={social} />
@@ -92,38 +85,38 @@ export function Footer() {
 
                     {/* For Clients */}
                     <div>
-                        <h4 className="font-bold text-white mb-4">For Clients</h4>
-                        <ul className="space-y-3 text-sm">
-                            <li><Link href="/search" className="hover:text-teal-vibrant transition-colors">Find Talent</Link></li>
-                            <li><Link href="/register" className="hover:text-teal-vibrant transition-colors">Post a Project</Link></li>
-                            <li><Link href="/jobs" className="hover:text-teal-vibrant transition-colors">Browse Jobs</Link></li>
-                            <li><Link href="/pricing" className="hover:text-teal-vibrant transition-colors">Pricing</Link></li>
+                        <h4 className="font-bold text-[#FFFFFF] text-sm tracking-wider uppercase mb-6">For Clients</h4>
+                        <ul className="space-y-4 text-[15px]">
+                            <li><Link href="/search" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Find Talent</Link></li>
+                            <li><Link href="/register" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Post a Project</Link></li>
+                            <li><Link href="/jobs" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Jobs</Link></li>
+                            <li><Link href="/pricing" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Pricing</Link></li>
                         </ul>
                     </div>
 
                     {/* For Freelancers */}
                     <div>
-                        <h4 className="font-bold text-white mb-4">For Freelancers</h4>
-                        <ul className="space-y-3 text-sm">
-                            <li><Link href="/register?role=SELLER" className="hover:text-teal-vibrant transition-colors">Become a Freelancer</Link></li>
-                            <li><Link href="/search" className="hover:text-teal-vibrant transition-colors">Browse Gigs</Link></li>
-                            <li><Link href="/jobs" className="hover:text-teal-vibrant transition-colors">Browse Jobs</Link></li>
+                        <h4 className="font-bold text-[#FFFFFF] text-sm tracking-wider uppercase mb-6">For Freelancers</h4>
+                        <ul className="space-y-4 text-[15px]">
+                            <li><Link href="/register?role=SELLER" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Become a Freelancer</Link></li>
+                            <li><Link href="/search" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Gigs</Link></li>
+                            <li><Link href="/jobs" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Jobs</Link></li>
                         </ul>
                     </div>
 
                     {/* Legal */}
                     <div>
-                        <h4 className="font-bold text-white mb-4">Legal</h4>
-                        <ul className="space-y-3 text-sm mb-8">
-                            <li><Link href="/about" className="hover:text-teal-vibrant transition-colors">About Us</Link></li>
-                            <li><Link href="/faq" className="hover:text-teal-vibrant transition-colors">FAQ</Link></li>
-                            <li><Link href="/privacy" className="hover:text-teal-vibrant transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="/terms" className="hover:text-teal-vibrant transition-colors">Terms of Service</Link></li>
-                            <li><Link href="/contact" className="hover:text-teal-vibrant transition-colors">Contact</Link></li>
+                        <h4 className="font-bold text-[#FFFFFF] text-sm tracking-wider uppercase mb-6">Legal</h4>
+                        <ul className="space-y-4 text-[15px] mb-12">
+                            <li><Link href="/about" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">About Us</Link></li>
+                            <li><Link href="/faq" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">FAQ</Link></li>
+                            <li><Link href="/privacy" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="/terms" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Terms of Service</Link></li>
+                            <li><Link href="/contact" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Contact</Link></li>
                         </ul>
 
                         {/* Newsletter */}
-                        <h4 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">Stay Updated</h4>
+                        <h4 className="text-xs font-bold text-[#F7F7F6]/40 uppercase tracking-widest mb-4">Stay Updated</h4>
                         <form className="flex group" onSubmit={(e) => {
                             e.preventDefault();
                             const email = (e.target as any).email.value;
@@ -138,18 +131,18 @@ export function Footer() {
                                 name="email"
                                 placeholder="Email address"
                                 required
-                                className="bg-slate-900 border border-slate-800 text-sm text-white px-4 py-2 rounded-l-lg w-full focus:outline-none focus:border-teal-vibrant transition-colors placeholder:text-slate-600"
+                                className="bg-[#1E1E1E] border border-[#3A3A3A] text-sm text-[#FFFFFF] px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]"
                             />
-                            <button type="submit" className="bg-slate-800 hover:bg-teal-vibrant text-white hover:text-slate-950 px-4 py-2 rounded-r-lg font-semibold transition-all">
+                            <button type="submit" className="bg-[#C9A227] hover:bg-[#b89222] text-[#1E1E1E] px-6 py-3 rounded-r-lg font-semibold transition-all">
                                 Join
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs text-offwhite/30 truncate">
-                        &copy; {new Date().getFullYear()} Gigligo. All rights reserved. Made for Pakistan with ❤️
+                <div className="mt-16 pt-8 border-t border-[#3A3A3A]/50 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-xs text-[#F7F7F6]/40">
+                        &copy; {new Date().getFullYear()} Gigligo. The professional arena.
                     </p>
                 </div>
             </div>

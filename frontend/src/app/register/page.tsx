@@ -168,117 +168,111 @@ function RegisterContent() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-12 relative">
-            <div className="bg-slate-900 p-10 rounded-2xl shadow-2xl border border-white/10 max-w-md w-full">
-                <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-center gap-2 justify-center">
-                        <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
-                            <defs><linearGradient id="lgReg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stopColor="#00f5d4" /><stop offset="1" stopColor="#4f46e5" /></linearGradient></defs>
-                            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="url(#lgReg)" strokeWidth="3.5" strokeLinecap="round" />
-                            <path d="M19 18 H30" stroke="url(#lgReg)" strokeWidth="3.5" strokeLinecap="round" />
-                            <circle cx="19" cy="18" r="2" fill="#00f5d4" />
-                        </svg>
-                        <span className="font-display text-xl font-black tracking-tighter text-white">gigligo<span className="text-teal-vibrant opacity-60">.com</span></span>
+        <div className="min-h-screen flex items-center justify-center bg-[#F7F7F6] px-4 py-12 relative">
+            <div className="bg-[#FFFFFF] p-10 rounded-[10px] shadow-sm border border-[#E5E5E5] max-w-md w-full">
+                <div className="text-center mb-10">
+                    <Link href="/" className="inline-block">
+                        <span className="font-display text-2xl font-black tracking-tighter text-[#1E1E1E]">gigligo<span className="text-[#C9A227]">.com</span></span>
                     </Link>
                     {!otpStep ? (
                         <>
-                            <h1 className="text-2xl font-bold text-white mt-8 tracking-tight">Create your account</h1>
-                            <p className="text-slate-400 text-sm mt-2">Join the Gigligo freelance community</p>
+                            <h1 className="h3 text-[#1E1E1E] mt-8 tracking-tight">Create your account</h1>
+                            <p className="body-regular text-[#3A3A3A]/70 mt-2">Join the Gigligo freelance community</p>
                         </>
                     ) : (
                         <>
-                            <h1 className="text-2xl font-bold text-white mt-8 tracking-tight">Verify Your Email</h1>
-                            <p className="text-slate-400 text-sm mt-2">We sent a 6-digit code to <strong className="text-white">{email}</strong></p>
+                            <h1 className="h3 text-[#1E1E1E] mt-8 tracking-tight">Verify Your Email</h1>
+                            <p className="body-regular text-[#3A3A3A]/70 mt-2">We sent a 6-digit code to <strong className="text-[#1E1E1E]">{email}</strong></p>
                         </>
                     )}
                 </div>
 
                 {!otpStep && (
-                    <div className="text-center mb-6">
-                        <p className="text-xs text-slate-400 leading-snug max-w-[90%] mx-auto">
-                            By continuing, you agree to the <Link href="/terms" className="text-teal-vibrant hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-teal-vibrant hover:underline">Privacy Policy</Link>.
+                    <div className="text-center mb-8">
+                        <p className="text-[13px] text-[#3A3A3A]/70 leading-snug max-w-[90%] mx-auto">
+                            By continuing, you agree to the <Link href="/terms" className="font-semibold text-[#1E1E1E] hover:text-[#C9A227] transition-colors">Terms of Service</Link> and <Link href="/privacy" className="font-semibold text-[#1E1E1E] hover:text-[#C9A227] transition-colors">Privacy Policy</Link>.
                         </p>
                     </div>
                 )}
 
                 {error && (
-                    <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm text-center">
+                    <div className="mb-6 p-4 bg-[#C62828]/5 border border-[#C62828]/20 rounded-[8px] text-[#C62828] text-sm text-center font-medium">
                         {error}
                     </div>
                 )}
 
                 {!otpStep ? (
                     <>
-                        <form onSubmit={handleCredentialsRegister} className="space-y-4 mb-6">
+                        <form onSubmit={handleCredentialsRegister} className="space-y-5 mb-8">
                             <div>
-                                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Full Name</label>
+                                <label className="micro-label text-[#3A3A3A] mb-2 block">Full Name</label>
                                 <input
                                     type="text"
                                     required
                                     value={fullName}
                                     onChange={e => setFullName(e.target.value)}
-                                    className="w-full px-4 py-3 bg-[#111] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#FE7743] transition-colors"
+                                    className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
                                     placeholder="John Doe"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Email</label>
+                                <label className="micro-label text-[#3A3A3A] mb-2 block">Email</label>
                                 <input
                                     type="email"
                                     required
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 bg-[#111] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#FE7743] transition-colors"
+                                    className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
                                     placeholder="you@example.com"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
+                                <label className="micro-label text-[#3A3A3A] mb-2 block">Password</label>
                                 <input
                                     type="password"
                                     required
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-[#111] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#FE7743] transition-colors"
+                                    className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
                                     placeholder="••••••••"
                                     minLength={6}
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Account Role</label>
+                                <label className="micro-label text-[#3A3A3A] mb-2 block">Account Role</label>
                                 <select
                                     value={role}
                                     onChange={e => setRole(e.target.value)}
-                                    className="w-full px-4 py-3 bg-[#111] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#FE7743] transition-colors appearance-none"
+                                    className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors appearance-none"
                                 >
                                     <option value="SELLER">Freelancer / Seller</option>
                                     <option value="BUYER">Employer / Buyer</option>
                                 </select>
                             </div>
-                            <div className="flex items-center gap-2 mt-4 mb-6">
+                            <div className="flex items-center gap-3 mt-4 mb-6">
                                 <input
                                     type="checkbox"
                                     id="terms"
                                     checked={acceptedTerms}
                                     onChange={e => setAcceptedTerms(e.target.checked)}
-                                    className="w-4 h-4 rounded border-slate-300 text-teal-vibrant focus:ring-teal-vibrant/20 cursor-pointer"
+                                    className="w-4 h-4 rounded border-[#E5E5E5] text-[#1E1E1E] focus:ring-[#C9A227]/20 outline-none cursor-pointer"
                                 />
-                                <label htmlFor="terms" className="text-xs text-slate-400 cursor-pointer">
-                                    I accept the <Link href="/terms" className="text-teal-vibrant hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-teal-vibrant hover:underline">Privacy Policy</Link>
+                                <label htmlFor="terms" className="text-[13px] text-[#3A3A3A]/70 cursor-pointer">
+                                    I accept the <Link href="/terms" className="font-semibold text-[#1E1E1E] hover:text-[#C9A227] transition-colors">Terms</Link> and <Link href="/privacy" className="font-semibold text-[#1E1E1E] hover:text-[#C9A227] transition-colors">Privacy Policy</Link>
                                 </label>
                             </div>
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full py-3.5 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20 disabled:opacity-50"
+                                className="btn-primary w-full py-3.5 shadow-md disabled:opacity-50"
                             >
                                 {isLoading ? 'Creating account...' : 'Create Account'}
                             </button>
                         </form>
 
-                        <div className="relative mb-6">
-                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10"></div></div>
-                            <div className="relative flex justify-center text-xs"><span className="bg-slate-900 px-2 text-slate-500">or continue with</span></div>
+                        <div className="relative mb-8">
+                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#E5E5E5]"></div></div>
+                            <div className="relative flex justify-center text-[12px] font-bold uppercase tracking-widest"><span className="bg-[#FFFFFF] px-4 text-[#3A3A3A]/40">or continue with</span></div>
                         </div>
 
                         <button
@@ -288,7 +282,7 @@ function RegisterContent() {
                                 signIn('google', { callbackUrl });
                             }}
                             disabled={isLoading}
-                            className="w-full py-4 bg-white text-slate-900 font-bold rounded-xl border border-slate-200 hover:bg-slate-50 hover:shadow-md transition-all text-sm flex items-center justify-center gap-3 disabled:opacity-50"
+                            className="w-full py-3.5 bg-[#FFFFFF] text-[#1E1E1E] font-semibold rounded-[8px] border border-[#E5E5E5] hover:bg-[#F7F7F6] transition-all text-[15px] flex items-center justify-center gap-3 disabled:opacity-50"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
                                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -299,15 +293,15 @@ function RegisterContent() {
                             {isLoading ? 'Connecting to Google...' : 'Continue with Google'}
                         </button>
 
-                        <p className="mt-8 text-center text-xs text-slate-500">
+                        <p className="mt-8 text-center text-[14px] text-[#3A3A3A]/70 font-medium">
                             Already have an account?{' '}
-                            <Link href="/login" className="font-semibold text-teal-vibrant hover:text-teal-vibrant/80 transition">Sign in</Link>
+                            <Link href="/login" className="font-bold text-[#1E1E1E] hover:text-[#C9A227] transition-colors">Sign in</Link>
                         </p>
                     </>
                 ) : (
                     /* ═══ OTP VERIFICATION STEP ═══ */
-                    <div className="space-y-6">
-                        <div className="flex justify-center gap-2" onPaste={handleOtpPaste}>
+                    <div className="space-y-8">
+                        <div className="flex justify-center gap-3" onPaste={handleOtpPaste}>
                             {otpCode.map((digit, i) => (
                                 <input
                                     key={i}
@@ -318,7 +312,7 @@ function RegisterContent() {
                                     value={digit}
                                     onChange={e => handleOtpChange(i, e.target.value)}
                                     onKeyDown={e => handleOtpKeyDown(i, e)}
-                                    className="w-12 h-14 text-center text-2xl font-bold bg-[#111] border-2 border-white/10 rounded-xl text-white focus:outline-none focus:border-[#FE7743] transition-colors"
+                                    className="w-12 h-14 text-center text-[22px] font-bold bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors shadow-sm"
                                     autoFocus={i === 0}
                                 />
                             ))}
@@ -327,23 +321,23 @@ function RegisterContent() {
                         <button
                             onClick={handleVerifyOtp}
                             disabled={isLoading || otpCode.join('').length !== 6}
-                            className="w-full py-3.5 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20 disabled:opacity-50"
+                            className="btn-primary w-full py-3.5 shadow-md disabled:opacity-50"
                         >
                             {isLoading ? 'Verifying...' : 'Verify & Continue'}
                         </button>
 
-                        <div className="text-center space-y-2">
+                        <div className="text-center space-y-3">
                             <button
                                 onClick={handleResendOtp}
                                 disabled={resendCooldown > 0}
-                                className="text-sm text-teal-vibrant hover:text-teal-vibrant/80 font-semibold disabled:text-slate-400 disabled:cursor-not-allowed transition-colors"
+                                className="text-[14px] text-[#1E1E1E] hover:text-[#C9A227] font-bold disabled:text-[#3A3A3A]/40 disabled:cursor-not-allowed transition-colors"
                             >
                                 {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
                             </button>
                             <br />
                             <button
                                 onClick={() => { setOtpStep(false); setError(''); setOtpCode(['', '', '', '', '', '']); }}
-                                className="text-xs text-slate-500 hover:text-white transition-colors"
+                                className="text-[13px] font-medium text-[#3A3A3A]/60 hover:text-[#1E1E1E] transition-colors"
                             >
                                 ← Back to sign up
                             </button>
@@ -357,7 +351,7 @@ function RegisterContent() {
 
 export default function RegisterPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-500 text-sm">Loading...</div>}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F7F7F6]"><div className="w-8 h-8 border-2 border-[#C9A227] border-t-transparent rounded-full animate-spin" /></div>}>
             <RegisterContent />
         </Suspense>
     );
