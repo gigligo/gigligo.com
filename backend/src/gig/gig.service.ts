@@ -6,7 +6,7 @@ export class GigService {
     constructor(private prisma: PrismaService) { }
 
     async findAll(queryParams: any) {
-        const where: any = { isActive: true };
+        const where: any = { isActive: true, deletedAt: null };
         if (queryParams.category) where.category = queryParams.category;
 
         if (queryParams.search) {
@@ -59,7 +59,7 @@ export class GigService {
                 boosts: { where: { expiresAt: { gt: new Date() } } }
             },
         });
-        if (!gig) throw new NotFoundException('Gig not found');
+        if (!gig || gig.deletedAt) throw new NotFoundException('Gig not found');
         return {
             ...gig,
             reviewCount: gig.reviews.length,
@@ -69,7 +69,7 @@ export class GigService {
 
     async findMine(sellerId: string) {
         return this.prisma.gig.findMany({
-            where: { sellerId },
+            where: { sellerId, deletedAt: null },
             include: {
                 boosts: { where: { expiresAt: { gt: new Date() } } }
             },
@@ -94,12 +94,56 @@ export class GigService {
 
     async update(id: string, sellerId: string, data: any) {
         const gig = await this.prisma.gig.findUnique({ where: { id } });
-        if (!gig || gig.sellerId !== sellerId) {
+        if (!gig || gig.deletedAt || gig.sellerId !== sellerId) {
             throw new NotFoundException('Gig not found or you are not the owner');
         }
-        return this.prisma.gig.update({
+
+        const updatedGig = await this.prisma.gig.update({
             where: { id },
             data,
+        });
+
+        await this.prisma.auditLog.create({
+            data: {
+                userId: sellerId,
+                action: 'UPDATE_GIG',
+                targetId: id,
+                details: `Updated gig: ${data.title || gig.title}`
+            }
+        });
+
+        return updatedGig;
+    }
+
+    async deleteGig(id: string, sellerId: string) {
+        const gig = await this.prisma.gig.findUnique({
+            where: { id },
+            include: { orders: { where: { status: { in: ['IN_PROGRESS', 'PENDING'] } } } }
+        });
+
+        if (!gig || gig.deletedAt || gig.sellerId !== sellerId) {
+            throw new NotFoundException('Gig not found or you are not the owner');
+        }
+
+        if (gig.orders && gig.orders.length > 0) {
+            throw new BadRequestException('Cannot delete gig with active orders. Please complete or cancel them first.');
+        }
+
+        await this.prisma.auditLog.create({
+            data: {
+                userId: sellerId,
+                action: 'DELETE_GIG',
+                targetId: id,
+                details: `Deleted gig: ${gig.title}`
+            }
+        });
+
+        return this.prisma.gig.update({
+            where: { id },
+            data: {
+                deletedAt: new Date(),
+                isActive: false
+            }
         });
     }
 }

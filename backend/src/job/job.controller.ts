@@ -58,19 +58,22 @@ export class JobController {
     }
 
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('BUYER', 'EMPLOYER', 'ADMIN')
     update(@Req() req: any, @Param('id') id: string, @Body() body: any) {
         return this.jobService.update(id, req.user.id, body);
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
-    close(@Req() req: any, @Param('id') id: string) {
-        return this.jobService.close(id, req.user.id);
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('BUYER', 'EMPLOYER', 'ADMIN')
+    deleteJob(@Req() req: any, @Param('id') id: string) {
+        return this.jobService.deleteJob(id, req.user.id);
     }
 
     @Post(':id/boost')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('BUYER', 'EMPLOYER', 'ADMIN')
     boost(@Req() req: any, @Param('id') id: string, @Body() body: { durationDays: number; amountPKR: number }) {
         return this.jobService.boostJob(id, req.user.id, body.durationDays, body.amountPKR);
     }

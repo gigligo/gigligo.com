@@ -106,6 +106,13 @@ export class UsersService {
         });
     }
 
+    async updateEmailVerified(userId: string) {
+        return this.prisma.user.update({
+            where: { id: userId },
+            data: { emailVerified: true },
+        });
+    }
+
     async updatePassword(userId: string, passwordHash: string) {
         return this.prisma.user.update({
             where: { id: userId },

@@ -76,6 +76,33 @@ export class ChatService {
     }
 
     async findOrCreateConversation(freelancerId: string, employerId: string, orderId?: string, jobId?: string) {
+        if (!orderId && !jobId) {
+            throw new ForbiddenException('Global open chats are not allowed. Conversations must be tied to a specific job or order.');
+        }
+
+        if (jobId) {
+            const application = await this.prisma.jobApplication.findFirst({
+                where: { jobId, freelancerId },
+                include: { job: true }
+            });
+            if (!application) {
+                throw new ForbiddenException('Freelancers must apply to the job before messaging is allowed.');
+            }
+            if (application.job.employerId !== employerId) {
+                throw new ForbiddenException('Invalid employer for this job.');
+            }
+        }
+
+        if (orderId) {
+            const order = await this.prisma.order.findUnique({ where: { id: orderId } });
+            if (!order) {
+                throw new NotFoundException('Order not found');
+            }
+            if (order.sellerId !== freelancerId || order.buyerId !== employerId) {
+                throw new ForbiddenException('Invalid participants for this order.');
+            }
+        }
+
         let whereClause: any = { freelancerId, employerId };
 
         if (orderId) whereClause.orderId = orderId;

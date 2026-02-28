@@ -56,12 +56,13 @@ model User {
   contractsAsFreelancer Contract[] @relation("FreelancerContracts")
   contractsAsEmployer   Contract[] @relation("EmployerContracts")
 
-  // Admin
-  auditLogs AuditLog[] @relation("AdminAuditLogs")
+  // Audit Logs
+  auditLogs AuditLog[] @relation("UserAuditLogs")
 
-  // 2FA Fields
+  // 2FA & Verification Fields
   twoFactorSecret    String?
   isTwoFactorEnabled Boolean @default(false)
+  emailVerified      Boolean @default(false)
 
   // Referral System
   referralCode       String?   @unique
@@ -244,6 +245,7 @@ model JobApplication {
   freelancerId String
   coverLetter  String
   proposedRate Int?
+  timeline     String?
   status       ApplicationStatus @default(PENDING)
   appliedAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
@@ -485,6 +487,7 @@ enum JobStatus {
   CLOSED
   FILLED
   EXPIRED
+  ARCHIVED
 }
 
 enum ApplicationStatus {
@@ -539,10 +542,14 @@ enum NotificationType {
   APPLICATION_SUBMITTED
   APPLICATION_HIRED
   APPLICATION_REJECTED
+  APPLICATION_SHORTLISTED
+  NEW_MESSAGE
   LOW_CREDITS
   PAYMENT_RECEIVED
   ORDER_UPDATE
   SUBSCRIPTION_ACTIVATED
+  KYC_APPROVED
+  KYC_REJECTED
   SYSTEM
 }
 
@@ -656,19 +663,19 @@ model NewsletterSubscriber {
 }
 
 // ═══════════════════════════════════════
-// ADMIN AUDIT LOG
+// AUDIT LOG
 // ═══════════════════════════════════════
 
 model AuditLog {
   id        String   @id @default(cuid())
-  adminId   String
-  admin     User     @relation("AdminAuditLogs", fields: [adminId], references: [id])
+  userId    String
+  user      User     @relation("UserAuditLogs", fields: [userId], references: [id])
   action    String
   targetId  String?
   details   String?
   createdAt DateTime @default(now())
 
-  @@index([adminId, createdAt])
+  @@index([userId, createdAt])
 }
 
 // ═══════════════════════════════════════
@@ -682,6 +689,7 @@ model OtpCode {
   type      OtpType
   expiresAt DateTime
   used      Boolean  @default(false)
+  attempts  Int      @default(0)
   createdAt DateTime @default(now())
 
   @@index([email, type, used])

@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificationGateway } from './notification.gateway';
 
 @Injectable()
 export class NotificationService {
-    constructor(private prisma: PrismaService) { }
+    constructor(
+        private prisma: PrismaService,
+        private gateway: NotificationGateway
+    ) { }
 
     async create(userId: string, data: { type: string; title: string; message: string; link?: string }) {
-        return this.prisma.notification.create({
+        const notification = await this.prisma.notification.create({
             data: {
                 userId,
                 type: data.type as any,
@@ -15,6 +19,11 @@ export class NotificationService {
                 link: data.link,
             },
         });
+
+        // Push real-time event to active user's socket
+        this.gateway.sendNotificationToUser(userId, notification);
+
+        return notification;
     }
 
     async getAll(userId: string, page = 1, limit = 20) {

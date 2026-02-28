@@ -52,7 +52,7 @@ export class JobService {
         page?: number;
         limit?: number;
     }) {
-        const where: any = { status: filters.status || 'OPEN' };
+        const where: any = { status: filters.status || 'OPEN', deletedAt: null };
         if (filters.category) where.category = filters.category;
         if (filters.jobType) where.jobType = filters.jobType;
         if (filters.search) {
@@ -96,32 +96,62 @@ export class JobService {
                 _count: { select: { applications: true } },
             },
         });
-        if (!job) throw new NotFoundException('Job not found');
+        if (!job || job.deletedAt) throw new NotFoundException('Job not found');
         return job;
     }
 
     async update(id: string, employerId: string, data: any) {
         const job = await this.prisma.job.findUnique({ where: { id } });
-        if (!job) throw new NotFoundException('Job not found');
+        if (!job || job.deletedAt) throw new NotFoundException('Job not found');
         if (job.employerId !== employerId) throw new ForbiddenException('Not your job posting');
 
-        return this.prisma.job.update({ where: { id }, data });
+        const updatedJob = await this.prisma.job.update({ where: { id }, data });
+
+        await this.prisma.auditLog.create({
+            data: {
+                userId: employerId,
+                action: 'UPDATE_JOB',
+                targetId: id,
+                details: `Updated job: ${data.title || job.title}`
+            }
+        });
+
+        return updatedJob;
     }
 
-    async close(id: string, employerId: string) {
-        const job = await this.prisma.job.findUnique({ where: { id } });
-        if (!job) throw new NotFoundException('Job not found');
+    async deleteJob(id: string, employerId: string) {
+        const job = await this.prisma.job.findUnique({
+            where: { id },
+            include: { applications: { where: { status: 'HIRED' } } }
+        });
+        if (!job || job.deletedAt) throw new NotFoundException('Job not found');
         if (job.employerId !== employerId) throw new ForbiddenException('Not your job posting');
+
+        await this.prisma.auditLog.create({
+            data: {
+                userId: employerId,
+                action: 'DELETE_JOB',
+                targetId: id,
+                details: `Deleted job: ${job.title}`
+            }
+        });
+
+        if (job.applications && job.applications.length > 0) {
+            return this.prisma.job.update({
+                where: { id },
+                data: { status: 'ARCHIVED' }
+            });
+        }
 
         return this.prisma.job.update({
             where: { id },
-            data: { status: 'CLOSED' },
+            data: { deletedAt: new Date(), status: 'CLOSED' }
         });
     }
 
     async getMyJobs(employerId: string) {
         return this.prisma.job.findMany({
-            where: { employerId },
+            where: { employerId, deletedAt: null },
             include: { _count: { select: { applications: true } } },
             orderBy: { createdAt: 'desc' },
         });

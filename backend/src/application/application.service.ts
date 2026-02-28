@@ -16,7 +16,7 @@ export class ApplicationService {
         private eventEmitter: EventEmitter2
     ) { }
 
-    async apply(freelancerId: string, data: { jobId: string; coverLetter: string; proposedRate?: number }) {
+    async apply(freelancerId: string, data: { jobId: string; coverLetter: string; proposedRate?: number; timeline?: string }) {
         // Check job exists and is open
         const job = await this.prisma.job.findUnique({ where: { id: data.jobId } });
         if (!job) throw new NotFoundException('Job not found');
@@ -51,6 +51,7 @@ export class ApplicationService {
                 freelancerId,
                 coverLetter: data.coverLetter,
                 proposedRate: data.proposedRate,
+                timeline: data.timeline,
             },
             include: {
                 job: { select: { title: true, employerId: true } },

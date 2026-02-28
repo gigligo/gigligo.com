@@ -37,7 +37,7 @@ export const jobApi = {
         apiFetch('/api/jobs', { method: 'POST', token, body: JSON.stringify(data) }),
     update: (token: string, id: string, data: any) =>
         apiFetch(`/api/jobs/${id}`, { method: 'PATCH', token, body: JSON.stringify(data) }),
-    close: (token: string, id: string) =>
+    delete: (token: string, id: string) =>
         apiFetch(`/api/jobs/${id}`, { method: 'DELETE', token }),
     getMyJobs: (token: string) =>
         apiFetch('/api/jobs/mine', { token }),
@@ -47,7 +47,7 @@ export const jobApi = {
 
 // Application APIs
 export const applicationApi = {
-    apply: (token: string, data: { jobId: string; coverLetter: string; proposedRate?: number }) =>
+    apply: (token: string, data: { jobId: string; coverLetter: string; proposedRate?: number; timeline?: string }) =>
         apiFetch('/api/applications', { method: 'POST', token, body: JSON.stringify(data) }),
     getMine: (token: string) =>
         apiFetch('/api/applications/mine', { token }),
@@ -124,6 +124,7 @@ export const gigApi = {
     getMyGigs: (token: string) => apiFetch('/api/gigs/mine', { token }),
     boost: (token: string, id: string, durationDays: number) =>
         apiFetch(`/api/gigs/${id}/boost`, { method: 'POST', token, body: JSON.stringify({ durationDays }) }),
+    delete: (token: string, id: string) => apiFetch(`/api/gigs/${id}`, { method: 'DELETE', token }),
 };
 
 // Admin APIs

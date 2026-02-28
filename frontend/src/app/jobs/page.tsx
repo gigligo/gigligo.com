@@ -7,10 +7,15 @@ import { jobApi } from '@/lib/api';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { useSession } from 'next-auth/react';
 
 const CATEGORIES = ['All', 'Web Development', 'Mobile Apps', 'Design', 'Data Science', 'Marketing', 'Writing', 'Video', 'Business', 'Other'];
 
 function JobListContent() {
+    const { data: session } = useSession();
+    const role = (session as any)?.role;
+    const isEmployer = ['BUYER', 'EMPLOYER', 'ADMIN'].includes(role);
+
     const searchParams = useSearchParams();
     const [jobs, setJobs] = useState<any[]>([]);
     const [total, setTotal] = useState(0);
@@ -93,10 +98,16 @@ function JobListContent() {
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
                         </div>
                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">No jobs found</h3>
-                        <p className="text-slate-600 dark:text-slate-400 max-w-sm mx-auto mb-8">Get things done by posting your own project. Top Pakistani freelancers are ready to help!</p>
-                        <Link href="/register?role=BUYER" className="inline-block px-8 py-3 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-semibold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20 hover:shadow-[#FE7743]/40">
-                            Post a Job Now
-                        </Link>
+                        <p className="text-slate-600 dark:text-slate-400 max-w-sm mx-auto mb-8">
+                            {(!session || isEmployer)
+                                ? "Get things done by posting your own project. Top Pakistani freelancers are ready to help!"
+                                : "Check back later for new opportunities that match your skills."}
+                        </p>
+                        {(!session || isEmployer) && (
+                            <Link href={session ? "/jobs/post" : "/register?role=BUYER"} className="inline-block px-8 py-3 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-semibold rounded-xl transition-all shadow-lg shadow-[#FE7743]/20 hover:shadow-[#FE7743]/40">
+                                Post a Job Now
+                            </Link>
+                        )}
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

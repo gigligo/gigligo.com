@@ -18,9 +18,12 @@ export default function JobDetailPage() {
     const [showApplyForm, setShowApplyForm] = useState(false);
     const [coverLetter, setCoverLetter] = useState('');
     const [proposedRate, setProposedRate] = useState('');
+    const [timeline, setTimeline] = useState('');
     const [credits, setCredits] = useState(0);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     const token = (session as any)?.accessToken;
     const role = (session as any)?.role;
@@ -50,6 +53,7 @@ export default function JobDetailPage() {
                 jobId: id as string,
                 coverLetter,
                 proposedRate: proposedRate ? parseInt(proposedRate) : undefined,
+                timeline: timeline || undefined,
             });
             setSuccess('Application submitted! 1 credit deducted.');
             setShowApplyForm(false);
@@ -58,6 +62,19 @@ export default function JobDetailPage() {
             setError(e.message);
         }
         setApplying(false);
+    };
+
+    const handleDeleteJob = async () => {
+        setDeleting(true);
+        try {
+            await jobApi.delete(token, id as string);
+            alert('Job deleted successfully.');
+            router.push('/dashboard');
+        } catch (e: any) {
+            alert(e.message || 'Failed to delete job');
+        }
+        setDeleting(false);
+        setDeleteModalOpen(false);
     };
 
     if (loading) {
@@ -91,9 +108,17 @@ export default function JobDetailPage() {
                                 Posted by {job.employer?.profile?.fullName || 'Employer'} • {job.employer?.profile?.location || 'Pakistan'}
                             </p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right flex flex-col items-end gap-2">
                             <p className="text-xl font-bold text-[#FE7743]">PKR {job.budgetMin?.toLocaleString()} – {job.budgetMax?.toLocaleString()}</p>
                             <span className="text-xs px-3 py-1 rounded-full bg-[#273F4F]/30 text-[#EFEEEA]/60">{job.jobType}</span>
+                            {session && (session as any)?.user?.id === job.employerId && job.status === 'OPEN' && (
+                                <button
+                                    onClick={() => setDeleteModalOpen(true)}
+                                    className="text-xs px-3 py-1 mt-2 bg-red-500/10 text-red-500 hover:bg-red-500/20 rounded-lg transition"
+                                >
+                                    Delete Job
+                                </button>
+                            )}
                         </div>
                     </div>
 
@@ -141,22 +166,6 @@ export default function JobDetailPage() {
                                     </div>
                                 ) : (
                                     <div className="flex gap-3">
-                                        <button
-                                            onClick={async () => {
-                                                if (!token) return router.push('/login');
-                                                try {
-                                                    const myId = (session as any)?.user?.id;
-                                                    const res: any = await chatApi.findOrCreate(token, myId, job.employerId, undefined, job.id);
-                                                    const convId = res?.data?.id || res?.id;
-                                                    if (convId) router.push(`/dashboard/inbox?c=${convId}`);
-                                                } catch (error) {
-                                                    console.error("Failed to start chat", error);
-                                                }
-                                            }}
-                                            className="px-6 py-3 bg-white/5 border border-white/10 text-white font-semibold rounded-xl text-sm hover:bg-white/10 transition"
-                                        >
-                                            Message
-                                        </button>
                                         {credits < 1 ? (
                                             <Link href="/dashboard/credits" className="px-6 py-3 bg-[#FE7743] text-white font-semibold rounded-xl text-sm">
                                                 Buy Credits First
@@ -185,6 +194,12 @@ export default function JobDetailPage() {
                                         placeholder="e.g. 15000"
                                         className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-[#EFEEEA] text-sm placeholder:text-[#EFEEEA]/20 focus:outline-none focus:border-[#FE7743]/50" />
                                 </div>
+                                <div>
+                                    <label className="text-xs text-[#EFEEEA]/60 font-semibold block mb-2">Completion Timeline — Optional</label>
+                                    <input type="text" value={timeline} onChange={e => setTimeline(e.target.value)}
+                                        placeholder="e.g. 2 weeks"
+                                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-[#EFEEEA] text-sm placeholder:text-[#EFEEEA]/20 focus:outline-none focus:border-[#FE7743]/50" />
+                                </div>
                                 <div className="flex gap-3">
                                     <button type="button" onClick={() => setShowApplyForm(false)} className="flex-1 py-3 bg-white/5 border border-white/10 text-[#EFEEEA] font-semibold rounded-xl text-sm hover:bg-white/10 transition">
                                         Cancel
@@ -207,6 +222,35 @@ export default function JobDetailPage() {
                     </div>
                 )}
             </main>
+
+            {/* Delete Modal */}
+            {deleteModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-[#111] border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+                        <h2 className="text-xl font-bold text-white mb-2">Delete Job</h2>
+                        <p className="text-sm text-white/60 mb-6">
+                            Are you sure you want to delete this job? This action will archive it if there are hired applicants, or close it otherwise.
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => setDeleteModalOpen(false)}
+                                className="px-4 py-2 text-sm font-semibold text-white/70 hover:text-white transition"
+                                disabled={deleting}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteJob}
+                                disabled={deleting}
+                                className="px-5 py-2 text-sm font-semibold bg-red-500/20 text-red-500 border border-red-500/50 rounded-lg hover:bg-red-500 flex items-center gap-2 hover:text-white transition disabled:opacity-50"
+                            >
+                                {deleting ? 'Deleting...' : 'Confirm Delete'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <Footer />
         </div>
     );

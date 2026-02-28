@@ -139,7 +139,14 @@ function ApplicationsContent() {
                                             )}
 
                                             <div className="bg-black/30 rounded-xl p-4 mt-2">
-                                                <p className="text-xs text-[#EFEEEA]/40 uppercase tracking-widest font-semibold mb-2">Cover Letter</p>
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <p className="text-xs text-[#EFEEEA]/40 uppercase tracking-widest font-semibold">Cover Letter</p>
+                                                    {app.timeline && (
+                                                        <p className="text-xs text-[#FE7743] font-semibold bg-[#FE7743]/10 px-2 py-1 rounded">
+                                                            Timeline: {app.timeline}
+                                                        </p>
+                                                    )}
+                                                </div>
                                                 <p className="text-sm text-[#EFEEEA]/70 whitespace-pre-wrap">{app.coverLetter}</p>
                                             </div>
                                             <p className="text-[10px] text-[#EFEEEA]/30 mt-3">Applied: {new Date(app.appliedAt).toLocaleDateString()}</p>

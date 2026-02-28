@@ -5,9 +5,14 @@ import { Footer } from "@/components/Footer";
 import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { gigApi } from "@/lib/api";
 
 function SearchPageContent() {
+    const { data: session } = useSession();
+    const role = (session as any)?.role;
+    const isFreelancer = ['SELLER', 'STUDENT', 'FREE', 'ADMIN'].includes(role);
+
     const searchParams = useSearchParams();
     const [gigs, setGigs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -93,10 +98,16 @@ function SearchPageContent() {
                                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                 </div>
                                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">No gigs found here</h3>
-                                <p className="text-slate-600 dark:text-slate-400 max-w-sm mx-auto mb-8">Be the first to offer this service! Pakistan's talent economy is waiting for your skills.</p>
-                                <Link href="/register?role=SELLER" className="inline-block px-8 py-3 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-xl transition-all shadow-lg shadow-teal-500/20 hover:shadow-teal-500/40">
-                                    Create a Gig Now
-                                </Link>
+                                <p className="text-slate-600 dark:text-slate-400 max-w-sm mx-auto mb-8">
+                                    {(!session || isFreelancer)
+                                        ? "Be the first to offer this service! Pakistan's talent economy is waiting for your skills."
+                                        : "Try adjusting your search criteria or category filter to find what you're looking for."}
+                                </p>
+                                {(!session || isFreelancer) && (
+                                    <Link href={session ? "/dashboard/create-gig" : "/register?role=SELLER"} className="inline-block px-8 py-3 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-xl transition-all shadow-lg shadow-teal-500/20 hover:shadow-teal-500/40">
+                                        Create a Gig Now
+                                    </Link>
+                                )}
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

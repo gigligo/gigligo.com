@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { Bell } from 'lucide-react';
 import { notificationApi } from '@/lib/api';
 import { formatDistanceToNow } from 'date-fns';
+import { io, Socket } from 'socket.io-client';
+import { useRouter } from 'next/navigation';
 
 interface Notification {
     id: string;
@@ -16,15 +18,45 @@ interface Notification {
     createdAt: string;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
 export default function NotificationBell() {
     const { data: session } = useSession();
+    const router = useRouter();
     const [open, setOpen] = useState(false);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
+    const socketRef = useRef<Socket | null>(null);
     const token = (session as any)?.accessToken;
 
-    // Fetch unread count every 30s
+    // Connect to WebSocket for real-time notifications
+    useEffect(() => {
+        if (!token) return;
+
+        const socket = io(`${API_URL}/notifications`, {
+            auth: { token },
+            transports: ['websocket', 'polling'],
+        });
+
+        socket.on('newNotification', (notification: Notification) => {
+            setNotifications(prev => [notification, ...prev]);
+            setUnreadCount(prev => prev + 1);
+        });
+
+        socket.on('connect_error', () => {
+            // Fallback to polling if WebSocket fails
+        });
+
+        socketRef.current = socket;
+
+        return () => {
+            socket.disconnect();
+            socketRef.current = null;
+        };
+    }, [token]);
+
+    // Fetch unread count every 30s as fallback
     useEffect(() => {
         if (!token) return;
         const fetchCount = async () => {
@@ -67,12 +99,33 @@ export default function NotificationBell() {
         } catch { /* silent */ }
     };
 
+    const handleNotificationClick = useCallback(async (n: Notification) => {
+        if (!token) return;
+        if (!n.isRead) {
+            try {
+                await notificationApi.markRead(token, n.id);
+                setNotifications(prev => prev.map(x => x.id === n.id ? { ...x, isRead: true } : x));
+                setUnreadCount(prev => Math.max(0, prev - 1));
+            } catch { /* silent */ }
+        }
+        if (n.link) {
+            setOpen(false);
+            router.push(n.link);
+        }
+    }, [token, router]);
+
     const typeIcon: Record<string, string> = {
+        APPLICATION_SUBMITTED: '📋',
+        APPLICATION_HIRED: '🎉',
+        APPLICATION_REJECTED: '❌',
+        APPLICATION_SHORTLISTED: '⭐',
+        NEW_MESSAGE: '💬',
         ORDER_UPDATE: '📦',
         PAYMENT_RECEIVED: '💰',
-        NEW_MESSAGE: '💬',
-        APPLICATION_UPDATE: '📋',
-        DISPUTE_UPDATE: '⚠️',
+        LOW_CREDITS: '⚠️',
+        SUBSCRIPTION_ACTIVATED: '🚀',
+        KYC_APPROVED: '✅',
+        KYC_REJECTED: '🚫',
         SYSTEM: '🔔',
     };
 
@@ -87,7 +140,7 @@ export default function NotificationBell() {
             >
                 <Bell size={20} className="text-slate-600 dark:text-offwhite/70" />
                 {unreadCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-orange text-white text-[10px] font-bold px-1">
+                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-orange text-white text-[10px] font-bold px-1 animate-pulse">
                         {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                 )}
@@ -119,6 +172,7 @@ export default function NotificationBell() {
                             notifications.map(n => (
                                 <div
                                     key={n.id}
+                                    onClick={() => handleNotificationClick(n)}
                                     className={`px-4 py-3 border-b border-slate-50 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer ${!n.isRead ? 'bg-orange/5 dark:bg-orange/10' : ''}`}
                                 >
                                     <div className="flex gap-3">
@@ -132,6 +186,9 @@ export default function NotificationBell() {
                                                 {formatDistanceToNow(new Date(n.createdAt), { addSuffix: true })}
                                             </p>
                                         </div>
+                                        {!n.isRead && (
+                                            <span className="w-2 h-2 rounded-full bg-[#FE7743] shrink-0 mt-2" />
+                                        )}
                                     </div>
                                 </div>
                             ))

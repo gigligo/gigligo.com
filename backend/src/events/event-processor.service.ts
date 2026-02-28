@@ -70,7 +70,7 @@ export class EventProcessorService {
         this.logger.log(`Processing JobShortlistedEvent for Application ID: ${payload.applicationId}`);
 
         await this.notificationService.create(payload.freelancerId, {
-            type: 'SYSTEM',
+            type: 'APPLICATION_SHORTLISTED',
             title: 'Application Shortlisted! ⭐',
             message: `Your application for "${payload.jobTitle}" has been shortlisted`,
             link: `/dashboard/applications`,
@@ -94,7 +94,7 @@ export class EventProcessorService {
         this.logger.log(`Processing OrderCreatedEvent for Order ID: ${payload.orderId}`);
 
         await this.notificationService.create(payload.sellerId, {
-            type: 'ORDER_STARTED',
+            type: 'ORDER_UPDATE',
             title: 'New Order Received',
             message: `You have a new order pending for your gig: ${payload.gigTitle}`,
             link: `/dashboard/orders/${payload.orderId}`,
@@ -118,7 +118,7 @@ export class EventProcessorService {
         this.logger.log(`Processing OrderDeliveredEvent for Order ID: ${payload.orderId}`);
 
         await this.notificationService.create(payload.buyerId, {
-            type: 'ORDER_DELIVERED',
+            type: 'ORDER_UPDATE',
             title: 'Order Delivered',
             message: `Your order for "${payload.gigTitle}" has been delivered. Please review it.`,
             link: `/dashboard/purchases/${payload.orderId}`,
@@ -133,7 +133,7 @@ export class EventProcessorService {
         this.logger.log(`Processing OrderCompletedEvent for Order ID: ${payload.orderId}`);
 
         await this.notificationService.create(payload.sellerId, {
-            type: 'ORDER_COMPLETED',
+            type: 'ORDER_UPDATE',
             title: 'Order Completed & Paid',
             message: `Your order for "${payload.gigTitle}" is marked as completed. Earnings added!`,
             link: `/dashboard/orders/${payload.orderId}`,

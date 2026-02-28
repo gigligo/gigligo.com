@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { GigService } from './gig.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -36,5 +36,12 @@ export class GigController {
     @Roles('SELLER', 'STUDENT', 'FREE')
     update(@Request() req: any, @Param('id') id: string, @Body() data: any) {
         return this.gigService.update(id, req.user.id, data);
+    }
+
+    @Delete(':id')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('SELLER', 'STUDENT', 'FREE')
+    deleteGig(@Request() req: any, @Param('id') id: string) {
+        return this.gigService.deleteGig(id, req.user.id);
     }
 }

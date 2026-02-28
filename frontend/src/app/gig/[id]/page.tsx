@@ -17,6 +17,8 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const [gig, setGig] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     useEffect(() => {
         gigApi.get(params.id)
@@ -24,6 +26,20 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
             .catch((err: any) => console.error("Failed to load gig:", err))
             .finally(() => setLoading(false));
     }, [params.id]);
+
+    const handleDeleteGig = async () => {
+        setDeleting(true);
+        try {
+            const token = (session as any)?.accessToken;
+            await gigApi.delete(token, gig.id);
+            alert('Gig deleted successfully.');
+            router.push('/dashboard');
+        } catch (e: any) {
+            alert(e.message || 'Failed to delete gig');
+        }
+        setDeleting(false);
+        setDeleteModalOpen(false);
+    };
 
     if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#000]"><div className="w-8 h-8 border-2 border-[#FE7743] border-t-transparent rounded-full animate-spin" /></div>;
     if (!gig) return <div className="min-h-screen flex items-center justify-center bg-[#000] text-white">Gig not found</div>;
@@ -152,7 +168,17 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-4">
                                     <h3 className="text-xl font-bold text-primary pr-4">Standard Package</h3>
-                                    <span className="text-2xl font-extrabold text-primary whitespace-nowrap">PKR {gig.priceStandard?.toLocaleString() || gig.basePrice?.toLocaleString()}</span>
+                                    <div className="flex flex-col items-end gap-2">
+                                        <span className="text-2xl font-extrabold text-primary whitespace-nowrap">PKR {gig.priceStandard?.toLocaleString() || gig.basePrice?.toLocaleString()}</span>
+                                        {session && (session as any)?.user?.id === gig.sellerId && gig.isActive && (
+                                            <button
+                                                onClick={() => setDeleteModalOpen(true)}
+                                                className="text-xs px-3 py-1 bg-red-500/10 text-red-500 hover:bg-red-500/20 rounded-lg transition font-semibold"
+                                            >
+                                                Delete Gig
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <p className="text-muted text-sm mb-6">Standard delivery package for this gig.</p>
@@ -221,9 +247,37 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                         </div>
                     </div>
                 </div>
-            </main >
+            </main>
+
+            {/* Delete Modal */}
+            {deleteModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-white border border-gray-100 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+                        <h2 className="text-xl font-bold text-primary mb-2">Delete Gig</h2>
+                        <p className="text-sm text-muted mb-6">
+                            Are you sure you want to delete this gig? This action will set it to inactive. Gigs with active orders cannot be deleted.
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => setDeleteModalOpen(false)}
+                                className="px-4 py-2 text-sm font-semibold text-muted hover:text-primary transition"
+                                disabled={deleting}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteGig}
+                                disabled={deleting}
+                                className="px-5 py-2 text-sm font-semibold bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 flex items-center gap-2 transition disabled:opacity-50"
+                            >
+                                {deleting ? 'Deleting...' : 'Confirm Delete'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <Footer />
-        </div >
+        </div>
     );
 }

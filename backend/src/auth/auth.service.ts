@@ -36,13 +36,15 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        // Step 1: Send OTP to user's email
-        await this.otpService.generateAndSend(user.email, 'LOGIN');
+        // Determine OTP type based on email verification status
+        const otpType = user.emailVerified ? 'LOGIN' : 'EMAIL_VERIFY';
 
-        // Return a short-lived temp token (2 minutes) that identifies the user
-        // but does NOT grant full access — only used for the verify-otp step
-        const tempPayload = { email: user.email, sub: user.id, purpose: 'otp-verification' };
-        const tempToken = this.jwtService.sign(tempPayload, { expiresIn: '2m' });
+        // Step 1: Send OTP to user's email
+        await this.otpService.generateAndSend(user.email, otpType);
+
+        // Return a short-lived temp token (5 minutes) that identifies the user
+        const tempPayload = { email: user.email, sub: user.id, purpose: 'otp-verification', otpType };
+        const tempToken = this.jwtService.sign(tempPayload, { expiresIn: '5m' });
 
         return {
             requiresOtp: true,
@@ -52,7 +54,7 @@ export class AuthService {
     }
 
     /**
-     * Step 2 of login: Verify the OTP code and issue the real access token.
+     * Step 2 of login/signup: Verify the OTP code and issue the real access token.
      */
     async verifyLoginOtp(tempToken: string, code: string) {
         let decoded: any;
@@ -66,12 +68,20 @@ export class AuthService {
             throw new UnauthorizedException('Invalid token.');
         }
 
-        // Verify the OTP code
-        await this.otpService.verify(decoded.email, code, 'LOGIN');
+        const otpType = decoded.otpType || 'LOGIN';
 
-        // OTP valid — issue full access token & refresh token
+        // Verify the OTP code
+        await this.otpService.verify(decoded.email, code, otpType);
+
+        // Fetch user
         const user = await this.usersService.findByEmail(decoded.email);
         if (!user) throw new UnauthorizedException();
+
+        // If email was unverified, mark it as verified now
+        if (!user.emailVerified) {
+            await this.usersService.updateEmailVerified(user.id);
+            user.emailVerified = true;
+        }
 
         const payload = { email: user.email, sub: user.id, role: user.role };
 
@@ -106,7 +116,8 @@ export class AuthService {
         if (decoded.purpose !== 'otp-verification') {
             throw new UnauthorizedException('Invalid token.');
         }
-        return this.otpService.generateAndSend(decoded.email, 'LOGIN');
+        const otpType = decoded.otpType || 'LOGIN';
+        return this.otpService.generateAndSend(decoded.email, otpType);
     }
 
     /**
@@ -176,10 +187,16 @@ export class AuthService {
             this.logger.error(`Failed to send welcome email to ${user.email}`, e);
         });
 
-        const payload = { email: user.email, sub: user.id, role: user.role };
+        // Generate OTP for email verification instead of returning the access token directly
+        await this.otpService.generateAndSend(user.email, 'EMAIL_VERIFY');
+
+        const tempPayload = { email: user.email, sub: user.id, purpose: 'otp-verification', otpType: 'EMAIL_VERIFY' };
+        const tempToken = this.jwtService.sign(tempPayload, { expiresIn: '5m' });
+
         return {
-            access_token: this.jwtService.sign(payload),
-            user: { id: user.id, email: user.email, role: user.role },
+            requiresOtp: true,
+            tempToken,
+            message: 'Verification code sent to your email.',
         };
     }
 

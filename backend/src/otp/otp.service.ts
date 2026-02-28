@@ -1,14 +1,16 @@
 import { Injectable, Logger, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailService } from '../email/email.service';
-import { randomInt } from 'crypto';
+import { randomInt, createHash } from 'crypto';
 
 @Injectable()
 export class OtpService {
     private readonly logger = new Logger(OtpService.name);
 
-    // Rate limit: max OTP requests per email per hour
-    private readonly MAX_OTP_PER_HOUR = 5;
+    // Rate limit: max 3 resend attempts per email per hour
+    private readonly MAX_OTP_PER_HOUR = 3;
+    // Max verification attempts before invalidation
+    private readonly MAX_VERIFY_ATTEMPTS = 5;
     // OTP validity in minutes
     private readonly OTP_TTL_MINUTES = 5;
 
@@ -44,12 +46,13 @@ export class OtpService {
             data: { used: true },
         });
 
-        // ── Generate 6-digit code ──
+        // ── Generate 6-digit code and hash it ──
         const code = randomInt(100000, 999999).toString();
+        const hashCode = createHash('sha256').update(code).digest('hex');
         const expiresAt = new Date(Date.now() + this.OTP_TTL_MINUTES * 60 * 1000);
 
         await (this.prisma as any).otpCode.create({
-            data: { email, code, type, expiresAt },
+            data: { email, code: hashCode, type, expiresAt, attempts: 0 },
         });
 
         // ── Send email ──
@@ -83,10 +86,10 @@ export class OtpService {
      * Returns true if valid, throws otherwise.
      */
     async verify(email: string, code: string, type: 'LOGIN' | 'EMAIL_VERIFY' | 'PHONE_VERIFY'): Promise<boolean> {
+        // Find the most recent un-used, un-expired token
         const otp = await (this.prisma as any).otpCode.findFirst({
             where: {
                 email,
-                code,
                 type,
                 used: false,
                 expiresAt: { gte: new Date() },
@@ -95,10 +98,28 @@ export class OtpService {
         });
 
         if (!otp) {
-            throw new BadRequestException('Invalid or expired verification code.');
+            throw new BadRequestException('No active verification code found or it has expired.');
         }
 
-        // Mark as used
+        if (otp.attempts >= this.MAX_VERIFY_ATTEMPTS) {
+            await (this.prisma as any).otpCode.update({
+                where: { id: otp.id },
+                data: { used: true }, // Invalidate
+            });
+            throw new BadRequestException('Too many failed attempts. Please request a new code.');
+        }
+
+        const hashCode = createHash('sha256').update(code).digest('hex');
+        if (otp.code !== hashCode) {
+            // Increment attempts
+            await (this.prisma as any).otpCode.update({
+                where: { id: otp.id },
+                data: { attempts: { increment: 1 } },
+            });
+            throw new BadRequestException('Invalid verification code.');
+        }
+
+        // Mark as used on success
         await (this.prisma as any).otpCode.update({
             where: { id: otp.id },
             data: { used: true },

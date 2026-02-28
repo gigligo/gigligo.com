@@ -11,7 +11,7 @@ export class ApplicationController {
     @Post()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('SELLER', 'STUDENT', 'FREE')
-    apply(@Req() req: any, @Body() body: { jobId: string; coverLetter: string; proposedRate?: number }) {
+    apply(@Req() req: any, @Body() body: { jobId: string; coverLetter: string; proposedRate?: number; timeline?: string }) {
         return this.applicationService.apply(req.user.id, body);
     }
 
