@@ -24,6 +24,7 @@ model User {
   isFoundingMember Boolean   @default(false)
   nationalId       String?   @unique
   kycStatus        KYCStatus @default(UNVERIFIED)
+  paymentVerified  Boolean   @default(false)
   isSuspended      Boolean   @default(false)
   termsAcceptedAt  DateTime?
   createdAt        DateTime  @default(now())

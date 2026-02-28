@@ -75,7 +75,7 @@ export class JobService {
             this.prisma.job.findMany({
                 where,
                 include: {
-                    employer: { select: { id: true, profile: { select: { fullName: true, avatarUrl: true } } } },
+                    employer: { select: { id: true, kycStatus: true, paymentVerified: true, profile: { select: { fullName: true, avatarUrl: true } } } },
                     _count: { select: { applications: true } },
                 },
                 orderBy: [{ isBoosted: 'desc' }, { createdAt: 'desc' }],
@@ -92,7 +92,7 @@ export class JobService {
         const job = await this.prisma.job.findUnique({
             where: { id },
             include: {
-                employer: { select: { id: true, profile: { select: { fullName: true, avatarUrl: true, location: true } } } },
+                employer: { select: { id: true, kycStatus: true, paymentVerified: true, profile: { select: { fullName: true, avatarUrl: true, location: true } } } },
                 _count: { select: { applications: true } },
             },
         });

@@ -7,6 +7,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { jobApi, applicationApi, creditApi } from '@/lib/api';
 import Link from 'next/link';
+import { CheckCircle2, ShieldCheck, Calendar, Users, Briefcase, Clock, AlertCircle } from 'lucide-react';
 
 export default function JobDetailPage() {
     const { id } = useParams();
@@ -104,11 +105,25 @@ export default function JobDetailPage() {
                         <div>
                             {job.isBoosted && <span className="text-[10px] font-bold text-[#FE7743] uppercase tracking-wider">⚡ Featured</span>}
                             <h1 className="text-2xl font-bold text-[#EFEEEA] mt-1">{job.title}</h1>
-                            <p className="text-sm text-[#EFEEEA]/40 mt-2">
-                                Posted by {job.employer?.profile?.fullName || 'Employer'} • {job.employer?.profile?.location || 'Pakistan'}
-                            </p>
-                            <p className="text-xs text-[#EFEEEA]/30 mt-1">
-                                📅 Posted on {new Date(job.createdAt).toLocaleDateString('en-PK', { year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(job.createdAt).toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' })}
+                            <div className="flex items-center gap-2 mt-2">
+                                <p className="text-sm text-[#EFEEEA]/40">
+                                    Posted by {job.employer?.profile?.fullName || 'Employer'} • {job.employer?.profile?.location || 'Pakistan'}
+                                </p>
+                                <div className="flex gap-2">
+                                    {job.employer?.paymentVerified && (
+                                        <span className="flex items-center gap-0.5 text-[10px] font-bold text-[#4ADE80] bg-[#4ADE80]/10 px-1.5 py-0.5 rounded border border-[#4ADE80]/20">
+                                            <ShieldCheck className="w-2.5 h-2.5" /> PAYMENT VERIFIED
+                                        </span>
+                                    )}
+                                    {job.employer?.kycStatus === 'APPROVED' && (
+                                        <span className="flex items-center gap-0.5 text-[10px] font-bold text-[#60A5FA] bg-[#60A5FA]/10 px-1.5 py-0.5 rounded border border-[#60A5FA]/20">
+                                            <CheckCircle2 className="w-2.5 h-2.5" /> IDENTITY VERIFIED
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                            <p className="text-[11px] text-[#EFEEEA]/30 mt-2 flex items-center gap-1.5">
+                                <Calendar className="w-3 h-3" /> Posted on {new Date(job.createdAt).toLocaleDateString('en-PK', { year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(job.createdAt).toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' })}
                             </p>
                         </div>
                         <div className="text-right flex flex-col items-end gap-2">
@@ -133,22 +148,25 @@ export default function JobDetailPage() {
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                        <div className="bg-[#FE7743]/5 border border-[#FE7743]/20 rounded-xl p-3">
-                            <p className="text-[10px] text-[#FE7743]/70 uppercase tracking-wider font-semibold">Applicants</p>
-                            <p className="text-sm font-bold text-[#FE7743] mt-1">{job._count?.applications || 0} applied</p>
+                        <div className="bg-[#FE7743]/10 border border-[#FE7743]/30 rounded-xl p-4 shadow-[0_0_15px_rgba(254,119,67,0.1)]">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Users className="w-3 h-3 text-[#FE7743]" />
+                                <p className="text-[10px] text-[#FE7743] uppercase tracking-wider font-bold">Applicants</p>
+                            </div>
+                            <p className="text-lg font-black text-[#FE7743] leading-none">{job._count?.applications || 0}</p>
                         </div>
-                        <InfoBox label="Status" value={job.status} />
-                        <InfoBox label="Type" value={job.jobType} />
-                        <InfoBox label="Deadline" value={job.deadline ? new Date(job.deadline).toLocaleDateString() : 'Open'} />
+                        <InfoBox icon={<Briefcase className="w-3 h-3" />} label="Status" value={job.status} />
+                        <InfoBox icon={<Clock className="w-3 h-3" />} label="Type" value={job.jobType} />
+                        <InfoBox icon={<Calendar className="w-3 h-3" />} label="Deadline" value={job.deadline ? new Date(job.deadline).toLocaleDateString() : 'Open'} />
                     </div>
 
                     <h2 className="font-bold text-[#EFEEEA] text-lg mb-3">Job Description</h2>
                     <div className="text-[#EFEEEA]/70 text-sm leading-relaxed whitespace-pre-wrap">{job.description}</div>
                 </div>
 
-                {/* Apply Section — visible to all when job is OPEN */}
+                {/* Apply Section — Glow and prominence */}
                 {job.status === 'OPEN' && (
-                    <div className="bg-[#111] rounded-2xl border border-white/10 p-8">
+                    <div className="bg-linear-to-b from-[#111] to-[#0a0a0a] rounded-2xl border border-[#FE7743]/20 p-8 shadow-[0_0_50px_rgba(254,119,67,0.05)]">
                         {!session ? (
                             <div className="text-center">
                                 <p className="text-[#EFEEEA] font-semibold mb-2">Want to apply for this job?</p>
@@ -270,11 +288,14 @@ export default function JobDetailPage() {
     );
 }
 
-function InfoBox({ label, value }: { label: string; value: string }) {
+function InfoBox({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
     return (
-        <div className="bg-white/3 rounded-xl p-3">
-            <p className="text-[10px] text-[#EFEEEA]/40 uppercase tracking-wider font-semibold">{label}</p>
-            <p className="text-sm font-bold text-[#EFEEEA] mt-1">{value}</p>
+        <div className="bg-white/5 border border-white/5 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-1 text-[#EFEEEA]/40">
+                {icon}
+                <p className="text-[10px] uppercase tracking-wider font-semibold">{label}</p>
+            </div>
+            <p className="text-sm font-bold text-[#EFEEEA]">{value}</p>
         </div>
     );
 }

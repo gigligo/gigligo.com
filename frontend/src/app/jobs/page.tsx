@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useSession } from 'next-auth/react';
+import { CheckCircle2, ShieldCheck, Clock, Users, Calendar } from 'lucide-react';
 
 const CATEGORIES = ['All', 'Web Development', 'Mobile Apps', 'Design', 'Data Science', 'Marketing', 'Writing', 'Video', 'Business', 'Other'];
 
@@ -118,15 +119,34 @@ function JobListContent() {
                                         <span className="text-[10px] font-bold text-[#FE7743] uppercase tracking-wider mb-2">⚡ Boosted</span>
                                     )}
                                     <h3 className="font-bold text-slate-900 dark:text-[#EFEEEA] text-sm group-hover:text-[#FE7743] overflow-hidden text-ellipsis line-clamp-2 transition mb-2">{job.title}</h3>
-                                    <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/40 mb-3 line-clamp-2">{job.description}</p>
-                                    <div className="mt-auto flex items-center justify-between">
-                                        <div>
-                                            <p className="text-xs text-[#FE7743] font-semibold">PKR {job.budgetMin?.toLocaleString()} – {job.budgetMax?.toLocaleString()}</p>
-                                            <p className="text-[10px] text-slate-400 dark:text-[#EFEEEA]/30 mt-1">{job.employer?.profile?.fullName || 'Employer'}</p>
+                                    <div className="flex flex-wrap gap-1.5 mb-3">
+                                        {job.employer?.paymentVerified && (
+                                            <span className="flex items-center gap-0.5 text-[8px] font-bold text-[#4ADE80] bg-[#4ADE80]/10 px-1.5 py-0.5 rounded border border-[#4ADE80]/20">
+                                                <ShieldCheck className="w-2 h-2" /> PAYMENT VERIFIED
+                                            </span>
+                                        )}
+                                        {job.employer?.kycStatus === 'APPROVED' && (
+                                            <span className="flex items-center gap-0.5 text-[8px] font-bold text-[#60A5FA] bg-[#60A5FA]/10 px-1.5 py-0.5 rounded border border-[#60A5FA]/20">
+                                                <CheckCircle2 className="w-2 h-2" /> IDENTITY VERIFIED
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/40 mb-4 line-clamp-2">{job.description}</p>
+                                    <div className="mt-auto pt-4 border-t border-slate-100 dark:border-white/5">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <p className="text-sm text-[#FE7743] font-bold">PKR {job.budgetMin?.toLocaleString()} – {job.budgetMax?.toLocaleString()}</p>
+                                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#273F4F]/30 text-slate-600 dark:text-[#EFEEEA]/60 font-medium">{job.jobType}</span>
                                         </div>
-                                        <div className="text-right">
-                                            <span className="text-[10px] px-2 py-1 rounded-full bg-slate-100 dark:bg-[#273F4F]/30 text-slate-600 dark:text-[#EFEEEA]/60">{job.jobType}</span>
-                                            <p className="text-[10px] text-slate-400 dark:text-[#EFEEEA]/30 mt-1">{job._count?.applications || 0} applicants</p>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center text-[10px] font-bold text-slate-500 dark:text-[#EFEEEA]/50">
+                                                    {job.employer?.profile?.fullName?.[0] || 'E'}
+                                                </div>
+                                                <p className="text-[10px] text-slate-400 dark:text-[#EFEEEA]/30 font-medium">{job.employer?.profile?.fullName || 'Employer'}</p>
+                                            </div>
+                                            <p className="text-[9px] text-slate-400 dark:text-[#EFEEEA]/20 flex items-center gap-1">
+                                                <Clock className="w-2.5 h-2.5" /> {new Date(job.createdAt).toLocaleDateString()}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
