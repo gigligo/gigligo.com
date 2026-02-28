@@ -212,7 +212,7 @@ export default function ContractSigningPage() {
                             )}
 
                             {/* Summary Card */}
-                            <div className="bg-nav-bg text-white rounded-2xl p-6 sm:p-8 border border-white/5">
+                            <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-white/5">
                                 <h4 className="font-bold text-lg mb-4">Agreement Context</h4>
                                 <div className="space-y-4">
                                     <div>

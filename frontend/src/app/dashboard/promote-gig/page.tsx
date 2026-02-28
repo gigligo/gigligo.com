@@ -73,8 +73,8 @@ export default function PromoteGigPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#000] flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-[#FE7743] text-[#FE7743] border-t-transparent flex items-center justify-center animate-spin rounded-full"></div>
+            <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-primary text-primary border-t-transparent flex items-center justify-center animate-spin rounded-full"></div>
             </div>
         );
     }
@@ -84,13 +84,13 @@ export default function PromoteGigPage() {
     const hasEnoughBalance = wallet && wallet.balancePKR >= totalCost;
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#000]">
+        <div className="flex flex-col min-h-screen bg-slate-900">
             <Navbar />
             <main className="flex-1 max-w-[1000px] mx-auto px-6 py-12 w-full" style={{ paddingTop: 96 }}>
 
                 <div className="mb-12 text-center">
-                    <h1 className="text-4xl font-black text-[#EFEEEA] mb-4">Promote Your <span className="text-[#FE7743]">Gig</span></h1>
-                    <p className="text-lg text-[#EFEEEA]/60 max-w-xl mx-auto">
+                    <h1 className="text-4xl font-black text-slate-100 mb-4">Promote Your <span className="text-primary">Gig</span></h1>
+                    <p className="text-lg text-slate-100/60 max-w-xl mx-auto">
                         Get your gig featured at the top of the search results and land more clients effortlessly.
                     </p>
                 </div>
@@ -100,11 +100,11 @@ export default function PromoteGigPage() {
                     {/* Left Col: Target Selection and Duration */}
                     <div className="md:col-span-3 space-y-8">
                         <div>
-                            <h2 className="text-xl font-bold text-[#EFEEEA] mb-4">1. Select a Gig</h2>
+                            <h2 className="text-xl font-bold text-slate-100 mb-4">1. Select a Gig</h2>
                             {gigs.length === 0 ? (
-                                <div className="p-6 border border-white/10 rounded-2xl bg-[#111] text-center">
-                                    <p className="text-[#EFEEEA]/60 mb-4">You don't have any active gigs to promote.</p>
-                                    <Link href="/gigs/create" className="text-[#FE7743] font-semibold hover:underline">
+                                <div className="p-6 border border-white/10 rounded-2xl bg-slate-800 text-center">
+                                    <p className="text-slate-100/60 mb-4">You don't have any active gigs to promote.</p>
+                                    <Link href="/gigs/create" className="text-primary font-semibold hover:underline">
                                         Create a Gig
                                     </Link>
                                 </div>
@@ -115,16 +115,16 @@ export default function PromoteGigPage() {
                                             key={g.id}
                                             onClick={() => setSelectedGigId(g.id)}
                                             className={`p-4 border rounded-xl cursor-pointer transition flex justify-between items-center ${selectedGigId === g.id
-                                                    ? 'border-[#FE7743] bg-[#FE7743]/10'
-                                                    : 'border-white/10 bg-[#111] hover:border-white/30'
+                                                    ? 'border-primary bg-primary/10'
+                                                    : 'border-white/10 bg-slate-800 hover:border-white/30'
                                                 }`}
                                         >
                                             <div>
-                                                <h3 className="font-bold text-[#EFEEEA]">{g.title}</h3>
-                                                <p className="text-sm text-[#EFEEEA]/50 mt-1">{g.category}</p>
+                                                <h3 className="font-bold text-slate-100">{g.title}</h3>
+                                                <p className="text-sm text-slate-100/50 mt-1">{g.category}</p>
                                             </div>
                                             {g.boosts && g.boosts.length > 0 && (
-                                                <span className="px-3 py-1 bg-[#FE7743]/20 text-[#FE7743] text-xs font-bold rounded-full">
+                                                <span className="px-3 py-1 bg-primary/20 text-primary text-xs font-bold rounded-full">
                                                     Already Promoted
                                                 </span>
                                             )}
@@ -136,15 +136,15 @@ export default function PromoteGigPage() {
 
                         {selectedGigId && (
                             <div className="animate-in fade-in slide-in-from-top-4">
-                                <h2 className="text-xl font-bold text-[#EFEEEA] mb-4">2. Select Duration</h2>
+                                <h2 className="text-xl font-bold text-slate-100 mb-4">2. Select Duration</h2>
                                 <div className="grid grid-cols-3 gap-4">
                                     {[3, 7, 30].map(d => (
                                         <button
                                             key={d}
                                             onClick={() => setDuration(d)}
                                             className={`p-4 border rounded-xl font-bold transition ${duration === d
-                                                    ? 'border-[#273F4F] bg-[#273F4F] text-[#EFEEEA]'
-                                                    : 'border-white/10 bg-[#111] text-[#EFEEEA]/60 hover:bg-white/5'
+                                                    ? 'border-[#273F4F] bg-[#273F4F] text-slate-100'
+                                                    : 'border-white/10 bg-slate-800 text-slate-100/60 hover:bg-white/5'
                                                 }`}
                                         >
                                             <span className="block text-2xl mb-1">{d}</span>
@@ -158,10 +158,10 @@ export default function PromoteGigPage() {
 
                     {/* Right Col: Checkout / Summary */}
                     <div className="md:col-span-2">
-                        <div className="sticky top-24 bg-[#111] border border-white/10 rounded-3xl p-6">
-                            <h2 className="text-xl font-bold text-[#EFEEEA] mb-6">Promotion Summary</h2>
+                        <div className="sticky top-24 bg-slate-800 border border-white/10 rounded-3xl p-6">
+                            <h2 className="text-xl font-bold text-slate-100 mb-6">Promotion Summary</h2>
 
-                            <div className="space-y-4 mb-8 text-[#EFEEEA]/80">
+                            <div className="space-y-4 mb-8 text-slate-100/80">
                                 <div className="flex justify-between">
                                     <span>Rate per day</span>
                                     <span>PKR {pricePerDay}</span>
@@ -171,15 +171,15 @@ export default function PromoteGigPage() {
                                     <span>{duration} Days</span>
                                 </div>
                                 <div className="h-px bg-white/10 my-4" />
-                                <div className="flex justify-between font-bold text-lg text-[#EFEEEA]">
+                                <div className="flex justify-between font-bold text-lg text-slate-100">
                                     <span>Total Value</span>
                                     <span>PKR {(totalCost).toLocaleString()}</span>
                                 </div>
                             </div>
 
-                            <div className="bg-[#000] border border-white/5 rounded-2xl p-4 mb-8">
+                            <div className="bg-slate-900 border border-white/5 rounded-2xl p-4 mb-8">
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="text-sm text-[#EFEEEA]/60">Wallet Balance</span>
+                                    <span className="text-sm text-slate-100/60">Wallet Balance</span>
                                     <span className={`font-bold ${hasEnoughBalance ? 'text-[#22c55e]' : 'text-red-400'}`}>
                                         PKR {wallet?.balancePKR?.toLocaleString() || '0'}
                                     </span>
@@ -200,7 +200,7 @@ export default function PromoteGigPage() {
                             <button
                                 onClick={handleBoost}
                                 disabled={!selectedGigId || !hasEnoughBalance || isBoosting}
-                                className="w-full py-4 bg-[#FE7743] disabled:bg-white/10 disabled:text-white/40 text-white font-bold rounded-xl text-lg hover:bg-[#FE7743]/90 transition"
+                                className="w-full py-4 bg-primary disabled:bg-white/10 disabled:text-white/40 text-white font-bold rounded-xl text-lg hover:bg-primary/90 transition"
                             >
                                 {isBoosting ? 'Processing...' : 'Complete Purchase'}
                             </button>

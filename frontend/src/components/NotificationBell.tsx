@@ -187,7 +187,7 @@ export default function NotificationBell() {
                                             </p>
                                         </div>
                                         {!n.isRead && (
-                                            <span className="w-2 h-2 rounded-full bg-[#FE7743] shrink-0 mt-2" />
+                                            <span className="w-2 h-2 rounded-full bg-primary shrink-0 mt-2" />
                                         )}
                                     </div>
                                 </div>

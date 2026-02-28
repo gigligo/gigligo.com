@@ -80,33 +80,33 @@ export default function JobDetailPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#000] flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-[#FE7743] border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     if (!job) {
         return (
-            <div className="min-h-screen bg-[#000] flex items-center justify-center text-[#EFEEEA]/40">
+            <div className="min-h-screen bg-slate-900 flex items-center justify-center text-slate-100/40">
                 Job not found
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#000]">
+        <div className="flex flex-col min-h-screen bg-slate-900">
             <Navbar />
             <main className="flex-1 max-w-[900px] mx-auto px-6 py-8 w-full" style={{ paddingTop: 96 }}>
-                <Link href="/jobs" className="text-xs text-[#EFEEEA]/40 hover:text-[#FE7743] transition mb-6 inline-block">← Back to Jobs</Link>
+                <Link href="/jobs" className="text-xs text-slate-100/40 hover:text-primary transition mb-6 inline-block">← Back to Jobs</Link>
 
-                <div className="bg-[#111] rounded-2xl border border-white/10 p-8 mb-6">
+                <div className="bg-slate-800 rounded-2xl border border-white/10 p-8 mb-6">
                     <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
                         <div>
-                            {job.isBoosted && <span className="text-[10px] font-bold text-[#FE7743] uppercase tracking-wider">⚡ Featured</span>}
-                            <h1 className="text-2xl font-bold text-[#EFEEEA] mt-1">{job.title}</h1>
+                            {job.isBoosted && <span className="text-[10px] font-bold text-primary uppercase tracking-wider">⚡ Featured</span>}
+                            <h1 className="text-2xl font-bold text-slate-100 mt-1">{job.title}</h1>
                             <div className="flex items-center gap-2 mt-2">
-                                <p className="text-sm text-[#EFEEEA]/40">
+                                <p className="text-sm text-slate-100/40">
                                     Posted by {job.employer?.profile?.fullName || 'Employer'} • {job.employer?.profile?.location || 'Pakistan'}
                                 </p>
                                 <div className="flex gap-2">
@@ -130,13 +130,13 @@ export default function JobDetailPage() {
                                     )}
                                 </div>
                             </div>
-                            <p className="text-[11px] text-[#EFEEEA]/30 mt-2 flex items-center gap-1.5">
+                            <p className="text-[11px] text-slate-100/30 mt-2 flex items-center gap-1.5">
                                 <Calendar className="w-3 h-3" /> Posted on {new Date(job.createdAt).toLocaleDateString('en-PK', { year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(job.createdAt).toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' })}
                             </p>
                         </div>
                         <div className="text-right flex flex-col items-end gap-2">
-                            <p className="text-xl font-bold text-[#FE7743]">PKR {job.budgetMin?.toLocaleString()} – {job.budgetMax?.toLocaleString()}</p>
-                            <span className="text-xs px-3 py-1 rounded-full bg-[#273F4F]/30 text-[#EFEEEA]/60">{job.jobType}</span>
+                            <p className="text-xl font-bold text-primary">PKR {job.budgetMin?.toLocaleString()} – {job.budgetMax?.toLocaleString()}</p>
+                            <span className="text-xs px-3 py-1 rounded-full bg-[#273F4F]/30 text-slate-100/60">{job.jobType}</span>
                             {session && (session as any)?.user?.id === job.employerId && job.status === 'OPEN' && (
                                 <button
                                     onClick={() => setDeleteModalOpen(true)}
@@ -149,59 +149,59 @@ export default function JobDetailPage() {
                     </div>
 
                     <div className="flex flex-wrap gap-2 mb-6">
-                        <span className="text-xs px-3 py-1 rounded-full bg-[#FE7743]/10 text-[#FE7743] font-medium">{job.category}</span>
+                        <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">{job.category}</span>
                         {job.tags?.map((tag: string) => (
-                            <span key={tag} className="text-xs px-3 py-1 rounded-full bg-white/5 text-[#EFEEEA]/50">{tag}</span>
+                            <span key={tag} className="text-xs px-3 py-1 rounded-full bg-white/5 text-slate-100/50">{tag}</span>
                         ))}
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                        <div className="bg-[#FE7743]/10 border border-[#FE7743]/30 rounded-xl p-4 shadow-[0_0_15px_rgba(254,119,67,0.1)]">
+                        <div className="bg-primary/10 border border-primary/30 rounded-xl p-4 shadow-[0_0_15px_rgba(254,119,67,0.1)]">
                             <div className="flex items-center gap-2 mb-1">
-                                <Users className="w-3 h-3 text-[#FE7743]" />
-                                <p className="text-[10px] text-[#FE7743] uppercase tracking-wider font-bold">Applicants</p>
+                                <Users className="w-3 h-3 text-primary" />
+                                <p className="text-[10px] text-primary uppercase tracking-wider font-bold">Applicants</p>
                             </div>
-                            <p className="text-lg font-black text-[#FE7743] leading-none">{job._count?.applications || 0}</p>
+                            <p className="text-lg font-black text-primary leading-none">{job._count?.applications || 0}</p>
                         </div>
                         <InfoBox icon={<Briefcase className="w-3 h-3" />} label="Status" value={job.status} />
                         <InfoBox icon={<Clock className="w-3 h-3" />} label="Type" value={job.jobType} />
                         <InfoBox icon={<Calendar className="w-3 h-3" />} label="Deadline" value={job.deadline ? new Date(job.deadline).toLocaleDateString() : 'Open'} />
                     </div>
 
-                    <h2 className="font-bold text-[#EFEEEA] text-lg mb-3">Job Description</h2>
-                    <div className="text-[#EFEEEA]/70 text-sm leading-relaxed whitespace-pre-wrap">{job.description}</div>
+                    <h2 className="font-bold text-slate-100 text-lg mb-3">Job Description</h2>
+                    <div className="text-slate-100/70 text-sm leading-relaxed whitespace-pre-wrap">{job.description}</div>
                 </div>
 
                 {/* Apply Section — Glow and prominence */}
                 {job.status === 'OPEN' && (
-                    <div className="bg-linear-to-b from-[#111] to-[#0a0a0a] rounded-2xl border border-[#FE7743]/20 p-8 shadow-[0_0_50px_rgba(254,119,67,0.05)]">
+                    <div className="bg-linear-to-b from-[#111] to-[#0a0a0a] rounded-2xl border border-primary/20 p-8 shadow-[0_0_50px_rgba(254,119,67,0.05)]">
                         {!session ? (
                             <div className="text-center">
-                                <p className="text-[#EFEEEA] font-semibold mb-2">Want to apply for this job?</p>
-                                <p className="text-xs text-[#EFEEEA]/40 mb-4">Create a freelancer account to apply and submit your proposal.</p>
+                                <p className="text-slate-100 font-semibold mb-2">Want to apply for this job?</p>
+                                <p className="text-xs text-slate-100/40 mb-4">Create a freelancer account to apply and submit your proposal.</p>
                                 <div className="flex gap-3 justify-center">
-                                    <Link href="/login" className="px-6 py-3 bg-white/5 border border-white/10 text-[#EFEEEA] font-semibold rounded-xl text-sm hover:bg-white/10 transition">
+                                    <Link href="/login" className="px-6 py-3 bg-white/5 border border-white/10 text-slate-100 font-semibold rounded-xl text-sm hover:bg-white/10 transition">
                                         Log In
                                     </Link>
-                                    <Link href="/register?role=SELLER" className="px-6 py-3 bg-[#FE7743] text-white font-semibold rounded-xl text-sm hover:bg-[#FE7743]/90 transition">
+                                    <Link href="/register?role=SELLER" className="px-6 py-3 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary/90 transition">
                                         Create Account
                                     </Link>
                                 </div>
                             </div>
                         ) : !isFreelancer ? (
                             <div className="text-center">
-                                <p className="text-[#EFEEEA]/50 text-sm">⚠️ Only freelancers can apply to jobs. You are logged in as an employer.</p>
+                                <p className="text-slate-100/50 text-sm">⚠️ Only freelancers can apply to jobs. You are logged in as an employer.</p>
                             </div>
                         ) : success ? (
                             <div className="text-center">
                                 <p className="text-green-400 font-semibold text-lg mb-2">✅ {success}</p>
-                                <Link href="/dashboard/applications" className="text-sm text-[#FE7743] hover:underline">View My Applications</Link>
+                                <Link href="/dashboard/applications" className="text-sm text-primary hover:underline">View My Applications</Link>
                             </div>
                         ) : !showApplyForm ? (
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                                 <div>
-                                    <p className="text-[#EFEEEA] font-semibold">Apply to this job</p>
-                                    <p className="text-xs text-[#EFEEEA]/40 mt-1">This will use 1 credit. You have <strong className="text-[#FE7743]">{credits}</strong> credits.</p>
+                                    <p className="text-slate-100 font-semibold">Apply to this job</p>
+                                    <p className="text-xs text-slate-100/40 mt-1">This will use 1 credit. You have <strong className="text-primary">{credits}</strong> credits.</p>
                                 </div>
                                 {((session as any)?.kycStatus || 'UNVERIFIED') !== 'APPROVED' ? (
                                     <div className="text-right">
@@ -216,11 +216,11 @@ export default function JobDetailPage() {
                                 ) : (
                                     <div className="flex gap-3">
                                         {credits < 1 ? (
-                                            <Link href="/dashboard/credits" className="px-6 py-3 bg-[#FE7743] text-white font-semibold rounded-xl text-sm">
+                                            <Link href="/dashboard/credits" className="px-6 py-3 bg-primary text-white font-semibold rounded-xl text-sm">
                                                 Buy Credits First
                                             </Link>
                                         ) : (
-                                            <button onClick={() => setShowApplyForm(true)} className="px-6 py-3 bg-[#FE7743] text-white font-semibold rounded-xl text-sm hover:bg-[#FE7743]/90 transition">
+                                            <button onClick={() => setShowApplyForm(true)} className="px-6 py-3 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary/90 transition">
                                                 Apply Now (1 Credit)
                                             </button>
                                         )}
@@ -229,31 +229,31 @@ export default function JobDetailPage() {
                             </div>
                         ) : (
                             <form onSubmit={handleApply} className="space-y-4">
-                                <h3 className="font-bold text-[#EFEEEA]">Submit Your Application</h3>
+                                <h3 className="font-bold text-slate-100">Submit Your Application</h3>
                                 {error && <p className="text-red-400 text-sm bg-red-500/10 p-3 rounded-lg">{error}</p>}
                                 <div>
-                                    <label className="text-xs text-[#EFEEEA]/60 font-semibold block mb-2">Cover Letter *</label>
+                                    <label className="text-xs text-slate-100/60 font-semibold block mb-2">Cover Letter *</label>
                                     <textarea value={coverLetter} onChange={e => setCoverLetter(e.target.value)} required
                                         rows={6} placeholder="Explain why you're the perfect fit for this job..."
-                                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-[#EFEEEA] text-sm placeholder:text-[#EFEEEA]/20 focus:outline-none focus:border-[#FE7743]/50 resize-none" />
+                                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-slate-100 text-sm placeholder:text-slate-100/20 focus:outline-none focus:border-primary/50 resize-none" />
                                 </div>
                                 <div>
-                                    <label className="text-xs text-[#EFEEEA]/60 font-semibold block mb-2">Proposed Rate (PKR) — Optional</label>
+                                    <label className="text-xs text-slate-100/60 font-semibold block mb-2">Proposed Rate (PKR) — Optional</label>
                                     <input type="number" value={proposedRate} onChange={e => setProposedRate(e.target.value)}
                                         placeholder="e.g. 15000"
-                                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-[#EFEEEA] text-sm placeholder:text-[#EFEEEA]/20 focus:outline-none focus:border-[#FE7743]/50" />
+                                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-slate-100 text-sm placeholder:text-slate-100/20 focus:outline-none focus:border-primary/50" />
                                 </div>
                                 <div>
-                                    <label className="text-xs text-[#EFEEEA]/60 font-semibold block mb-2">Completion Timeline — Optional</label>
+                                    <label className="text-xs text-slate-100/60 font-semibold block mb-2">Completion Timeline — Optional</label>
                                     <input type="text" value={timeline} onChange={e => setTimeline(e.target.value)}
                                         placeholder="e.g. 2 weeks"
-                                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-[#EFEEEA] text-sm placeholder:text-[#EFEEEA]/20 focus:outline-none focus:border-[#FE7743]/50" />
+                                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-xl text-slate-100 text-sm placeholder:text-slate-100/20 focus:outline-none focus:border-primary/50" />
                                 </div>
                                 <div className="flex gap-3">
-                                    <button type="button" onClick={() => setShowApplyForm(false)} className="flex-1 py-3 bg-white/5 border border-white/10 text-[#EFEEEA] font-semibold rounded-xl text-sm hover:bg-white/10 transition">
+                                    <button type="button" onClick={() => setShowApplyForm(false)} className="flex-1 py-3 bg-white/5 border border-white/10 text-slate-100 font-semibold rounded-xl text-sm hover:bg-white/10 transition">
                                         Cancel
                                     </button>
-                                    <button type="submit" disabled={applying || !coverLetter} className="flex-1 py-3 bg-[#FE7743] text-white font-semibold rounded-xl text-sm hover:bg-[#FE7743]/90 transition disabled:opacity-50">
+                                    <button type="submit" disabled={applying || !coverLetter} className="flex-1 py-3 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary/90 transition disabled:opacity-50">
                                         {applying ? 'Submitting...' : 'Submit Application (−1 Credit)'}
                                     </button>
                                 </div>
@@ -266,7 +266,7 @@ export default function JobDetailPage() {
             {/* Delete Modal */}
             {deleteModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="bg-[#111] border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+                    <div className="bg-slate-800 border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
                         <h2 className="text-xl font-bold text-white mb-2">Delete Job</h2>
                         <p className="text-sm text-white/60 mb-6">
                             Are you sure you want to delete this job? This action will archive it if there are hired applicants, or close it otherwise.
@@ -299,11 +299,11 @@ export default function JobDetailPage() {
 function InfoBox({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
     return (
         <div className="bg-white/5 border border-white/5 rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-1 text-[#EFEEEA]/40">
+            <div className="flex items-center gap-2 mb-1 text-slate-100/40">
                 {icon}
                 <p className="text-[10px] uppercase tracking-wider font-semibold">{label}</p>
             </div>
-            <p className="text-sm font-bold text-[#EFEEEA]">{value}</p>
+            <p className="text-sm font-bold text-slate-100">{value}</p>
         </div>
     );
 }

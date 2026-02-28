@@ -75,7 +75,7 @@ function CheckoutContent() {
     if (isSuccess) {
         return (
             <div className="min-h-screen bg-[#050505] flex items-center justify-center text-white">
-                <div className="bg-[#111] p-8 rounded-2xl border border-teal-vibrant/30 text-center max-w-sm w-full shadow-2xl shadow-teal-vibrant/10">
+                <div className="bg-slate-800 p-8 rounded-2xl border border-teal-vibrant/30 text-center max-w-sm w-full shadow-2xl shadow-teal-vibrant/10">
                     <div className="w-16 h-16 bg-teal-vibrant/20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <ShieldCheck className="w-8 h-8 text-teal-vibrant" />
                     </div>
@@ -100,7 +100,7 @@ function CheckoutContent() {
                     <div className="mb-2 text-teal-vibrant font-semibold text-sm tracking-wider uppercase">Gigligo Secure Checkout</div>
                     <h1 className="text-3xl font-bold mb-8">Complete your purchase</h1>
 
-                    <div className="bg-[#111] border border-[#222] rounded-xl p-6 mb-6">
+                    <div className="bg-slate-800 border border-[#222] rounded-xl p-6 mb-6">
                         <div className="flex justify-between items-center mb-4">
                             <span className="text-slate-400">Transaction ID</span>
                             <span className="font-mono text-sm">{txnId}</span>
@@ -146,7 +146,7 @@ function CheckoutContent() {
                                 value={cardNumber}
                                 onChange={(e) => setCardNumber(e.target.value)}
                                 required
-                                className="w-full bg-[#111] border border-[#222] focus:border-teal-vibrant focus:ring-1 focus:ring-teal-vibrant rounded-lg px-4 py-3 outline-none transition-all font-mono"
+                                className="w-full bg-slate-800 border border-[#222] focus:border-teal-vibrant focus:ring-1 focus:ring-teal-vibrant rounded-lg px-4 py-3 outline-none transition-all font-mono"
                             />
                         </div>
 
@@ -159,7 +159,7 @@ function CheckoutContent() {
                                     value={expiry}
                                     onChange={(e) => setExpiry(e.target.value)}
                                     required
-                                    className="w-full bg-[#111] border border-[#222] focus:border-teal-vibrant focus:ring-1 focus:ring-teal-vibrant rounded-lg px-4 py-3 outline-none transition-all font-mono"
+                                    className="w-full bg-slate-800 border border-[#222] focus:border-teal-vibrant focus:ring-1 focus:ring-teal-vibrant rounded-lg px-4 py-3 outline-none transition-all font-mono"
                                 />
                             </div>
                             <div className="w-1/2">
@@ -170,7 +170,7 @@ function CheckoutContent() {
                                     value={cvc}
                                     onChange={(e) => setCvc(e.target.value)}
                                     required
-                                    className="w-full bg-[#111] border border-[#222] focus:border-teal-vibrant focus:ring-1 focus:ring-teal-vibrant rounded-lg px-4 py-3 outline-none transition-all font-mono"
+                                    className="w-full bg-slate-800 border border-[#222] focus:border-teal-vibrant focus:ring-1 focus:ring-teal-vibrant rounded-lg px-4 py-3 outline-none transition-all font-mono"
                                 />
                             </div>
                         </div>

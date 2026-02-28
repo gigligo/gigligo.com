@@ -80,7 +80,7 @@ function ApplicationsContent() {
 
             <main className="flex-1" style={{ paddingTop: 96 }}>
                 {/* Editorial Header */}
-                <div className="bg-nav-bg text-white py-16 md:py-20 relative overflow-hidden">
+                <div className="bg-slate-900 text-white py-16 md:py-20 relative overflow-hidden">
                     <div className="absolute inset-0 opacity-[0.03]">
                         <div className="absolute top-0 right-0 w-72 h-72 border border-white/20 rounded-full translate-x-1/3 -translate-y-1/3"></div>
                     </div>
@@ -136,7 +136,7 @@ function ApplicationsContent() {
                                             <div className="flex-1">
                                                 {isEmployer ? (
                                                     <div className="flex items-center gap-4 mb-4">
-                                                        <div className="w-12 h-12 rounded-full bg-nav-bg flex items-center justify-center text-primary font-bold text-lg ring-2 ring-primary/20">
+                                                        <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-primary font-bold text-lg ring-2 ring-primary/20">
                                                             {app.freelancer?.profile?.fullName?.[0] || 'U'}
                                                         </div>
                                                         <div className="flex-1">

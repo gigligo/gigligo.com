@@ -88,7 +88,7 @@ export default function HelpCenterPage() {
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
                 {/* Hero */}
-                <div className="bg-nav-bg text-white py-20 relative overflow-hidden">
+                <div className="bg-slate-900 text-white py-20 relative overflow-hidden">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(200,157,40,0.15)_0%,transparent_60%)] pointer-events-none" />
                     <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
                         <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">How can we help?</h1>
@@ -132,7 +132,7 @@ export default function HelpCenterPage() {
                     </div>
 
                     {/* Contact CTA */}
-                    <div className="mt-16 bg-nav-bg text-white rounded-2xl p-10 text-center relative overflow-hidden">
+                    <div className="mt-16 bg-slate-900 text-white rounded-2xl p-10 text-center relative overflow-hidden">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(200,157,40,0.1)_0%,transparent_50%)] pointer-events-none" />
                         <div className="relative z-10">
                             <span className="material-symbols-outlined text-primary text-3xl mb-4">support_agent</span>

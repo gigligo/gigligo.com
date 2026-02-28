@@ -128,7 +128,7 @@ export default function SettingsPage() {
                                                 key={tab.id}
                                                 onClick={() => setActiveTab(tab.id)}
                                                 className={`w-full text-left px-4 py-2.5 rounded-lg flex items-center gap-3 transition-all duration-200 text-sm font-semibold ${activeTab === tab.id
-                                                    ? 'bg-nav-bg text-white shadow-md'
+                                                    ? 'bg-slate-900 text-white shadow-md'
                                                     : 'text-text-muted hover:bg-surface-light hover:text-text-main'
                                                     }`}
                                             >

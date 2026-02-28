@@ -34,7 +34,7 @@ export default function AboutPage() {
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
                 {/* ═══ Ultra-Minimalist Hero ═══ */}
-                <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-nav-bg text-white">
+                <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900 text-white">
                     {/* Geometric abstract */}
                     <div className="absolute inset-0 opacity-[0.03]">
                         <div className="absolute top-20 left-20 w-96 h-96 border border-white/20 rounded-full" data-parallax-y="-0.03"></div>
@@ -85,7 +85,7 @@ export default function AboutPage() {
                                         src="/images/hero/hero.jpg"
                                         loading="lazy"
                                     />
-                                    <div className="absolute -bottom-8 -right-8 bg-nav-bg border border-white/10 rounded-2xl px-8 py-5 shadow-2xl backdrop-blur-md">
+                                    <div className="absolute -bottom-8 -right-8 bg-slate-900 border border-white/10 rounded-2xl px-8 py-5 shadow-2xl backdrop-blur-md">
                                         <p className="text-primary font-bold text-lg mb-1">Founder & CEO</p>
                                         <p className="text-white text-xs uppercase tracking-[0.2em] opacity-40">Gigligo</p>
                                     </div>
@@ -172,7 +172,7 @@ export default function AboutPage() {
                 </section>
 
                 {/* ═══ CTA ═══ */}
-                <section className="py-32 bg-nav-bg text-center relative overflow-hidden" data-scroll="fade-up">
+                <section className="py-32 bg-slate-900 text-center relative overflow-hidden" data-scroll="fade-up">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.08)_0%,transparent_70%)] pointer-events-none" />
                     <div className="max-w-4xl mx-auto px-6 relative z-10">
                         <svg width="72" height="72" viewBox="0 0 36 36" fill="none" className="mx-auto mb-10 opacity-80">

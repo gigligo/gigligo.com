@@ -80,7 +80,7 @@ export default function AdminDashboardPage() {
     if (status === 'loading' || loading) {
         return (
             <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-[#FE7743] border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -105,8 +105,8 @@ export default function AdminDashboardPage() {
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
                     <div>
-                        <h1 className="text-3xl font-black text-[#EFEEEA]">Admin <span className="text-[#FE7743]">Dashboard</span></h1>
-                        <p className="text-[#EFEEEA]/50 text-sm mt-1">Platform overview, metrics, and management</p>
+                        <h1 className="text-3xl font-black text-slate-100">Admin <span className="text-primary">Dashboard</span></h1>
+                        <p className="text-slate-100/50 text-sm mt-1">Platform overview, metrics, and management</p>
                     </div>
                     <div className="flex gap-2">
                         {(['overview', 'analytics', 'users', 'kyc', 'transactions', 'disputes'] as const).map(tab => (
@@ -114,8 +114,8 @@ export default function AdminDashboardPage() {
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={`px-4 py-2 rounded-lg text-sm font-semibold transition capitalize ${activeTab === tab
-                                    ? 'bg-[#FE7743] text-white'
-                                    : 'bg-white/5 text-[#EFEEEA]/60 hover:bg-white/10 border border-white/10'
+                                    ? 'bg-primary text-white'
+                                    : 'bg-white/5 text-slate-100/60 hover:bg-white/10 border border-white/10'
                                     }`}
                             >
                                 {tab === 'kyc' ? 'KYC Verification' : tab}
@@ -125,10 +125,10 @@ export default function AdminDashboardPage() {
                 </div>
 
                 {activeTab === 'kyc' && (
-                    <div className="bg-[#111] rounded-2xl border border-white/10 p-2 sm:p-8">
+                    <div className="bg-slate-800 rounded-2xl border border-white/10 p-2 sm:p-8">
                         <div className="mb-6 px-4 sm:px-0">
                             <h2 className="text-xl font-bold text-white mb-1">KYC Verification Inbox</h2>
-                            <p className="text-sm text-[#EFEEEA]/50">Review submitted identity documents for freelancer accounts.</p>
+                            <p className="text-sm text-slate-100/50">Review submitted identity documents for freelancer accounts.</p>
                         </div>
 
                         <KycInboxTab token={token} />
@@ -136,10 +136,10 @@ export default function AdminDashboardPage() {
                 )}
 
                 {activeTab === 'disputes' && (
-                    <div className="bg-[#111] rounded-2xl border border-white/10 p-2 sm:p-8">
+                    <div className="bg-slate-800 rounded-2xl border border-white/10 p-2 sm:p-8">
                         <div className="mb-6 px-4 sm:px-0">
                             <h2 className="text-xl font-bold text-white mb-1">Dispute Resolution Center</h2>
-                            <p className="text-sm text-[#EFEEEA]/50">Review and actively resolve pending order escrow disputes.</p>
+                            <p className="text-sm text-slate-100/50">Review and actively resolve pending order escrow disputes.</p>
                         </div>
 
                         <DisputesTab token={token} />
@@ -150,7 +150,7 @@ export default function AdminDashboardPage() {
                     <div className="space-y-6">
                         {/* Revenue & User Growth Charts */}
                         <div className="grid md:grid-cols-2 gap-6">
-                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                            <div className="bg-slate-800 rounded-2xl border border-white/10 p-6">
                                 <h3 className="text-lg font-bold text-white mb-6">Revenue Trend (30 Days)</h3>
                                 <div className="h-64 w-full">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -165,7 +165,7 @@ export default function AdminDashboardPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                            <div className="bg-slate-800 rounded-2xl border border-white/10 p-6">
                                 <h3 className="text-lg font-bold text-white mb-6">User Growth (30 Days)</h3>
                                 <div className="h-64 w-full">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -175,7 +175,7 @@ export default function AdminDashboardPage() {
                                             <YAxis yAxisId="left" stroke="#888" fontSize={10} />
                                             <Tooltip contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
                                             <Line yAxisId="left" type="monotone" dataKey="total" stroke="#3b82f6" strokeWidth={2} dot={false} name="Total Users" />
-                                            <Line yAxisId="left" type="monotone" dataKey="sellers" stroke="#FE7743" strokeWidth={2} dot={false} name="Freelancers" />
+                                            <Line yAxisId="left" type="monotone" dataKey="sellers" stroke="var(--color-primary)" strokeWidth={2} dot={false} name="Freelancers" />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -184,7 +184,7 @@ export default function AdminDashboardPage() {
 
                         {/* Funnel & Categories */}
                         <div className="grid md:grid-cols-2 gap-6">
-                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                            <div className="bg-slate-800 rounded-2xl border border-white/10 p-6">
                                 <h3 className="text-lg font-bold text-white mb-6">Conversion Funnel</h3>
                                 <div className="h-64 w-full">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -199,7 +199,7 @@ export default function AdminDashboardPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                            <div className="bg-slate-800 rounded-2xl border border-white/10 p-6">
                                 <h3 className="text-lg font-bold text-white mb-6">Top Job Categories</h3>
                                 <div className="h-64 w-full">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -208,7 +208,7 @@ export default function AdminDashboardPage() {
                                             <XAxis dataKey="category" stroke="#888" fontSize={10} angle={-45} textAnchor="end" />
                                             <YAxis stroke="#888" fontSize={10} />
                                             <Tooltip contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
-                                            <Bar dataKey="count" fill="#FE7743" radius={[4, 4, 0, 0]} />
+                                            <Bar dataKey="count" fill="var(--color-primary)" radius={[4, 4, 0, 0]} />
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -233,31 +233,31 @@ export default function AdminDashboardPage() {
                             <MiniStat label="Clients" value={stats?.totalEmployers || 0} />
                             <MiniStat label="Active Jobs" value={stats?.activeJobs || 0} />
                             <MiniStat label="Total Gigs" value={stats?.totalGigs || 0} />
-                            <MiniStat label="Active Boosts" value={stats?.activeBoosts || 0} color="#FE7743" />
+                            <MiniStat label="Active Boosts" value={stats?.activeBoosts || 0} color="var(--color-primary)" />
                         </div>
 
                         {/* Escrow */}
-                        <div className="bg-[#111] rounded-2xl border border-white/10 p-6 mb-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="bg-slate-800 rounded-2xl border border-white/10 p-6 mb-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div>
-                                <h3 className="text-sm font-semibold text-[#EFEEEA]/50 uppercase tracking-wider mb-1">Escrow Held</h3>
+                                <h3 className="text-sm font-semibold text-slate-100/50 uppercase tracking-wider mb-1">Escrow Held</h3>
                                 <p className="text-3xl font-black text-amber-400">PKR {(stats?.escrowHeld || 0).toLocaleString()}</p>
                             </div>
                             <div className="text-right">
-                                <p className="text-xs text-[#EFEEEA]/40">Total tracked transactions</p>
-                                <p className="text-lg font-bold text-[#EFEEEA]">{(stats?.totalTransactions || 0).toLocaleString()}</p>
+                                <p className="text-xs text-slate-100/40">Total tracked transactions</p>
+                                <p className="text-lg font-bold text-slate-100">{(stats?.totalTransactions || 0).toLocaleString()}</p>
                             </div>
                         </div>
 
                         {/* Founding Member Tracker */}
                         <div className="mb-10">
-                            <h2 className="text-xl font-bold text-[#EFEEEA] mb-4">Founding Member Program</h2>
+                            <h2 className="text-xl font-bold text-slate-100 mb-4">Founding Member Program</h2>
                             <div className="grid md:grid-cols-2 gap-6">
                                 <FounderCard
                                     title="Freelancers / Students"
                                     awarded={freelancerSlots?.totalAwarded || 0}
                                     remaining={freelancerSlots?.remainingSlots || 500}
                                     max={500}
-                                    color="#FE7743"
+                                    color="var(--color-primary)"
                                 />
                                 <FounderCard
                                     title="Clients / Employers"
@@ -270,24 +270,24 @@ export default function AdminDashboardPage() {
                         </div>
 
                         {/* Recent Jobs */}
-                        <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden">
+                        <div className="bg-slate-800 rounded-2xl border border-white/10 overflow-hidden">
                             <div className="p-6 border-b border-white/5 flex justify-between items-center">
-                                <h2 className="text-lg font-bold text-[#EFEEEA]">Recent Jobs</h2>
+                                <h2 className="text-lg font-bold text-slate-100">Recent Jobs</h2>
                             </div>
                             <div className="divide-y divide-white/5">
                                 {activity?.recentJobs?.length > 0 ? activity.recentJobs.map((j: any) => (
                                     <div key={j.id} className="p-5 flex items-center justify-between hover:bg-white/2 transition">
                                         <div className="flex-1 min-w-0 pr-4">
-                                            <p className="font-semibold text-[#EFEEEA] text-sm truncate">{j.title}</p>
-                                            <p className="text-xs text-[#EFEEEA]/50 mt-1">by {j.employer?.profile?.fullName || 'Employer'} • PKR {j.budgetMin?.toLocaleString()}–{j.budgetMax?.toLocaleString()}</p>
+                                            <p className="font-semibold text-slate-100 text-sm truncate">{j.title}</p>
+                                            <p className="text-xs text-slate-100/50 mt-1">by {j.employer?.profile?.fullName || 'Employer'} • PKR {j.budgetMin?.toLocaleString()}–{j.budgetMax?.toLocaleString()}</p>
                                         </div>
                                         <div className="text-right whitespace-nowrap">
                                             <StatusBadge status={j.status} />
-                                            <p className="text-[10px] text-[#EFEEEA]/30 mt-1">{new Date(j.createdAt).toLocaleDateString()}</p>
+                                            <p className="text-[10px] text-slate-100/30 mt-1">{new Date(j.createdAt).toLocaleDateString()}</p>
                                         </div>
                                     </div>
                                 )) : (
-                                    <p className="p-6 text-sm text-[#EFEEEA]/40 text-center">No jobs yet</p>
+                                    <p className="p-6 text-sm text-slate-100/40 text-center">No jobs yet</p>
                                 )}
                             </div>
                         </div>
@@ -295,26 +295,26 @@ export default function AdminDashboardPage() {
                 )}
 
                 {activeTab === 'users' && (
-                    <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden">
+                    <div className="bg-slate-800 rounded-2xl border border-white/10 overflow-hidden">
                         <div className="p-6 border-b border-white/5">
-                            <h2 className="text-lg font-bold text-[#EFEEEA]">Recent Users</h2>
+                            <h2 className="text-lg font-bold text-slate-100">Recent Users</h2>
                         </div>
                         <div className="divide-y divide-white/5">
                             {activity?.recentUsers?.length > 0 ? activity.recentUsers.map((u: any) => (
                                 <div key={u.id} className="p-5 flex items-center justify-between hover:bg-white/2 transition">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-linear-to-tr from-[#FE7743] to-[#FE7743]/50 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                                        <div className="w-10 h-10 rounded-full bg-linear-to-tr from-[var(--color-primary)] to-[var(--color-primary)]/50 flex items-center justify-center text-white font-bold text-sm shadow-lg">
                                             {u.profile?.fullName?.[0] || 'U'}
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-[#EFEEEA] text-sm">{u.profile?.fullName || 'User'}</p>
-                                            <p className="text-xs text-[#EFEEEA]/50">{u.email}</p>
+                                            <p className="font-semibold text-slate-100 text-sm">{u.profile?.fullName || 'User'}</p>
+                                            <p className="text-xs text-slate-100/50">{u.email}</p>
                                         </div>
                                     </div>
                                     <div className="text-right flex items-center gap-3">
                                         <button
                                             onClick={() => setSelectedUserForCredits(u)}
-                                            className="px-3 py-1 text-xs font-bold bg-[#FE7743]/10 text-[#FE7743] border border-[#FE7743]/20 rounded-lg hover:bg-[#FE7743]/20 transition"
+                                            className="px-3 py-1 text-xs font-bold bg-primary/10 text-primary border border-primary/20 rounded-lg hover:bg-primary/20 transition"
                                         >
                                             Add Credits
                                         </button>
@@ -322,24 +322,24 @@ export default function AdminDashboardPage() {
                                         {u.isFoundingMember && (
                                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">FOUNDER</span>
                                         )}
-                                        <p className="text-[10px] text-[#EFEEEA]/30">{new Date(u.createdAt).toLocaleDateString()}</p>
+                                        <p className="text-[10px] text-slate-100/30">{new Date(u.createdAt).toLocaleDateString()}</p>
                                     </div>
                                 </div>
                             )) : (
-                                <p className="p-6 text-sm text-[#EFEEEA]/40 text-center">No users yet</p>
+                                <p className="p-6 text-sm text-slate-100/40 text-center">No users yet</p>
                             )}
                         </div>
                     </div>
                 )}
 
                 {activeTab === 'transactions' && (
-                    <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden">
+                    <div className="bg-slate-800 rounded-2xl border border-white/10 overflow-hidden">
                         <div className="p-6 border-b border-white/5">
-                            <h2 className="text-lg font-bold text-[#EFEEEA]">Recent Transactions</h2>
+                            <h2 className="text-lg font-bold text-slate-100">Recent Transactions</h2>
                         </div>
 
                         {/* Table Header */}
-                        <div className="grid grid-cols-5 gap-4 px-5 py-3 text-[10px] font-semibold text-[#EFEEEA]/40 uppercase tracking-wider border-b border-white/5">
+                        <div className="grid grid-cols-5 gap-4 px-5 py-3 text-[10px] font-semibold text-slate-100/40 uppercase tracking-wider border-b border-white/5">
                             <span>User</span>
                             <span>Type</span>
                             <span className="text-right">Amount</span>
@@ -350,16 +350,16 @@ export default function AdminDashboardPage() {
                         <div className="divide-y divide-white/5">
                             {activity?.recentTransactions?.length > 0 ? activity.recentTransactions.map((t: any) => (
                                 <div key={t.id} className="grid grid-cols-5 gap-4 px-5 py-4 text-sm hover:bg-white/2 transition items-center">
-                                    <span className="text-[#EFEEEA] font-medium truncate">{t.user?.profile?.fullName || 'User'}</span>
+                                    <span className="text-slate-100 font-medium truncate">{t.user?.profile?.fullName || 'User'}</span>
                                     <span><TxTypeBadge type={t.type} /></span>
                                     <span className={`text-right font-bold ${['EARNING', 'CREDIT_BONUS'].includes(t.type) ? 'text-green-400' : t.type === 'COMMISSION' ? 'text-amber-400' : 'text-red-400'}`}>
                                         PKR {t.amountPKR?.toLocaleString()}
                                     </span>
-                                    <span className="text-[#EFEEEA]/50 text-xs truncate">{t.description}</span>
-                                    <span className="text-right text-[#EFEEEA]/30 text-xs">{new Date(t.createdAt).toLocaleDateString()}</span>
+                                    <span className="text-slate-100/50 text-xs truncate">{t.description}</span>
+                                    <span className="text-right text-slate-100/30 text-xs">{new Date(t.createdAt).toLocaleDateString()}</span>
                                 </div>
                             )) : (
-                                <p className="p-6 text-sm text-[#EFEEEA]/40 text-center">No transactions yet</p>
+                                <p className="p-6 text-sm text-slate-100/40 text-center">No transactions yet</p>
                             )}
                         </div>
                     </div>
@@ -369,22 +369,22 @@ export default function AdminDashboardPage() {
             {/* ADD CREDITS MODAL */}
             {selectedUserForCredits && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="bg-[#111] border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
-                        <h3 className="text-xl font-bold text-[#EFEEEA] mb-2">Add Credits</h3>
-                        <p className="text-sm text-[#EFEEEA]/60 mb-6">
+                    <div className="bg-slate-800 border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+                        <h3 className="text-xl font-bold text-slate-100 mb-2">Add Credits</h3>
+                        <p className="text-sm text-slate-100/60 mb-6">
                             Manually inject credits into <strong>{selectedUserForCredits.profile?.fullName || selectedUserForCredits.email}</strong>'s wallet.
                         </p>
 
                         <form onSubmit={handleAddCredits} className="flex flex-col gap-4">
                             <div>
-                                <label className="block text-xs font-bold text-[#EFEEEA]/50 uppercase tracking-wider mb-2">Amount (Credits)</label>
+                                <label className="block text-xs font-bold text-slate-100/50 uppercase tracking-wider mb-2">Amount (Credits)</label>
                                 <input
                                     type="number"
                                     min="1"
                                     required
                                     value={creditAmount}
                                     onChange={e => setCreditAmount(e.target.value)}
-                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#FE7743] transition"
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition"
                                     placeholder="e.g. 50"
                                 />
                             </div>
@@ -403,7 +403,7 @@ export default function AdminDashboardPage() {
                                 <button
                                     type="submit"
                                     disabled={addingCredit || !creditAmount}
-                                    className="flex-1 py-3 bg-[#FE7743] hover:bg-[#FE7743]/90 disabled:opacity-50 text-white rounded-xl font-bold transition flex items-center justify-center"
+                                    className="flex-1 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 text-white rounded-xl font-bold transition flex items-center justify-center"
                                 >
                                     {addingCredit ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Add Credits'}
                                 </button>
@@ -422,21 +422,21 @@ export default function AdminDashboardPage() {
 
 function KpiCard({ label, value, icon, accent = '#EFEEEA' }: { label: string; value: string | number; icon: string; accent?: string }) {
     return (
-        <div className="bg-[#111] p-6 rounded-2xl border border-white/10 hover:border-white/20 transition group">
+        <div className="bg-slate-800 p-6 rounded-2xl border border-white/10 hover:border-white/20 transition group">
             <div className="flex items-center justify-between mb-3">
                 <span className="text-2xl">{icon}</span>
             </div>
             <p className="text-3xl font-black" style={{ color: accent }}>{value}</p>
-            <h3 className="text-xs font-semibold text-[#EFEEEA]/50 mt-2 uppercase tracking-wider">{label}</h3>
+            <h3 className="text-xs font-semibold text-slate-100/50 mt-2 uppercase tracking-wider">{label}</h3>
         </div>
     );
 }
 
 function MiniStat({ label, value, color = '#EFEEEA' }: { label: string; value: number; color?: string }) {
     return (
-        <div className="bg-[#111] p-4 rounded-xl border border-white/10">
+        <div className="bg-slate-800 p-4 rounded-xl border border-white/10">
             <p className="text-xl font-bold" style={{ color }}>{value}</p>
-            <p className="text-[10px] font-semibold text-[#EFEEEA]/40 uppercase tracking-wider mt-1">{label}</p>
+            <p className="text-[10px] font-semibold text-slate-100/40 uppercase tracking-wider mt-1">{label}</p>
         </div>
     );
 }
@@ -444,9 +444,9 @@ function MiniStat({ label, value, color = '#EFEEEA' }: { label: string; value: n
 function FounderCard({ title, awarded, remaining, max, color }: { title: string; awarded: number; remaining: number; max: number; color: string }) {
     const percentage = Math.round((awarded / max) * 100);
     return (
-        <div className="bg-[#111] p-6 rounded-2xl border border-white/10">
+        <div className="bg-slate-800 p-6 rounded-2xl border border-white/10">
             <div className="flex justify-between items-start mb-4">
-                <h3 className="font-bold text-[#EFEEEA]">{title}</h3>
+                <h3 className="font-bold text-slate-100">{title}</h3>
                 <span className="text-xs font-bold px-2 py-1 rounded-full" style={{ background: `${color}20`, color }}>{awarded}/{max}</span>
             </div>
             {/* Progress bar */}
@@ -454,8 +454,8 @@ function FounderCard({ title, awarded, remaining, max, color }: { title: string;
                 <div className="h-full rounded-full transition-all duration-500" style={{ width: `${percentage}%`, background: color }} />
             </div>
             <div className="flex justify-between text-xs">
-                <span className="text-[#EFEEEA]/50">Awarded: <span className="font-bold text-[#EFEEEA]">{awarded}</span></span>
-                <span className="text-[#EFEEEA]/50">Slots left: <span className="font-bold" style={{ color }}>{remaining}</span></span>
+                <span className="text-slate-100/50">Awarded: <span className="font-bold text-slate-100">{awarded}</span></span>
+                <span className="text-slate-100/50">Slots left: <span className="font-bold" style={{ color }}>{remaining}</span></span>
             </div>
         </div>
     );
@@ -477,7 +477,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function RoleBadge({ role }: { role: string }) {
     const colors: Record<string, string> = {
-        SELLER: 'bg-[#FE7743]/10 text-[#FE7743] border-[#FE7743]/20',
+        SELLER: 'bg-primary/10 text-primary border-primary/20',
         STUDENT: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
         EMPLOYER: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
         BUYER: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
@@ -496,7 +496,7 @@ function TxTypeBadge({ type }: { type: string }) {
         EARNING: 'bg-green-500/10 text-green-400 border-green-500/20',
         COMMISSION: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
         WITHDRAWAL: 'bg-red-500/10 text-red-400 border-red-500/20',
-        BOOST: 'bg-[#FE7743]/10 text-[#FE7743] border-[#FE7743]/20',
+        BOOST: 'bg-primary/10 text-primary border-primary/20',
         CREDIT_PURCHASE: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
         CREDIT_BONUS: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
         ESCROW_LOCK: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
@@ -581,34 +581,34 @@ function KycInboxTab({ token }: { token: string }) {
                 <div key={app.id} className="bg-[#1a1a1a] rounded-xl border border-white/10 overflow-hidden flex flex-col">
                     <div className="p-4 border-b border-white/10 bg-white/5">
                         <div className="flex justify-between items-start mb-1">
-                            <h3 className="font-bold text-[#EFEEEA]">{app.user?.profile?.fullName || 'Unknown User'}</h3>
+                            <h3 className="font-bold text-slate-100">{app.user?.profile?.fullName || 'Unknown User'}</h3>
                             <span className="text-[10px] px-2 py-0.5 rounded border bg-amber-500/10 text-amber-500 border-amber-500/20 font-bold tracking-wider uppercase">Pending</span>
                         </div>
-                        <p className="text-xs text-[#EFEEEA]/50 font-mono truncate">{app.user?.email}</p>
+                        <p className="text-xs text-slate-100/50 font-mono truncate">{app.user?.email}</p>
                     </div>
 
                     <div className="p-4 flex-1 flex flex-col gap-4">
                         <div>
-                            <p className="text-[10px] text-[#EFEEEA]/40 mb-1.5 font-semibold uppercase tracking-wider">Live Selfie Verification</p>
+                            <p className="text-[10px] text-slate-100/40 mb-1.5 font-semibold uppercase tracking-wider">Live Selfie Verification</p>
                             <a href={`${apiUrl}/uploads/${app.selfieUrl}`} target="_blank" rel="noreferrer" className="block relative h-32 bg-black rounded-lg overflow-hidden border border-white/10 group cursor-pointer">
                                 <img src={`${apiUrl}/uploads/${app.selfieUrl}`} alt="Selfie" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                             </a>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <p className="text-[10px] text-[#EFEEEA]/40 mb-1.5 font-semibold uppercase tracking-wider">ID Front</p>
+                                <p className="text-[10px] text-slate-100/40 mb-1.5 font-semibold uppercase tracking-wider">ID Front</p>
                                 <a href={`${apiUrl}/uploads/${app.cnicFrontUrl}`} target="_blank" rel="noreferrer" className="block relative h-20 bg-black rounded-lg overflow-hidden border border-white/10 group cursor-pointer">
                                     <img src={`${apiUrl}/uploads/${app.cnicFrontUrl}`} alt="ID Front" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                                 </a>
                             </div>
                             <div>
-                                <p className="text-[10px] text-[#EFEEEA]/40 mb-1.5 font-semibold uppercase tracking-wider">ID Back</p>
+                                <p className="text-[10px] text-slate-100/40 mb-1.5 font-semibold uppercase tracking-wider">ID Back</p>
                                 <a href={`${apiUrl}/uploads/${app.cnicBackUrl}`} target="_blank" rel="noreferrer" className="block relative h-20 bg-black rounded-lg overflow-hidden border border-white/10 group cursor-pointer">
                                     <img src={`${apiUrl}/uploads/${app.cnicBackUrl}`} alt="ID Back" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                                 </a>
                             </div>
                         </div>
-                        <p className="text-[10px] text-center text-[#EFEEEA]/30 mt-auto pt-2 border-t border-white/5">
+                        <p className="text-[10px] text-center text-slate-100/30 mt-auto pt-2 border-t border-white/5">
                             Submitted on {new Date(app.submittedAt).toLocaleDateString()}
                         </p>
                     </div>
@@ -695,10 +695,10 @@ function DisputesTab({ token }: { token: string }) {
                     <div key={dispute.id} className="bg-[#1a1a1a] rounded-xl border border-amber-500/20 overflow-hidden flex flex-col">
                         <div className="p-4 border-b border-white/10 bg-amber-500/5">
                             <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-bold text-[#EFEEEA]">Dispute #{dispute.id.slice(-6)}</h3>
+                                <h3 className="font-bold text-slate-100">Dispute #{dispute.id.slice(-6)}</h3>
                                 <span className="text-[10px] px-2 py-0.5 rounded border bg-amber-500/10 text-amber-500 border-amber-500/20 font-bold tracking-wider uppercase">Needs Resolution</span>
                             </div>
-                            <p className="text-xs text-[#EFEEEA]/50 font-mono truncate">{contextName}: {contextTitle} • Value: PKR {amount}</p>
+                            <p className="text-xs text-slate-100/50 font-mono truncate">{contextName}: {contextTitle} • Value: PKR {amount}</p>
                         </div>
 
                         <div className="p-4 flex-1 flex flex-col gap-4">

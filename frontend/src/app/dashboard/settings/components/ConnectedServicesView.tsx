@@ -61,7 +61,7 @@ export function ConnectedServicesView() {
                 </div>
             </div>
 
-            <div className="bg-nav-bg text-white rounded-2xl p-6 sm:p-8 border border-white/5">
+            <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-white/5">
                 <span className="material-symbols-outlined text-primary text-3xl mb-4">security</span>
                 <h4 className="font-bold text-lg mb-2">Data Privacy & Security</h4>
                 <p className="text-white/50 text-sm leading-relaxed">

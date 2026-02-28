@@ -1,7 +1,7 @@
 export default function DashboardLoading() {
     return (
         <div className="flex flex-col min-h-screen bg-background-light text-text-main font-sans antialiased">
-            <div className="h-[76px] bg-nav-bg border-b border-border-light animate-pulse" />
+            <div className="h-[76px] bg-slate-900 border-b border-border-light animate-pulse" />
             <main className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-12 py-16">
                 <div className="space-y-8">
                     <div className="h-10 w-64 bg-border-light rounded-xl animate-pulse" />

@@ -139,7 +139,7 @@ export default function SettingsPage() {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 text-sm font-semibold ${activeTab === tab.id
-                                            ? 'bg-nav-bg text-white shadow-sm'
+                                            ? 'bg-slate-900 text-white shadow-sm'
                                             : 'text-text-muted hover:bg-background-light hover:text-text-main'
                                         }`}
                                 >
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                                     </div>
 
                                     {/* Why 2-Step? */}
-                                    <div className="bg-nav-bg text-white rounded-xl p-8 border border-white/5">
+                                    <div className="bg-slate-900 text-white rounded-xl p-8 border border-white/5">
                                         <h4 className="font-bold text-lg mb-3 tracking-tight">Why 2-Step Verification?</h4>
                                         <p className="text-white/50 text-sm leading-relaxed">
                                             GIGLIGO serves high-profile clients and manages sensitive transactions. Enabling 2-Step Verification adds a critical layer of defense against unauthorized access, ensuring your portfolio and earnings remain secure.

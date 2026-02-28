@@ -56,7 +56,7 @@ export default function PricingPage() {
             <main className="flex-1 w-full relative z-10" style={{ paddingTop: 96 }}>
 
                 {/* Ultra-Premium Header Section */}
-                <div className="relative pt-20 pb-32 overflow-hidden bg-nav-bg text-white">
+                <div className="relative pt-20 pb-32 overflow-hidden bg-slate-900 text-white">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.05)_0%,transparent_70%)] pointer-events-none" />
 
                     <div className="max-w-7xl mx-auto px-6 text-center relative z-10 animate-fade-in">
@@ -146,7 +146,7 @@ export default function PricingPage() {
                         {/* Freelancer Pro Plan */}
                         <div className="animate-fade-in">
                             <h2 className="text-4xl font-bold tracking-tight text-text-main mb-12">Gigligo Pro</h2>
-                            <div className="bg-nav-bg text-white rounded-3xl p-12 relative overflow-hidden shadow-2xl border border-white/10">
+                            <div className="bg-slate-900 text-white rounded-3xl p-12 relative overflow-hidden shadow-2xl border border-white/10">
                                 <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.15)_0%,transparent_70%)] pointer-events-none"></div>
 
                                 <h3 className="text-2xl font-bold mb-4">Pro Subscription</h3>

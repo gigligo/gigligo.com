@@ -236,7 +236,7 @@ export default function KYCVerificationPage() {
                                         <button onClick={() => setStep(2)} className="px-6 py-3 text-slate-400 hover:text-white font-medium transition">
                                             Back
                                         </button>
-                                        <button onClick={submitKycDetails} disabled={isUploading || !idBackFile} className="px-8 py-3 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white font-bold rounded-xl disabled:opacity-50 transition shadow-lg flex items-center gap-2">
+                                        <button onClick={submitKycDetails} disabled={isUploading || !idBackFile} className="px-8 py-3 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl disabled:opacity-50 transition shadow-lg flex items-center gap-2">
                                             {isUploading ? 'Uploading...' : 'Submit Verification'}
                                         </button>
                                     </div>

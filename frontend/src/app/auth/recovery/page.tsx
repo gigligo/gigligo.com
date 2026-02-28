@@ -6,7 +6,7 @@ import { Logo } from '@/components/Logo';
 
 export default function SecurityRecoveryPage() {
     return (
-        <div className="min-h-screen bg-nav-bg text-white font-sans antialiased flex flex-col selection:bg-primary/30 relative overflow-hidden">
+        <div className="min-h-screen bg-slate-900 text-white font-sans antialiased flex flex-col selection:bg-primary/30 relative overflow-hidden">
             {/* Ambient Background */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2"></div>

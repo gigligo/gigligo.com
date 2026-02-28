@@ -6,7 +6,7 @@ import { Logo } from '@/components/Logo';
 
 export default function AuthenticatorSetupPage() {
     return (
-        <div className="min-h-screen bg-nav-bg text-white font-sans antialiased flex flex-col selection:bg-primary/30 relative overflow-hidden">
+        <div className="min-h-screen bg-slate-900 text-white font-sans antialiased flex flex-col selection:bg-primary/30 relative overflow-hidden">
             {/* Ambient Background */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2"></div>

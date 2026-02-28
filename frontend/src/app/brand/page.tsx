@@ -16,7 +16,7 @@ export default function HorizonLogoStory() {
 
             <main>
                 {/* Hero Section */}
-                <section className="relative h-screen flex flex-col justify-center items-center bg-nav-bg text-white overflow-hidden">
+                <section className="relative h-screen flex flex-col justify-center items-center bg-slate-900 text-white overflow-hidden">
                     <div className="absolute inset-0 bg-pattern opacity-[0.03]"></div>
 
                     {/* The "Horizon" Graphic (Conceptual) */}
@@ -92,7 +92,7 @@ export default function HorizonLogoStory() {
                 </section>
 
                 {/* Conceptual Gallery */}
-                <section className="py-32 bg-nav-bg text-white relative overflow-hidden">
+                <section className="py-32 bg-slate-900 text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2"></div>
                     <div className="max-w-6xl mx-auto px-6 relative z-10">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -131,7 +131,7 @@ export default function HorizonLogoStory() {
             </main>
 
             {/* Footer Minimal */}
-            <footer className="bg-nav-bg border-t border-white/10 py-12 text-center">
+            <footer className="bg-slate-900 border-t border-white/10 py-12 text-center">
                 <p className="text-white/30 text-sm font-semibold tracking-widest uppercase flex items-center justify-center">© {new Date().getFullYear()} <Logo className="h-3 ml-2 w-auto" variant="white" /></p>
             </footer>
         </div>

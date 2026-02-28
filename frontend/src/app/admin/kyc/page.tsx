@@ -36,7 +36,7 @@ export default function AdminKYCPage() {
     return (
         <div className="flex bg-background-light min-h-screen text-text-main font-sans selection:bg-primary/30">
             {/* Minimal Admin Sidebar */}
-            <aside className="w-64 bg-nav-bg border-r border-white/5 hidden md:flex flex-col text-white">
+            <aside className="w-64 bg-slate-900 border-r border-white/5 hidden md:flex flex-col text-white">
                 <div className="p-6 border-b border-white/5">
                     <h1 className="text-2xl font-black tracking-tight flex items-center gap-2">
                         Gigligo <span className="text-primary text-xs uppercase tracking-widest px-2 py-0.5 border border-primary/20 bg-primary/10 rounded">Admin</span>
@@ -70,7 +70,7 @@ export default function AdminKYCPage() {
                     <h2 className="text-lg font-bold">Identity Verification Queue</h2>
                     <div className="flex items-center gap-4">
                         <span className="text-xs font-bold text-text-muted">Compliance Engine v2.1</span>
-                        <div className="w-8 h-8 rounded-full bg-nav-bg text-white flex items-center justify-center font-bold text-xs ring-2 ring-primary">
+                        <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs ring-2 ring-primary">
                             A
                         </div>
                     </div>

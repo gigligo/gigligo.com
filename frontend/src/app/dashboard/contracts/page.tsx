@@ -101,7 +101,7 @@ export default function ContractsPage() {
 
             <main className="flex-1" style={{ paddingTop: 96 }}>
                 {/* Editorial Header */}
-                <div className="bg-nav-bg text-white py-16 md:py-20 relative overflow-hidden">
+                <div className="bg-slate-900 text-white py-16 md:py-20 relative overflow-hidden">
                     <div className="absolute inset-0 opacity-[0.03]">
                         <div className="absolute top-0 right-0 w-72 h-72 border border-white/20 rounded-full translate-x-1/3 -translate-y-1/3"></div>
                         <div className="absolute bottom-0 left-0 w-56 h-56 border border-white/10 rotate-45 translate-y-1/3"></div>
@@ -148,7 +148,7 @@ export default function ContractsPage() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all ${activeTab === tab.id
-                                        ? 'bg-nav-bg text-white shadow-sm'
+                                        ? 'bg-slate-900 text-white shadow-sm'
                                         : 'text-text-muted hover:bg-background-light hover:text-text-main'
                                     }`}
                             >
@@ -309,7 +309,7 @@ export default function ContractsPage() {
                     )}
 
                     {/* Why Contracts Info */}
-                    <div className="mt-10 bg-nav-bg text-white rounded-xl p-8 border border-white/5">
+                    <div className="mt-10 bg-slate-900 text-white rounded-xl p-8 border border-white/5">
                         <div className="flex items-start gap-4">
                             <span className="material-symbols-outlined text-primary text-3xl shrink-0">verified_user</span>
                             <div>

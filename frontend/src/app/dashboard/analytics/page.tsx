@@ -82,7 +82,7 @@ export default function AnalyticsPage() {
                                         key={p}
                                         onClick={() => setPeriod(p)}
                                         className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${period === p
-                                                ? 'bg-nav-bg text-white shadow-md'
+                                                ? 'bg-slate-900 text-white shadow-md'
                                                 : 'bg-background-light text-text-muted border border-border-light hover:border-primary/50'
                                             }`}
                                     >

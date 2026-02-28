@@ -22,7 +22,7 @@ export default function FinanceDashboardPage() {
             {/* KPI Cards Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 {/* KPI Card 1 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
                     <div className="flex justify-between items-start mb-4">
                         <p className="text-text-muted text-xs font-bold uppercase tracking-wider">Total Revenue</p>
@@ -37,7 +37,7 @@ export default function FinanceDashboardPage() {
                 </div>
 
                 {/* KPI Card 2 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
                     <div className="flex justify-between items-start mb-4">
                         <p className="text-text-muted text-xs font-bold uppercase tracking-wider">Net Profit</p>
@@ -52,7 +52,7 @@ export default function FinanceDashboardPage() {
                 </div>
 
                 {/* KPI Card 3 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-text-main dark:bg-[#2A2A2A] text-white shadow-lg shadow-text-main/10 group overflow-hidden">
+                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-text-main dark:bg-slate-800 text-white shadow-lg shadow-text-main/10 group overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
                     <div className="flex justify-between items-start mb-4">
                         <p className="text-white/60 text-xs font-bold uppercase tracking-wider">Pending Invoices</p>
@@ -67,7 +67,7 @@ export default function FinanceDashboardPage() {
                 </div>
 
                 {/* KPI Card 4 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
                     <div className="flex justify-between items-start mb-4">
                         <p className="text-text-muted text-xs font-bold uppercase tracking-wider">Avg Deal Size</p>
@@ -85,7 +85,7 @@ export default function FinanceDashboardPage() {
             {/* Main Chart Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[400px]">
                 {/* Large Chart */}
-                <div className="lg:col-span-2 rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-white/5 p-8 flex flex-col relative overflow-hidden shadow-sm">
+                <div className="lg:col-span-2 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 p-8 flex flex-col relative overflow-hidden shadow-sm">
                     <div className="flex justify-between items-center mb-8 relative z-10">
                         <div>
                             <h3 className="text-xl font-bold text-text-main dark:text-white">Revenue Growth</h3>
@@ -100,11 +100,11 @@ export default function FinanceDashboardPage() {
                     <div className="flex-1 w-full h-full min-h-[300px] relative">
                         {/* Grid Lines */}
                         <div className="absolute inset-0 flex flex-col justify-between text-xs text-text-muted/30 font-mono pointer-events-none">
-                            <div className="w-full border-b border-gray-100 dark:border-white/5 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-white/5 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-white/5 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-white/5 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-white/5 h-0"></div>
+                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
+                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
+                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
+                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
+                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
                         </div>
                         {/* SVG Chart */}
                         <svg className="w-full h-full absolute inset-0 z-10" preserveAspectRatio="none" viewBox="0 0 1000 400">
@@ -135,7 +135,7 @@ export default function FinanceDashboardPage() {
                 {/* Side Stats / Transactions */}
                 <div className="flex flex-col gap-6">
                     {/* Stat Box */}
-                    <div className="rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-white/5 p-6 shadow-sm">
+                    <div className="rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 p-6 shadow-sm">
                         <h3 className="text-base font-bold mb-4 text-text-main dark:text-white">Top Clients</h3>
                         <div className="flex flex-col gap-4">
                             <div className="flex items-center justify-between">
@@ -163,7 +163,7 @@ export default function FinanceDashboardPage() {
                     </div>
 
                     {/* Recent Transactions List */}
-                    <div className="rounded-xl bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-white/5 flex-1 p-6 overflow-hidden flex flex-col shadow-sm">
+                    <div className="rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 flex-1 p-6 overflow-hidden flex flex-col shadow-sm">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-base font-bold text-text-main dark:text-white">Recent</h3>
                             <button className="text-primary text-xs font-bold uppercase tracking-wider hover:text-primary-dark transition-colors">View All</button>
@@ -194,7 +194,7 @@ export default function FinanceDashboardPage() {
 
             {/* Footer / Extra Details Area */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 mt-4">
-                <div className="rounded-xl bg-gray-50 dark:bg-[#2A2A2A] border border-gray-100 dark:border-white/5 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-800 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex gap-4 items-center">
                         <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                             <span className="material-symbols-outlined">description</span>

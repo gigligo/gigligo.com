@@ -81,7 +81,7 @@ export default function BlogPage() {
                                 key={filter}
                                 onClick={() => setActiveFilter(filter)}
                                 className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${activeFilter === filter
-                                        ? 'bg-nav-bg text-white shadow-lg'
+                                        ? 'bg-slate-900 text-white shadow-lg'
                                         : 'bg-surface-light text-text-muted border border-border-light hover:border-primary/50'
                                     }`}
                             >
@@ -158,7 +158,7 @@ export default function BlogPage() {
                     </div>
 
                     {/* Newsletter CTA */}
-                    <div className="bg-nav-bg text-white rounded-3xl p-10 md:p-16 text-center relative overflow-hidden animate-fade-in border border-white/5">
+                    <div className="bg-slate-900 text-white rounded-3xl p-10 md:p-16 text-center relative overflow-hidden animate-fade-in border border-white/5">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.15)_0%,transparent_60%)] pointer-events-none" />
                         <div className="relative z-10 max-w-2xl mx-auto">
                             <h2 className="text-3xl font-black mb-4">Command the Market.</h2>

@@ -80,7 +80,7 @@ export default function DashboardPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-background-light flex items-center justify-center">
+            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         );
@@ -94,7 +94,7 @@ export default function DashboardPage() {
 
     if (stateLoading) {
         return (
-            <div className="min-h-screen bg-background-light flex items-center justify-center">
+            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         );
@@ -102,8 +102,8 @@ export default function DashboardPage() {
 
     if (showKycBlocker) {
         return (
-            <div className="flex h-screen w-full bg-background-light items-center justify-center p-6">
-                <div className="bg-surface-light border border-border-light rounded-xl p-10 max-w-lg w-full text-center shadow-sm">
+            <div className="flex h-screen w-full bg-background-light dark:bg-background-dark items-center justify-center p-6">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-10 max-w-lg w-full text-center shadow-sm">
                     <div className="w-20 h-20 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-100">
                         <span className="material-symbols-outlined text-4xl">warning</span>
                     </div>
@@ -138,7 +138,7 @@ export default function DashboardPage() {
     }
 
     return (
-        <div className="flex h-screen w-full overflow-hidden bg-background-light text-text-main font-sans antialiased">
+        <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-text-main dark:text-slate-100 font-sans antialiased">
             {/* Mobile Overlay */}
             {isMobileMenuOpen && (
                 <div
@@ -148,7 +148,7 @@ export default function DashboardPage() {
             )}
 
             {/* Sidebar Navigation */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-64 md:relative transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out bg-nav-bg text-white flex flex-col justify-between border-r border-white/5 shrink-0`}>
+            <aside className={`fixed inset-y-0 left-0 z-50 w-64 md:relative transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out bg-slate-900 dark:bg-slate-950 text-white flex flex-col justify-between border-r border-slate-800 shrink-0`}>
                 <div className="p-6 flex flex-col gap-8">
                     {/* User Profile / Brand */}
                     <Link href="/" className="flex items-center gap-3 group cursor-pointer">
@@ -215,7 +215,7 @@ export default function DashboardPage() {
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 h-full overflow-y-auto bg-background-light">
+            <main className="flex-1 h-full overflow-y-auto bg-background-light dark:bg-background-dark">
                 <div className="max-w-7xl mx-auto px-8 py-8 flex flex-col gap-10">
 
                     {/* Header */}

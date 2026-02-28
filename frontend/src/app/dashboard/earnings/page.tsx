@@ -123,7 +123,7 @@ export default function EarningsPage() {
                     {/* KPI Cards Row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
                         {/* Available Balance */}
-                        <div className="bg-nav-bg text-white rounded-2xl p-6 border border-white/5 relative overflow-hidden col-span-1 sm:col-span-2 lg:col-span-1">
+                        <div className="bg-slate-900 text-white rounded-2xl p-6 border border-white/5 relative overflow-hidden col-span-1 sm:col-span-2 lg:col-span-1">
                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(200,157,40,0.15)_0%,transparent_60%)] pointer-events-none" />
                             <div className="relative z-10">
                                 <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">Available Balance</p>
@@ -257,7 +257,7 @@ export default function EarningsPage() {
                                         key={filter}
                                         onClick={() => setActiveFilter(filter)}
                                         className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeFilter === filter
-                                                ? 'bg-nav-bg text-white shadow-md'
+                                                ? 'bg-slate-900 text-white shadow-md'
                                                 : 'bg-background-light text-text-muted border border-border-light hover:border-primary/50'
                                             }`}
                                     >

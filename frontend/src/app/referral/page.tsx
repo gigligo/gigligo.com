@@ -68,7 +68,7 @@ export default function ReferralPage() {
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
                 {/* Ultra-Premium Header Section */}
-                <div className="relative pt-20 pb-32 overflow-hidden bg-nav-bg text-white">
+                <div className="relative pt-20 pb-32 overflow-hidden bg-slate-900 text-white">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.05)_0%,transparent_70%)] pointer-events-none" />
 
                     <div className="max-w-4xl mx-auto px-6 text-center relative z-10 animate-fade-in">

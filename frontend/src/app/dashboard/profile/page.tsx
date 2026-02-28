@@ -99,7 +99,7 @@ export default function ProfileEditorPage() {
                     </div>
 
                     {/* Main Content Area */}
-                    <div className="flex-1 bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-sm">
+                    <div className="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-sm">
 
                         {/* ══ BASIC INFO TAB ══ */}
                         {activeTab === 'basic' && (
@@ -107,7 +107,7 @@ export default function ProfileEditorPage() {
                                 <h2 className="text-xl font-bold mb-4">Information</h2>
                                 <div className="mb-8 flex flex-col items-center sm:flex-row sm:items-start gap-6">
                                     <div className="relative group shrink-0">
-                                        <div className="w-32 h-32 rounded-full overflow-hidden bg-slate-200 dark:bg-[#111] border-4 border-white dark:border-[#222] shadow-lg flex items-center justify-center relative">
+                                        <div className="w-32 h-32 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800 border-4 border-white dark:border-[#222] shadow-lg flex items-center justify-center relative">
                                             {profile.avatarUrl ? (
                                                 <NextImage src={profile.avatarUrl} alt="Avatar" fill className="object-cover" sizes="160px" />
                                             ) : (
@@ -278,7 +278,7 @@ export default function ProfileEditorPage() {
                                     <div className="grid sm:grid-cols-2 gap-6">
                                         {profile.portfolioItems?.map((port: any) => (
                                             <div key={port.id} className="border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden relative bg-slate-50 dark:bg-black flex flex-col">
-                                                <div className="h-40 bg-slate-200 dark:bg-[#111] overflow-hidden">
+                                                <div className="h-40 bg-slate-200 dark:bg-slate-800 overflow-hidden">
                                                     {port.imageUrl ? (
                                                         <a href={port.imageUrl} target="_blank" rel="noreferrer" title="Click to view full image">
                                                             <NextImage src={`${port.imageUrl}`} alt={port.title} fill className="object-cover hover:scale-105 transition duration-500 cursor-pointer" sizes="(max-width: 768px) 100vw, 33vw" />
@@ -353,7 +353,7 @@ function ExperienceModal({ onClose, token, onSuccess }: any) {
     };
     return (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-[#111] p-6 rounded-2xl w-full max-w-md border border-slate-200 dark:border-white/10">
+            <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl w-full max-w-md border border-slate-200 dark:border-white/10">
                 <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Add Experience</h3>
                 <form onSubmit={onSubmit} className="space-y-4 text-slate-900 dark:text-white">
                     <div><label className="text-sm font-semibold text-slate-600 dark:text-slate-400">Job Title</label><input name="title" required className="w-full bg-slate-50 dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg p-3 mt-1" /></div>
@@ -396,7 +396,7 @@ function EducationModal({ onClose, token, onSuccess }: any) {
     };
     return (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-[#111] p-6 rounded-2xl w-full max-w-md border border-slate-200 dark:border-white/10">
+            <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl w-full max-w-md border border-slate-200 dark:border-white/10">
                 <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Add Education</h3>
                 <form onSubmit={onSubmit} className="space-y-4 text-slate-900 dark:text-white">
                     <div><label className="text-sm font-semibold text-slate-600 dark:text-slate-400">Degree / Certificate</label><input name="degree" required className="w-full bg-slate-50 dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg p-3 mt-1" /></div>
@@ -432,7 +432,7 @@ function PortfolioModal({ onClose, token, onSuccess }: any) {
     };
     return (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-[#111] p-6 rounded-2xl w-full max-w-md border border-slate-200 dark:border-white/10">
+            <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl w-full max-w-md border border-slate-200 dark:border-white/10">
                 <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Add Portfolio Project</h3>
                 <form onSubmit={onSubmit} className="space-y-4 text-slate-900 dark:text-white">
                     <div><label className="text-sm font-semibold text-slate-600 dark:text-slate-400">Project Title</label><input name="title" required className="w-full bg-slate-50 dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg p-3 mt-1" /></div>

@@ -28,7 +28,7 @@ export default function CookieConsent() {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-100 p-4 sm:p-6 animate-fade-in">
-            <div className="max-w-4xl mx-auto bg-nav-bg border border-[#C9A227]/20 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="max-w-4xl mx-auto bg-slate-900 border border-[#C9A227]/20 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-6">
                 <div className="flex-1">
                     <p className="text-white text-sm font-medium mb-1">🍪 We value your privacy</p>
                     <p className="text-white/60 text-xs leading-relaxed">
