@@ -27,11 +27,13 @@ export class AuthController {
         return this.authService.login(loginDto);
     }
 
+    @Throttle({ default: { limit: 5, ttl: 60000 } })
     @Post('login/verify-otp')
     async verifyLoginOtp(@Body() body: { tempToken: string; code: string }) {
         return this.authService.verifyLoginOtp(body.tempToken, body.code);
     }
 
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Post('otp/resend')
     async resendOtp(@Body() body: { tempToken: string }) {
         return this.authService.resendLoginOtp(body.tempToken);
@@ -60,6 +62,7 @@ export class AuthController {
     // GOOGLE AUTH
     // ═══════════════════════════════════════
 
+    @Throttle({ default: { limit: 10, ttl: 60000 } })
     @Post('google/callback')
     async googleCallback(@Body() body: { credential: string }) {
         // Verify the Google ID token server-side before trusting any claims

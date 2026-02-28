@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { GlobalExceptionFilter } from './filters/global-exception.filter';
+import * as Sentry from '@sentry/node';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const helmet = require('helmet');
@@ -10,10 +12,41 @@ const helmet = require('helmet');
 const compression = require('compression');
 
 async function bootstrap() {
+  if (process.env.SENTRY_DSN && process.env.SENTRY_DSN !== 'mock-sentry-dsn') {
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      integrations: [
+        nodeProfilingIntegration(),
+      ],
+      tracesSampleRate: 1.0,
+      profilesSampleRate: 1.0,
+      environment: process.env.NODE_ENV || 'development',
+    });
+    console.log('[Sentry] Initialized for error and performance monitoring');
+  }
+
   const app = await NestFactory.create(AppModule);
 
-  // ── Security Headers ──
-  app.use(helmet());
+  // ── Security Headers (OWASP) ──
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        connectSrc: ["'self'", "https://api.stripe.com", "https://oauth2.googleapis.com"],
+        frameSrc: ["'self'", "https://js.stripe.com"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"],
+      },
+    },
+    crossOriginEmbedderPolicy: false, // Required for Stripe/Google embeds
+    hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+  }));
 
   // ── Response Compression ──
   app.use(compression());

@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { encrypt, decrypt } from '../utils/crypto';
 
 @Injectable()
 export class KycService {
@@ -31,15 +32,31 @@ export class KycService {
             data: { kycStatus: 'PENDING', nationalId: data.nationalId } // Store nationalId with user
         });
 
+        // Encrypt sensitive document URLs before storing
+        const encryptedData = {
+            cnicFrontUrl: encrypt(data.cnicFrontUrl),
+            cnicBackUrl: encrypt(data.cnicBackUrl),
+            selfieUrl: encrypt(data.selfieUrl),
+        };
+
         return this.prisma.kYC.upsert({
             where: { userId },
-            update: { ...data, status: 'PENDING', submittedAt: new Date() },
-            create: { ...data, userId, status: 'PENDING' },
+            update: { ...encryptedData, status: 'PENDING', submittedAt: new Date() },
+            create: { ...encryptedData, userId, status: 'PENDING' },
         });
     }
 
     async getKycStatus(userId: string) {
-        return this.prisma.kYC.findUnique({ where: { userId } });
+        const kyc = await this.prisma.kYC.findUnique({ where: { userId } });
+        if (!kyc) return null;
+
+        // Decrypt URLs for authorized access
+        return {
+            ...kyc,
+            cnicFrontUrl: decrypt(kyc.cnicFrontUrl),
+            cnicBackUrl: decrypt(kyc.cnicBackUrl),
+            selfieUrl: decrypt(kyc.selfieUrl),
+        };
     }
 
     /**
@@ -61,3 +78,4 @@ export class KycService {
         return { success: true, status: 'VERIFIED' };
     }
 }
+
