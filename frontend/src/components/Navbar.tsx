@@ -78,11 +78,8 @@ export function Navbar() {
             >
                 <div className="max-container h-full flex items-center justify-between">
                     <div className="flex items-center gap-12">
-                        <Link href="/" className="flex items-center gap-3 group">
-                            <Logo className="h-8" iconClassName="text-[#C9A227]" withText={false} />
-                            <span className="font-sans text-xl font-bold tracking-tight text-white transition-colors group-hover:text-[#C9A227]">
-                                gigligo<span className="text-[#C9A227] opacity-80">.com</span>
-                            </span>
+                        <Link href="/" className="flex items-center group">
+                            <Logo className="h-10 w-auto" variant="white" />
                         </Link>
                         <nav className="hidden lg:flex items-center gap-10">
                             {['Browse Jobs', 'Find Gigs', 'How it Works'].map((item) => (
@@ -173,7 +170,7 @@ export function Navbar() {
             {menuOpen && (
                 <div className="fixed inset-0 z-60 bg-[#1E1E1E] flex flex-col p-8 md:hidden">
                     <div className="flex justify-between items-center mb-10">
-                        <Logo className="h-8" iconClassName="text-[#C9A227]" withText={false} />
+                        <Logo className="h-8 w-auto" variant="white" />
                         <button onClick={() => setMenuOpen(false)} className="text-white"><X size={28} /></button>
                     </div>
                     <nav className="flex flex-col gap-6">

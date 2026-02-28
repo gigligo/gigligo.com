@@ -84,7 +84,7 @@ export default function Home() {
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_cgwvDSQ9PGm8I3aPS3640hgivXyFVa-gMLMw7Wbp2D_aO0lMFPom1hqAkrJdCKLufNDm-Wy0V9wd85F1AeMEuCetcqIPj2QH3u534JQ_lwiZ3MO0yusKe6YSWu6wPcbPybStn76mkclj1-ejrzEHLM9VNigoFwF-Hu9lRCGxtcEubLJPkDgdGyQdDqkrVw_gfglKojOOZ8q_KFqjKsi0N3LNmCkU2zZY5np-zoQ4-sl4nfVjvpVGBnrKxs1_7IUC1FpRbBYzSOk')" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0d1117]/80 via-[#0d1117]/60 to-[#0d1117]" />
+          <div className="absolute inset-0 bg-linear-to-b from-[#0d1117]/80 via-[#0d1117]/60 to-[#0d1117]" />
 
           <div className="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-20 sm:pb-32">
             <div className="max-w-3xl animate-hero-in">
@@ -103,8 +103,8 @@ export default function Home() {
                   <button
                     onClick={() => setActiveTab('talent')}
                     className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${activeTab === 'talent'
-                        ? 'bg-primary text-white'
-                        : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                      ? 'bg-primary text-white'
+                      : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
                       }`}
                   >
                     Find Talent
@@ -112,8 +112,8 @@ export default function Home() {
                   <button
                     onClick={() => setActiveTab('jobs')}
                     className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${activeTab === 'jobs'
-                        ? 'bg-primary text-white'
-                        : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                      ? 'bg-primary text-white'
+                      : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
                       }`}
                   >
                     Browse Jobs
@@ -130,7 +130,7 @@ export default function Home() {
                   />
                   <button
                     type="submit"
-                    className="px-6 sm:px-8 py-3.5 bg-primary hover:bg-[#b08a22] text-white font-bold rounded-r-lg transition-colors flex items-center gap-2"
+                    className="px-6 sm:px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-r-lg transition-colors flex items-center gap-2"
                   >
                     <span className="material-symbols-outlined text-xl">search</span>
                     <span className="hidden sm:inline">Search</span>
@@ -330,7 +330,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
                     href="/register"
-                    className="px-8 py-4 bg-primary hover:bg-[#b08a22] text-white font-bold rounded-xl transition-all hover:scale-105 duration-300 shadow-lg shadow-primary/30 text-base"
+                    className="px-8 py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all hover:scale-105 duration-300 shadow-lg shadow-primary/30 text-base"
                   >
                     Sign Up — It&apos;s Free
                   </Link>

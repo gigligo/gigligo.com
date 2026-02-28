@@ -15,7 +15,7 @@ export default function AuthenticatorSetupPage() {
 
             {/* Header */}
             <header className="px-8 py-6 flex justify-between items-center relative z-10 border-b border-white/5">
-                <Logo className="h-8" iconClassName="text-primary" textClassName="text-white uppercase tracking-widest text-sm" />
+                <Logo className="h-8 w-auto" variant="white" />
                 <nav className="hidden md:flex gap-6 text-sm font-semibold uppercase tracking-wider text-white/50">
                     <Link href="/search" className="hover:text-white transition-colors">Talent</Link>
                     <Link href="/dashboard" className="hover:text-white transition-colors">Business</Link>

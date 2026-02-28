@@ -42,9 +42,8 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
                     {/* About */}
                     <div className="md:col-span-1 border-gray-800 pr-8">
-                        <Link href="/" className="flex items-center gap-3 mb-6">
-                            <Logo className="h-8" iconClassName="text-[#C9A227]" withText={false} />
-                            <span className="font-sans text-xl font-bold tracking-tight text-[#FFFFFF]">gigligo<span className="text-[#C9A227] opacity-80">.com</span></span>
+                        <Link href="/" className="flex items-center mb-6">
+                            <Logo className="h-10 w-auto" variant="white" />
                         </Link>
                         <p className="mt-4 text-[15px] leading-relaxed max-w-xs text-[#F7F7F6]/60">
                             The professional arena where verified talent meets serious business.

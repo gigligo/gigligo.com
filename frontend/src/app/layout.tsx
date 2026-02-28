@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -58,7 +65,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#f8f7f6" />
       </head>
-      <body className={`${inter.variable} antialiased bg-background-light text-text-main dark:bg-background-dark dark:text-slate-100 font-sans`}>
+      <body className={`${inter.variable} ${outfit.variable} antialiased bg-background-light text-text-main dark:bg-background-dark dark:text-slate-100 font-sans`}>
         <Providers>
           {children}
           <CookieConsent />

@@ -11,7 +11,7 @@ export default function HorizonLogoStory() {
                 <Link href="/" className="font-bold tracking-widest uppercase hover:text-primary transition-colors text-sm flex items-center gap-2">
                     <span className="material-symbols-outlined text-xl">arrow_back</span> Return
                 </Link>
-                <Logo className="h-4" iconClassName="text-white" textClassName="font-bold tracking-widest text-sm uppercase text-white" />
+                <Logo className="h-4 w-auto" variant="white" />
             </nav>
 
             <main>
@@ -132,7 +132,7 @@ export default function HorizonLogoStory() {
 
             {/* Footer Minimal */}
             <footer className="bg-nav-bg border-t border-white/10 py-12 text-center">
-                <p className="text-white/30 text-sm font-semibold tracking-widest uppercase flex items-center justify-center">© {new Date().getFullYear()} <Logo className="h-3 ml-2" iconClassName="text-white" textClassName="text-white" /></p>
+                <p className="text-white/30 text-sm font-semibold tracking-widest uppercase flex items-center justify-center">© {new Date().getFullYear()} <Logo className="h-3 ml-2 w-auto" variant="white" /></p>
             </footer>
         </div>
     );
