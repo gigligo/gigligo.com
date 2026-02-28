@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Lora } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const lora = Lora({
-  variable: "--font-lora",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["italic"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -43,10 +35,11 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#1E1E1E" />
+        <meta name="theme-color" content="#f8f7f6" />
       </head>
-      <body className={`${inter.variable} ${lora.variable} antialiased bg-white text-[#1E1E1E]`}>
+      <body className={`${inter.variable} antialiased bg-background-light text-text-main dark:bg-background-dark dark:text-slate-100 font-sans`}>
         <Providers>
           {children}
         </Providers>
