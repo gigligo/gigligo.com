@@ -1,52 +1,35 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Outfit } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "600"],
   display: "swap",
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
-  weight: ["300", "400", "600", "800"],
+  weight: ["500"],
+  style: ["italic"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://gigligo.com'),
   title: {
-    default: "Gigligo | Empowering Pakistan's Future",
+    default: "Gigligo | Create • Chat • Start",
     template: "%s | Gigligo"
   },
-  description: "Gigligo empowers the next-generation of Pakistani talent by giving businesses instant, affordable access to vetted university professionals and freelancers.",
-  keywords: ["freelance pakistan", "pakistani talent", "hire students pakistan", "gig economy pakistan", "gigligo", "freelance marketplace"],
+  description: "Gigligo is a hybrid freelance marketplace for professionals. Create, Chat, and Start your projects today.",
+  keywords: ["freelance", "marketplace", "jobs", "talent", "gigligo"],
   authors: [{ name: "Gigligo Team" }],
   creator: "Gigligo",
-  openGraph: {
-    title: "Gigligo | Empowering Pakistan's Future",
-    description: "Empowering the next-generation of Pakistani talent.",
-    siteName: "Gigligo",
-    type: "website",
-    locale: "en_PK",
-    url: "/",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Gigligo | Top Pakistani Talent",
-    description: "Hire vetted university students and premium freelancers from Pakistan.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  }
 };
 
 import { Providers } from "@/components/Providers";
-
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -60,14 +43,10 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#e8793a" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="theme-color" content="#DAA520" />
       </head>
-      <body className={`${jakarta.variable} ${outfit.variable} font-sans antialiased bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300`}>
+      <body className={`${inter.variable} ${lora.variable} antialiased bg-white text-[#212121]`}>
         <Providers>
           {children}
         </Providers>

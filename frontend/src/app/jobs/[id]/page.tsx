@@ -110,14 +110,22 @@ export default function JobDetailPage() {
                                     Posted by {job.employer?.profile?.fullName || 'Employer'} • {job.employer?.profile?.location || 'Pakistan'}
                                 </p>
                                 <div className="flex gap-2">
-                                    {job.employer?.paymentVerified && (
+                                    {job.employer?.paymentVerified ? (
                                         <span className="flex items-center gap-0.5 text-[10px] font-bold text-[#4ADE80] bg-[#4ADE80]/10 px-1.5 py-0.5 rounded border border-[#4ADE80]/20">
                                             <ShieldCheck className="w-2.5 h-2.5" /> PAYMENT VERIFIED
                                         </span>
+                                    ) : (
+                                        <span className="flex items-center gap-0.5 text-[10px] font-bold text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">
+                                            PAYMENT UNVERIFIED
+                                        </span>
                                     )}
-                                    {job.employer?.kycStatus === 'APPROVED' && (
+                                    {job.employer?.kycStatus === 'APPROVED' ? (
                                         <span className="flex items-center gap-0.5 text-[10px] font-bold text-[#60A5FA] bg-[#60A5FA]/10 px-1.5 py-0.5 rounded border border-[#60A5FA]/20">
                                             <CheckCircle2 className="w-2.5 h-2.5" /> IDENTITY VERIFIED
+                                        </span>
+                                    ) : (
+                                        <span className="flex items-center gap-0.5 text-[10px] font-bold text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">
+                                            IDENTITY UNVERIFIED
                                         </span>
                                     )}
                                 </div>

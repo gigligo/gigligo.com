@@ -144,7 +144,7 @@ export default function DashboardPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-slate-50 dark:bg-[#000] flex items-center justify-center">
+            <div className="min-h-screen bg-[#000] flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-[#FE7743] border-t-transparent rounded-full animate-spin" />
             </div>
         );
@@ -161,7 +161,7 @@ export default function DashboardPage() {
 
     if (stateLoading) {
         return (
-            <div className="min-h-screen bg-slate-50 dark:bg-[#000] flex items-center justify-center">
+            <div className="min-h-screen bg-[#000] flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-[#FE7743] border-t-transparent rounded-full animate-spin" />
             </div>
         );
@@ -169,20 +169,20 @@ export default function DashboardPage() {
 
     if (showKycBlocker) {
         return (
-            <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
+            <div className="flex flex-col min-h-screen bg-[#000]">
                 <Navbar />
                 <main className="flex-1 flex items-center justify-center p-6">
-                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-8 max-w-lg w-full text-center shadow-2xl">
+                    <div className="bg-[#111] border border-white/10 rounded-2xl p-8 max-w-lg w-full text-center shadow-2xl">
                         <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
                             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Verification Required</h2>
+                        <h2 className="text-2xl font-bold text-[#EFEEEA] mb-2">Verification Required</h2>
 
                         {kycStatus === 'UNVERIFIED' || kycStatus === 'REJECTED' ? (
                             <>
-                                <p className="text-slate-400 mb-8">
+                                <p className="text-[#EFEEEA]/40 mb-8">
                                     {kycStatus === 'REJECTED'
                                         ? "Your previous verification attempt was rejected. Please submit clear, valid documents."
                                         : "To protect our community, all freelancers must complete Identity Verification (KYC) before accessing the dashboard or applying to jobs."}
@@ -193,15 +193,15 @@ export default function DashboardPage() {
                             </>
                         ) : (
                             <>
-                                <p className="text-slate-600 dark:text-slate-400 mb-8">
+                                <p className="text-[#EFEEEA]/40 mb-8">
                                     Your documents have been received and are currently under review by our moderation team. You will be able to access the platform once approved.
                                 </p>
-                                <button disabled className="w-full py-3 px-6 bg-slate-200 dark:bg-slate-800 text-slate-500 font-bold rounded-xl cursor-not-allowed">
+                                <button disabled className="w-full py-3 px-6 bg-white/5 text-[#EFEEEA]/30 font-bold rounded-xl cursor-not-allowed border border-white/5">
                                     Review Pending...
                                 </button>
                             </>
                         )}
-                        <button onClick={() => router.push('/')} className="mt-4 text-sm text-slate-500 hover:text-slate-900 dark:hover:text-white transition">
+                        <button onClick={() => router.push('/')} className="mt-4 text-sm text-[#EFEEEA]/30 hover:text-[#EFEEEA] transition">
                             Return to Homepage
                         </button>
                     </div>
@@ -212,13 +212,13 @@ export default function DashboardPage() {
 
     return (
         <GlobalErrorBoundary>
-            <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#000]">
+            <div className="flex flex-col min-h-screen bg-[#000]">
                 <Navbar />
                 <main className="flex-1 max-w-[1200px] mx-auto px-6 py-8 w-full" style={{ paddingTop: 96 }}>
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA]">Dashboard</h1>
-                            <p className="text-slate-600 dark:text-[#EFEEEA]/50 text-sm mt-1">
+                            <h1 className="text-3xl font-bold text-[#EFEEEA]">Dashboard</h1>
+                            <p className="text-[#EFEEEA]/50 text-sm mt-1">
                                 {isFreelancer ? 'Manage your applications & earnings' : 'Manage your job postings & hires'}
                             </p>
                         </div>
@@ -254,18 +254,18 @@ export default function DashboardPage() {
 
                     {/* Wallet */}
                     {wallet && (
-                        <div className="bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-2xl p-6 mb-8 shadow-sm dark:shadow-none">
+                        <div className="bg-[#111] border border-white/10 rounded-2xl p-6 mb-8 shadow-none">
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div>
-                                    <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/50 uppercase tracking-wider font-semibold mb-1">Wallet Balance</p>
-                                    <p className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA]">PKR {wallet.balancePKR?.toLocaleString() || '0'}</p>
+                                    <p className="text-xs text-[#EFEEEA]/50 uppercase tracking-wider font-semibold mb-1">Wallet Balance</p>
+                                    <p className="text-3xl font-bold text-[#EFEEEA]">PKR {wallet.balancePKR?.toLocaleString() || '0'}</p>
                                     {wallet.pendingPKR > 0 && (
                                         <p className="text-xs text-[#FE7743] mt-1">PKR {wallet.pendingPKR.toLocaleString()} pending withdrawal</p>
                                     )}
                                 </div>
                                 <div className="flex gap-3">
                                     {isFreelancer && (
-                                        <Link href="/dashboard/earnings" className="px-4 py-2 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#EFEEEA] rounded-lg text-sm hover:bg-slate-200 dark:hover:bg-white/10 transition">
+                                        <Link href="/dashboard/earnings" className="px-4 py-2 bg-white/5 border border-white/10 text-[#EFEEEA] rounded-lg text-sm hover:bg-white/10 transition">
                                             Earnings →
                                         </Link>
                                     )}
@@ -284,8 +284,8 @@ export default function DashboardPage() {
                                 <>
                                     {/* Performance Overview Chart */}
                                     {analytics.length > 0 && (
-                                        <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 mb-6 shadow-sm dark:shadow-none">
-                                            <h3 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA] mb-6">Performance Overview (30 Days)</h3>
+                                        <div className="bg-[#111] p-6 rounded-2xl border border-white/10 mb-6 shadow-none">
+                                            <h3 className="text-lg font-bold text-[#EFEEEA] mb-6">Performance Overview (30 Days)</h3>
                                             <div className="h-64 w-full">
                                                 <ResponsiveContainer width="100%" height="100%">
                                                     <AreaChart data={analytics} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -322,22 +322,22 @@ export default function DashboardPage() {
                                         <div className="relative z-10">
                                             <div className="flex justify-between items-center mb-4">
                                                 <div>
-                                                    <h2 className="text-xl font-bold text-slate-900 dark:text-[#EFEEEA] flex items-center gap-2">
+                                                    <h2 className="text-xl font-bold text-[#EFEEEA] flex items-center gap-2">
                                                         <Sparkles className="w-5 h-5 text-[#FE7743]" /> Recommended for You
                                                     </h2>
-                                                    <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/50 mt-1">AI matched based on your skills and rate</p>
+                                                    <p className="text-xs text-[#EFEEEA]/50 mt-1">AI matched based on your skills and rate</p>
                                                 </div>
                                             </div>
 
                                             {recommendedJobs.length === 0 ? (
-                                                <p className="text-sm text-slate-500 dark:text-[#EFEEEA]/50">Update your profile skills to see AI matches.</p>
+                                                <p className="text-sm text-[#EFEEEA]/50">Update your profile skills to see AI matches.</p>
                                             ) : (
                                                 <div className="flex flex-col gap-3">
                                                     {recommendedJobs.map((job: any) => (
-                                                        <Link href={`/jobs/${job.id}`} key={job.id} className="bg-white dark:bg-[#111] p-4 rounded-xl border border-slate-200 dark:border-white/10 hover:border-[#FE7743]/50 transition flex justify-between items-center group">
+                                                        <Link href={`/jobs/${job.id}`} key={job.id} className="bg-[#000] p-4 rounded-xl border border-white/10 hover:border-[#FE7743]/50 transition flex justify-between items-center group">
                                                             <div>
-                                                                <h3 className="font-bold text-slate-900 dark:text-[#EFEEEA] group-hover:text-[#FE7743] transition">{job.title}</h3>
-                                                                <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/40 mt-1">
+                                                                <h3 className="font-bold text-[#EFEEEA] group-hover:text-[#FE7743] transition">{job.title}</h3>
+                                                                <p className="text-xs text-[#EFEEEA]/40 mt-1">
                                                                     PKR {job.budgetMin?.toLocaleString()}–{job.budgetMax?.toLocaleString()} • {job.employer?.profile?.fullName || 'Client'}
                                                                 </p>
                                                             </div>
@@ -355,21 +355,21 @@ export default function DashboardPage() {
                                     </div>
 
                                     {/* Freelancer: Active Gig Orders */}
-                                    <div className="bg-white dark:bg-[#111] rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-sm dark:shadow-none">
-                                        <div className="p-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center">
-                                            <h2 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA]">Active Gig Orders</h2>
+                                    <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden shadow-none">
+                                        <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                                            <h2 className="text-lg font-bold text-[#EFEEEA]">Active Gig Orders</h2>
                                         </div>
                                         {myGigs.length === 0 ? (
-                                            <div className="p-8 text-center text-slate-500 dark:text-[#EFEEEA]/40 text-sm">
+                                            <div className="p-8 text-center text-[#EFEEEA]/40 text-sm">
                                                 No gig orders yet.
                                             </div>
                                         ) : (
-                                            <div className="divide-y divide-slate-100 dark:divide-white/5">
+                                            <div className="divide-y divide-white/5">
                                                 {myGigs.slice(0, 5).map((order: any) => (
-                                                    <div key={order.id} className="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/2 transition">
+                                                    <div key={order.id} className="p-5 flex items-center justify-between hover:bg-white/2 transition">
                                                         <div className="min-w-0 flex-1">
-                                                            <p className="font-semibold text-slate-900 dark:text-[#EFEEEA] text-sm truncate">{order.gig?.title}</p>
-                                                            <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/40 mt-1">
+                                                            <p className="font-semibold text-[#EFEEEA] text-sm truncate">{order.gig?.title}</p>
+                                                            <p className="text-xs text-[#EFEEEA]/40 mt-1">
                                                                 Buyer: {order.buyer?.profile?.fullName || 'Client'} • PKR {order.price?.toLocaleString()}
                                                             </p>
                                                         </div>
@@ -391,22 +391,22 @@ export default function DashboardPage() {
                                     </div>
 
                                     {/* Freelancer: Recent Applications */}
-                                    <div className="bg-white dark:bg-[#111] rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-sm dark:shadow-none">
-                                        <div className="p-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center">
-                                            <h2 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA]">Recent Applications</h2>
+                                    <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden shadow-none">
+                                        <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                                            <h2 className="text-lg font-bold text-[#EFEEEA]">Recent Applications</h2>
                                             <Link href="/dashboard/applications" className="text-xs text-[#FE7743] font-semibold hover:underline">View All</Link>
                                         </div>
                                         {applications.length === 0 ? (
-                                            <div className="p-8 text-center text-slate-500 dark:text-[#EFEEEA]/40 text-sm">
+                                            <div className="p-8 text-center text-[#EFEEEA]/40 text-sm">
                                                 No applications yet. <Link href="/jobs" className="text-[#FE7743] hover:underline">Browse jobs</Link> to get started.
                                             </div>
                                         ) : (
-                                            <div className="divide-y divide-slate-100 dark:divide-white/5">
+                                            <div className="divide-y divide-white/5">
                                                 {applications.slice(0, 5).map((app: any) => (
-                                                    <div key={app.id} className="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/2 transition">
+                                                    <div key={app.id} className="p-5 flex items-center justify-between hover:bg-white/2 transition">
                                                         <div className="min-w-0 flex-1">
-                                                            <p className="font-semibold text-slate-900 dark:text-[#EFEEEA] text-sm truncate">{app.job?.title || 'Job'}</p>
-                                                            <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/40 mt-1">
+                                                            <p className="font-semibold text-[#EFEEEA] text-sm truncate">{app.job?.title || 'Job'}</p>
+                                                            <p className="text-xs text-[#EFEEEA]/40 mt-1">
                                                                 {app.job?.employer?.profile?.fullName || 'Employer'} • PKR {app.job?.budgetMin?.toLocaleString()}–{app.job?.budgetMax?.toLocaleString()}
                                                             </p>
                                                         </div>
@@ -420,21 +420,21 @@ export default function DashboardPage() {
                             ) : (
                                 <>
                                     {/* Employer: Purchased Gigs */}
-                                    <div className="bg-white dark:bg-[#111] rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-sm dark:shadow-none">
-                                        <div className="p-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center">
-                                            <h2 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA]">Purchased Gigs</h2>
+                                    <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden shadow-none">
+                                        <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                                            <h2 className="text-lg font-bold text-[#EFEEEA]">Purchased Gigs</h2>
                                         </div>
                                         {purchasedGigs.length === 0 ? (
-                                            <div className="p-8 text-center text-slate-500 dark:text-[#EFEEEA]/40 text-sm">
+                                            <div className="p-8 text-center text-[#EFEEEA]/40 text-sm">
                                                 No gigs purchased. <Link href="/search" className="text-[#FE7743] hover:underline">Find a freelancer</Link>.
                                             </div>
                                         ) : (
-                                            <div className="divide-y divide-slate-100 dark:divide-white/5">
+                                            <div className="divide-y divide-white/5">
                                                 {purchasedGigs.slice(0, 5).map((order: any) => (
-                                                    <div key={order.id} className="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/2 transition">
+                                                    <div key={order.id} className="p-5 flex items-center justify-between hover:bg-white/2 transition">
                                                         <div className="min-w-0 flex-1">
-                                                            <p className="font-semibold text-slate-900 dark:text-[#EFEEEA] text-sm truncate">{order.gig?.title}</p>
-                                                            <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/40 mt-1">
+                                                            <p className="font-semibold text-[#EFEEEA] text-sm truncate">{order.gig?.title}</p>
+                                                            <p className="text-xs text-[#EFEEEA]/40 mt-1">
                                                                 Seller: {order.seller?.profile?.fullName || 'Freelancer'} • PKR {order.price?.toLocaleString()}
                                                             </p>
                                                         </div>
@@ -464,22 +464,22 @@ export default function DashboardPage() {
                                     </div>
 
                                     {/* Employer: My Job Postings */}
-                                    <div className="bg-white dark:bg-[#111] rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-sm dark:shadow-none">
-                                        <div className="p-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center">
-                                            <h2 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA]">My Job Postings</h2>
+                                    <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden shadow-none">
+                                        <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                                            <h2 className="text-lg font-bold text-[#EFEEEA]">My Job Postings</h2>
                                             <Link href="/jobs/post" className="text-xs text-[#FE7743] font-semibold hover:underline">Post New</Link>
                                         </div>
                                         {myJobs.length === 0 ? (
-                                            <div className="p-8 text-center text-slate-500 dark:text-[#EFEEEA]/40 text-sm">
+                                            <div className="p-8 text-center text-[#EFEEEA]/40 text-sm">
                                                 No jobs posted yet. <Link href="/jobs/post" className="text-[#FE7743] hover:underline">Post your first job</Link> for free.
                                             </div>
                                         ) : (
-                                            <div className="divide-y divide-slate-100 dark:divide-white/5">
+                                            <div className="divide-y divide-white/5">
                                                 {myJobs.slice(0, 5).map((job: any) => (
-                                                    <div key={job.id} className="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/2 transition">
+                                                    <div key={job.id} className="p-5 flex items-center justify-between hover:bg-white/2 transition">
                                                         <div className="min-w-0 flex-1">
-                                                            <p className="font-semibold text-slate-900 dark:text-[#EFEEEA] text-sm truncate">{job.title}</p>
-                                                            <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/40 mt-1">
+                                                            <p className="font-semibold text-[#EFEEEA] text-sm truncate">{job.title}</p>
+                                                            <p className="text-xs text-[#EFEEEA]/40 mt-1">
                                                                 {job._count?.applications || 0} applicants • PKR {job.budgetMin?.toLocaleString()}–{job.budgetMax?.toLocaleString()}
                                                             </p>
                                                         </div>
@@ -501,20 +501,20 @@ export default function DashboardPage() {
                         {/* Sidebar */}
                         <div className="space-y-6">
                             {/* Quick Actions */}
-                            <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
-                                <h3 className="font-bold text-slate-900 dark:text-[#EFEEEA] text-sm mb-4">Quick Actions</h3>
+                            <div className="bg-[#111] p-6 rounded-2xl border border-white/10 shadow-none">
+                                <h3 className="font-bold text-[#EFEEEA] text-sm mb-4">Quick Actions</h3>
                                 <div className="space-y-3">
                                     {isFreelancer ? (
                                         <>
                                             <Link href="/jobs" className="block w-full py-2.5 bg-[#FE7743] text-white text-center font-semibold rounded-lg text-sm hover:bg-[#FE7743]/90 transition shadow-sm">Browse Jobs</Link>
                                             <Link href="/dashboard/promote-gig" className="block w-full py-2.5 bg-[#273F4F] text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-[#273F4F]/80 transition shadow-sm">Promote a Gig</Link>
-                                            <Link href="/dashboard/credits" className="block w-full py-2.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-slate-200 dark:hover:bg-white/10 transition">Buy Credits</Link>
-                                            <Link href="/dashboard/applications" className="block w-full py-2.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-slate-200 dark:hover:bg-white/10 transition">My Applications</Link>
+                                            <Link href="/dashboard/credits" className="block w-full py-2.5 bg-white/5 border border-white/10 text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-white/10 transition">Buy Credits</Link>
+                                            <Link href="/dashboard/applications" className="block w-full py-2.5 bg-white/5 border border-white/10 text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-white/10 transition">My Applications</Link>
                                         </>
                                     ) : (
                                         <>
                                             <Link href="/jobs/post" className="block w-full py-2.5 bg-[#273F4F] text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-[#273F4F]/80 transition shadow-sm">Post a Job</Link>
-                                            <Link href="/dashboard/applications" className="block w-full py-2.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-slate-200 dark:hover:bg-white/10 transition">Review Applicants</Link>
+                                            <Link href="/dashboard/applications" className="block w-full py-2.5 bg-white/5 border border-white/10 text-[#EFEEEA] text-center font-semibold rounded-lg text-sm hover:bg-white/10 transition">Review Applicants</Link>
                                         </>
                                     )}
                                 </div>
@@ -633,8 +633,8 @@ export default function DashboardPage() {
 
 function StatCard({ label, value, accent, link }: { label: string; value: string; accent: string; link?: string }) {
     const inner = (
-        <div className="bg-white dark:bg-[#111] p-5 rounded-2xl border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition shadow-sm dark:shadow-none">
-            <p className="text-xs text-slate-500 dark:text-[#EFEEEA]/50 uppercase tracking-wider font-semibold mb-2">{label}</p>
+        <div className="bg-[#111] p-5 rounded-2xl border border-white/10 hover:border-white/20 transition shadow-none">
+            <p className="text-xs text-[#EFEEEA]/50 uppercase tracking-wider font-semibold mb-2">{label}</p>
             <p className="text-2xl font-bold" style={{ color: accent }}>{value}</p>
         </div>
     );

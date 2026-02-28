@@ -53,48 +53,46 @@ export default function PricingPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-[#000]">
+        <div className="flex flex-col min-h-screen bg-white">
             <Navbar />
             <main className="flex-1 w-full relative z-10" style={{ paddingTop: 96 }}>
 
                 {/* Header Section */}
-                <div className="max-w-[1200px] mx-auto px-6 py-16 text-center">
-                    <div className="inline-block px-4 py-1.5 bg-[#FE7743]/10 text-[#FE7743] font-semibold text-sm rounded-full mb-6 border border-[#FE7743]/20 shadow-[0_0_15px_rgba(254,119,67,0.3)]">
-                        ⚡ First 500 Users Get Lifetime Rewards!
+                <div className="max-container py-24 text-center">
+                    <div className="inline-block px-4 py-1.5 bg-[#DAA520]/10 text-[#DAA520] font-bold text-[10px] uppercase tracking-widest rounded-full mb-6 border border-[#DAA520]/20">
+                        ⚡ Limited Founding Member Rewards
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-[#EFEEEA] mb-6 leading-tight">
-                        Simple, transparent <span className="text-transparent bg-clip-text bg-linear-to-r from-[#FE7743] to-[#f9a886]">pricing</span>
+                    <h1 className="text-4xl md:text-6xl font-bold text-[#212121] mb-6 leading-tight">
+                        Simple, transparent <br /><span className="text-[#DAA520]">pricing.</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-600 dark:text-[#EFEEEA]/60 max-w-2xl mx-auto">
-                        Whether you're finding talent or finding work, we have a plan that fits your growth.
-                        Join now and claim your Founding Member benefits.
+                    <p className="text-lg text-[#424242]/70 max-w-2xl mx-auto font-normal">
+                        High-end talent and enterprise solutions, designed for Pakistan's growing economy.
                     </p>
                 </div>
 
                 {/* First 500 Rewards Banner */}
-                <div className="max-w-[1000px] mx-auto px-6 mb-20">
-                    <div className="bg-linear-to-br from-[#FE7743]/10 via-slate-50 to-[#273F4F]/10 dark:from-[#FE7743]/20 dark:via-[#111] dark:to-[#273F4F]/30 border border-[#FE7743]/30 rounded-3xl p-8 md:p-12 shadow-[0_0_40px_rgba(254,119,67,0.1)]">
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-[#EFEEEA] mb-8 text-center flex items-center justify-center gap-3">
-                            <span className="text-3xl">🏆</span> Founding Member Perks
-                        </h2>
+                <div className="max-container mb-24">
+                    <div className="bg-[#212121] rounded-[40px] p-8 md:p-16 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(218,165,32,0.05)_0%,transparent_70%)] pointer-events-none" />
+                        <h2 className="text-2xl md:text-3xl font-bold text-white mb-12 text-center relative z-10">Founding Member Perks</h2>
 
-                        <div className="grid md:grid-cols-2 gap-8">
-                            <div className="bg-white/60 dark:bg-[#000]/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5">
-                                <h3 className="text-xl font-bold text-[#FE7743] mb-4">For Freelancers & Students</h3>
-                                <ul className="space-y-3">
-                                    <Benefit check="✔">25 Free Bonus Credits</Benefit>
-                                    <Benefit check="✔">Exclusive 'Founding Member' Badge</Benefit>
+                        <div className="grid md:grid-cols-2 gap-10 relative z-10">
+                            <div className="bg-white/5 p-8 rounded-3xl border border-white/10">
+                                <h3 className="text-xl font-bold text-[#DAA520] mb-6 uppercase tracking-widest">For Talent</h3>
+                                <ul className="space-y-4">
+                                    <Benefit check="✔">25 Bonus Credits Monthly</Benefit>
+                                    <Benefit check="✔">Exclusive 'Founding' Badge</Benefit>
                                     <Benefit check="✔">0% Commission on first 3 projects</Benefit>
-                                    <Benefit check="✔">Higher search ranking for 60 days</Benefit>
+                                    <Benefit check="✔">Priority Search Ranking</Benefit>
                                 </ul>
                             </div>
-                            <div className="bg-white/60 dark:bg-[#000]/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5">
-                                <h3 className="text-xl font-bold text-[#273F4F] dark:text-[#86b5d1] mb-4">For Clients & Businesses</h3>
-                                <ul className="space-y-3">
-                                    <Benefit check="✔">0% Service Fee for first 3 hires</Benefit>
+                            <div className="bg-white/5 p-8 rounded-3xl border border-white/10">
+                                <h3 className="text-xl font-bold text-white/60 mb-6 uppercase tracking-widest">For Businesses</h3>
+                                <ul className="space-y-4">
+                                    <Benefit check="✔">0% Service Fee on first 3 hires</Benefit>
                                     <Benefit check="✔">1 Free 'Featured Job' Post</Benefit>
-                                    <Benefit check="✔">Priority freelancer suggestions</Benefit>
-                                    <Benefit check="✔">Exclusive 'Founding Client' Badge</Benefit>
+                                    <Benefit check="✔">Priority suggestion engine</Benefit>
+                                    <Benefit check="✔">Founding Client Status</Benefit>
                                 </ul>
                             </div>
                         </div>
@@ -102,15 +100,15 @@ export default function PricingPage() {
                 </div>
 
                 {/* Freelancer Credit Packages */}
-                <div className="max-w-[1200px] mx-auto px-6 pb-24">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA]">Freelancer Credit Packages</h2>
-                        <p className="text-slate-600 dark:text-[#EFEEEA]/60 mt-2">1 Credit = 1 Job Proposal Submission</p>
+                <div className="max-container pb-32">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold text-[#212121]">Credit Packages</h2>
+                        <p className="text-[#424242]/60 mt-2 font-normal">1 Credit = 1 Professional Proposal</p>
                     </div>
 
                     {loading ? (
                         <div className="flex justify-center items-center py-20">
-                            <Loader2 className="w-10 h-10 animate-spin text-[#FE7743]" />
+                            <Loader2 className="w-10 h-10 animate-spin text-[#DAA520]" />
                         </div>
                     ) : (
                         <div className="grid md:grid-cols-3 gap-8 max-w-[1000px] mx-auto">
@@ -120,11 +118,10 @@ export default function PricingPage() {
                                     title={pkg.name}
                                     price={pkg.pricePKR.toLocaleString()}
                                     credits={`${pkg.credits} Credits`}
-                                    features={[`Submit ${pkg.credits} Proposals`, idx === 1 ? '2.5x More Value' : idx === 2 ? 'Maximum Value' : 'Standard Profile Visibility', idx > 0 ? 'Priority Support' : 'Normal Support']}
-                                    buttonText="Buy Now"
+                                    features={[`Submit ${pkg.credits} Proposals`, idx === 1 ? 'Premium Visibility' : idx === 2 ? 'Elite Status' : 'Standard Visibility', 'Direct Local Payouts']}
+                                    buttonText="Select Plan"
                                     recommended={pkg.credits === 60}
                                     bestValue={pkg.credits === 150}
-                                    accent={pkg.credits === 60 ? "#FE7743" : pkg.credits === 150 ? "#86b5d1" : undefined}
                                     onPurchase={() => handlePurchase(pkg.id)}
                                     isProcessing={processingId === pkg.id}
                                 />
@@ -133,65 +130,53 @@ export default function PricingPage() {
                     )}
                 </div>
 
-                {/* Subscription Plans & Client Features */}
-                <div className="bg-slate-50 dark:bg-[#111] border-t border-slate-200 dark:border-white/5 py-24">
-                    <div className="max-w-[1200px] mx-auto px-6 grid lg:grid-cols-2 gap-16">
+                <div className="bg-[#F5F5F5] py-32 border-t border-[#212121]/5">
+                    <div className="max-container grid lg:grid-cols-2 gap-20">
 
                         {/* Freelancer Pro Plan */}
                         <div>
-                            <h2 className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA] mb-8">Freelancer Pro Subscription</h2>
-                            <div className="bg-white dark:bg-[#000] border border-slate-200 dark:border-[#273F4F] rounded-3xl p-8 relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.3)_0%,transparent_70%)] pointer-events-none"></div>
+                            <h2 className="text-3xl font-bold text-[#212121] mb-10">Gigligo Pro</h2>
+                            <div className="bg-[#212121] rounded-[32px] p-10 relative overflow-hidden shadow-2xl">
+                                <div className="absolute top-0 right-0 w-48 h-48 bg-[radial-gradient(circle_at_center,rgba(218,165,32,0.1)_0%,transparent_70%)] pointer-events-none"></div>
 
-                                <h3 className="text-2xl font-bold text-slate-900 dark:text-[#EFEEEA]">Pro Plan</h3>
-                                <div className="flex items-baseline gap-2 mt-4 mb-8">
-                                    <span className="text-4xl font-black text-[#FE7743]">PKR 1,500</span>
-                                    <span className="text-slate-500 dark:text-[#EFEEEA]/50">/ month</span>
+                                <h3 className="text-2xl font-bold text-white mb-2">Pro Subscription</h3>
+                                <div className="flex items-baseline gap-2 mt-4 mb-10">
+                                    <span className="text-5xl font-bold text-[#DAA520]">PKR 1,500</span>
+                                    <span className="text-white/40 font-normal">/ month</span>
                                 </div>
 
-                                <ul className="space-y-4 mb-8">
-                                    <Benefit check="⚡">25 Free Bonus Credits Monthly</Benefit>
-                                    <Benefit check="⚡">Profile Visibility Boost</Benefit>
-                                    <Benefit check="⚡">Exclusive 'Pro' Badge</Benefit>
-                                    <Benefit check="⚡">Advanced Analytics</Benefit>
+                                <ul className="space-y-5 mb-10">
+                                    <Benefit check="⚡">25 Free Credits Monthly</Benefit>
+                                    <Benefit check="⚡">Elite Profile Badge</Benefit>
+                                    <Benefit check="⚡">Advanced Market Analytics</Benefit>
+                                    <Benefit check="⚡">Priority Support Access</Benefit>
                                 </ul>
 
-                                <button className="w-full py-4 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#EFEEEA] font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition">
+                                <button className="w-full py-4 rounded-xl bg-white text-[#212121] font-bold hover:bg-[#DAA520] transition-all">
                                     Upgrade to Pro
                                 </button>
                             </div>
                         </div>
 
-                        {/* Additional Platform Features */}
+                        {/* Platform Features */}
                         <div>
-                            <h2 className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA] mb-8">Platform Features & Fees</h2>
+                            <h2 className="text-3xl font-bold text-[#212121] mb-10">Platform Mechanics</h2>
                             <div className="space-y-6">
                                 <FeatureBlock title="Standard Commission" price="10%">
-                                    Automatically deducted from freelancer earnings upon successful gig delivery or job completion.
-                                    <span className="text-[#FE7743] block mt-1">(0% for first 3 projects for Founding Members)</span>
+                                    Automatically deducted upon successful delivery. Transparent, simple, fair.
                                 </FeatureBlock>
 
-                                <FeatureBlock title="Featured Gig Promotions" price="From PKR 500">
-                                    Boost your gig to the top of the search results and homepage.<br />
-                                    • 7 Days: PKR 500<br />
-                                    • 30 Days: PKR 1,500
+                                <FeatureBlock title="Skill Verified Badges" price="Free">
+                                    Included for all university-vetted profiles to ensure quality.
                                 </FeatureBlock>
 
-                                <FeatureBlock title="Client Job Posting" price="Free">
-                                    Posting standard jobs is completely free. Reach thousands of freelancers instantly.
-                                </FeatureBlock>
-
-                                <FeatureBlock title="Client Premium Posts" price="From PKR 500">
-                                    Stand out to the best talent.<br />
-                                    • Urgent Hiring Badge: PKR 500<br />
-                                    • Featured Job: PKR 1,000
+                                <FeatureBlock title="Featured Listings" price="PKR 500+">
+                                    Boost your presence for 7-30 days to reach elite clients faster.
                                 </FeatureBlock>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </main>
             <Footer />
         </div>
@@ -200,49 +185,49 @@ export default function PricingPage() {
 
 function Benefit({ children, check }: { children: React.ReactNode, check: string }) {
     return (
-        <li className="flex items-center gap-3 text-slate-700 dark:text-[#EFEEEA]">
-            <span className="shrink-0 w-6 h-6 rounded-full bg-[#FE7743]/10 flex items-center justify-center text-[#FE7743] text-sm font-bold">
+        <li className="flex items-center gap-3 text-white">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-[#DAA520]/10 flex items-center justify-center text-[#DAA520] text-sm font-bold">
                 {check}
             </span>
-            <span className="text-sm md:text-base">{children}</span>
+            <span className="text-sm font-normal text-white/70">{children}</span>
         </li>
     );
 }
 
-function PricingCard({ title, price, credits, features, buttonText, recommended, bestValue, accent }: any) {
+function PricingCard({ title, price, credits, features, buttonText, recommended, bestValue }: any) {
     return (
-        <div className={`relative bg-white dark:bg-[#111] border ${recommended ? `border-[${accent}] shadow-[0_0_30px_rgba(254,119,67,0.15)]` : 'border-slate-200 dark:border-white/10'} rounded-3xl p-8 flex flex-col`}>
+        <div className={`relative bg-white border ${recommended ? `border-[#DAA520] shadow-2xl` : 'border-[#212121]/5'} rounded-3xl p-10 flex flex-col transition-all duration-300 hover:-translate-y-2`}>
             {recommended && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#FE7743] text-white text-xs font-bold uppercase tracking-wider rounded-full">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-[#DAA520] text-[#212121] text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg">
                     Recommended
                 </div>
             )}
             {bestValue && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#273F4F] text-white dark:text-[#86b5d1] border border-[#273F4F]/30 dark:border-[#86b5d1]/30 text-xs font-bold uppercase tracking-wider rounded-full">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-[#424242] text-white text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg">
                     Best Value
                 </div>
             )}
 
-            <h3 className="text-xl font-bold text-slate-900 dark:text-[#EFEEEA] text-center mb-2 mt-4">{title}</h3>
-            <div className="text-center mb-6">
-                <span className="text-sm text-slate-500 dark:text-[#EFEEEA]/50 font-semibold uppercase tracking-widest">{credits}</span>
+            <h3 className="text-xl font-bold text-[#212121] text-center mb-1 mt-4">{title}</h3>
+            <div className="text-center mb-8">
+                <span className="text-[10px] text-[#424242]/40 font-bold uppercase tracking-widest">{credits}</span>
             </div>
 
-            <div className="flex justify-center items-baseline gap-2 mb-8">
-                <span className="text-xl text-slate-500 dark:text-[#EFEEEA]/50">PKR</span>
-                <span className="text-4xl font-black text-slate-900 dark:text-[#EFEEEA]">{price}</span>
+            <div className="flex justify-center items-baseline gap-2 mb-10">
+                <span className="text-sm text-[#424242]/40 font-bold">PKR</span>
+                <span className="text-4xl font-bold text-[#212121]">{price}</span>
             </div>
 
-            <ul className="space-y-4 mb-8 flex-1">
+            <ul className="space-y-4 mb-10 flex-1">
                 {features.map((f: string, i: number) => (
                     <li key={i} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-[#FE7743] shrink-0" />
-                        <span className="text-slate-600 dark:text-[#EFEEEA]/80 text-sm">{f}</span>
+                        <Check className="w-5 h-5 text-[#DAA520] shrink-0" />
+                        <span className="text-[#424242]/70 text-sm font-normal leading-relaxed">{f}</span>
                     </li>
                 ))}
             </ul>
 
-            <button className={`w-full py-3 rounded-xl font-bold transition ${recommended ? 'bg-[#FE7743] text-white hover:bg-[#FE7743]/90' : 'bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#EFEEEA] hover:bg-slate-200 dark:hover:bg-white/10'}`}>
+            <button className={`w-full py-4 rounded-xl font-bold transition-all duration-300 ${recommended ? 'bg-[#212121] text-white hover:bg-[#DAA520] hover:text-[#212121]' : 'bg-[#F5F5F5] text-[#212121] hover:bg-[#212121] hover:text-white'}`}>
                 {buttonText}
             </button>
         </div>
@@ -251,12 +236,12 @@ function PricingCard({ title, price, credits, features, buttonText, recommended,
 
 function FeatureBlock({ title, price, children }: any) {
     return (
-        <div className="bg-white dark:bg-[#000] border border-slate-200 dark:border-white/5 rounded-2xl p-6">
-            <div className="flex justify-between items-start mb-2">
-                <h3 className="text-lg font-bold text-slate-900 dark:text-[#EFEEEA]">{title}</h3>
-                <span className="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-full text-xs font-bold text-[#FE7743]">{price}</span>
+        <div className="bg-white border border-[#212121]/5 rounded-2xl p-8 hover:border-[#DAA520]/20 transition-all">
+            <div className="flex justify-between items-start mb-4">
+                <h3 className="text-lg font-bold text-[#212121]">{title}</h3>
+                <span className="px-3 py-1 bg-[#DAA520]/10 rounded-full text-[10px] font-bold text-[#DAA520] uppercase tracking-widest">{price}</span>
             </div>
-            <p className="text-sm text-slate-600 dark:text-[#EFEEEA]/60 leading-relaxed">
+            <p className="text-sm text-[#424242]/60 leading-relaxed font-normal">
                 {children}
             </p>
         </div>

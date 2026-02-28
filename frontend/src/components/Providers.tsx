@@ -6,14 +6,14 @@ import { Toaster } from 'sonner';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
             <SessionProvider>
                 {children}
                 <Toaster
                     position="top-right"
                     richColors
                     closeButton
-                    theme="system"
+                    theme="dark"
                     toastOptions={{
                         style: {
                             fontFamily: 'var(--font-jakarta)',

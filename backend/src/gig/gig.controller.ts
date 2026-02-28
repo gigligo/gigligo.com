@@ -26,7 +26,7 @@ export class GigController {
 
     @Post()
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('SELLER', 'STUDENT', 'FREE')
+    @Roles('SELLER', 'STUDENT')
     create(@Request() req: any, @Body() data: any) {
         return this.gigService.create(req.user.id, data);
     }

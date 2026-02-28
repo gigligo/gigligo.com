@@ -45,7 +45,7 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
     if (!gig) return <div className="min-h-screen flex items-center justify-center bg-[#000] text-white">Gig not found</div>;
 
     return (
-        <div className="flex flex-col min-h-screen bg-light" >
+        <div className="flex flex-col min-h-screen bg-[#000]" >
             <Navbar />
 
             <main className="flex-1 max-w-[1200px] mx-auto px-6 py-8" style={{ paddingTop: 96 }}>
@@ -80,9 +80,12 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                     </div>
                                     <div className="flex items-center text-sm mt-1">
                                         <Star className="w-4 h-4 text-amber-400 mr-1 fill-amber-400" />
-                                        <span className="font-bold">{gig.avgRating ? gig.avgRating.toFixed(1) : '—'}</span>
-                                        <span className="text-muted ml-1">({gig.reviewCount || 0} reviews)</span>
+                                        <span className="font-bold text-[#EFEEEA]">{gig.avgRating ? gig.avgRating.toFixed(1) : '—'}</span>
+                                        <span className="text-[#EFEEEA]/40 ml-1">({gig.reviewCount || 0} reviews)</span>
                                     </div>
+                                    <p className="text-[11px] text-[#EFEEEA]/30 mt-1 flex items-center gap-1.5">
+                                        <Clock className="w-3 h-3" /> Member since {new Date(gig.seller?.createdAt || Date.now()).toLocaleDateString('en-PK', { year: 'numeric', month: 'long' })}
+                                    </p>
                                 </div>
                             </div>
 
@@ -94,63 +97,68 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                 )}
                             </div>
 
-                            <div className="bg-white p-8 rounded-2xl border border-gray-100">
-                                <h2 className="text-2xl font-bold mb-4 text-primary">About This Gig</h2>
-                                <div className="prose max-w-none text-muted space-y-4 whitespace-pre-line text-sm leading-relaxed">
+                            <div className="bg-[#111] p-8 rounded-2xl border border-white/10">
+                                <h2 className="text-2xl font-bold mb-4 text-[#EFEEEA]">About This Gig</h2>
+                                <div className="prose max-w-none text-[#EFEEEA]/70 space-y-4 whitespace-pre-line text-sm leading-relaxed">
                                     {gig.description}
                                 </div>
                             </div>
 
-                            <div className="bg-white p-8 rounded-2xl border border-gray-100 mt-8">
-                                <h2 className="text-2xl font-bold mb-6 text-primary">About The Seller</h2>
+                            <div className="bg-[#111] p-8 rounded-2xl border border-white/10 mt-8">
+                                <h2 className="text-2xl font-bold mb-6 text-[#EFEEEA]">About The Seller</h2>
                                 <div className="flex items-start gap-6">
-                                    <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center text-accent font-bold text-3xl uppercase shrink-0">
+                                    <div className="w-20 h-20 bg-[#FE7743]/10 rounded-full flex items-center justify-center text-[#FE7743] font-bold text-3xl uppercase shrink-0 border border-[#FE7743]/20">
                                         {gig.seller?.profile?.fullName?.[0] || 'S'}
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-bold text-primary">{gig.seller?.profile?.fullName || 'Seller'}</h3>
-                                        <p className="text-muted mb-2 text-sm">{
+                                        <div className="flex items-center gap-3">
+                                            <h3 className="text-xl font-bold text-[#EFEEEA]">{gig.seller?.profile?.fullName || 'Seller'}</h3>
+                                            {gig.seller?.kycStatus !== 'APPROVED' && (
+                                                <span className="text-[8px] font-bold text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">UNVERIFIED IDENTITY</span>
+                                            )}
+                                        </div>
+                                        <p className="text-[#EFEEEA]/40 mb-2 text-sm">{
                                             gig.seller?.profile?.sellerLevel === 'TOP_RATED' ? 'Top Rated Seller' :
                                                 gig.seller?.profile?.sellerLevel === 'LEVEL_2' ? 'Level 2 Seller' :
                                                     gig.seller?.profile?.sellerLevel === 'LEVEL_1' ? 'Level 1 Seller' : 'New Seller'
                                         }</p>
                                         <div className="flex items-center text-sm mb-4">
                                             <Star className="w-4 h-4 text-amber-400 mr-1 fill-amber-400" />
-                                            <span className="font-bold">{gig.avgRating ? gig.avgRating.toFixed(1) : '—'}</span>
-                                            <span className="text-muted ml-1">({gig.reviewCount || 0} reviews)</span>
+                                            <span className="font-bold text-[#EFEEEA]">{gig.avgRating ? gig.avgRating.toFixed(1) : '—'}</span>
+                                            <span className="text-[#EFEEEA]/40 ml-1">({gig.reviewCount || 0} reviews)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-gray-100 text-sm">
-                                    <div><span className="block text-muted mb-1">From</span><span className="font-medium text-primary">Pakistan</span></div>
-                                    <div><span className="block text-muted mb-1">Avg. response</span><span className="font-medium text-primary">1 hour</span></div>
+                                <div className="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-white/5 text-sm">
+                                    <div><span className="block text-[#EFEEEA]/40 mb-1">From</span><span className="font-medium text-[#EFEEEA]">Pakistan</span></div>
+                                    <div><span className="block text-[#EFEEEA]/40 mb-1">Avg. response</span><span className="font-medium text-[#EFEEEA]">1 hour</span></div>
                                 </div>
                             </div>
 
-                            <div className="bg-white p-8 rounded-2xl border border-gray-100 mt-8 mb-8">
-                                <h2 className="text-2xl font-bold mb-6 text-primary">Reviews ({gig.reviewCount || 0})</h2>
+                            <div className="bg-[#111] p-8 rounded-2xl border border-white/10 mt-8 mb-8">
+                                <h2 className="text-2xl font-bold mb-6 text-[#EFEEEA]">Reviews ({gig.reviewCount || 0})</h2>
                                 {gig.reviews && gig.reviews.length > 0 ? (
                                     <div className="space-y-6">
                                         {gig.reviews.map((rev: any) => (
-                                            <div key={rev.id} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
+                                            <div key={rev.id} className="border-b border-white/5 pb-6 last:border-0 last:pb-0">
                                                 <div className="flex items-center gap-3 mb-2">
-                                                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500 uppercase">
+                                                    <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-xs font-bold text-[#EFEEEA]/50 uppercase">
                                                         {rev.reviewer?.profile?.fullName?.[0] || 'U'}
                                                     </div>
                                                     <div>
-                                                        <div className="font-medium text-sm text-primary">{rev.reviewer?.profile?.fullName || 'User'}</div>
+                                                        <div className="font-medium text-sm text-[#EFEEEA]">{rev.reviewer?.profile?.fullName || 'User'}</div>
                                                         <div className="flex items-center text-amber-400 text-xs">
-                                                            {[...Array(5)].map((_, i) => <Star key={i} className={`w-3 h-3 ${i < rev.rating ? 'fill-current' : 'text-gray-300'}`} />)}
-                                                            <span className="text-gray-400 ml-2">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                                                            {[...Array(5)].map((_, i) => <Star key={i} className={`w-3 h-3 ${i < rev.rating ? 'fill-current' : 'text-white/20'}`} />)}
+                                                            <span className="text-[#EFEEEA]/30 ml-2">{new Date(rev.createdAt).toLocaleDateString()}</span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <p className="text-sm text-muted mt-2">{rev.comment}</p>
+                                                <p className="text-sm text-[#EFEEEA]/60 mt-2">{rev.comment}</p>
                                             </div>
                                         ))}
                                     </div>
                                 ) : (
-                                    <p className="text-muted text-sm">No reviews yet for this gig.</p>
+                                    <p className="text-[#EFEEEA]/30 text-sm">No reviews yet for this gig.</p>
                                 )}
                             </div>
                         </div>
@@ -158,18 +166,18 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
 
                     {/* Right: Pricing */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden sticky top-24">
-                            <div className="flex border-b border-gray-100">
-                                <button className="flex-1 py-4 text-sm font-bold text-muted hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent">Starter</button>
-                                <button className="flex-1 py-4 text-sm font-bold text-accent border-b-2 border-accent">Standard</button>
-                                <button className="flex-1 py-4 text-sm font-bold text-muted hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent">Premium</button>
+                        <div className="bg-[#111] rounded-2xl shadow-xl border border-white/10 overflow-hidden sticky top-24">
+                            <div className="flex border-b border-white/5">
+                                <button className="flex-1 py-4 text-sm font-bold text-[#EFEEEA]/40 hover:text-[#FE7743] transition-colors border-b-2 border-transparent">Starter</button>
+                                <button className="flex-1 py-4 text-sm font-bold text-[#FE7743] border-b-2 border-[#FE7743]">Standard</button>
+                                <button className="flex-1 py-4 text-sm font-bold text-[#EFEEEA]/40 hover:text-[#FE7743] transition-colors border-b-2 border-transparent">Premium</button>
                             </div>
 
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-xl font-bold text-primary pr-4">Standard Package</h3>
+                                    <h3 className="text-xl font-bold text-[#EFEEEA] pr-4">Standard Package</h3>
                                     <div className="flex flex-col items-end gap-2">
-                                        <span className="text-2xl font-extrabold text-primary whitespace-nowrap">PKR {gig.priceStandard?.toLocaleString() || gig.basePrice?.toLocaleString()}</span>
+                                        <span className="text-2xl font-extrabold text-[#FE7743] whitespace-nowrap">PKR {gig.priceStandard?.toLocaleString() || gig.basePrice?.toLocaleString()}</span>
                                         {session && (session as any)?.user?.id === gig.sellerId && gig.isActive && (
                                             <button
                                                 onClick={() => setDeleteModalOpen(true)}
@@ -181,15 +189,13 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                     </div>
                                 </div>
 
-                                <p className="text-muted text-sm mb-6">Standard delivery package for this gig.</p>
-
-                                <div className="flex items-center gap-6 text-sm font-medium text-primary/80 mb-6">
+                                <div className="flex items-center gap-6 text-sm font-medium text-[#EFEEEA]/80 mb-6">
                                     <div className="flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-muted" />
+                                        <Clock className="w-4 h-4 text-[#EFEEEA]/30" />
                                         {gig.deliveryTimeStandard || 7} Days
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <RefreshCw className="w-4 h-4 text-muted" />
+                                        <RefreshCw className="w-4 h-4 text-[#EFEEEA]/30" />
                                         3 Revisions
                                     </div>
                                 </div>
@@ -207,7 +213,7 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                 ) : (
                                     <>
                                         <Link href={`/checkout/${gig.id}?pkg=standard`}>
-                                            <Button size="lg" variant="accent" fullWidth className="text-base py-4 mb-3">
+                                            <Button size="lg" variant="accent" fullWidth className="text-base py-4 mb-3 bg-[#FE7743] hover:bg-[#FE7743]/90 text-white">
                                                 Continue (PKR {gig.priceStandard?.toLocaleString() || gig.basePrice?.toLocaleString()})
                                             </Button>
                                         </Link>
@@ -215,7 +221,7 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                             size="lg"
                                             variant="outline"
                                             fullWidth
-                                            className="text-base py-4"
+                                            className="text-base py-4 border-white/10 text-[#EFEEEA] hover:bg-white/5"
                                             onClick={async () => {
                                                 if (!session) {
                                                     router.push('/login');
@@ -238,9 +244,9 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                 )}
                             </div>
 
-                            <div className="bg-accent/5 p-4 flex items-center gap-3 border-t border-accent/10">
-                                <ShieldCheck className="w-7 h-7 text-accent shrink-0" />
-                                <p className="text-xs text-primary/70 font-medium">
+                            <div className="bg-[#FE7743]/5 p-4 flex items-center gap-3 border-t border-[#FE7743]/10">
+                                <ShieldCheck className="w-7 h-7 text-[#FE7743] shrink-0" />
+                                <p className="text-xs text-[#EFEEEA]/70 font-medium">
                                     Gigligo guarantees your satisfaction — payment is released only when you approve the delivery.
                                 </p>
                             </div>
@@ -252,15 +258,15 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
             {/* Delete Modal */}
             {deleteModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="bg-white border border-gray-100 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
-                        <h2 className="text-xl font-bold text-primary mb-2">Delete Gig</h2>
-                        <p className="text-sm text-muted mb-6">
+                    <div className="bg-[#111] border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+                        <h2 className="text-xl font-bold text-[#EFEEEA] mb-2">Delete Gig</h2>
+                        <p className="text-sm text-[#EFEEEA]/60 mb-6">
                             Are you sure you want to delete this gig? This action will set it to inactive. Gigs with active orders cannot be deleted.
                         </p>
                         <div className="flex justify-end gap-3">
                             <button
                                 onClick={() => setDeleteModalOpen(false)}
-                                className="px-4 py-2 text-sm font-semibold text-muted hover:text-primary transition"
+                                className="px-4 py-2 text-sm font-semibold text-[#EFEEEA]/40 hover:text-[#EFEEEA] transition"
                                 disabled={deleting}
                             >
                                 Cancel
@@ -268,7 +274,7 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                             <button
                                 onClick={handleDeleteGig}
                                 disabled={deleting}
-                                className="px-5 py-2 text-sm font-semibold bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 flex items-center gap-2 transition disabled:opacity-50"
+                                className="px-5 py-2 text-sm font-semibold bg-red-500/10 text-red-500 border border-red-500/50 rounded-lg hover:bg-red-500 flex items-center gap-2 hover:text-white transition disabled:opacity-50"
                             >
                                 {deleting ? 'Deleting...' : 'Confirm Delete'}
                             </button>

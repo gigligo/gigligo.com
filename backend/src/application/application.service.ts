@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreditService } from '../credit/credit.service';
 import { EntitlementService } from '../entitlement/entitlement.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Events, JobAppliedEvent } from '../events/event.dictionary';
+import { Events, JobAppliedEvent, JobHiredEvent } from '../events/event.dictionary';
 
 @Injectable()
 export class ApplicationService {
@@ -44,7 +44,6 @@ export class ApplicationService {
         // Deduct 1 credit
         await this.creditService.deductCredit(freelancerId, `Applied to job: ${job.title}`);
 
-        // Create application
         const application = await this.prisma.jobApplication.create({
             data: {
                 jobId: data.jobId,
@@ -52,10 +51,10 @@ export class ApplicationService {
                 coverLetter: data.coverLetter,
                 proposedRate: data.proposedRate,
                 timeline: data.timeline,
-            },
+            } as any,
             include: {
                 job: { select: { title: true, employerId: true } },
-            },
+            } as any,
         });
 
         // Fire decoupled event to be handled by EventProcessorService
@@ -137,8 +136,13 @@ export class ApplicationService {
         });
 
         // Fire decoupled event - the processor will handle notifications & emails
-        // Assuming we would add JOB_HIRED to Events Dictionary later, for now we let it be or just fire a generic event if preferred.
-        // I will add the necessary event logic in the dictionary in a moment
+        this.eventEmitter.emit(Events.JOB_HIRED, new JobHiredEvent(
+            app.jobId,
+            app.job.title,
+            employerId,
+            app.freelancerId,
+            app.id
+        ));
 
         return txResult;
     }

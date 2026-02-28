@@ -3,39 +3,16 @@ import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import NotificationBell from './NotificationBell';
-import { ThemeToggle } from './ui/ThemeToggle';
-import { MoreHorizontal, Coins } from 'lucide-react';
+import { MoreHorizontal, Coins, Menu, X } from 'lucide-react';
 import { creditApi, userStateApi } from '@/lib/api';
 
-/* ─── Gradient G Logo (shared across site) ─── */
+/* ─── Premium G Logo (Charcoal & Gold) ─── */
 function GigligoMark({ size = 28 }: { size?: number }) {
     return (
         <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
-            <defs>
-                <linearGradient id="navGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#00f5d4" />
-                    <stop offset="1" stopColor="#4f46e5" />
-                </linearGradient>
-            </defs>
-            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="url(#navGrad)" strokeWidth="3.5" strokeLinecap="round" />
-            <path d="M19 18 H30" stroke="url(#navGrad)" strokeWidth="3.5" strokeLinecap="round" />
-            <circle cx="19" cy="18" r="2" fill="#00f5d4" />
-        </svg>
-    );
-}
-
-/* ─── Inline SVG Icons ─── */
-function MenuIcon() {
-    return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-    );
-}
-function CloseIcon() {
-    return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="#DAA520" strokeWidth="3" strokeLinecap="round" />
+            <path d="M19 18 H30" stroke="#DAA520" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="19" cy="18" r="2" fill="#DAA520" />
         </svg>
     );
 }
@@ -75,14 +52,6 @@ export function Navbar() {
         }
     }, [token, isFreelancer]);
 
-    const mainLinks = [
-        { label: 'Find Talent', href: '/search' },
-        { label: 'Browse Jobs', href: '/jobs' },
-        ...(session && isEmployer ? [{ label: 'Post a Job', href: '/jobs/post' }] : []),
-        ...(session && isFreelancer ? [{ label: 'My Gigs', href: '/dashboard' }] : []),
-        ...(!session ? [{ label: 'Post a Gig', href: '/register?role=SELLER' }] : []),
-    ];
-
     const moreLinks = [
         { label: 'Pricing', href: '/pricing' },
         { label: 'Refer & Earn', href: '/referral' },
@@ -92,43 +61,40 @@ export function Navbar() {
     return (
         <>
             <header
-                className={`fixed top-0 z-50 w-full transition-all duration-400 ${scrolled
-                    ? 'bg-white/95 dark:bg-[#0a0a0a]/90 border-b border-black/5 dark:border-white/5 backdrop-blur-xl shadow-md'
-                    : 'bg-transparent'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled
+                    ? 'bg-[#212121] border-[#DAA520]/20 py-3 shadow-md'
+                    : 'bg-transparent border-transparent py-5'
                     }`}
                 style={{ height: 68 }}
             >
-                <div className="max-w-[1200px] mx-auto px-6 h-full flex items-center justify-between">
-                    <div className="flex items-center gap-12">
-                        <Link href="/" className="flex items-center gap-2.5 group">
-                            <div className="logo-glow transition-transform group-hover:scale-105">
-                                <GigligoMark size={32} />
-                            </div>
-                            <span className="font-display text-xl font-black tracking-tighter text-slate-900 dark:text-white
-                                transition-colors duration-300">
-                                gigligo<span className="text-teal-vibrant opacity-80 dark:opacity-60">.com</span>
+                <div className="max-container h-full flex items-center justify-between">
+                    <div className="flex items-center gap-10">
+                        <Link href="/" className="flex items-center gap-2 group">
+                            <GigligoMark size={32} />
+                            <span className="font-sans text-xl font-bold tracking-tight text-white transition-colors group-hover:text-[#DAA520]">
+                                gigligo<span className="text-[#DAA520] opacity-80">.com</span>
                             </span>
                         </Link>
                         <nav className="hidden lg:flex items-center gap-8">
-                            {mainLinks.map(link => (
+                            {['Browse Jobs', 'Find Gigs', 'How it Works'].map((item) => (
                                 <Link
-                                    key={link.label}
-                                    href={link.href}
-                                    className="text-sm font-medium text-slate-600 dark:text-[#EFEEEA]/60 hover:text-slate-900 dark:hover:text-[#EFEEEA] transition-colors"
+                                    key={item}
+                                    href={item === 'Browse Jobs' ? '/jobs' : item === 'Find Gigs' ? '/search' : '#how-it-works'}
+                                    className="text-sm font-semibold text-white/70 hover:text-[#DAA520] transition-colors py-2"
                                 >
-                                    {link.label}
+                                    {item}
                                 </Link>
                             ))}
                             <div className="relative group p-2">
-                                <button className="text-slate-600 dark:text-[#EFEEEA]/60 hover:text-slate-900 dark:hover:text-[#EFEEEA] transition-colors flex items-center">
+                                <button className="text-white/60 hover:text-[#DAA520] transition-colors flex items-center">
                                     <MoreHorizontal size={20} />
                                 </button>
-                                <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col py-2 z-50">
+                                <div className="absolute top-full left-0 mt-2 w-48 bg-[#212121] border border-[#DAA520]/20 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col py-2 z-50">
                                     {moreLinks.map(link => (
                                         <Link
                                             key={link.label}
                                             href={link.href}
-                                            className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors"
+                                            className="px-4 py-2 hover:bg-[#DAA520]/10 text-sm font-medium text-white/80 hover:text-[#DAA520] transition-colors"
                                         >
                                             {link.label}
                                         </Link>
@@ -138,50 +104,28 @@ export function Navbar() {
                         </nav>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-4">
-                        <ThemeToggle />
+                    <div className="hidden md:flex items-center gap-5">
                         {session ? (
                             <>
                                 {isFreelancer && credits !== null && (
-                                    <Link href="/dashboard/credits" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400 text-sm font-bold hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors">
-                                        <Coins size={16} />
+                                    <Link href="/dashboard/credits" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#DAA520]/10 border border-[#DAA520]/20 text-[#DAA520] text-xs font-bold hover:bg-[#DAA520]/20 transition-colors">
+                                        <Coins size={14} />
                                         {credits}
                                     </Link>
                                 )}
                                 <NotificationBell />
                                 <div className="relative group ml-1">
-                                    <div className="w-9 h-9 rounded-full bg-linear-to-tr from-[#FE7743] to-[#FE7743]/50 flex items-center justify-center text-white font-bold text-sm shadow-lg cursor-pointer hover:scale-105 transition-transform">
+                                    <div className="w-9 h-9 rounded-full bg-[#DAA520] flex items-center justify-center text-[#212121] font-bold text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform">
                                         {session.user?.name?.[0] || 'U'}
                                     </div>
-                                    <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col py-2 z-50">
-                                        <div className="px-4 py-3 border-b border-slate-100 dark:border-white/5 mb-2">
-                                            <p className="font-bold text-sm text-slate-900 dark:text-white truncate">{session.user?.name}</p>
-                                            <p className="text-xs text-slate-500 dark:text-white/50 truncate">{session.user?.email}</p>
-                                            {userState?.entitlements && (
-                                                <div className="flex gap-2 mt-2">
-                                                    {userState.entitlements.isPro && (
-                                                        <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold tracking-wider border border-amber-200">
-                                                            PRO
-                                                        </span>
-                                                    )}
-                                                    {userState.entitlements.isFoundingMember && (
-                                                        <span className="px-2 py-0.5 rounded-full bg-slate-800 text-white text-[10px] font-bold tracking-wider border border-slate-700 dark:bg-white dark:text-black dark:border-slate-300">
-                                                            FOUNDER
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            )}
+                                    <div className="absolute right-0 mt-3 w-56 bg-[#ffffff] border border-[#F5F5F5] rounded-lg shadow-xl py-2 invisible group-hover:visible transition-all">
+                                        <div className="px-4 py-3 border-b border-[#F5F5F5] mb-2">
+                                            <p className="text-sm font-bold text-[#212121] truncate">{session.user?.name}</p>
+                                            <p className="text-[10px] font-medium text-[#424242] truncate">{session.user?.email}</p>
                                         </div>
-                                        {(session as any)?.role === 'ADMIN' && (
-                                            <Link href="/admin" className="px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-bold text-[#FE7743] transition-colors">Admin Dashboard</Link>
-                                        )}
-                                        <Link href="/dashboard" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Dashboard</Link>
-                                        <Link href="/dashboard/inbox" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Inbox</Link>
-                                        <Link href={`/profile/${session?.user?.id || 'me'}`} className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">View Profile</Link>
-                                        <Link href="/dashboard/profile" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Edit Profile</Link>
-                                        <Link href="/dashboard/settings" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-[#EFEEEA]/80 transition-colors">Settings</Link>
-                                        <div className="h-px bg-slate-100 dark:bg-white/5 my-2" />
-                                        <button onClick={() => signOut({ callbackUrl: '/' })} className="px-4 py-2 hover:bg-red-50 dark:hover:bg-red-500/10 text-sm font-semibold text-red-600 dark:text-red-400 text-left w-full transition-colors">Logout</button>
+                                        <Link href="/dashboard" className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm font-medium text-[#212121]">Dashboard</Link>
+                                        <Link href="/dashboard/inbox" className="block px-4 py-2 hover:bg-[#F5F5F5] text-sm font-medium text-[#212121]">Inbox</Link>
+                                        <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full text-left px-4 py-2 hover:bg-[#C62828]/5 text-sm font-semibold text-[#C62828]">Logout</button>
                                     </div>
                                 </div>
                             </>
@@ -189,13 +133,13 @@ export function Navbar() {
                             <>
                                 <Link
                                     href="/login"
-                                    className="px-5 py-2 text-sm font-semibold text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white transition-colors"
+                                    className="px-5 py-2 text-sm font-semibold text-white/80 hover:text-[#DAA520] transition-colors"
                                 >
                                     Login
                                 </Link>
                                 <Link
                                     href="/register"
-                                    className="px-5 py-2.5 bg-[#FE7743] text-white text-sm font-bold rounded-lg hover:bg-[#FE7743]/90 transition-all shadow-md shadow-[#FE7743]/20"
+                                    className="btn-primary"
                                 >
                                     Get Started
                                 </Link>
@@ -203,74 +147,42 @@ export function Navbar() {
                         )}
                     </div>
 
-                    <div className="flex items-center gap-3 md:hidden">
-                        <ThemeToggle />
+                    <div className="flex md:hidden">
                         <button
-                            className="p-2 text-slate-900 dark:text-white"
+                            className="p-2 text-white"
                             onClick={() => setMenuOpen(!menuOpen)}
-                            aria-label="Toggle menu"
                         >
-                            {menuOpen ? <CloseIcon /> : <MenuIcon />}
+                            {menuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
                 </div>
             </header>
 
-
             {menuOpen && (
-                <>
-                    <div className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm" onClick={() => setMenuOpen(false)} />
-                    <div className="fixed top-0 right-0 w-[85%] max-w-sm h-dvh bg-white/95 dark:bg-[#111]/95 backdrop-blur-2xl z-50 md:hidden shadow-2xl flex flex-col p-8 pt-20 border-l border-slate-200 dark:border-white/10">
-                        <div className="flex-1 overflow-y-auto">
-                            {[...mainLinks, ...moreLinks].map(link => (
-                                <Link
-                                    key={link.label}
-                                    href={link.href}
-                                    className="block text-base font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743] transition-colors"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
-                            {session ? (
-                                <>
-                                    {(session as any)?.role === 'ADMIN' && (
-                                        <Link href="/admin" className="block text-base font-medium text-[#FE7743] py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743]/80 transition-colors" onClick={() => setMenuOpen(false)}>
-                                            Admin Dashboard
-                                        </Link>
-                                    )}
-                                    <Link href="/dashboard" className="block text-base font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743] transition-colors" onClick={() => setMenuOpen(false)}>
-                                        Dashboard
-                                    </Link>
-                                    <Link href="/dashboard/profile" className="block text-base font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743] transition-colors" onClick={() => setMenuOpen(false)}>
-                                        Profile Layout
-                                    </Link>
-                                    <Link href="/dashboard/settings" className="block text-base font-medium text-slate-700 dark:text-[#EFEEEA]/80 py-2.5 border-b border-slate-200 dark:border-white/10 hover:text-[#FE7743] transition-colors" onClick={() => setMenuOpen(false)}>
-                                        Settings
-                                    </Link>
-                                    <button onClick={() => { signOut({ callbackUrl: '/' }); setMenuOpen(false); }} className="block w-full text-base font-medium text-red-500 dark:text-red-400 py-2.5 border-b border-slate-200 dark:border-white/10 text-left hover:text-red-600 transition-colors">
-                                        Logout
-                                    </button>
-                                </>
-                            ) : null}
-                        </div>
-
-                        {!session && (
-                            <div className="mt-auto pt-8 border-t border-slate-200 dark:border-white/10 flex flex-col gap-4">
-                                <Link href="/login" className="w-full py-3 text-center text-lg font-bold text-slate-700 dark:text-[#EFEEEA] bg-slate-100 dark:bg-white/5 rounded-xl hover:bg-slate-200 dark:hover:bg-white/10 transition-colors" onClick={() => setMenuOpen(false)}>
-                                    Login
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="w-full py-3 bg-linear-to-r from-[#FE7743] to-[#f9a886] text-white text-center text-lg font-bold rounded-xl shadow-lg shadow-[#FE7743]/20 hover:shadow-[#FE7743]/40 transition-shadow"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Get Started
-                                </Link>
-                            </div>
-                        )}
+                <div className="fixed inset-0 z-60 bg-[#212121] flex flex-col p-8 md:hidden">
+                    <div className="flex justify-between items-center mb-10">
+                        <GigligoMark size={32} />
+                        <button onClick={() => setMenuOpen(false)} className="text-white"><X size={28} /></button>
                     </div>
-                </>
+                    <nav className="flex flex-col gap-6">
+                        {['Browse Jobs', 'Find Gigs', 'Pricing', 'Refer & Earn'].map((item) => (
+                            <Link
+                                key={item}
+                                href="#"
+                                className="text-xl font-bold text-white/90"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                {item}
+                            </Link>
+                        ))}
+                    </nav>
+                    {!session && (
+                        <div className="mt-auto flex flex-col gap-4">
+                            <Link href="/login" className="btn-secondary text-white! border-white! text-center py-4" onClick={() => setMenuOpen(false)}>Login</Link>
+                            <Link href="/register" className="btn-primary text-center py-4" onClick={() => setMenuOpen(false)}>Join Free</Link>
+                        </div>
+                    )}
+                </div>
             )}
         </>
     );

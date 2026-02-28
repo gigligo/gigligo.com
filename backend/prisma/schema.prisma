@@ -199,6 +199,8 @@ model Gig {
   orders               Order[]
   reviews              Review[]
   boosts               Boost[]
+  avgRating            Float            @default(0)
+  reviewCount          Int              @default(0)
 
   @@index([sellerId])
   @@index([category])

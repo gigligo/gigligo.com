@@ -7,6 +7,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { gigApi } from "@/lib/api";
+import { Search, Layers, Zap, Star } from "lucide-react";
 
 function SearchPageContent() {
     const { data: session } = useSession();
@@ -45,24 +46,24 @@ function SearchPageContent() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#000]">
+        <div className="flex flex-col min-h-screen bg-white">
             <Navbar />
 
             <main className="flex-1 max-w-[1200px] mx-auto px-6 py-8 w-full" style={{ paddingTop: 96 }}>
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
                     <div>
-                        <h1 className="text-3xl font-bold text-slate-900 dark:text-[#EFEEEA] mb-2">{category}</h1>
-                        <p className="text-slate-600 dark:text-[#EFEEEA]/60">Explore talented freelancers ready to start your next project.</p>
+                        <h1 className="text-4xl font-bold text-[#212121] mb-2">{category}</h1>
+                        <p className="text-[#424242]/60 font-normal">Explore verified talent ready to launch your projects.</p>
                     </div>
 
                     <form onSubmit={handleSearch} className="relative w-full md:w-96">
-                        <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#EFEEEA]/40 w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#424242]/30 w-5 h-5" />
                         <input
                             type="text"
-                            placeholder="Search for services..."
+                            placeholder="Search talent or services..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl outline-none focus:border-[#FE7743]/50 transition-all text-sm text-slate-900 dark:text-[#EFEEEA] placeholder:text-slate-400 dark:placeholder:text-[#EFEEEA]/30"
+                            className="w-full pl-10 pr-4 py-3.5 bg-[#F5F5F5] border border-transparent rounded-xl outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all text-sm text-[#212121] placeholder:text-[#424242]/30 font-bold"
                         />
                     </form>
                 </div>
@@ -70,15 +71,15 @@ function SearchPageContent() {
                 <div className="flex flex-col md:flex-row gap-8">
                     {/* Filters Sidebar */}
                     <aside className="w-full md:w-64 shrink-0">
-                        <div className="bg-white dark:bg-[#111] p-5 rounded-2xl border border-slate-200 dark:border-white/10 sticky top-24">
-                            <h2 className="font-bold text-base mb-4 text-slate-900 dark:text-[#EFEEEA] border-b border-slate-200 dark:border-white/5 pb-2">Filters</h2>
+                        <div className="bg-white p-6 rounded-2xl border border-[#212121]/5 sticky top-24">
+                            <h2 className="font-bold text-sm uppercase tracking-widest mb-6 text-[#212121] border-b border-[#F5F5F5] pb-4">Filters</h2>
 
                             <div className="mb-6">
-                                <h3 className="font-semibold text-sm mb-3 text-slate-700 dark:text-[#EFEEEA]/80">Budget</h3>
+                                <h3 className="font-bold text-[10px] uppercase tracking-widest mb-4 text-[#424242]/60">Budget Range</h3>
                                 <div className="flex gap-2 items-center">
-                                    <input type="number" placeholder="Min" className="w-full px-2 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-sm text-slate-900 dark:text-[#EFEEEA] outline-none focus:border-[#FE7743]/50" />
-                                    <span className="text-slate-400 dark:text-[#EFEEEA]/40">-</span>
-                                    <input type="number" placeholder="Max" className="w-full px-2 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-sm text-slate-900 dark:text-[#EFEEEA] outline-none focus:border-[#FE7743]/50" />
+                                    <input type="number" placeholder="Min" className="w-full px-3 py-2 bg-[#F5F5F5] border border-transparent rounded-lg text-sm text-[#212121] outline-none focus:bg-white focus:border-[#DAA520]/20" />
+                                    <span className="text-[#424242]/20">-</span>
+                                    <input type="number" placeholder="Max" className="w-full px-3 py-2 bg-[#F5F5F5] border border-transparent rounded-lg text-sm text-[#212121] outline-none focus:bg-white focus:border-[#DAA520]/20" />
                                 </div>
                             </div>
                         </div>
@@ -89,22 +90,22 @@ function SearchPageContent() {
                         {loading ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {[...Array(6)].map((_, i) => (
-                                    <div key={i} className="animate-pulse bg-white dark:bg-[#111] rounded-2xl border border-slate-200 dark:border-white/10 h-72"></div>
+                                    <div key={i} className="animate-pulse bg-[#F5F5F5] rounded-2xl border border-[#212121]/5 h-72"></div>
                                 ))}
                             </div>
                         ) : gigs.length === 0 ? (
-                            <div className="text-center py-24 text-slate-500 dark:text-[#EFEEEA]/40 border border-slate-200 dark:border-white/10 rounded-3xl bg-white dark:bg-[#111] shadow-sm">
-                                <div className="w-20 h-20 bg-[#FE7743]/10 text-[#FE7743] rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <div className="text-center py-24 border border-[#212121]/5 rounded-[32px] bg-[#F5F5F5] shadow-sm">
+                                <div className="w-20 h-20 bg-[#DAA520]/10 text-[#DAA520] rounded-full flex items-center justify-center mx-auto mb-8">
+                                    <Search size={32} />
                                 </div>
-                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">No gigs found here</h3>
-                                <p className="text-slate-600 dark:text-slate-400 max-w-sm mx-auto mb-8">
+                                <h3 className="text-2xl font-bold text-[#212121] mb-3">No results found</h3>
+                                <p className="text-[#424242]/60 max-w-sm mx-auto mb-10 font-normal">
                                     {(!session || isFreelancer)
                                         ? "Be the first to offer this service! Pakistan's talent economy is waiting for your skills."
                                         : "Try adjusting your search criteria or category filter to find what you're looking for."}
                                 </p>
                                 {(!session || isFreelancer) && (
-                                    <Link href={session ? "/dashboard/create-gig" : "/register?role=SELLER"} className="inline-block px-8 py-3 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-xl transition-all shadow-lg shadow-teal-500/20 hover:shadow-teal-500/40">
+                                    <Link href={session ? "/dashboard/create-gig" : "/register?role=SELLER"} className="btn-primary px-10 py-4">
                                         Create a Gig Now
                                     </Link>
                                 )}
@@ -112,61 +113,49 @@ function SearchPageContent() {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {gigs.map(gig => (
-                                    <Link href={`/gig/${gig.id}`} key={gig.id} className="group gig-card flex flex-col bg-white dark:bg-[#111] rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden hover:border-[#FE7743]/30 transition-all">
+                                    <Link href={`/gig/${gig.id}`} key={gig.id} className="group flex flex-col bg-white rounded-2xl border border-[#212121]/5 overflow-hidden hover:border-[#DAA520]/20 hover:shadow-2xl transition-all duration-300">
 
                                         {/* Image Region & Badges */}
-                                        <div className="h-44 overflow-hidden relative bg-slate-100 dark:bg-[#273F4F]/20">
+                                        <div className="h-44 overflow-hidden relative bg-[#F5F5F5]">
                                             {gig.images && gig.images.length > 0 ? (
-                                                <img src={gig.images[0]} alt={gig.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                                                <img src={gig.images[0]} alt={gig.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
                                             ) : (
-                                                <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 dark:text-[#EFEEEA]/20">
-                                                    <svg className="w-8 h-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                    <span className="text-xs font-semibold uppercase tracking-wider">No Image</span>
+                                                <div className="w-full h-full flex flex-col items-center justify-center text-[#212121]/10">
+                                                    <Layers size={32} />
                                                 </div>
                                             )}
 
                                             {/* FEATURED BADGE */}
                                             {gig.boosts && gig.boosts.length > 0 && (
-                                                <div className="absolute top-3 left-3 bg-[#FE7743] text-white text-[10px] tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5">
-                                                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                                                <div className="absolute top-4 left-4 bg-[#DAA520] text-[#212121] text-[10px] tracking-widest font-bold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5">
+                                                    <Zap size={12} fill="currentColor" />
                                                     FEATURED
                                                 </div>
                                             )}
                                         </div>
 
                                         {/* Content Region */}
-                                        <div className="p-5 flex flex-col flex-1">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <div className="w-6 h-6 rounded-full bg-[#FE7743]/10 dark:bg-[#FE7743]/20 flex items-center justify-center text-[10px] font-bold text-[#FE7743] shrink-0">
+                                        <div className="p-6 flex flex-col flex-1">
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <div className="w-6 h-6 rounded-full bg-[#212121] flex items-center justify-center text-[10px] font-bold text-[#DAA520] shrink-0">
                                                     {gig.seller?.profile?.fullName?.[0] || 'S'}
                                                 </div>
-                                                <span className="text-xs font-medium text-slate-600 dark:text-[#EFEEEA]/60 w-full overflow-hidden text-ellipsis whitespace-nowrap">{gig.seller?.profile?.fullName || 'Seller'}</span>
-                                                {gig.seller?.profile?.sellerLevel && gig.seller.profile.sellerLevel !== 'NEW' && (
-                                                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded ml-auto whitespace-nowrap ${gig.seller.profile.sellerLevel === 'TOP_RATED' ? 'bg-amber-100 dark:bg-amber-400/20 text-amber-600 dark:text-amber-300' :
-                                                        gig.seller.profile.sellerLevel === 'LEVEL_2' ? 'bg-teal-100 dark:bg-teal-400/20 text-teal-600 dark:text-teal-300' :
-                                                            'bg-blue-100 dark:bg-blue-400/20 text-blue-600 dark:text-blue-300'
-                                                        }`}>
-                                                        {gig.seller.profile.sellerLevel === 'TOP_RATED' ? '⭐ Top Rated' :
-                                                            gig.seller.profile.sellerLevel === 'LEVEL_2' ? 'Level 2' : 'Level 1'}
-                                                    </span>
-                                                )}
+                                                <span className="text-[10px] font-bold text-[#424242]/40 uppercase tracking-widest w-full overflow-hidden text-ellipsis whitespace-nowrap">{gig.seller?.profile?.fullName || 'Seller'}</span>
                                             </div>
 
-                                            <h3 className="text-sm font-semibold text-slate-900 dark:text-[#EFEEEA] line-clamp-2 mb-3 group-hover:text-[#FE7743] transition-colors flex-1 leading-snug">
+                                            <h3 className="text-sm font-bold text-[#212121] line-clamp-2 mb-4 group-hover:text-[#DAA520] transition-colors flex-1 leading-snug">
                                                 {gig.title}
                                             </h3>
 
-                                            <div className="flex items-center text-xs font-medium mb-3">
-                                                <span className="text-amber-400 mr-1">★</span>
-                                                <span className="text-slate-800 dark:text-[#EFEEEA]">{gig.avgRating ? gig.avgRating.toFixed(1) : '—'}</span>
-                                                <span className="text-slate-500 dark:text-[#EFEEEA]/40 ml-1">({gig.reviewCount || 0})</span>
+                                            <div className="flex items-center text-xs font-bold mb-4">
+                                                <Star size={14} className="text-[#DAA520] mr-1" fill="currentColor" />
+                                                <span className="text-[#212121]">{gig.avgRating ? gig.avgRating.toFixed(1) : '—'}</span>
+                                                <span className="text-[#424242]/40 ml-1">({gig.reviewCount || 0}) reviews</span>
                                             </div>
 
-                                            <div className="pt-4 border-t border-slate-200 dark:border-white/5 flex items-center justify-between">
-                                                <span className="text-[10px] font-semibold text-slate-500 dark:text-[#EFEEEA]/40 uppercase tracking-wider">Starting at</span>
-                                                <span className="text-sm font-bold text-slate-900 dark:text-[#EFEEEA] bg-slate-100 dark:bg-[#273F4F] px-2.5 py-1 rounded-md">PKR {gig.basePrice?.toLocaleString()}</span>
+                                            <div className="pt-6 border-t border-[#F5F5F5] flex items-center justify-between">
+                                                <span className="text-[9px] font-bold text-[#424242]/40 uppercase tracking-widest">Starting at</span>
+                                                <span className="text-sm font-bold text-[#212121] bg-[#F5F5F5] px-3 py-1 rounded-full">PKR {gig.basePrice?.toLocaleString()}</span>
                                             </div>
                                         </div>
                                     </Link>
@@ -184,7 +173,7 @@ function SearchPageContent() {
 
 export default function SearchPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-[#000] flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#FE7743] border-t-transparent rounded-full animate-spin" /></div>}>
+        <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#DAA520] border-t-transparent rounded-full animate-spin" /></div>}>
             <SearchPageContent />
         </Suspense>
     );

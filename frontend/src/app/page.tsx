@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import { Menu, X, MoreHorizontal } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { ArrowRight, Star, Shield, Zap, Code, Pen, BarChart2, Video, Users, Globe, Layers, Search, CheckCircle2 } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 /* ═══════════════════════════════════════════════
    INLINE SVG ICONS
@@ -108,33 +109,27 @@ function GLogo({ size = 36, className = '' }: { size?: number; className?: strin
    FLOATING ELEMENTS — left = orange, right = teal
    ═══════════════════════════════════════════════ */
 const HERO_FLOATS = [
-  // Left side — orange accent
-  { type: 'code', top: '10%', left: '3%', w: 48, op: 0.18, sp: -0.07, rt: 0.03, anim: 'float-slow', cls: 'text-orange' },
-  { type: 'bulb', top: '35%', left: '1%', w: 32, op: 0.12, sp: 0.05, rt: -0.04, anim: 'float-alt', cls: 'text-orange-light' },
-  { type: 'star', top: '65%', left: '5%', w: 38, op: 0.14, sp: -0.04, rt: 0.02, anim: 'float-diagonal', cls: 'text-orange/50' },
-  { type: 'nodes', top: '80%', left: '20%', w: 42, op: 0.08, sp: -0.03, rt: -0.02, anim: 'float-slow', cls: 'text-orange-light/40' },
-  { type: 'bolt', top: '22%', left: '30%', w: 30, op: 0.10, sp: 0.06, rt: 0.05, anim: 'float-alt', cls: 'text-orange/40' },
-  { type: 'dollar', top: '50%', left: '15%', w: 24, op: 0.07, sp: -0.05, rt: 0.06, anim: 'float-diagonal', cls: 'text-orange-light/30' },
-  // Right side — teal accent
-  { type: 'case', top: '8%', left: '55%', w: 40, op: 0.15, sp: 0.08, rt: -0.03, anim: 'float-alt', cls: 'text-teal-light' },
-  { type: 'chat', top: '40%', left: '92%', w: 34, op: 0.12, sp: -0.06, rt: 0.04, anim: 'float-slow', cls: 'text-teal' },
-  { type: 'pen', top: '70%', left: '87%', w: 38, op: 0.15, sp: 0.05, rt: -0.02, anim: 'float-diagonal', cls: 'text-teal-light' },
-  { type: 'chart', top: '82%', left: '70%', w: 44, op: 0.09, sp: 0.04, rt: 0.03, anim: 'float-slow', cls: 'text-teal/60' },
-  { type: 'cube', top: '18%', left: '68%', w: 28, op: 0.08, sp: -0.07, rt: -0.05, anim: 'float-alt', cls: 'text-teal-light/50' },
-  { type: 'hex', top: '55%', left: '60%', w: 26, op: 0.06, sp: 0.03, rt: -0.03, anim: 'float-alt', cls: 'text-teal/40' },
+  // Left side — Gold accent (Professional)
+  { type: 'code', top: '10%', left: '3%', w: 48, op: 0.12, sp: -0.07, rt: 0.03, anim: 'float-slow', cls: 'text-[#DAA520]' },
+  { type: 'bulb', top: '35%', left: '1%', w: 32, op: 0.08, sp: 0.05, rt: -0.04, anim: 'float-alt', cls: 'text-[#DAA520]/60' },
+  { type: 'star', top: '65%', left: '5%', w: 38, op: 0.10, sp: -0.04, rt: 0.02, anim: 'float-diagonal', cls: 'text-[#DAA520]/40' },
+  // Right side — Gray accent (Enterprise)
+  { type: 'case', top: '8%', left: '55%', w: 40, op: 0.10, sp: 0.08, rt: -0.03, anim: 'float-alt', cls: 'text-[#424242]' },
+  { type: 'chat', top: '40%', left: '92%', w: 34, op: 0.08, sp: -0.06, rt: 0.04, anim: 'float-slow', cls: 'text-[#424242]/60' },
+  { type: 'pen', top: '70%', left: '87%', w: 38, op: 0.10, sp: 0.05, rt: -0.02, anim: 'float-diagonal', cls: 'text-[#424242]/40' },
 ];
 
 /* ═══════════════════════════════════════════════
    TALENT CATEGORIES
    ═══════════════════════════════════════════════ */
 const TALENTS = [
-  { title: 'Development', sub: 'React, Node, iOS/Android', icon: 'code', color: 'text-teal-vibrant', bg: 'from-teal-vibrant/5 to-transparent', hoverBg: 'group-hover:bg-teal-vibrant/10', border: 'group-hover:border-teal-vibrant/30', element: '< >' },
-  { title: 'Arts & Design', sub: 'Figma, Logo, 3D Models', icon: 'pen', color: 'text-orange-light', bg: 'from-orange-light/5 to-transparent', hoverBg: 'group-hover:bg-orange-light/10', border: 'group-hover:border-orange-light/30', element: '✨' },
-  { title: 'Analytics', sub: 'Data Entry, Research', icon: 'chart', color: 'text-teal-light', bg: 'from-teal-light/5 to-transparent', hoverBg: 'group-hover:bg-teal-light/10', border: 'group-hover:border-teal-light/30', element: '📈' },
-  { title: 'Video & Media', sub: 'Editing, Animation', icon: 'video', color: 'text-orange', bg: 'from-orange/5 to-transparent', hoverBg: 'group-hover:bg-orange/10', border: 'group-hover:border-orange/30', element: '▶' },
-  { title: 'Writing', sub: 'Content, Proofreading', icon: 'chat', color: 'text-teal-vibrant', bg: 'from-teal-vibrant/5 to-transparent', hoverBg: 'group-hover:bg-teal-vibrant/10', border: 'group-hover:border-teal-vibrant/30', element: '✎' },
-  { title: 'Tech Support', sub: 'QA Testing, Cloud Ops', icon: 'zap', color: 'text-orange-light', bg: 'from-orange-light/5 to-transparent', hoverBg: 'group-hover:bg-orange-light/10', border: 'group-hover:border-orange-light/30', element: '⚙' },
-  { title: 'Business', sub: 'Virtual Admin, Support', icon: 'case', color: 'text-teal-light', bg: 'from-teal-light/5 to-transparent', hoverBg: 'group-hover:bg-teal-light/10', border: 'group-hover:border-teal-light/30', element: '❖' },
+  { title: 'Development', sub: 'React, Node, iOS/Android', icon: 'code', color: 'text-[#DAA520]', bg: 'from-[#DAA520]/5 to-transparent', hoverBg: 'group-hover:bg-[#DAA520]/10', border: 'group-hover:border-[#DAA520]/30', element: '< >' },
+  { title: 'Arts & Design', sub: 'Figma, Logo, 3D Models', icon: 'pen', color: 'text-[#DAA520]', bg: 'from-[#DAA520]/5 to-transparent', hoverBg: 'group-hover:bg-[#DAA520]/10', border: 'group-hover:border-[#DAA520]/30', element: '✨' },
+  { title: 'Analytics', sub: 'Data Entry, Research', icon: 'chart', color: 'text-[#DAA520]', bg: 'from-[#DAA520]/5 to-transparent', hoverBg: 'group-hover:bg-[#DAA520]/10', border: 'group-hover:border-[#DAA520]/30', element: '📈' },
+  { title: 'Video & Media', sub: 'Editing, Animation', icon: 'video', color: 'text-[#DAA520]', bg: 'from-[#DAA520]/5 to-transparent', hoverBg: 'group-hover:bg-[#DAA520]/10', border: 'group-hover:border-[#DAA520]/30', element: '▶' },
+  { title: 'Writing', sub: 'Content, Proofreading', icon: 'chat', color: 'text-[#DAA520]', bg: 'from-[#DAA520]/5 to-transparent', hoverBg: 'group-hover:bg-[#DAA520]/10', border: 'group-hover:border-[#DAA520]/30', element: '✎' },
+  { title: 'Tech Support', sub: 'QA Testing, Cloud Ops', icon: 'zap', color: 'text-[#DAA520]', bg: 'from-[#DAA520]/5 to-transparent', hoverBg: 'group-hover:bg-[#DAA520]/10', border: 'group-hover:border-[#DAA520]/30', element: '⚙' },
+  { title: 'Business', sub: 'Virtual Admin, Support', icon: 'case', color: 'text-[#DAA520]', bg: 'from-[#DAA520]/5 to-transparent', hoverBg: 'group-hover:bg-[#DAA520]/10', border: 'group-hover:border-[#DAA520]/30', element: '❖' },
 ];
 
 /* ═══════════════════════════════════════════════
@@ -221,89 +216,10 @@ export default function Home() {
   }, [handleScroll]);
 
   return (
-    <div className="bg-white dark:bg-black font-sans text-slate-900 dark:text-offwhite selection:bg-orange/50 dark:selection:bg-orange/30 transition-colors duration-300">
+    <div className="bg-white font-sans text-[#212121] selection:bg-[#DAA520]/20 transition-colors duration-300">
       <div ref={progressRef} className="scroll-progress" />
 
-      {/* ═══ HEADER ═══ */}
-      <header ref={headerRef} className="fixed top-0 z-50 w-full px-6 py-4 flex justify-between items-center transition-all duration-300">
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="logo-glow"><GLogo size={36} /></div>
-          <h2 className="font-display text-2xl font-black tracking-tighter text-slate-900 dark:text-offwhite">gigligo<span className="text-orange/70">.com</span></h2>
-        </Link>
-        <nav className="hidden md:flex items-center gap-6">
-          <Link href="/search" className="text-sm font-medium text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors">Find Talent</Link>
-          <Link href="/jobs" className="text-sm font-medium text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors">Browse Jobs</Link>
-          <Link href={session ? '/dashboard' : '/register?role=SELLER'} className="text-sm font-medium text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors">Post a Gig</Link>
-
-          <div className="relative group p-2">
-            <button className="text-slate-600 dark:text-offwhite/60 hover:text-orange transition-colors flex items-center">
-              <MoreHorizontal size={20} />
-            </button>
-            <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col py-2 z-50">
-              <Link href="/pricing" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-white/80 transition-colors">Pricing</Link>
-              <Link href="/referral" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-white/80 transition-colors">Refer & Earn</Link>
-              <Link href="/faq" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-white/80 transition-colors">FAQ</Link>
-            </div>
-          </div>
-        </nav>
-        <div className="hidden md:flex items-center gap-3">
-          <ThemeToggle />
-          {session ? (
-            <div className="relative group ml-1">
-              <div className="w-10 h-10 rounded-full bg-linear-to-tr from-orange to-orange-light flex items-center justify-center text-white font-bold text-sm shadow-lg cursor-pointer hover:scale-105 transition-transform">
-                {session.user?.name?.[0] || 'U'}
-              </div>
-              <div className="absolute top-full right-0 mt-3 w-56 bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col py-2 z-50">
-                <div className="px-4 py-3 border-b border-slate-100 dark:border-white/5 mb-2">
-                  <p className="font-bold text-sm text-slate-900 dark:text-white truncate">{session.user?.name}</p>
-                  <p className="text-xs text-slate-500 dark:text-white/50 truncate">{session.user?.email}</p>
-                </div>
-                {(session as any)?.role === 'ADMIN' && (
-                  <Link href="/admin" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-bold text-orange transition-colors">Admin Dashboard</Link>
-                )}
-                <Link href="/dashboard" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-white/80 transition-colors">Dashboard</Link>
-                <Link href="/dashboard/inbox" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-white/80 transition-colors">Inbox</Link>
-                <Link href="/dashboard/profile" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-white/80 transition-colors">Profile</Link>
-                <Link href="/dashboard/settings" className="px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-medium text-slate-700 dark:text-white/80 transition-colors">Settings</Link>
-                <div className="h-px bg-slate-100 dark:bg-white/5 my-2" />
-                <button onClick={() => signOut({ callbackUrl: '/' })} className="px-4 py-2 hover:bg-red-50 dark:hover:bg-red-500/10 text-sm font-semibold text-red-600 dark:text-red-400 text-left w-full transition-colors">Logout</button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <Link href="/login" className="px-5 py-2.5 rounded-full text-sm font-semibold bg-slate-100 dark:bg-offwhite/10 backdrop-blur-md border border-slate-200 dark:border-offwhite/15 text-slate-900 dark:text-offwhite hover:bg-slate-200 dark:hover:bg-offwhite dark:hover:text-black transition-all">Login</Link>
-              <Link href="/register" className="px-5 py-2.5 rounded-full text-sm font-semibold bg-orange text-white hover:bg-orange-light hover:shadow-lg hover:shadow-orange/25 transition-all">Join Free</Link>
-            </>
-          )}
-        </div>
-        <div className="flex items-center gap-3 md:hidden">
-          <ThemeToggle />
-          <button className="text-slate-900 dark:text-offwhite p-2" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-      </header>
-
-      {/* MOBILE MENU */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-8 md:hidden">
-          <nav className="flex flex-col items-center gap-8 w-full">
-            <Link href="/search" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Find Talent</Link>
-            <Link href="/jobs" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Browse Jobs</Link>
-            <Link href="/pricing" className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Pricing</Link>
-            <Link href={session ? '/dashboard' : '/register?role=SELLER'} className="text-2xl font-bold text-slate-900 dark:text-offwhite hover:text-orange" onClick={() => setMenuOpen(false)}>Post a Gig</Link>
-            <div className="h-px w-1/3 bg-slate-200 dark:bg-white/10 my-4"></div>
-            {session ? (
-              <Link href="/dashboard" className="w-full max-w-[200px] py-4 text-center rounded-full text-lg font-bold bg-orange text-white" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-            ) : (
-              <div className="flex flex-col gap-4 w-full max-w-[200px]">
-                <Link href="/login" className="w-full py-4 text-center rounded-full text-lg font-bold bg-slate-100 dark:bg-offwhite/10 border border-slate-200 dark:border-offwhite/15 text-slate-900 dark:text-offwhite" onClick={() => setMenuOpen(false)}>Login</Link>
-                <Link href="/register" className="w-full py-4 text-center rounded-full text-lg font-bold bg-orange text-white" onClick={() => setMenuOpen(false)}>Join Free</Link>
-              </div>
-            )}
-          </nav>
-        </div>
-      )}
+      <Navbar />
 
       <main>
         {/* ════════════════════════════════════════════════════════════
@@ -313,13 +229,10 @@ export default function Home() {
           {/* Background blobs */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <Float3D style={{ top: '-10%', left: '-5%' }} data-float="" data-sp="-0.02" data-rt="0">
-              <MorphBlob size={400} color="rgba(254,119,67,0.10)" />
+              <MorphBlob size={400} color="rgba(218,165,32,0.05)" />
             </Float3D>
             <Float3D style={{ bottom: '-15%', right: '-8%' }} data-float="" data-sp="0.03" data-rt="0">
-              <MorphBlob size={500} color="rgba(39,63,79,0.10)" />
-            </Float3D>
-            <Float3D style={{ top: '40%', left: '45%' }} data-float="" data-sp="-0.01" data-rt="0">
-              <MorphBlob size={250} color="rgba(239,238,234,0.04)" className="delay-300" />
+              <MorphBlob size={500} color="rgba(33,33,33,0.05)" />
             </Float3D>
           </div>
 
@@ -343,80 +256,45 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ── LEFT PANEL: Students — ORANGE accent ── */}
-          <div ref={heroRef} className="relative flex-1 flex flex-col items-center justify-center px-8 py-28 md:px-16 persona-hover group overflow-hidden bg-linear-to-br from-orange-50 via-white to-orange-50/50 dark:from-[#1a0800] dark:via-black dark:to-[#0d0400]">
-            {/* Orange glow */}
-            <div className="absolute inset-0 bg-linear-to-br from-orange/12 via-transparent to-orange-dark/5 pointer-events-none" />
-            <div className="absolute -top-20 -left-20 w-80 h-80 bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.12)_0%,transparent_70%)] rounded-full pointer-events-none" />
-            <div className="absolute bottom-1/4 right-0 w-60 h-60 bg-[radial-gradient(circle_at_center,rgba(255,154,118,0.10)_0%,transparent_70%)] rounded-full pointer-events-none" />
-
+          {/* ── LEFT PANEL: Students ── */}
+          <div ref={heroRef} className="relative flex-1 flex flex-col items-center justify-center px-8 py-28 md:px-16 persona-hover group overflow-hidden bg-white">
             <div className="relative z-10 w-full max-w-lg" data-scroll="fade-right" data-delay="200">
-              <div className="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange/15 border border-orange/30 text-orange text-xs font-bold uppercase tracking-widest">
-                <span className="w-2 h-2 rounded-full bg-orange animate-pulse" /> Next-Gen Talent
+              <div className="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#DAA520]/10 border border-[#DAA520]/20 text-[#DAA520] text-xs font-bold uppercase tracking-widest">
+                <span className="w-2 h-2 rounded-full bg-[#DAA520] animate-pulse" /> Next-Gen Talent
               </div>
-              <h1 className="font-display text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-offwhite leading-[0.95] mb-6">
-                Students &<br /><span className="glow-orange bg-linear-to-r from-orange to-orange-light bg-clip-text text-transparent">Graduates</span>
+              <h1 className="font-sans text-5xl md:text-7xl font-bold text-[#212121] leading-[0.95] mb-6">
+                Earn while you <br /><span className="text-[#DAA520]">Learn.</span>
               </h1>
-              <p className="text-lg text-slate-600 dark:text-offwhite/60 font-light mb-10 max-w-md leading-relaxed">Empowering <span className="text-orange font-semibold">30 million</span> university students to earn while they learn. No international fees, no barriers.</p>
+              <p className="text-lg text-[#424242] font-normal mb-10 max-w-md leading-relaxed">Empowering students to launch their careers without boundaries.</p>
 
-              <div className="space-y-4 mb-10 perspective-1000">
-                <div className="glass-card-orange tilt-card" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-up" data-delay="400">
+              <div className="space-y-4 mb-10">
+                <div className="card p-6 border-l-4 border-l-[#DAA520]" data-scroll="fade-up" data-delay="400">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-orange/20 flex items-center justify-center shrink-0"><Icon name="medal" size={20} className="text-orange" /></div>
-                    <div><h4 className="font-bold text-slate-900 dark:text-offwhite">Opportunity First</h4><p className="text-sm text-slate-500 dark:text-offwhite/50 font-light mt-1">Free registration, verified badges, and lower-commission tiers for top performers.</p></div>
-                  </div>
-                </div>
-                <div className="glass-card-orange tilt-card" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-up" data-delay="550">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-orange-light/15 flex items-center justify-center shrink-0"><Icon name="sparkle" size={20} className="text-orange-light" /></div>
-                    <div><h4 className="font-bold text-slate-900 dark:text-offwhite">Skill-Boost</h4><p className="text-sm text-slate-500 dark:text-offwhite/50 font-light mt-1">Micro-courses and certifications that turn gigs into lifelong careers.</p></div>
+                    <div className="w-10 h-10 rounded-lg bg-[#DAA520]/10 flex items-center justify-center shrink-0"><Star size={20} className="text-[#DAA520]" /></div>
+                    <div><h4 className="font-bold text-[#212121]">Skill-First Gigs</h4><p className="text-sm text-[#424242] mt-1">Free registration and tools to turn projects into impact.</p></div>
                   </div>
                 </div>
               </div>
 
-              <Link href="/register?role=SELLER" className="group/btn w-full md:w-auto px-10 py-5 bg-orange text-white font-bold rounded-2xl shadow-2xl shadow-orange/25 hover:shadow-orange/40 hover:-translate-y-1 transition-all inline-flex items-center justify-center gap-3 relative overflow-hidden">
-                <span className="relative z-10">Start Earning Today</span>
-                <Icon name="out" size={20} className="relative z-10" />
-                <div className="absolute inset-0 bg-orange-dark opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+              <Link href="/register?role=SELLER" className="btn-primary w-full md:w-auto px-10 py-5">
+                Start Earning Today
               </Link>
             </div>
           </div>
 
-          {/* ── RIGHT PANEL: Businesses — TEAL accent ── */}
-          <div className="relative flex-1 flex flex-col items-center justify-center px-8 py-28 md:px-16 persona-hover group overflow-hidden bg-linear-to-tl from-teal-50 via-white to-teal-50/50 dark:from-[#0d1a22] dark:via-black dark:to-[#091318]">
-            {/* Teal glow */}
-            <div className="absolute inset-0 bg-linear-to-tl from-teal/20 via-transparent to-teal-light/5 pointer-events-none" />
-            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.15)_0%,transparent_70%)] rounded-full pointer-events-none" />
-            <div className="absolute top-1/4 left-0 w-60 h-60 bg-[radial-gradient(circle_at_center,rgba(58,90,110,0.10)_0%,transparent_70%)] rounded-full pointer-events-none" />
-
+          {/* ── RIGHT PANEL: Businesses ── */}
+          <div className="relative flex-1 flex flex-col items-center justify-center px-8 py-28 md:px-16 persona-hover group overflow-hidden bg-[#212121]">
             <div className="relative z-10 w-full max-w-lg" data-scroll="fade-left" data-delay="400">
-              <div className="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal/25 border border-teal-light/30 text-teal-light text-xs font-bold uppercase tracking-widest">
-                <span className="w-2 h-2 rounded-full bg-teal-light animate-pulse" /> Enterprise Ready
+              <div className="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-bold uppercase tracking-widest">
+                <span className="w-2 h-2 rounded-full bg-[#DAA520] animate-pulse" /> Hire Talent
               </div>
-              <h1 className="font-display text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-offwhite leading-[0.95] mb-6">
-                Businesses &<br /><span className="bg-linear-to-r from-teal-light to-teal bg-clip-text text-transparent">Startups</span>
+              <h1 className="font-sans text-5xl md:text-7xl font-bold text-white leading-[0.95] mb-6">
+                Scale with <br /><span className="text-[#DAA520]">Elite Talent.</span>
               </h1>
-              <p className="text-lg text-slate-600 dark:text-offwhite/60 font-light mb-10 max-w-md leading-relaxed">Instant, affordable access to Pakistan&apos;s <span className="text-teal-light font-semibold">top talent</span>. Secure payments and verified results.</p>
+              <p className="text-lg text-white/60 font-normal mb-10 max-w-md leading-relaxed">Instant access to Pakistan's top university professionals.</p>
 
-              <div className="space-y-4 mb-10 perspective-1000">
-                <div className="glass-card-teal tilt-card" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-up" data-delay="600">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-teal/30 flex items-center justify-center shrink-0"><Icon name="shield" size={20} className="text-teal-light" /></div>
-                    <div><h4 className="font-bold text-slate-900 dark:text-offwhite">Secure & Transparent</h4><p className="text-sm text-slate-500 dark:text-offwhite/50 font-light mt-1">Escrow payment integration with full transparency at every step.</p></div>
-                  </div>
-                </div>
-                <div className="glass-card-teal tilt-card" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-up" data-delay="750">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-teal-light/20 flex items-center justify-center shrink-0"><Icon name="zap" size={20} className="text-slate-900 dark:text-offwhite/80" /></div>
-                    <div><h4 className="font-bold text-slate-900 dark:text-offwhite">Speed & Trust</h4><p className="text-sm text-slate-500 dark:text-offwhite/50 font-light mt-1">24-hour dispute resolution and clear IP transfer contracts.</p></div>
-                  </div>
-                </div>
-              </div>
-
-              <Link href="/search" className="group/btn w-full md:w-auto px-10 py-5 bg-teal text-offwhite font-bold rounded-2xl shadow-2xl shadow-teal/25 hover:shadow-teal-light/30 hover:-translate-y-1 transition-all inline-flex items-center justify-center gap-3 relative overflow-hidden border border-teal-light/20">
-                <span className="relative z-10">Hire Talent Now</span>
-                <Icon name="trend" size={20} className="relative z-10" />
-                <div className="absolute inset-0 bg-teal-light opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+              <Link href="/search" className="btn-primary w-full md:w-auto px-10 py-5">
+                Hire Talent Now
               </Link>
             </div>
           </div>
@@ -425,20 +303,18 @@ export default function Home() {
         {/* ════════════════════════════════════════════
             SOCIAL PROOF (RECENT ACTIVITY TICKER)
             ════════════════════════════════════════════ */}
-        <section className="py-4 bg-[#0a0a0a] border-y border-white/5 relative overflow-hidden">
+        <section className="py-2 bg-[#212121] border-y border-[#DAA520]/10 relative overflow-hidden">
           <div className="flex ticker whitespace-nowrap">
             {[
-              { text: "Ali R. just hired a Web Developer from FAST-NU", time: "2 min ago" },
-              { text: "Fatima S. completed a 5-star gig (Logo Design)", time: "15 min ago" },
-              { text: "TechLogix posted 4 new React.js roles", time: "1 hr ago" },
-              { text: "Usman A. earned Level 2 Seller status!", time: "2 hrs ago" },
-              { text: "Ayesha K. successfully disputed an order refund", time: "3 hrs ago" },
-              { text: "Zainab B. joined as a Founding Member", time: "5 hrs ago" }
+              { text: "Creative Director hired from LUMS", time: "2 min ago" },
+              { text: "Product Designer completed project for TechLogix", time: "15 min ago" },
+              { text: "Senior React Dev matched with Systems Ltd", time: "1 hr ago" },
+              { text: "Content Writer earned 'Pro Talent' badge", time: "2 hrs ago" }
             ].map((item, i) => (
-              <div key={i} className="inline-flex items-center gap-3 px-8 border-r border-white/10 last:border-0">
-                <div className="w-2 h-2 rounded-full bg-teal animate-pulse" />
-                <span className="text-sm text-offwhite/80 font-medium">{item.text}</span>
-                <span className="text-xs text-orange/80 bg-orange/10 px-2 py-0.5 rounded-full">{item.time}</span>
+              <div key={i} className="inline-flex items-center gap-3 px-8 border-r border-white/5 last:border-0">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#DAA520]" />
+                <span className="text-[11px] uppercase tracking-wider text-white/50 font-bold">{item.text}</span>
+                <span className="text-[10px] text-[#DAA520] font-bold">{item.time}</span>
               </div>
             ))}
           </div>
@@ -447,17 +323,15 @@ export default function Home() {
         {/* ════════════════════════════════════════════
             TRUSTED BY STRIP
             ════════════════════════════════════════════ */}
-        <section className="py-8 bg-white dark:bg-[#0a0a0a] border-y border-slate-200 dark:border-white/5 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6">
-            <p className="text-center text-xs font-bold text-slate-400 dark:text-offwhite/40 uppercase tracking-[0.2em] mb-6">Trusted by top talent & businesses from</p>
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              <span className="text-xl md:text-2xl font-black text-slate-800 dark:text-offwhite font-display">LUMS</span>
-              <span className="text-xl md:text-2xl font-black text-slate-800 dark:text-offwhite font-display">NUST</span>
-              <span className="text-xl md:text-2xl font-black text-slate-800 dark:text-offwhite font-display tracking-widest">FAST-NU</span>
-              <span className="text-xl md:text-2xl font-black text-slate-800 dark:text-offwhite font-display">IBA</span>
-              <span className="hidden md:inline-block text-xl md:text-2xl font-black text-slate-800 dark:text-offwhite font-display">GIKI</span>
-              <span className="hidden lg:inline-block text-xl md:text-2xl font-black text-slate-800 dark:text-offwhite font-display tracking-widest">TECHLOGIX</span>
-              <span className="hidden lg:inline-block text-xl md:text-2xl font-black text-slate-800 dark:text-offwhite font-display">SYSTEMS LTD</span>
+        <section className="py-12 bg-white">
+          <div className="max-container">
+            <p className="text-center text-[10px] font-bold text-[#424242]/40 uppercase tracking-[0.3em] mb-10">Trusted by Professionals from</p>
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-30 grayscale contrast-125">
+              <span className="text-2xl font-bold text-[#212121]">LUMS</span>
+              <span className="text-2xl font-bold text-[#212121]">NUST</span>
+              <span className="text-2xl font-bold text-[#212121] tracking-tighter">FAST-NU</span>
+              <span className="text-2xl font-bold text-[#212121]">IBA</span>
+              <span className="text-2xl font-bold text-[#212121]">GIKI</span>
             </div>
           </div>
         </section>
@@ -465,13 +339,13 @@ export default function Home() {
         {/* ════════════════════════════════════════════
             STATS TICKER — OFF-WHITE BAR (light section)
             ════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden py-5" style={{ background: '#EFEEEA' }}>
+        <section className="relative overflow-hidden py-8 bg-[#F5F5F5]">
           <div className="flex ticker whitespace-nowrap">
             {[...STATS, ...STATS].map((s, i) => (
               <div key={i} className="inline-flex items-center gap-3 px-10">
-                <span className="text-2xl font-black text-black">{s.val}</span>
-                <span className="text-xs text-teal uppercase tracking-wider font-medium">{s.label}</span>
-                <span className="text-orange/40 mx-4">◆</span>
+                <span className="text-3xl font-bold text-[#212121]">{s.val}</span>
+                <span className="text-[10px] text-[#424242] uppercase tracking-widest font-bold">{s.label}</span>
+                <span className="text-[#DAA520]/40 mx-6">/</span>
               </div>
             ))}
           </div>
@@ -480,41 +354,30 @@ export default function Home() {
         {/* ════════════════════════════════════════════
             CURATED TALENT — TEAL DOMINANT SECTION
             ════════════════════════════════════════════ */}
-        <section className="py-28 relative overflow-hidden bg-slate-50 dark:bg-linear-to-b dark:from-[#0d1a22] dark:via-[#152a36] dark:to-[#0d1a22]">
-          <div className="absolute top-20 -left-40 w-96 h-96 bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.06)_0%,transparent_70%)] rounded-full pointer-events-none" data-float="" data-sp="-0.02" data-rt="0" />
-          <div className="absolute bottom-0 -right-40 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(58,90,110,0.08)_0%,transparent_70%)] rounded-full pointer-events-none" data-float="" data-sp="0.03" data-rt="0" />
-
-          <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <section className="py-28 relative overflow-hidden bg-white">
+          <div className="max-container relative z-10">
             <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
               <div data-scroll="fade-up">
-                <div className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange/15 border border-orange/25 text-orange text-xs font-bold uppercase tracking-widest">Expertise Areas</div>
-                <h2 className="font-display text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-offwhite mb-4 leading-tight">Curated Local<br /><span className="bg-linear-to-r from-orange to-orange-light bg-clip-text text-transparent">Talent</span></h2>
-                <p className="text-slate-600 dark:text-offwhite/50 max-w-lg font-light text-lg">The specialized expertise your business needs, powered by Pakistan&apos;s top university talent.</p>
+                <div className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DAA520]/10 border border-[#DAA520]/20 text-[#DAA520] text-xs font-bold uppercase tracking-widest">Expertise Areas</div>
+                <h2 className="text-4xl md:text-5xl font-bold text-[#212121] mb-4 leading-tight">Elite <span className="text-[#DAA520]">Categories.</span></h2>
+                <p className="text-[#424242]/70 max-w-lg font-normal text-lg">Curated local talent with specialized expertise for high-end results.</p>
               </div>
-              <Link href="/search" className="text-sm font-bold text-orange flex items-center gap-2 group/link border border-orange/25 px-5 py-2.5 rounded-full hover:bg-orange/10 transition-all" data-scroll="fade-left" data-delay="200">
-                Browse All <Icon name="fwd" size={16} className="group-hover/link:translate-x-1 transition-transform" />
+              <Link href="/search" className="btn-secondary py-3 px-6" data-scroll="fade-left" data-delay="200">
+                Browse All <ArrowRight size={16} className="ml-2" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4 lg:gap-5 perspective-1500 max-w-[1400px] mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-5">
               {TALENTS.map((t, i) => (
-                <div key={i} className="group cursor-pointer tilt-card flex flex-col items-center text-center" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-up" data-delay={`${i * 50}`}>
-                  <div className={`w-full aspect-square max-h-[140px] lg:max-h-[160px] rounded-2xl md:rounded-4xl mb-4 relative overflow-hidden bg-linear-to-b ${t.bg} border border-offwhite/5 flex flex-col items-center justify-center transition-all duration-500 group-hover:-translate-y-2 ${t.hoverBg} ${t.border}`}>
-
-                    {/* Minimal Contextual Element Background */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[100px] font-black opacity-0 group-hover:opacity-[0.03] transition-all duration-700 select-none scale-50 group-hover:scale-100 italic text-slate-900 dark:text-white" style={{ WebkitTextStroke: '1px currentColor' }}>
+                <div key={i} className="group cursor-pointer flex flex-col items-center text-center" data-scroll="fade-up" data-delay={`${i * 50}`}>
+                  <div className={`w-full aspect-square rounded-2xl mb-4 relative overflow-hidden bg-[#F5F5F5] border border-transparent flex flex-col items-center justify-center transition-all duration-300 group-hover:-translate-y-2 group-hover:border-[#DAA520]/20`}>
+                    <div className="text-[60px] font-bold opacity-0 group-hover:opacity-[0.03] transition-all duration-700 select-none scale-50 group-hover:scale-100 absolute italic text-[#212121]">
                       {t.element}
                     </div>
-
-                    {/* Subtle Glow */}
-                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-black/10 dark:from-white/20 via-transparent to-transparent`} />
-
-                    {/* Main Icon */}
-                    <Icon name={t.icon} size={36} className={`mb-2 lg:w-10 lg:h-10 text-slate-400 dark:text-offwhite/40 group-hover:${t.color} group-hover:scale-110 transition-all duration-500 relative z-10 drop-shadow-sm`} />
-
+                    <Icon name={t.icon} size={32} className={`mb-2 text-[#424242]/40 group-hover:text-[#DAA520] transition-all duration-300 relative z-10`} />
                   </div>
-                  <h3 className="text-[13px] md:text-sm font-bold text-slate-900 dark:text-offwhite mb-0.5 md:mb-1 dark:group-hover:text-white transition-colors leading-tight">{t.title}</h3>
-                  <p className="text-slate-600 dark:text-offwhite/40 text-[11px] md:text-[12px] font-light leading-snug">{t.sub}</p>
+                  <h3 className="text-sm font-bold text-[#212121] mb-1">{t.title}</h3>
+                  <p className="text-[#424242]/50 text-[11px] font-normal leading-snug">{t.sub}</p>
                 </div>
               ))}
             </div>
@@ -524,122 +387,82 @@ export default function Home() {
         {/* ════════════════════════════════════════════
             FEATURED TALENT PREVIEW (Show the Product!)
             ════════════════════════════════════════════ */}
-        <section className="py-20 bg-white dark:bg-[#0a0a0a] border-b border-slate-200 dark:border-white/5 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex justify-between items-end mb-12">
-              <div>
-                <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-offwhite mb-2">Top Rated Students</h2>
-                <p className="text-slate-600 dark:text-offwhite/50 text-sm">Hire verified talent from Pakistan's top universities immediately.</p>
+        <section className="py-24 bg-[#F5F5F5] relative overflow-hidden">
+          <div className="max-container">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+              <div data-scroll="fade-up">
+                <div className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DAA520]/10 border border-[#DAA520]/20 text-[#DAA520] text-xs font-bold uppercase tracking-widest">Rising Stars</div>
+                <h2 className="text-4xl md:text-5xl font-bold text-[#212121] mb-4">Top Rated <span className="text-[#DAA520]">Students.</span></h2>
+                <p className="text-[#424242]/60 max-w-lg font-normal text-lg">Verified university talent with a track record of excellence.</p>
               </div>
-              <Link href="/search" className="hidden md:inline-flex px-6 py-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-sm font-bold text-slate-900 dark:text-offwhite transition-colors">
-                View All Freelancers
+              <Link href="/search" className="btn-secondary py-3 px-6" data-scroll="fade-left">
+                View All Talent
               </Link>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-8">
               {[
-                { name: 'Ahsan M.', uni: 'FAST-NU', role: 'Full Stack Web Developer', rate: 'PKR 15,000', img: 'A', tags: ['React', 'Node.js', 'Next.js'] },
-                { name: 'Fatima Z.', uni: 'LUMS', role: 'UI/UX Designer', rate: 'PKR 12,000', img: 'F', tags: ['Figma', 'Prototyping', 'Web Design'] },
-                { name: 'Usman T.', uni: 'NUST', role: 'Data Scientist', rate: 'PKR 20,000', img: 'U', tags: ['Python', 'Machine Learning', 'SQL'] },
-              ].map((freelancer, i) => (
-                <div key={i} className="bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-white/10 rounded-2xl p-6 hover:-translate-y-1 hover:shadow-xl transition-all group" data-scroll="fade-up" data-delay={i * 100}>
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-full bg-linear-to-tr from-teal to-teal-light flex items-center justify-center text-white font-black text-xl shadow-md">
-                      {freelancer.img}
+                { name: 'Ahsan M.', uni: 'FAST-NU', role: 'Full Stack Web Developer', rate: 'PKR 15,000', img: 'A', tags: ['React', 'Node.js'] },
+                { name: 'Fatima Z.', uni: 'LUMS', role: 'UI/UX Designer', rate: 'PKR 12,000', img: 'F', tags: ['Figma', 'Web Design'] },
+                { name: 'Usman T.', uni: 'NUST', role: 'Data Scientist', rate: 'PKR 20,000', img: 'U', tags: ['Python', 'SQL'] },
+              ].map((talent, i) => (
+                <div key={i} className="bg-white border border-[#212121]/5 rounded-2xl p-8 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group" data-scroll="fade-up" data-delay={i * 100}>
+                  <div className="flex items-center gap-5 mb-8">
+                    <div className="w-16 h-16 rounded-full bg-[#212121] flex items-center justify-center text-[#DAA520] font-bold text-2xl shadow-lg border-2 border-[#DAA520]/20">
+                      {talent.img}
                     </div>
                     <div>
-                      <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        {freelancer.name} <Icon name="checkCircle" size={14} className="text-orange" />
-                      </h4>
-                      <p className="text-xs text-slate-500 dark:text-white/40 flex items-center gap-1 mt-0.5">
-                        <Icon name="school" size={12} className="text-teal" /> {freelancer.uni}
-                      </p>
+                      <h4 className="font-bold text-[#212121] text-lg flex items-center gap-2">{talent.name} <CheckCircle2 size={16} className="text-[#DAA520]" /></h4>
+                      <p className="text-sm text-[#424242]/60 font-bold uppercase tracking-widest">{talent.uni}</p>
                     </div>
                   </div>
-                  <h5 className="font-medium text-slate-800 dark:text-white/90 text-sm mb-3">{freelancer.role}</h5>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {freelancer.tags.map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-md text-[10px] font-medium text-slate-600 dark:text-white/60">
-                        {tag}
-                      </span>
+                  <h5 className="font-bold text-[#212121] mb-4">{talent.role}</h5>
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {talent.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1 bg-[#F5F5F5] rounded-full text-[10px] font-bold text-[#424242] uppercase tracking-wider">{tag}</span>
                     ))}
                   </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-white/10">
-                    <div className="space-y-0.5">
-                      <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Starting at</p>
-                      <p className="font-bold text-slate-900 dark:text-white">{freelancer.rate}</p>
+                  <div className="flex items-center justify-between pt-6 border-t border-[#F5F5F5]">
+                    <div>
+                      <p className="text-[10px] text-[#424242]/40 font-bold uppercase tracking-widest mb-1">Starting at</p>
+                      <p className="font-bold text-[#212121] text-xl">{talent.rate}</p>
                     </div>
-                    <Link href="/search" className="px-4 py-2 bg-orange text-white text-xs font-bold rounded-lg shadow-md hover:bg-orange-light transition-colors">
-                      View Profile
+                    <Link href="/search" className="w-10 h-10 rounded-full border border-[#DAA520]/30 flex items-center justify-center text-[#DAA520] hover:bg-[#DAA520] hover:text-[#212121] transition-all">
+                      <ArrowRight size={18} />
                     </Link>
                   </div>
                 </div>
               ))}
             </div>
-            <Link href="/search" className="md:hidden mt-6 flex justify-center w-full px-6 py-3 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-xl text-sm font-bold text-slate-900 dark:text-offwhite transition-colors">
-              View All Freelancers
-            </Link>
           </div>
         </section>
 
         {/* ════════════════════════════════════════════
             HOW IT WORKS — STEP-BY-STEP (ScrollReveal)
             ════════════════════════════════════════════ */}
-        <section className="py-28 relative overflow-hidden bg-white dark:bg-[#0a0a0a]">
-          <div className="absolute top-0 right-1/3 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.06)_0%,transparent_70%)] rounded-full pointer-events-none" />
-
-          <div className="max-w-6xl mx-auto px-6 relative z-10">
-            <div className="text-center mb-20">
-              <ScrollReveal yOffset={30}>
-                <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-offwhite/80 text-xs font-bold uppercase tracking-widest">
-                  Process
-                </div>
-              </ScrollReveal>
-              <ScrollReveal delay={0.1} yOffset={30}>
-                <h2 className="font-display text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-offwhite mb-6">
-                  How <span className="text-transparent bg-clip-text bg-linear-to-r from-orange to-teal">Gigligo</span> Works
-                </h2>
-              </ScrollReveal>
-              <ScrollReveal delay={0.2} yOffset={30}>
-                <p className="text-lg text-slate-600 dark:text-offwhite/50 max-w-2xl mx-auto font-light leading-relaxed">
-                  A seamless bridge between bold ideas and top-tier execution. Escrow protection and instant matching, all handled automatically.
-                </p>
-              </ScrollReveal>
+        <section className="py-32 bg-[#212121] text-white relative overflow-hidden">
+          <div className="max-container relative z-10">
+            <div className="text-center mb-24" data-scroll="fade-up">
+              <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DAA520]/10 border border-[#DAA520]/20 text-[#DAA520] text-xs font-bold uppercase tracking-widest">The Process</div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">How it <span className="text-[#DAA520]">Works.</span></h2>
+              <p className="text-white/50 max-w-lg mx-auto font-normal text-lg leading-relaxed">A seamless marketplace designed for high-end collaboration and impact.</p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
-              {/* Connector line for desktop */}
-              <div className="hidden md:block absolute top-[60px] left-1/6 right-1/6 h-0.5 bg-linear-to-r from-transparent via-slate-200 dark:via-white/10 to-transparent z-0" />
-
-              <ScrollReveal delay={0.1} yOffset={50} blur className="relative z-10 text-center flex flex-col items-center">
-                <div className="w-24 h-24 rounded-3xl bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 shadow-xl flex items-center justify-center mb-6 ring-8 ring-slate-50 dark:ring-[#0a0a0a] group hover:-translate-y-2 transition-transform duration-300">
-                  <Icon name="search" size={40} className="text-orange group-hover:scale-110 transition-transform duration-300" />
+            <div className="grid md:grid-cols-3 gap-12 relative">
+              {[
+                { title: 'Create', desc: 'Build your profile or post a project scope with our high-end wizard.', icon: <Search size={24} /> },
+                { title: 'Chat', desc: 'Connect directly through our secure, real-time communication portal.', icon: <Users size={24} /> },
+                { title: 'Start', desc: 'Secure payment, release funds on completion, and scale your impact.', icon: <Shield size={24} /> }
+              ].map((item, i) => (
+                <div key={i} className="relative group text-center" data-scroll="fade-up" data-delay={i * 200}>
+                  <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 transition-all duration-500 group-hover:bg-[#DAA520]/10 group-hover:border-[#DAA520]/30 relative z-10">
+                    <div className="text-[#DAA520] group-hover:rotate-180 transition-all duration-700">{item.icon}</div>
+                    <div className="absolute -top-2 -right-2 text-[40px] font-bold text-white/5 italic select-none">0{i + 1}</div>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
+                  <p className="text-white/40 leading-relaxed max-w-[280px] mx-auto font-normal">{item.desc}</p>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-offwhite mb-3">1. Find or Post</h3>
-                <p className="text-slate-600 dark:text-offwhite/50 text-sm font-light leading-relaxed max-w-[250px]">
-                  Browse highly-vetted talent profiles or post a gig to get competitive proposals instantly.
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal delay={0.25} yOffset={50} blur className="relative z-10 text-center flex flex-col items-center">
-                <div className="w-24 h-24 rounded-3xl bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 shadow-xl flex items-center justify-center mb-6 ring-8 ring-slate-50 dark:ring-[#0a0a0a] group hover:-translate-y-2 transition-transform duration-300">
-                  <Icon name="shield" size={40} className="text-teal group-hover:scale-110 transition-transform duration-300" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-offwhite mb-3">2. Escrow Secured</h3>
-                <p className="text-slate-600 dark:text-offwhite/50 text-sm font-light leading-relaxed max-w-[250px]">
-                  Payments are held securely in escrow. Work begins with complete peace of mind for both parties.
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal delay={0.4} yOffset={50} blur className="relative z-10 text-center flex flex-col items-center">
-                <div className="w-24 h-24 rounded-3xl bg-white dark:bg-[#111] border border-slate-200 dark:border-white/10 shadow-xl flex items-center justify-center mb-6 ring-8 ring-slate-50 dark:ring-[#0a0a0a] group hover:-translate-y-2 transition-transform duration-300">
-                  <Icon name="checkCircle" size={40} className="text-orange-light group-hover:scale-110 transition-transform duration-300" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-offwhite mb-3">3. Approve & Excel</h3>
-                <p className="text-slate-600 dark:text-offwhite/50 text-sm font-light leading-relaxed max-w-[250px]">
-                  Review the delivered work. Approve to release funds instantly and build a long-term partnership.
-                </p>
-              </ScrollReveal>
+              ))}
             </div>
           </div>
         </section>
@@ -647,46 +470,15 @@ export default function Home() {
         {/* ════════════════════════════════════════════
             OUR MISSION — BLACK + ORANGE accents
             ════════════════════════════════════════════ */}
-        <section className="py-28 relative overflow-hidden bg-white dark:bg-black">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.05)_0%,transparent_70%)] rounded-full pointer-events-none" />
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.06)_0%,transparent_70%)] rounded-full pointer-events-none" />
-          </div>
-          <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
-            <div className="mb-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal/20 border border-teal-light/20 text-teal-light text-xs font-bold uppercase tracking-widest" data-scroll="fade-up">Our Mission</div>
-            <h2 className="font-display text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-offwhite mb-6 leading-tight" data-scroll="fade-up" data-delay="100">Building Pakistan&apos;s<br /><span className="bg-linear-to-r from-orange via-orange-light to-orange bg-clip-text text-transparent">Talent Economy</span></h2>
-            <p className="text-xl text-slate-600 dark:text-offwhite/50 font-light mb-20 max-w-3xl mx-auto leading-relaxed" data-scroll="fade-up" data-delay="200">Pakistan is home to more than <span className="text-orange font-semibold">30 million</span> university students and an ever-growing small-business sector. Gigligo bridges the gap between untapped talent and businesses that need reliable, cost-effective help.</p>
-
-            <div className="grid md:grid-cols-3 gap-8 mb-20 perspective-1000">
-              {[
-                { num: '01', title: '0% Commission', desc: 'Unlike global platforms that take 20%, we let talent keep 100% of their earnings.', icon: 'trend', accent: 'orange' },
-                { num: '02', title: 'Direct Local Payouts', desc: 'No more Payoneer fees. Withdraw directly via IBFT, JazzCash or Easypaisa.', icon: 'zap', accent: 'teal-light' },
-                { num: '03', title: 'Verified Univ Talent', desc: 'We partner directly with university societies at LUMS, NUST & FAST for top quality.', icon: 'school', accent: 'orange' },
-              ].map((item, i) => (
-                <div key={i} className="tilt-card bg-teal/15 rounded-3xl p-8 border border-teal-light/15 text-left hover:border-orange/20 transition-all group" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-up" data-delay={`${i * 150}`}>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className={`w-12 h-12 rounded-2xl bg-${item.accent}/15 flex items-center justify-center`}>
-                      <Icon name={item.icon} size={22} className={`text-${item.accent}`} />
-                    </div>
-                    <span className="text-xs font-black text-offwhite/25">{item.num}</span>
-                  </div>
-                  <h4 className="text-xl text-slate-900 dark:text-offwhite font-bold mb-3">{item.title}</h4>
-                  <p className="text-sm text-slate-600 dark:text-offwhite/40 font-light leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="glass-card-orange text-left" data-scroll="fade-right" data-delay="200">
-                <div className="w-12 h-12 rounded-2xl bg-orange/15 flex items-center justify-center mb-5"><Icon name="globe" size={22} className="text-orange" /></div>
-                <h4 className="text-lg text-slate-900 dark:text-offwhite font-bold mb-3">Community-Driven</h4>
-                <p className="text-sm text-slate-600 dark:text-offwhite/45 font-light leading-relaxed">Campus ambassadors, hackathon sponsorships, and a peer-review forum. Building a collective of excellence, one campus at a time.</p>
-              </div>
-              <div className="glass-card-teal text-left" data-scroll="fade-left" data-delay="200">
-                <div className="w-12 h-12 rounded-2xl bg-teal/25 flex items-center justify-center mb-5"><Icon name="layers" size={22} className="text-teal-light" /></div>
-                <h4 className="text-lg text-slate-900 dark:text-offwhite font-bold mb-3">Scalable Solutions</h4>
-                <p className="text-sm text-slate-600 dark:text-offwhite/45 font-light leading-relaxed">From a one-off logo design to a full-time remote development team, scale your talent without ever leaving the platform.</p>
-              </div>
+        <section className="py-32 bg-white relative overflow-hidden">
+          <div className="max-container flex flex-col items-center text-center">
+            <div className="max-w-3xl" data-scroll="fade-up">
+              <div className="mb-8 flex justify-center"><GLogo size={48} /></div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#212121] mb-8 leading-tight italic font-serif opacity-80">
+                &quot;To empower over 30 million Pakistani university students to build careers without boundaries, bridging the gap between local talent and global enterprise.&quot;
+              </h2>
+              <div className="w-12 h-1 bg-[#DAA520] mx-auto mb-8 rounded-full" />
+              <p className="text-[12px] font-bold text-[#424242]/40 uppercase tracking-[0.4em]">The Gigligo Vision</p>
             </div>
           </div>
         </section>
@@ -694,51 +486,26 @@ export default function Home() {
         {/* ════════════════════════════════════════════
             DUAL CTA — OFF-WHITE / LIGHT SECTION
             ════════════════════════════════════════════ */}
-        <section className="py-28 relative overflow-hidden bg-slate-50 dark:bg-[#EFEEEA]">
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(254,119,67,0.08)_0%,transparent_70%)] rounded-full pointer-events-none" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle_at_center,rgba(39,63,79,0.08)_0%,transparent_70%)] rounded-full pointer-events-none" />
-          <div className="max-w-7xl mx-auto px-6 relative z-10">
-            <div className="grid md:grid-cols-2 gap-12 perspective-1000">
-              {/* Student CTA — orange */}
-              <div className="tilt-card p-10 rounded-3xl bg-white border border-orange/15 group hover:border-orange/30 transition-all shadow-lg shadow-black/5" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-right">
-                <div className="w-14 h-14 rounded-2xl bg-orange/10 flex items-center justify-center mb-6"><Icon name="school" size={28} className="text-orange" /></div>
-                <h3 className="text-2xl font-bold mb-4 text-black dark:text-offwhite">Are you a Student?</h3>
-                <p className="text-slate-600 dark:text-teal/80 mb-8 font-light leading-relaxed">Sign up with your .edu email. Every project adds a real-world credential to your résumé while you earn top-tier local rates.</p>
-                <Link href="/register?role=SELLER" className="px-8 py-4 bg-orange text-white rounded-xl font-bold inline-flex items-center gap-3 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange/25 transition-all">
-                  Join the Campus Elite <Icon name="fwd" size={16} />
-                </Link>
-              </div>
-              {/* Business CTA — teal */}
-              <div className="tilt-card p-10 rounded-3xl bg-teal border border-teal-light/20 group hover:border-teal-light/40 transition-all shadow-lg shadow-black/10" onMouseMove={handleTilt} onMouseLeave={resetTilt} data-scroll="fade-left">
-                <div className="w-14 h-14 rounded-2xl bg-teal-light/20 flex items-center justify-center mb-6"><Icon name="premium" size={28} className="text-offwhite" /></div>
-                <h3 className="text-2xl font-bold mb-4 text-white dark:text-offwhite">Running a Business?</h3>
-                <p className="text-white/80 dark:text-offwhite/60 mb-8 font-light leading-relaxed">Post your first job with a <strong className="text-white hover:text-orange transition-colors">10% launch discount</strong>. High-quality work without breaking the bank.</p>
-                <Link href="/search" className="px-8 py-4 bg-white dark:bg-offwhite text-teal-dark rounded-xl font-bold inline-flex items-center gap-3 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/15 transition-all">
-                  Claim 10% Discount <Icon name="trend" size={16} />
-                </Link>
-              </div>
+        <section className="mb-20 px-6">
+          <div className="max-container relative overflow-hidden rounded-[40px] bg-[#212121] py-24 px-8 md:px-20 text-center">
+            <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(218,165,32,0.1)_0%,transparent_70%)]" />
             </div>
-            <div className="mt-20 text-center" data-scroll="fade" data-delay="300">
-              <p className="text-teal/60 font-light italic text-lg">&ldquo;Building a new economy of trust, talent, and opportunity — one gig at a time.&rdquo;</p>
+
+            <div className="relative z-10 max-w-2xl mx-auto" data-scroll="fade-up">
+              <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">Ready to <span className="text-[#DAA520]">Start?</span></h2>
+              <p className="text-white/60 text-lg mb-12 max-w-md mx-auto leading-relaxed">Join Pakistan's premier freelance ecosystem today and experience the high-end difference.</p>
+
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                <Link href="/register" className="btn-primary px-12 py-5 w-full md:w-auto">Join Gigligo Now</Link>
+                <Link href="/pricing" className="text-white/60 hover:text-white font-bold transition-colors">View Pricing Plans</Link>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ═══ FOOTER — BLACK ═══ */}
-        <footer className="py-16 text-slate-500 dark:text-offwhite/50 border-t border-slate-200 dark:border-offwhite/8 bg-white dark:bg-black">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-10">
-              <Link href="/" className="flex items-center gap-3"><GLogo size={30} /><h2 className="font-display text-xl font-black tracking-tighter text-slate-900 dark:text-offwhite">gigligo<span className="text-orange/60">.com</span></h2></Link>
-              <div className="flex gap-8 text-sm">
-                <Link href="/about" className="hover:text-orange transition-colors">About</Link>
-                <Link href="/register?role=SELLER" className="hover:text-orange transition-colors">For Students</Link>
-                <Link href="/search" className="hover:text-orange transition-colors">For Businesses</Link>
-                <a href="#" className="hover:text-orange transition-colors">Privacy</a>
-              </div>
-              <p className="text-xs text-slate-400 dark:text-offwhite/30">&copy; {new Date().getFullYear()} Gigligo. Built for Pakistan.</p>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   );

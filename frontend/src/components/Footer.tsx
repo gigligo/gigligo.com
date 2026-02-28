@@ -53,19 +53,17 @@ function SocialIcon({ name }: { name: string }) {
 
 export function Footer() {
     return (
-        <footer className="bg-slate-950 text-slate-400 border-t border-slate-800/50">
+        <footer className="py-16 text-offwhite/50 border-t border-offwhite/8 bg-black">
             <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
                     {/* About */}
                     <div className="md:col-span-1">
                         <div className="flex items-center gap-2 mb-4">
                             <GigligoMark size={28} />
-                            <span className="font-display text-lg font-black tracking-tighter text-white">
-                                gigligo<span className="text-teal-vibrant opacity-60">.com</span>
-                            </span>
+                            <span className="font-display text-xl font-black tracking-tighter text-white">gigligo<span className="text-teal-vibrant opacity-60">.com</span></span>
                         </div>
-                        <p className="text-sm leading-relaxed opacity-80">
-                            Empowering Pakistan&apos;s talent economy.<br />
+                        <p className="mt-4 text-sm max-w-xs text-offwhite/40">
+                            Pakistan's premium freelance marketplace connecting top talent with ambitious projects.
                             Zero international fees — local talent, global quality.
                         </p>
                         <div className="flex gap-4 mt-6">
@@ -82,8 +80,8 @@ export function Footer() {
                                         href={urls[social]}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-9 h-9 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-teal-vibrant hover:border-teal-vibrant hover:text-slate-950 transition-all"
-                                        aria-label={social}
+                                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-offwhite/40 hover:bg-[#FE7743] hover:text-white transition-all duration-300"
+                                        aria-label="Social Link"
                                     >
                                         <SocialIcon name={social} />
                                     </a>
@@ -94,7 +92,7 @@ export function Footer() {
 
                     {/* For Clients */}
                     <div>
-                        <h4 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-5">For Clients</h4>
+                        <h4 className="font-bold text-white mb-4">For Clients</h4>
                         <ul className="space-y-3 text-sm">
                             <li><Link href="/search" className="hover:text-teal-vibrant transition-colors">Find Talent</Link></li>
                             <li><Link href="/register" className="hover:text-teal-vibrant transition-colors">Post a Project</Link></li>
@@ -105,7 +103,7 @@ export function Footer() {
 
                     {/* For Freelancers */}
                     <div>
-                        <h4 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-5">For Freelancers</h4>
+                        <h4 className="font-bold text-white mb-4">For Freelancers</h4>
                         <ul className="space-y-3 text-sm">
                             <li><Link href="/register?role=SELLER" className="hover:text-teal-vibrant transition-colors">Become a Freelancer</Link></li>
                             <li><Link href="/search" className="hover:text-teal-vibrant transition-colors">Browse Gigs</Link></li>
@@ -115,7 +113,7 @@ export function Footer() {
 
                     {/* Legal */}
                     <div>
-                        <h4 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-5">Legal</h4>
+                        <h4 className="font-bold text-white mb-4">Legal</h4>
                         <ul className="space-y-3 text-sm mb-8">
                             <li><Link href="/about" className="hover:text-teal-vibrant transition-colors">About Us</Link></li>
                             <li><Link href="/faq" className="hover:text-teal-vibrant transition-colors">FAQ</Link></li>
@@ -149,8 +147,10 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className="border-t border-slate-800 pt-8 text-center text-xs text-white/30">
-                    &copy; {new Date().getFullYear()} Gigligo — Built for Pakistan.
+                <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-xs text-offwhite/30 truncate">
+                        &copy; {new Date().getFullYear()} Gigligo. All rights reserved. Made for Pakistan with ❤️
+                    </p>
                 </div>
             </div>
         </footer>

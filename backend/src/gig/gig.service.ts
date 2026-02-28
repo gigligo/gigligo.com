@@ -16,29 +16,22 @@ export class GigService {
             ];
         }
 
-        // Optimized: use _count instead of loading all review objects
         const now = new Date();
         const gigs = await this.prisma.gig.findMany({
             where,
             include: {
                 seller: { select: { id: true, profile: true } },
-                _count: { select: { reviews: true } },
                 boosts: { where: { expiresAt: { gt: now } } }
             },
             orderBy: { createdAt: 'desc' }
         });
 
         // Sort so that gigs with active boosts appear first
-        return gigs
-            .map(gig => ({
-                ...gig,
-                reviewCount: (gig as any)._count.reviews,
-            }))
-            .sort((a, b) => {
-                const aBoosted = a.boosts.length > 0 ? 1 : 0;
-                const bBoosted = b.boosts.length > 0 ? 1 : 0;
-                return bBoosted - aBoosted;
-            });
+        return gigs.sort((a, b) => {
+            const aBoosted = a.boosts.length > 0 ? 1 : 0;
+            const bBoosted = b.boosts.length > 0 ? 1 : 0;
+            return bBoosted - aBoosted;
+        });
     }
 
     async findOne(id: string) {
@@ -60,11 +53,7 @@ export class GigService {
             },
         });
         if (!gig || gig.deletedAt) throw new NotFoundException('Gig not found');
-        return {
-            ...gig,
-            reviewCount: gig.reviews.length,
-            avgRating: gig.reviews.length > 0 ? gig.reviews.reduce((sum, r) => sum + r.rating, 0) / gig.reviews.length : 0
-        };
+        return gig;
     }
 
     async findMine(sellerId: string) {
@@ -109,7 +98,7 @@ export class GigService {
                 action: 'UPDATE_GIG',
                 targetId: id,
                 details: `Updated gig: ${data.title || gig.title}`
-            }
+            } as any
         });
 
         return updatedGig;
@@ -135,7 +124,7 @@ export class GigService {
                 action: 'DELETE_GIG',
                 targetId: id,
                 details: `Deleted gig: ${gig.title}`
-            }
+            } as any
         });
 
         return this.prisma.gig.update({
@@ -145,5 +134,24 @@ export class GigService {
                 isActive: false
             }
         });
+    }
+
+    async updateGigStats(gigId: string) {
+        const reviews = await this.prisma.review.findMany({
+            where: { gigId },
+            select: { rating: true }
+        });
+
+        const reviewCount = reviews.length;
+        const avgRating = reviewCount > 0
+            ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount
+            : 0;
+
+        await this.prisma.gig.update({
+            where: { id: gigId },
+            data: { avgRating, reviewCount } as any
+        });
+
+        return { avgRating, reviewCount };
     }
 }

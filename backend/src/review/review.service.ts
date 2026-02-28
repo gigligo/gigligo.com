@@ -2,10 +2,15 @@ import { Injectable, NotFoundException, BadRequestException, ForbiddenException,
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
+import { GigService } from '../gig/gig.service';
+
 @Injectable()
 export class ReviewService {
     private readonly logger = new Logger(ReviewService.name);
-    constructor(private prisma: PrismaService) { }
+    constructor(
+        private prisma: PrismaService,
+        private gigService: GigService
+    ) { }
 
     async submitReview(
         buyerId: string,
@@ -49,6 +54,9 @@ export class ReviewService {
 
         // Immediately recalculate seller level after new review
         await this.recalculateSellerLevel(order.sellerId);
+
+        // Update Gig-specific cached stats (avgRating, reviewCount)
+        await this.gigService.updateGigStats(order.gigId);
 
         return review;
     }
@@ -120,7 +128,12 @@ export class ReviewService {
         const BATCH_SIZE = 50;
         for (let i = 0; i < sellers.length; i += BATCH_SIZE) {
             const batch = sellers.slice(i, i + BATCH_SIZE);
-            await Promise.all(batch.map(s => this.recalculateSellerLevel(s.id)));
+            await Promise.all(batch.map(async (s) => {
+                await this.recalculateSellerLevel(s.id);
+                // Also update all gigs for this seller to ensure they have cached ratings
+                const sellerGigs = await this.prisma.gig.findMany({ where: { sellerId: s.id }, select: { id: true } });
+                await Promise.all(sellerGigs.map(g => this.gigService.updateGigStats(g.id)));
+            }));
         }
         this.logger.log(`[Cron] Recalculated levels for ${sellers.length} sellers (batches of ${BATCH_SIZE})`);
     }
