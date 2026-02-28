@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 export function ProfileView({ userData }: { userData: any; token: string; apiUrl: string }) {
     const [firstName, setFirstName] = useState(userData?.profile?.firstName || '');
@@ -29,7 +30,7 @@ export function ProfileView({ userData }: { userData: any; token: string; apiUrl
                     <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-end gap-6 pt-16">
                         <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-surface-light shadow-xl bg-background-light flex items-center justify-center shrink-0">
                             {userData?.profile?.avatar ? (
-                                <img src={userData.profile.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                                <Image src={userData.profile.avatar} alt="Avatar" fill className="object-cover" sizes="96px" />
                             ) : (
                                 <span className="material-symbols-outlined text-5xl text-text-muted">account_circle</span>
                             )}

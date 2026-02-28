@@ -5,64 +5,112 @@ import { PrismaService } from '../prisma/prisma.service';
 export class AnalyticsService {
     constructor(private prisma: PrismaService) { }
 
-    async getFreelancerStats(sellerId: string, days: number = 30) {
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - days);
-        startDate.setHours(0, 0, 0, 0);
+    async getDashboardAnalytics(userId: string, role: string) {
+        const isEmployer = role === 'EMPLOYER' || role === 'BUYER';
+        const isFreelancer = role === 'SELLER' || role === 'FREE' || role === 'STUDENT';
 
-        // Fetch completed orders
-        const orders = await this.prisma.order.findMany({
+        // Dates for comparison
+        const now = new Date();
+        const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+        let thisMonthEarnings = 0;
+        let lastMonthEarnings = 0;
+        let activeOrdersCount = 0;
+        let totalMessagesCount = 0;
+
+        if (isFreelancer) {
+            // Seller Analytics
+            const earningsThisMonth = await this.prisma.transaction.aggregate({
+                _sum: { amountPKR: true },
+                where: {
+                    userId,
+                    type: 'EARNING',
+                    status: 'COMPLETED',
+                    createdAt: { gte: firstDayThisMonth },
+                },
+            });
+
+            const earningsLastMonth = await this.prisma.transaction.aggregate({
+                _sum: { amountPKR: true },
+                where: {
+                    userId,
+                    type: 'EARNING',
+                    status: 'COMPLETED',
+                    createdAt: { gte: firstDayLastMonth, lt: firstDayThisMonth },
+                },
+            });
+
+            thisMonthEarnings = earningsThisMonth._sum.amountPKR || 0;
+            lastMonthEarnings = earningsLastMonth._sum.amountPKR || 0;
+
+            activeOrdersCount = await this.prisma.order.count({
+                where: {
+                    sellerId: userId,
+                    status: { in: ['IN_PROGRESS', 'PENDING'] },
+                },
+            });
+        }
+
+        if (isEmployer) {
+            // Employer Analytics (Spend instead of Earnings)
+            const spendThisMonth = await this.prisma.transaction.aggregate({
+                _sum: { amountPKR: true },
+                where: {
+                    userId,
+                    type: 'PAYMENT',
+                    status: 'COMPLETED',
+                    createdAt: { gte: firstDayThisMonth },
+                },
+            });
+
+            const spendLastMonth = await this.prisma.transaction.aggregate({
+                _sum: { amountPKR: true },
+                where: {
+                    userId,
+                    type: 'PAYMENT',
+                    status: 'COMPLETED',
+                    createdAt: { gte: firstDayLastMonth, lt: firstDayThisMonth },
+                },
+            });
+
+            thisMonthEarnings = spendThisMonth._sum.amountPKR || 0; // Using this variable name for universal front-end mapping
+            lastMonthEarnings = spendLastMonth._sum.amountPKR || 0;
+
+            activeOrdersCount = await this.prisma.order.count({
+                where: {
+                    buyerId: userId,
+                    status: { in: ['IN_PROGRESS', 'PENDING'] },
+                },
+            });
+        }
+
+        totalMessagesCount = await this.prisma.message.count({
             where: {
-                sellerId,
-                status: 'COMPLETED',
-                updatedAt: { gte: startDate }
-            },
-            select: {
-                price: true,
-                updatedAt: true,
+                conversation: {
+                    OR: [
+                        { freelancerId: userId },
+                        { employerId: userId }
+                    ]
+                },
+                isRead: false,
+                senderId: { not: userId }
             }
         });
 
-        // Fetch job applications
-        const applications = await this.prisma.jobApplication.findMany({
-            where: {
-                freelancerId: sellerId,
-                appliedAt: { gte: startDate }
+        const growthPercentage = lastMonthEarnings === 0
+            ? 100
+            : ((thisMonthEarnings - lastMonthEarnings) / lastMonthEarnings) * 100;
+
+        return {
+            financials: {
+                current: thisMonthEarnings,
+                previous: lastMonthEarnings,
+                growth: Math.round(growthPercentage),
+                label: isEmployer ? 'Total Spend' : 'Total Earnings'
             },
-            select: {
-                appliedAt: true
-            }
-        });
-
-        // Aggregate by date (YYYY-MM-DD)
-        const dailyData: Record<string, { date: string; earnings: number; orders: number; applications: number }> = {};
-
-        // Initialize last X days with 0s to ensure a continuous line chart
-        for (let i = days - 1; i >= 0; i--) {
-            const d = new Date();
-            d.setDate(d.getDate() - i);
-            const dateStr = d.toISOString().split('T')[0];
-            dailyData[dateStr] = { date: dateStr, earnings: 0, orders: 0, applications: 0 };
-        }
-
-        // Aggregate Orders
-        for (const order of orders) {
-            const dateStr = order.updatedAt.toISOString().split('T')[0];
-            if (dailyData[dateStr]) {
-                dailyData[dateStr].earnings += order.price;
-                dailyData[dateStr].orders += 1;
-            }
-        }
-
-        // Aggregate Applications
-        for (const app of applications) {
-            const dateStr = app.appliedAt.toISOString().split('T')[0];
-            if (dailyData[dateStr]) {
-                dailyData[dateStr].applications += 1;
-            }
-        }
-
-        // Convert the record to an array sorted by date
-        return Object.values(dailyData).sort((a, b) => a.date.localeCompare(b.date));
+            activeOrders: activeOrdersCount,
+            unreadMessages: totalMessagesCount
+        };
     }
 }

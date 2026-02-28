@@ -3,6 +3,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -138,7 +139,7 @@ function SearchPageContent() {
                                     {/* Image */}
                                     <div className="w-full md:w-56 h-48 md:h-auto shrink-0 overflow-hidden relative bg-background-light">
                                         {gig.images && gig.images.length > 0 ? (
-                                            <img src={gig.images[0]} alt={gig.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                                            <Image src={gig.images[0]} alt={gig.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 224px" />
                                         ) : (
                                             <div className="w-full h-full flex flex-col items-center justify-center text-text-muted/20">
                                                 <span className="material-symbols-outlined text-5xl">layers</span>

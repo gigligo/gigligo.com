@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import Image from "next/image";
 import { Check, Star, Clock, RefreshCw, ShieldCheck } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -94,7 +95,7 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
 
                             <div className="w-full aspect-video rounded-[10px] overflow-hidden bg-[#FFFFFF] mb-10 border border-[#E5E5E5] flex items-center justify-center shadow-sm">
                                 {gig.images && gig.images.length > 0 ? (
-                                    <img src={gig.images[0]} alt="Gig Thumbnail" className="w-full h-full object-cover" loading="lazy" />
+                                    <Image src={gig.images[0]} alt="Gig Thumbnail" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
                                 ) : (
                                     <span className="micro-label text-[#3A3A3A]/30 font-bold">No Image Available</span>
                                 )}

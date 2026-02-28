@@ -181,8 +181,10 @@ export const reviewApi = {
 };
 
 export const analyticsApi = {
+    getDashboard: (token: string) =>
+        apiFetch('/api/analytics/dashboard', { token }),
     getFreelancerStats: (token: string, days: number = 30) =>
-        apiFetch(`/api/analytics/freelancer?days=${days}`, { token })
+        apiFetch(`/api/analytics/dashboard?days=${days}`, { token }),
 };
 
 // Profile APIs

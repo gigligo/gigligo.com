@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { ShieldCheck, Check } from "lucide-react";
+import Image from "next/image";
 
 export default function CheckoutPage({ params, searchParams }: { params: { gigId: string }, searchParams: { pkg?: string } }) {
     const pkgName = searchParams.pkg || 'starter';
@@ -30,7 +31,7 @@ export default function CheckoutPage({ params, searchParams }: { params: { gigId
 
                             <div className="flex gap-4 mb-6">
                                 <div className="w-24 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=200&h=150&fit=crop" alt="Gig" className="w-full h-full object-cover" loading="lazy" />
+                                    <Image src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=200&h=150&fit=crop" alt="Gig" width={96} height={64} className="w-full h-full object-cover" />
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-primary">Custom Next.js eCommerce Site</h3>

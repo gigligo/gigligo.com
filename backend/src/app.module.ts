@@ -37,6 +37,7 @@ import { ContractModule } from './contract/contract.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { UserStateModule } from './user-state/user-state.module';
 import { EventsModule } from './events/events.module';
+import { BoostModule } from './boost/boost.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { EventsModule } from './events/events.module';
     PaymentModule,
     CreditModule,
     JobModule,
+    BoostModule,
     ApplicationModule,
     NotificationModule,
     AdminModule,

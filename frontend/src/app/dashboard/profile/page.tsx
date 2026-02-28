@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { Navbar } from '@/components/Navbar';
 import { profileApi } from '@/lib/api';
 import { Plus, Trash2, Edit2, Loader2, Link as LinkIcon, Briefcase, GraduationCap, Image as ImageIcon, MapPin, User, DollarSign } from 'lucide-react';
+import NextImage from 'next/image';
 import { toast } from 'sonner';
 
 export default function ProfileEditorPage() {
@@ -108,7 +109,7 @@ export default function ProfileEditorPage() {
                                     <div className="relative group shrink-0">
                                         <div className="w-32 h-32 rounded-full overflow-hidden bg-slate-200 dark:bg-[#111] border-4 border-white dark:border-[#222] shadow-lg flex items-center justify-center relative">
                                             {profile.avatarUrl ? (
-                                                <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                                                <NextImage src={profile.avatarUrl} alt="Avatar" fill className="object-cover" sizes="160px" />
                                             ) : (
                                                 <User size={48} className="text-slate-400" />
                                             )}
@@ -280,7 +281,7 @@ export default function ProfileEditorPage() {
                                                 <div className="h-40 bg-slate-200 dark:bg-[#111] overflow-hidden">
                                                     {port.imageUrl ? (
                                                         <a href={port.imageUrl} target="_blank" rel="noreferrer" title="Click to view full image">
-                                                            <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover hover:scale-105 transition duration-500 cursor-pointer" loading="lazy" />
+                                                            <NextImage src={`${port.imageUrl}`} alt={port.title} fill className="object-cover hover:scale-105 transition duration-500 cursor-pointer" sizes="(max-width: 768px) 100vw, 33vw" />
                                                         </a>
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center text-slate-400"><ImageIcon size={40} /></div>

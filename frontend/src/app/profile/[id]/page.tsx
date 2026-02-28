@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { profileApi, reviewApi } from '@/lib/api';
@@ -104,7 +105,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                         {/* Avatar */}
                         <div className="w-28 h-28 md:w-32 md:h-32 rounded-full ring-4 ring-primary/30 overflow-hidden shrink-0 shadow-2xl shadow-primary/10">
                             {profile?.avatarUrl ? (
-                                <img src={profile.avatarUrl} alt={profile.fullName || user.fullName} className="w-full h-full object-cover" />
+                                <Image src={profile.avatarUrl} alt={profile.fullName || user.fullName} fill className="object-cover" sizes="160px" />
                             ) : (
                                 <div className="w-full h-full bg-white/10 flex items-center justify-center text-5xl font-black text-white">
                                     {(profile?.fullName || user?.fullName)?.[0] || 'U'}
@@ -281,7 +282,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                                         <div key={port.id} className="border border-border-light rounded-xl overflow-hidden group bg-background-light hover:border-primary/30 transition-all duration-300">
                                             <div className="h-44 overflow-hidden bg-background-light">
                                                 {port.imageUrl ? (
-                                                    <img src={`${port.imageUrl}`} alt={port.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" />
+                                                    <Image src={`${port.imageUrl}`} alt={port.title} fill className="object-cover group-hover:scale-105 transition duration-500" sizes="(max-width: 768px) 100vw, 33vw" />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-text-muted/30">
                                                         <span className="material-symbols-outlined text-4xl">image</span>

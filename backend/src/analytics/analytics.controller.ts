@@ -1,16 +1,14 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { AnalyticsService } from './analytics.service';
+import { Controller, Get, UseGuards, Req } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import type { Request } from 'express';
+import { AnalyticsService } from './analytics.service';
 
-@Controller('api/analytics')
+@Controller('analytics')
 export class AnalyticsController {
     constructor(private readonly analyticsService: AnalyticsService) { }
 
     @UseGuards(JwtAuthGuard)
-    @Get('freelancer')
-    async getFreelancerStats(@Req() req: Request) {
-        const user = req.user as any;
-        return this.analyticsService.getFreelancerStats(user.userId, 30);
+    @Get('dashboard')
+    async getDashboardAnalytics(@Req() req: any) {
+        return this.analyticsService.getDashboardAnalytics(req.user.id, req.user.role);
     }
 }
