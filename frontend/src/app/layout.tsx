@@ -48,6 +48,7 @@ export const metadata: Metadata = {
 import { Providers } from "@/components/Providers";
 
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { Analytics } from '@vercel/analytics/next';
 
 export default function RootLayout({
   children,
@@ -71,6 +72,7 @@ export default function RootLayout({
           {children}
         </Providers>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"} />
+        <Analytics />
       </body>
     </html>
   );
