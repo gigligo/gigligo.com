@@ -331,6 +331,9 @@ model Review {
   rating     Int
   comment    String
   createdAt  DateTime @default(now())
+
+  @@index([revieweeId])
+  @@index([gigId])
 }
 
 // ═══════════════════════════════════════
@@ -616,6 +619,7 @@ model Message {
   createdAt DateTime @default(now())
 
   @@index([conversationId, createdAt])
+  @@index([senderId])
 }
 
 // ═══════════════════════════════════════
@@ -637,6 +641,9 @@ model Dispute {
   resolution  String?
   createdAt   DateTime      @default(now())
   resolvedAt  DateTime?
+
+  @@index([initiatorId])
+  @@index([status])
 }
 
 // ═══════════════════════════════════════
@@ -681,6 +688,26 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   @@index([userId, createdAt])
+}
+
+// ═══════════════════════════════════════
+// REPUTATION SCORES (cached aggregation)
+// ═══════════════════════════════════════
+
+model ReputationScore {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  avgRating       Float    @default(0)
+  totalReviews    Int      @default(0)
+  completionRate  Float    @default(0)
+  responseTime    Float    @default(0)
+  repeatClients   Int      @default(0)
+  overallScore    Float    @default(0)
+  lastCalculatedAt DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([overallScore(sort: Desc)])
 }
 
 // ═══════════════════════════════════════
