@@ -73,7 +73,7 @@ export default function ProfileEditorPage() {
     };
 
     if (!session || loading) {
-        return <div className="min-h-screen bg-slate-50 dark:bg-[#000] flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-teal-vibrant" /></div>;
+        return <div className="min-h-screen bg-slate-50 dark:bg-black flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-teal-vibrant" /></div>;
     }
 
     return (

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import NotificationBell from './NotificationBell';
-import { MoreHorizontal, Coins, Menu, X } from 'lucide-react';
+import { Coins, Menu, X } from 'lucide-react';
 import { creditApi, userStateApi } from '@/lib/api';
 import { Logo } from '@/components/Logo';
 
@@ -13,6 +13,7 @@ export function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [credits, setCredits] = useState<number | null>(null);
     const [darkMode, setDarkMode] = useState(false);
+    const [moreOpen, setMoreOpen] = useState(false);
 
     useEffect(() => {
         const stored = localStorage.getItem('gigligo_dark_mode');
@@ -32,10 +33,9 @@ export function Navbar() {
     const token = (session as any)?.accessToken;
     const role = (session as any)?.role;
     const isFreelancer = ['SELLER', 'STUDENT', 'FREE'].includes(role);
-    const isEmployer = ['BUYER', 'EMPLOYER'].includes(role);
 
     const handleScroll = useCallback(() => {
-        setScrolled(window.scrollY > 60);
+        setScrolled(window.scrollY > 10);
     }, []);
 
     useEffect(() => {
@@ -71,36 +71,41 @@ export function Navbar() {
         <>
             <header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled
-                    ? 'bg-[#1E1E1E] border-[#C9A227]/20 py-4 shadow-2xl'
-                    : 'bg-transparent border-transparent py-6'
+                    ? 'bg-white dark:bg-background-dark border-slate-200 dark:border-slate-800 py-3 shadow-sm'
+                    : 'bg-white dark:bg-background-dark border-slate-200 dark:border-slate-800 py-3'
                     }`}
-                style={{ height: scrolled ? 76 : 88 }}
+                style={{ height: 72 }}
             >
-                <div className="max-container h-full flex items-center justify-between">
-                    <div className="flex items-center gap-12">
-                        <Link href="/" className="flex items-center group">
-                            <Logo className="h-10 w-auto" variant="white" />
+                <div className="max-w-7xl mx-auto px-6 md:px-10 h-full flex items-center justify-between">
+                    <div className="flex items-center gap-8">
+                        <Link href="/" className="flex items-center gap-3">
+                            <div className="size-8 bg-primary rounded flex items-center justify-center">
+                                <span className="material-symbols-outlined text-slate-900 font-bold text-lg">token</span>
+                            </div>
+                            <h2 className="text-xl font-black leading-tight tracking-tight uppercase text-slate-900 dark:text-slate-100">GIGLIGO</h2>
                         </Link>
-                        <nav className="hidden lg:flex items-center gap-10">
-                            {['Browse Jobs', 'Find Gigs', 'How it Works'].map((item) => (
-                                <Link
-                                    key={item}
-                                    href={item === 'Browse Jobs' ? '/jobs' : item === 'Find Gigs' ? '/search' : '#how-it-works'}
-                                    className="text-sm font-semibold text-white/70 hover:text-[#C9A227] transition-colors py-2 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[#C9A227] after:scale-x-0 after:origin-right hover:after:scale-x-100 hover:after:origin-left after:transition-transform after:duration-150"
+                        <nav className="hidden md:flex items-center gap-6">
+                            <Link href="/search" className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors">Explore</Link>
+                            <Link href="/register?role=SELLER" className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors">Become a Seller</Link>
+                            <Link href="/jobs" className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors">Browse Jobs</Link>
+                            <div className="relative group">
+                                <button
+                                    className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors flex items-center gap-1"
+                                    onMouseEnter={() => setMoreOpen(true)}
+                                    onMouseLeave={() => setMoreOpen(false)}
                                 >
-                                    {item}
-                                </Link>
-                            ))}
-                            <div className="relative group p-2">
-                                <button className="text-white/60 hover:text-[#C9A227] transition-colors flex items-center">
-                                    <MoreHorizontal size={20} />
+                                    More <span className="material-symbols-outlined text-xs">expand_more</span>
                                 </button>
-                                <div className="absolute top-full left-0 mt-4 w-48 bg-[#1E1E1E] border border-[#C9A227]/20 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col py-3 z-50">
+                                <div
+                                    className={`absolute top-full left-0 mt-2 w-48 bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-2 z-50 transition-all ${moreOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                                    onMouseEnter={() => setMoreOpen(true)}
+                                    onMouseLeave={() => setMoreOpen(false)}
+                                >
                                     {moreLinks.map(link => (
                                         <Link
                                             key={link.label}
                                             href={link.href}
-                                            className="px-5 py-2 hover:bg-[#C9A227]/10 text-sm font-medium text-white/80 hover:text-[#C9A227] transition-colors"
+                                            className="block px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary transition-colors"
                                         >
                                             {link.label}
                                         </Link>
@@ -110,57 +115,49 @@ export function Navbar() {
                         </nav>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-8">
+                    <div className="hidden md:flex items-center gap-4 md:gap-6">
                         {session ? (
                             <>
                                 {isFreelancer && credits !== null && (
-                                    <Link href="/dashboard/credits" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 text-[#C9A227] text-xs font-bold hover:bg-[#C9A227]/20 transition-colors">
+                                    <Link href="/dashboard/credits" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
                                         <Coins size={14} />
                                         {credits}
                                     </Link>
                                 )}
                                 <NotificationBell />
-                                <button onClick={toggleDarkMode} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-[#C9A227] hover:border-[#C9A227]/30 transition-colors" aria-label="Toggle dark mode">
+                                <button onClick={toggleDarkMode} className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-primary hover:border-primary/30 transition-colors" aria-label="Toggle dark mode">
                                     <span className="material-symbols-outlined text-[18px]">{darkMode ? 'light_mode' : 'dark_mode'}</span>
                                 </button>
-                                <div className="relative group ml-2">
-                                    <div className="w-10 h-10 rounded-full bg-[#C9A227] flex items-center justify-center text-[#1E1E1E] font-bold text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform">
+                                <div className="relative group ml-1">
+                                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-slate-900 font-bold text-sm cursor-pointer hover:scale-105 transition-transform">
                                         {session.user?.name?.[0] || 'U'}
                                     </div>
-                                    <div className="absolute right-0 mt-4 w-64 bg-[#FFFFFF] border border-[#F7F7F6] rounded-xl shadow-2xl py-3 object-top invisible group-hover:visible transition-all">
-                                        <div className="px-5 py-4 border-b border-[#F7F7F6] mb-2">
-                                            <p className="text-sm font-bold text-[#1E1E1E] truncate">{session.user?.name}</p>
-                                            <p className="text-xs font-medium text-[#3A3A3A] truncate mt-1">{session.user?.email}</p>
+                                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all z-50">
+                                        <div className="px-5 py-3 border-b border-slate-100 dark:border-slate-700 mb-1">
+                                            <p className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">{session.user?.name}</p>
+                                            <p className="text-xs text-slate-500 truncate mt-0.5">{session.user?.email}</p>
                                         </div>
-                                        <Link href="/dashboard" className="block px-5 py-2.5 hover:bg-[#F7F7F6] text-sm font-medium text-[#1E1E1E] transition-colors">Dashboard</Link>
-                                        <Link href="/dashboard/inbox" className="block px-5 py-2.5 hover:bg-[#F7F7F6] text-sm font-medium text-[#1E1E1E] transition-colors">Inbox</Link>
-                                        <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full text-left px-5 py-2.5 hover:bg-[#C62828]/5 text-sm font-semibold text-[#C62828] transition-colors">Logout</button>
+                                        <Link href="/dashboard" className="block px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Dashboard</Link>
+                                        <Link href="/dashboard/inbox" className="block px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Inbox</Link>
+                                        <Link href="/dashboard/settings" className="block px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Settings</Link>
+                                        <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full text-left px-5 py-2.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-sm font-semibold text-red-600 transition-colors">Logout</button>
                                     </div>
                                 </div>
                             </>
                         ) : (
                             <>
-                                <Link
-                                    href="/login"
-                                    className="px-5 py-2 text-sm font-semibold text-white/80 hover:text-[#C9A227] transition-colors"
-                                >
-                                    Log In
+                                <Link href="/login" className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors">
+                                    Sign In
                                 </Link>
-                                <Link
-                                    href="/register"
-                                    className="btn-primary"
-                                >
-                                    Get Started
+                                <Link href="/register" className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-slate-900 text-sm font-bold transition-all hover:bg-primary/90 shadow-sm">
+                                    Join
                                 </Link>
                             </>
                         )}
                     </div>
 
                     <div className="flex md:hidden">
-                        <button
-                            className="p-2 text-white"
-                            onClick={() => setMenuOpen(!menuOpen)}
-                        >
+                        <button className="p-2 text-slate-900 dark:text-slate-100" onClick={() => setMenuOpen(!menuOpen)}>
                             {menuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
@@ -168,24 +165,30 @@ export function Navbar() {
             </header>
 
             {menuOpen && (
-                <div className="fixed inset-0 z-60 bg-[#1E1E1E] flex flex-col p-8 md:hidden">
+                <div className="fixed inset-0 z-60 bg-white dark:bg-background-dark flex flex-col p-8 md:hidden">
                     <div className="flex justify-between items-center mb-10">
-                        <Logo className="h-8 w-auto" variant="white" />
-                        <button onClick={() => setMenuOpen(false)} className="text-white"><X size={28} /></button>
+                        <div className="flex items-center gap-3">
+                            <div className="size-7 bg-primary rounded flex items-center justify-center">
+                                <span className="material-symbols-outlined text-slate-900 font-bold text-sm">token</span>
+                            </div>
+                            <span className="text-lg font-black uppercase text-slate-900 dark:text-slate-100">GIGLIGO</span>
+                        </div>
+                        <button onClick={() => setMenuOpen(false)} className="text-slate-900 dark:text-slate-100"><X size={28} /></button>
                     </div>
-                    <nav className="flex flex-col gap-6">
+                    <nav className="flex flex-col gap-5">
                         {[
+                            { label: 'Explore', href: '/search' },
                             { label: 'Browse Jobs', href: '/jobs' },
-                            { label: 'Find Gigs', href: '/search' },
+                            { label: 'Become a Seller', href: '/register?role=SELLER' },
                             { label: 'Pricing', href: '/pricing' },
-                            { label: 'Refer & Earn', href: '/referral' },
                             { label: 'Blog', href: '/blog' },
                             { label: 'About', href: '/about' },
+                            { label: 'Contact', href: '/contact' },
                         ].map((item) => (
                             <Link
                                 key={item.label}
                                 href={item.href}
-                                className="text-xl font-bold text-white/90"
+                                className="text-xl font-bold text-slate-800 dark:text-slate-200"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 {item.label}
@@ -194,8 +197,8 @@ export function Navbar() {
                     </nav>
                     {!session && (
                         <div className="mt-auto flex flex-col gap-4">
-                            <Link href="/login" className="btn-secondary text-white! border-white! text-center py-4" onClick={() => setMenuOpen(false)}>Login</Link>
-                            <Link href="/register" className="btn-primary text-center py-4" onClick={() => setMenuOpen(false)}>Join Free</Link>
+                            <Link href="/login" className="text-center py-4 text-sm font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-lg" onClick={() => setMenuOpen(false)}>Sign In</Link>
+                            <Link href="/register" className="text-center py-4 text-sm font-bold bg-primary text-slate-900 rounded-lg" onClick={() => setMenuOpen(false)}>Join Free</Link>
                         </div>
                     )}
                 </div>

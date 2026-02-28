@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Logo } from '@/components/Logo';
 
 function SocialIcon({ name }: { name: string }) {
     switch (name) {
@@ -37,18 +36,21 @@ function SocialIcon({ name }: { name: string }) {
 
 export function Footer() {
     return (
-        <footer className="py-20 text-white/50 bg-[#1E1E1E] border-t border-[#3A3A3A]">
-            <div className="max-container pt-8 pb-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
-                    {/* About */}
-                    <div className="md:col-span-1 border-gray-800 pr-8">
-                        <Link href="/" className="flex items-center mb-6">
-                            <Logo className="h-10 w-auto" variant="white" />
+        <footer className="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 py-12 px-6">
+            <div className="max-w-7xl mx-auto">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-12">
+                    {/* Brand */}
+                    <div className="col-span-2 lg:col-span-1">
+                        <Link href="/" className="flex items-center gap-2 text-slate-900 dark:text-slate-100 mb-6">
+                            <div className="size-6 bg-primary rounded flex items-center justify-center">
+                                <span className="material-symbols-outlined text-slate-900 text-xs font-bold">token</span>
+                            </div>
+                            <h2 className="text-base font-black uppercase tracking-tight">GIGLIGO</h2>
                         </Link>
-                        <p className="mt-4 text-[15px] leading-relaxed max-w-xs text-[#F7F7F6]/60">
-                            The professional arena where verified talent meets serious business.
+                        <p className="text-slate-500 text-sm leading-relaxed">
+                            Connecting businesses with the world&apos;s most talented freelancers to get things done.
                         </p>
-                        <div className="flex gap-4 mt-8">
+                        <div className="flex gap-3 mt-6">
                             {(['twitter', 'linkedin', 'instagram', 'github'] as const).map(social => {
                                 const urls: Record<string, string> = {
                                     twitter: 'https://twitter.com/gigligo',
@@ -62,8 +64,8 @@ export function Footer() {
                                         href={urls[social]}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-10 h-10 rounded-full border border-[#3A3A3A] bg-transparent flex items-center justify-center text-[#F7F7F6]/60 hover:border-[#C9A227] hover:text-[#C9A227] hover:bg-[#C9A227]/5 transition-all duration-300"
-                                        aria-label="Social Link"
+                                        className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all duration-300"
+                                        aria-label={social}
                                     >
                                         <SocialIcon name={social} />
                                     </a>
@@ -72,70 +74,49 @@ export function Footer() {
                         </div>
                     </div>
 
-                    {/* For Clients */}
-                    <div>
-                        <h4 className="font-bold text-[#FFFFFF] text-sm tracking-wider uppercase mb-6">For Clients</h4>
-                        <ul className="space-y-4 text-[15px]">
-                            <li><Link href="/search" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Find Talent</Link></li>
-                            <li><Link href="/register" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Post a Project</Link></li>
-                            <li><Link href="/jobs" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Jobs</Link></li>
-                            <li><Link href="/pricing" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Pricing</Link></li>
+                    {/* Categories */}
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100">Categories</h4>
+                        <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            <li><Link href="/search?category=Design" className="hover:text-primary transition-colors">Graphics &amp; Design</Link></li>
+                            <li><Link href="/search?category=Marketing" className="hover:text-primary transition-colors">Digital Marketing</Link></li>
+                            <li><Link href="/search?category=Writing" className="hover:text-primary transition-colors">Writing &amp; Translation</Link></li>
+                            <li><Link href="/search?category=video" className="hover:text-primary transition-colors">Video &amp; Animation</Link></li>
                         </ul>
                     </div>
 
-                    {/* For Freelancers */}
-                    <div>
-                        <h4 className="font-bold text-[#FFFFFF] text-sm tracking-wider uppercase mb-6">For Freelancers</h4>
-                        <ul className="space-y-4 text-[15px]">
-                            <li><Link href="/register?role=SELLER" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Become a Freelancer</Link></li>
-                            <li><Link href="/search" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Gigs</Link></li>
-                            <li><Link href="/jobs" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Browse Jobs</Link></li>
-                            <li><Link href="/referral" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Refer &amp; Earn</Link></li>
+                    {/* About */}
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100">About</h4>
+                        <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+                            <li><Link href="/blog" className="hover:text-primary transition-colors">Press &amp; News</Link></li>
+                            <li><Link href="/referral" className="hover:text-primary transition-colors">Partnerships</Link></li>
+                            <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
                         </ul>
                     </div>
 
-                    {/* Legal */}
-                    <div>
-                        <h4 className="font-bold text-[#FFFFFF] text-sm tracking-wider uppercase mb-6">Legal</h4>
-                        <ul className="space-y-4 text-[15px] mb-12">
-                            <li><Link href="/about" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">About Us</Link></li>
-                            <li><Link href="/faq" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">FAQ</Link></li>
-                            <li><Link href="/blog" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Blog</Link></li>
-                            <li><Link href="/help" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Help Center</Link></li>
-                            <li><Link href="/privacy" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="/terms" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Terms of Service</Link></li>
-                            <li><Link href="/contact" className="text-[#F7F7F6]/60 hover:text-[#C9A227] transition-colors">Contact</Link></li>
+                    {/* Support */}
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100">Support</h4>
+                        <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            <li><Link href="/help" className="hover:text-primary transition-colors">Help Center</Link></li>
+                            <li><Link href="/faq" className="hover:text-primary transition-colors">Trust &amp; Safety</Link></li>
+                            <li><Link href="/register?role=SELLER" className="hover:text-primary transition-colors">Selling on GIGLIGO</Link></li>
+                            <li><Link href="/register" className="hover:text-primary transition-colors">Buying on GIGLIGO</Link></li>
+                            <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
                         </ul>
-
-                        {/* Newsletter */}
-                        <h4 className="text-xs font-bold text-[#F7F7F6]/40 uppercase tracking-widest mb-4">Stay Updated</h4>
-                        <form className="flex group" onSubmit={(e) => {
-                            e.preventDefault();
-                            const email = (e.target as any).email.value;
-                            fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/newsletter/subscribe`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ email })
-                            }).then(res => res.json()).then(data => alert(data.message));
-                        }}>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email address"
-                                required
-                                className="bg-[#1E1E1E] border border-[#3A3A3A] text-sm text-[#FFFFFF] px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]"
-                            />
-                            <button type="submit" className="bg-[#C9A227] hover:bg-[#b89222] text-[#1E1E1E] px-6 py-3 rounded-r-lg font-semibold transition-all">
-                                Join
-                            </button>
-                        </form>
                     </div>
                 </div>
 
-                <div className="mt-16 pt-8 border-t border-[#3A3A3A]/50 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs text-[#F7F7F6]/40">
-                        &copy; {new Date().getFullYear()} Gigligo. The professional arena.
-                    </p>
+                <div className="pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-xs">
+                    <p>&copy; GIGLIGO International Ltd. {new Date().getFullYear()}</p>
+                    <div className="flex gap-6">
+                        <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">share</span>
+                        <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">language</span>
+                        <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">currency_exchange</span>
+                    </div>
                 </div>
             </div>
         </footer>
