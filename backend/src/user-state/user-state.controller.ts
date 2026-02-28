@@ -9,6 +9,6 @@ export class UserStateController {
     @UseGuards(JwtAuthGuard)
     @Get()
     async getUserState(@Req() req: any) {
-        return this.userStateService.getUserState(req.user.userId);
+        return this.userStateService.getUserState(req.user.id);
     }
 }

@@ -10,7 +10,7 @@ export class KycService {
         const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { nationalId: true } });
         if (data.nationalId) { // Use the nationalId from the submitted data
             const existingUser = await this.prisma.user.findFirst({
-                where: { nationalId: data.nationalId, id: { not: userId }, kycStatus: { in: ['APPROVED', 'PENDING'] } },
+                where: { nationalId: data.nationalId, id: { not: userId } },
             });
             if (existingUser) {
                 throw new BadRequestException('This CNIC is already registered to another account. Contact support if this is an error.');

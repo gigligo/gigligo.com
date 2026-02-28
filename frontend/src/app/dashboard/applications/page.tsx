@@ -140,7 +140,15 @@ function ApplicationsContent() {
                                                             {app.freelancer?.profile?.fullName?.[0] || 'U'}
                                                         </div>
                                                         <div className="flex-1">
-                                                            <h3 className="font-bold text-text-main text-lg">{app.freelancer?.profile?.fullName || 'Freelancer'}</h3>
+                                                            <div className="flex items-center gap-2 mb-1">
+                                                                <h3 className="font-bold text-text-main text-lg">{app.freelancer?.profile?.fullName || 'Freelancer'}</h3>
+                                                                {(app.freelancer?.isFoundingMember || app.freelancer?.role === 'PRO' || app.freelancer?.profile?.sellerLevel === 'TOP_RATED') && (
+                                                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-linear-to-r from-amber-400 to-yellow-600 text-white rounded-md font-bold text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.2)]">
+                                                                        <span className="material-symbols-outlined text-[12px]">workspace_premium</span>
+                                                                        <span>{app.freelancer?.isFoundingMember ? 'Founding PRO' : 'PRO'}</span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
                                                             <p className="text-xs text-text-muted">
                                                                 {app.freelancer?.profile?.skills?.[0] || 'Professional'} • {app.proposedRate ? `PKR ${app.proposedRate.toLocaleString()}` : 'Standard Rate'}
                                                             </p>

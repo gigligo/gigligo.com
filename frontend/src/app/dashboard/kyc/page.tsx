@@ -72,8 +72,8 @@ export default function KYCVerificationPage() {
                 throw new Error(data.message || 'Verification submission failed');
             }
 
-            // Force session refresh so role/kycStatus updates
-            await update();
+            // Force session refresh with explicit payload so NextAuth syncs state
+            await update({ kycStatus: 'PENDING' });
             router.push('/dashboard?kyc=pending');
 
         } catch (err: any) {

@@ -67,12 +67,17 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                     {gig.seller?.profile?.fullName?.[0] || 'S'}
                                 </div>
                                 <div>
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-3 flex-wrap">
                                         <span className="font-bold text-[#1E1E1E] text-lg">{gig.seller?.profile?.fullName || 'Verified Seller'}</span>
-                                        {gig.seller?.profile?.sellerLevel && gig.seller.profile.sellerLevel !== 'NEW' && (
+                                        {(gig.seller?.isFoundingMember || gig.seller?.role === 'PRO' || gig.seller?.profile?.sellerLevel === 'TOP_RATED') && (
+                                            <div className="flex items-center gap-1 px-2.5 py-1 bg-linear-to-r from-amber-400 to-yellow-600 text-white rounded-[6px] font-bold text-xs shadow-[0_0_10px_rgba(251,191,36,0.2)]">
+                                                <span className="material-symbols-outlined text-[14px]">verified</span>
+                                                <span>{gig.seller?.isFoundingMember ? 'Founding PRO' : 'PRO'}</span>
+                                            </div>
+                                        )}
+                                        {gig.seller?.profile?.sellerLevel && gig.seller.profile.sellerLevel !== 'NEW' && gig.seller.profile.sellerLevel !== 'TOP_RATED' && (
                                             <span className="micro-label bg-[#C9A227]/10 text-[#1E1E1E] px-2.5 py-1 rounded-[4px] border border-[#C9A227]/20">
-                                                {gig.seller.profile.sellerLevel === 'TOP_RATED' ? '⭐ Top Rated' :
-                                                    gig.seller.profile.sellerLevel === 'LEVEL_2' ? 'Level 2' : 'Level 1'}
+                                                {gig.seller.profile.sellerLevel === 'LEVEL_2' ? 'Level 2' : 'Level 1'}
                                             </span>
                                         )}
                                     </div>
@@ -109,8 +114,14 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                         {gig.seller?.profile?.fullName?.[0] || 'S'}
                                     </div>
                                     <div>
-                                        <div className="flex items-center gap-3 mb-1">
+                                        <div className="flex items-center gap-3 flex-wrap mb-1">
                                             <h3 className="text-xl font-bold text-[#1E1E1E]">{gig.seller?.profile?.fullName || 'Verified Professional'}</h3>
+                                            {(gig.seller?.isFoundingMember || gig.seller?.role === 'PRO' || gig.seller?.profile?.sellerLevel === 'TOP_RATED') && (
+                                                <div className="flex items-center gap-1 px-2.5 py-1 bg-linear-to-r from-amber-400 to-yellow-600 text-white rounded-[6px] font-bold text-xs shadow-[0_0_10px_rgba(251,191,36,0.2)]">
+                                                    <span className="material-symbols-outlined text-[14px]">verified</span>
+                                                    <span>{gig.seller?.isFoundingMember ? 'Founding PRO' : 'PRO'}</span>
+                                                </div>
+                                            )}
                                             {gig.seller?.kycStatus !== 'APPROVED' && (
                                                 <span className="micro-label text-[#C62828] bg-[#C62828]/5 px-2 py-0.5 rounded-[4px] border border-[#C62828]/20">UNVERIFIED IDENTITY</span>
                                             )}

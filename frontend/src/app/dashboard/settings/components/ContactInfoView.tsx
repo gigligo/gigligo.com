@@ -37,8 +37,8 @@ export function ContactInfoView({ userData }: { userData: any; token: string; ap
                                 <input
                                     type="email"
                                     value={primaryEmail}
-                                    onChange={(e) => setPrimaryEmail(e.target.value)}
-                                    className="flex-1 bg-background-light border border-border-light rounded-lg px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all"
+                                    readOnly
+                                    className="flex-1 bg-background-light border border-border-light rounded-lg px-4 py-3 text-sm text-text-muted cursor-not-allowed focus:outline-none transition-all"
                                     placeholder="Enter primary email"
                                 />
                                 <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 border border-green-500/20 text-green-500 rounded-md text-xs font-bold uppercase tracking-wider shrink-0">

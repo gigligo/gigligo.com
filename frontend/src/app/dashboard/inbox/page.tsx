@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 // @ts-ignore
@@ -109,6 +109,98 @@ function InboxContent() {
         });
     };
 
+    // Memoize the conversation list rendering
+    const renderedConversations = useMemo(() => {
+        if (conversations.length === 0) {
+            return (
+                <div className="flex flex-col items-center justify-center h-full text-text-muted p-4 text-center">
+                    <span className="material-symbols-outlined text-4xl mb-3 opacity-20">forum</span>
+                    <p className="font-medium">No messages yet.</p>
+                    <p className="text-sm mt-1">Start a conversation from a Gig or Job posting.</p>
+                </div>
+            );
+        }
+
+        return conversations.map((conv) => {
+            const otherUser = isEmployer ? conv.freelancer : conv.employer;
+            const contextLabel = conv.job?.title || conv.order?.gig?.title || 'Direct Message';
+            const lastMsg = conv.messages?.[0];
+            const isActive = activeConv?.id === conv.id;
+
+            return (
+                <div
+                    key={conv.id}
+                    onClick={() => openConversation(conv.id)}
+                    className={`group flex items-center gap-3 p-4 cursor-pointer transition-colors ${isActive ? 'bg-white dark:bg-surface-dark border-l-4 border-primary shadow-sm' : 'border-b border-border-light dark:border-border-dark hover:bg-white dark:hover:bg-surface-dark'}`}
+                >
+                    <div className="relative shrink-0 flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary font-bold text-lg">
+                        {otherUser?.profile?.fullName?.[0] || '?'}
+                        {isActive && (
+                            <div className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-surface-dark rounded-full"></div>
+                        )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-baseline mb-1">
+                            <h4 className={`text-sm font-semibold truncate ${isActive ? 'text-text-main dark:text-white' : 'text-text-main dark:text-gray-200'}`}>{otherUser?.profile?.fullName || 'User'}</h4>
+                            <span className={`text-xs ${isActive ? 'font-medium text-primary' : 'text-text-muted'}`}>
+                                {lastMsg ? format(new Date(lastMsg.createdAt), 'h:mm a') : ''}
+                            </span>
+                        </div>
+                        <p className={`text-xs text-primary/80 mb-0.5 truncate`}>{contextLabel}</p>
+                        <p className={`text-sm truncate ${isActive ? 'text-text-main dark:text-gray-300 font-medium' : 'text-text-muted'}`}>
+                            {lastMsg ? lastMsg.content : 'No messages yet'}
+                        </p>
+                    </div>
+                </div>
+            );
+        });
+    }, [conversations, activeConv?.id, isEmployer]);
+
+    // Memoize the messages rendering
+    const renderedMessages = useMemo(() => {
+        return messages.map((msg: any, idx) => {
+            const isMe = msg.senderId === myId;
+            const showTimestamp = idx === 0 || new Date(msg.createdAt).getTime() - new Date(messages[idx - 1].createdAt).getTime() > 1000 * 60 * 60;
+
+            return (
+                <div key={msg.id}>
+                    {showTimestamp && (
+                        <div className="flex justify-center mb-8">
+                            <span className="px-3 py-1 text-xs font-medium text-text-muted bg-border-light/50 dark:bg-border-dark/50 rounded-full">
+                                {format(new Date(msg.createdAt), 'MMMM d')}
+                            </span>
+                        </div>
+                    )}
+
+                    <div className={`flex flex-col gap-1 mb-6 max-w-[80%] lg:max-w-[60%] ${isMe ? 'items-end ml-auto' : 'items-start'}`}>
+                        <div className={`flex items-end gap-2 ${isMe ? 'flex-row-reverse' : ''}`}>
+                            {!isMe && (
+                                <div className="flex items-center justify-center size-8 rounded-full bg-primary/10 text-primary font-bold shrink-0 mb-1">
+                                    {(isEmployer ? activeConv?.freelancer?.profile?.fullName?.[0] : activeConv?.employer?.profile?.fullName?.[0]) || '?'}
+                                </div>
+                            )}
+
+                            {isMe ? (
+                                <div className="relative bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark p-4 rounded-tl-xl rounded-bl-xl rounded-br-xl shadow-sm overflow-hidden group">
+                                    <div className="absolute right-0 top-0 bottom-0 w-1 bg-primary"></div>
+                                    <p className="text-sm text-text-main dark:text-gray-200 leading-relaxed pr-3 whitespace-pre-wrap wrap-break-word">{msg.content}</p>
+                                </div>
+                            ) : (
+                                <div className="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark p-4 rounded-tr-xl rounded-br-xl rounded-bl-xl shadow-sm">
+                                    <p className="text-sm text-text-main dark:text-gray-200 leading-relaxed whitespace-pre-wrap wrap-break-word">{msg.content}</p>
+                                </div>
+                            )}
+                        </div>
+                        <span className={`text-[10px] text-text-muted flex items-center gap-1 ${isMe ? '' : 'pl-12'}`}>
+                            {format(new Date(msg.createdAt), 'h:mm a')}
+                            {isMe && <span className="material-symbols-outlined text-[12px] text-primary">done_all</span>}
+                        </span>
+                    </div>
+                </div>
+            );
+        });
+    }, [messages, myId, isEmployer, activeConv]);
+
     if (loading) {
         return (
             <div className="flex h-screen bg-background-light items-center justify-center">
@@ -183,47 +275,7 @@ function InboxContent() {
                     </div>
 
                     <div className="flex-1 overflow-y-auto">
-                        {conversations.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center h-full text-text-muted p-4 text-center">
-                                <span className="material-symbols-outlined text-4xl mb-3 opacity-20">forum</span>
-                                <p className="font-medium">No messages yet.</p>
-                                <p className="text-sm mt-1">Start a conversation from a Gig or Job posting.</p>
-                            </div>
-                        ) : (
-                            conversations.map((conv) => {
-                                const otherUser = isEmployer ? conv.freelancer : conv.employer;
-                                const contextLabel = conv.job?.title || conv.order?.gig?.title || 'Direct Message';
-                                const lastMsg = conv.messages?.[0];
-                                const isActive = activeConv?.id === conv.id;
-
-                                return (
-                                    <div
-                                        key={conv.id}
-                                        onClick={() => openConversation(conv.id)}
-                                        className={`group flex items-center gap-3 p-4 cursor-pointer transition-colors ${isActive ? 'bg-white dark:bg-surface-dark border-l-4 border-primary shadow-sm' : 'border-b border-border-light dark:border-border-dark hover:bg-white dark:hover:bg-surface-dark'}`}
-                                    >
-                                        <div className="relative shrink-0 flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary font-bold text-lg">
-                                            {otherUser?.profile?.fullName?.[0] || '?'}
-                                            {isActive && (
-                                                <div className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-surface-dark rounded-full"></div>
-                                            )}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex justify-between items-baseline mb-1">
-                                                <h4 className={`text-sm font-semibold truncate ${isActive ? 'text-text-main dark:text-white' : 'text-text-main dark:text-gray-200'}`}>{otherUser?.profile?.fullName || 'User'}</h4>
-                                                <span className={`text-xs ${isActive ? 'font-medium text-primary' : 'text-text-muted'}`}>
-                                                    {lastMsg ? format(new Date(lastMsg.createdAt), 'h:mm a') : ''}
-                                                </span>
-                                            </div>
-                                            <p className={`text-xs text-primary/80 mb-0.5 truncate`}>{contextLabel}</p>
-                                            <p className={`text-sm truncate ${isActive ? 'text-text-main dark:text-gray-300 font-medium' : 'text-text-muted'}`}>
-                                                {lastMsg ? lastMsg.content : 'No messages yet'}
-                                            </p>
-                                        </div>
-                                    </div>
-                                );
-                            })
-                        )}
+                        {renderedConversations}
                     </div>
                 </aside>
 
@@ -270,47 +322,7 @@ function InboxContent() {
 
                             {/* Chat Messages Area */}
                             <div className="flex-1 overflow-y-auto px-6 py-6 bg-background-light dark:bg-background-dark/50" style={{ backgroundImage: "radial-gradient(#c89d280d 1px, transparent 1px)", backgroundSize: "24px 24px" }}>
-                                {messages.map((msg: any, idx) => {
-                                    const isMe = msg.senderId === myId;
-                                    const showTimestamp = idx === 0 || new Date(msg.createdAt).getTime() - new Date(messages[idx - 1].createdAt).getTime() > 1000 * 60 * 60;
-
-                                    return (
-                                        <div key={msg.id}>
-                                            {showTimestamp && (
-                                                <div className="flex justify-center mb-8">
-                                                    <span className="px-3 py-1 text-xs font-medium text-text-muted bg-border-light/50 dark:bg-border-dark/50 rounded-full">
-                                                        {format(new Date(msg.createdAt), 'MMMM d')}
-                                                    </span>
-                                                </div>
-                                            )}
-
-                                            <div className={`flex flex-col gap-1 mb-6 max-w-[80%] lg:max-w-[60%] ${isMe ? 'items-end ml-auto' : 'items-start'}`}>
-                                                <div className={`flex items-end gap-2 ${isMe ? 'flex-row-reverse' : ''}`}>
-                                                    {!isMe && (
-                                                        <div className="flex items-center justify-center size-8 rounded-full bg-primary/10 text-primary font-bold shrink-0 mb-1">
-                                                            {(isEmployer ? activeConv.freelancer?.profile?.fullName?.[0] : activeConv.employer?.profile?.fullName?.[0]) || '?'}
-                                                        </div>
-                                                    )}
-
-                                                    {isMe ? (
-                                                        <div className="relative bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark p-4 rounded-tl-xl rounded-bl-xl rounded-br-xl shadow-sm overflow-hidden group">
-                                                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-primary"></div>
-                                                            <p className="text-sm text-text-main dark:text-gray-200 leading-relaxed pr-3 whitespace-pre-wrap wrap-break-word">{msg.content}</p>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark p-4 rounded-tr-xl rounded-br-xl rounded-bl-xl shadow-sm">
-                                                            <p className="text-sm text-text-main dark:text-gray-200 leading-relaxed whitespace-pre-wrap wrap-break-word">{msg.content}</p>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <span className={`text-[10px] text-text-muted flex items-center gap-1 ${isMe ? '' : 'pl-12'}`}>
-                                                    {format(new Date(msg.createdAt), 'h:mm a')}
-                                                    {isMe && <span className="material-symbols-outlined text-[12px] text-primary">done_all</span>}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                {renderedMessages}
                                 <div ref={messagesEndRef} />
                             </div>
 

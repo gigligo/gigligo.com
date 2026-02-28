@@ -103,23 +103,31 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                     <div className="flex flex-col md:flex-row items-start md:items-center gap-8">
                         {/* Avatar */}
                         <div className="w-28 h-28 md:w-32 md:h-32 rounded-full ring-4 ring-primary/30 overflow-hidden shrink-0 shadow-2xl shadow-primary/10">
-                            {user?.image ? (
-                                <img src={user.image} alt={user.fullName} className="w-full h-full object-cover" />
+                            {profile?.avatarUrl ? (
+                                <img src={profile.avatarUrl} alt={profile.fullName || user.fullName} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full bg-white/10 flex items-center justify-center text-5xl font-black text-white">
-                                    {user?.fullName?.[0] || 'U'}
+                                    {(profile?.fullName || user?.fullName)?.[0] || 'U'}
                                 </div>
                             )}
                         </div>
 
                         {/* Name & Info */}
                         <div className="flex-1">
-                            <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-3">
-                                {user?.fullName}
-                            </h1>
-                            {user.profile?.bio && (
+                            <div className="flex items-center gap-4 mb-3">
+                                <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
+                                    {profile?.fullName || user?.fullName}
+                                </h1>
+                                {(user?.isFoundingMember || user?.role === 'PRO' || profile?.sellerLevel === 'TOP_RATED') && (
+                                    <div className="flex items-center gap-1 px-3 py-1 bg-linear-to-r from-amber-400 to-yellow-600 text-white rounded-lg font-bold text-sm shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+                                        <span className="material-symbols-outlined text-[18px]">verified</span>
+                                        <span>{user?.isFoundingMember ? 'Founding PRO' : 'PRO'}</span>
+                                    </div>
+                                )}
+                            </div>
+                            {profile?.bio && (
                                 <p className="text-white/50 text-lg font-normal italic max-w-xl leading-relaxed mb-5">
-                                    &ldquo;{user.profile.bio.slice(0, 120)}{user.profile.bio.length > 120 ? '...' : ''}&rdquo;
+                                    &ldquo;{profile.bio.slice(0, 120)}{profile.bio.length > 120 ? '...' : ''}&rdquo;
                                 </p>
                             )}
                             <div className="flex flex-wrap items-center gap-4 text-sm text-white/40">

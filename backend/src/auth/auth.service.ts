@@ -284,7 +284,7 @@ export class AuthService {
         }
 
         // Generate OTP (reuse existing OTP infrastructure with a new type)
-        const otp = await this.otpService.generateAndSend(user.email, 'EMAIL_VERIFY');
+        const otp = await this.otpService.generateAndSend(user.email, 'FORGOT_PASSWORD');
 
         // Send dedicated password reset email with the code
         const fullName = (user as any).profile?.fullName || '';
@@ -306,7 +306,7 @@ export class AuthService {
         }
 
         // Verify OTP
-        await this.otpService.verify(email, code, 'EMAIL_VERIFY');
+        await this.otpService.verify(email, code, 'FORGOT_PASSWORD');
 
         // Hash new password
         const salt = await bcrypt.genSalt(10);

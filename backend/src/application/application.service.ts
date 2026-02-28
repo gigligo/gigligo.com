@@ -41,20 +41,23 @@ export class ApplicationService {
             throw new BadRequestException('Monthly proposal limit reached. Upgrade to a premium tier for more proposals!');
         }
 
-        // Deduct 1 credit
-        await this.creditService.deductCredit(freelancerId, `Applied to job: ${job.title}`);
+        // Atomic Execution: Deduct credit and create application together to prevent duplicate deductions on constrained unique key failures
+        const application = await this.prisma.$transaction(async (tx) => {
+            // Deduct 1 credit
+            await this.creditService.deductCredit(freelancerId, `Applied to job: ${job.title}`, tx);
 
-        const application = await this.prisma.jobApplication.create({
-            data: {
-                jobId: data.jobId,
-                freelancerId,
-                coverLetter: data.coverLetter,
-                proposedRate: data.proposedRate,
-                timeline: data.timeline,
-            } as any,
-            include: {
-                job: { select: { title: true, employerId: true } },
-            } as any,
+            return tx.jobApplication.create({
+                data: {
+                    jobId: data.jobId,
+                    freelancerId,
+                    coverLetter: data.coverLetter,
+                    proposedRate: data.proposedRate,
+                    timeline: data.timeline,
+                } as any,
+                include: {
+                    job: { select: { title: true, employerId: true } },
+                } as any,
+            });
         });
 
         // Fire decoupled event to be handled by EventProcessorService

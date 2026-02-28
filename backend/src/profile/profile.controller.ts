@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Request, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Request, UseInterceptors, UploadedFile, BadRequestException, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProfileService } from './profile.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -26,7 +26,17 @@ export class ProfileController {
     @UseInterceptors(FileInterceptor('image', {
         storage: getStorageOptions('avatars', 'avatar'),
     }))
-    async uploadAvatar(@Request() req: any, @UploadedFile() file: Express.Multer.File) {
+    async uploadAvatar(
+        @Request() req: any,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB limit
+                    new FileTypeValidator({ fileType: '.(png|jpeg|jpg|webp)' }),
+                ],
+            })
+        ) file: Express.Multer.File
+    ) {
         if (!file) throw new BadRequestException('No image file provided');
         const avatarUrl = getFileUrl(file, 'avatars');
         return this.profileService.updateProfile(req.user.id, { avatarUrl });

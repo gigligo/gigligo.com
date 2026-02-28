@@ -6,16 +6,34 @@ export class ProfileService {
     constructor(private prisma: PrismaService) { }
 
     async getProfile(userId: string) {
-        const profile = await this.prisma.profile.findUnique({
+        let profile = await this.prisma.profile.findUnique({
             where: { userId },
             include: {
-                user: { select: { email: true, role: true, createdAt: true } },
+                user: { select: { email: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true, paymentVerified: true } },
                 experiences: { orderBy: { startDate: 'desc' } },
                 educations: { orderBy: { startYear: 'desc' } },
                 portfolioItems: { orderBy: { createdAt: 'desc' } }
             },
         });
-        if (!profile) throw new NotFoundException('Profile not found');
+
+        if (!profile) {
+            // Auto-create a minimal profile if the user accesses it for the first time
+            const user = await this.prisma.user.findUnique({ where: { id: userId } });
+            if (!user) throw new NotFoundException('User not found');
+
+            profile = await this.prisma.profile.create({
+                data: {
+                    userId: user.id,
+                    fullName: user.email.split('@')[0], // Default placeholder name
+                },
+                include: {
+                    user: { select: { email: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true, paymentVerified: true } },
+                    experiences: true,
+                    educations: true,
+                    portfolioItems: true
+                }
+            });
+        }
         return profile;
     }
 
@@ -28,7 +46,7 @@ export class ProfileService {
                 ]
             },
             include: {
-                user: { select: { id: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true } },
+                user: { select: { id: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true, paymentVerified: true } },
                 experiences: { orderBy: { startDate: 'desc' } },
                 educations: { orderBy: { startYear: 'desc' } },
                 portfolioItems: { orderBy: { createdAt: 'desc' } }
@@ -39,7 +57,7 @@ export class ProfileService {
         if (!profile) {
             const user = await this.prisma.user.findUnique({
                 where: { id: profileId },
-                select: { id: true, email: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true }
+                select: { id: true, email: true, role: true, createdAt: true, isFoundingMember: true, kycStatus: true, paymentVerified: true }
             });
             if (!user) throw new NotFoundException('Profile not found');
 
@@ -72,9 +90,11 @@ export class ProfileService {
             }
         }
 
-        return this.prisma.profile.update({
+        // Must use upsert in case the profile row doesn't exist yet
+        return this.prisma.profile.upsert({
             where: { userId },
-            data: safeData,
+            create: { userId, fullName: safeData.fullName || 'User', ...safeData },
+            update: safeData,
         });
     }
 

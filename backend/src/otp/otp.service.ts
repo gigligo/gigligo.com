@@ -22,7 +22,7 @@ export class OtpService {
     /**
      * Generate a 6-digit OTP, store it, and send via email.
      */
-    async generateAndSend(email: string, type: 'LOGIN' | 'EMAIL_VERIFY' | 'PHONE_VERIFY'): Promise<{ message: string }> {
+    async generateAndSend(email: string, type: 'LOGIN' | 'EMAIL_VERIFY' | 'PHONE_VERIFY' | 'FORGOT_PASSWORD'): Promise<{ message: string }> {
         // ── Rate limiting ──
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
         const recentCount = await (this.prisma as any).otpCode.count({
@@ -60,6 +60,7 @@ export class OtpService {
             LOGIN: 'Your Login Verification Code',
             EMAIL_VERIFY: 'Verify Your Email Address',
             PHONE_VERIFY: 'Your Verification Code',
+            FORGOT_PASSWORD: 'Password Reset Request',
         };
 
         const html = `
@@ -75,7 +76,12 @@ export class OtpService {
             </div>
         `;
 
-        await this.emailService.sendMail(email, subjectMap[type], html);
+        if (type === 'FORGOT_PASSWORD') {
+            await this.emailService.sendPasswordResetEmail(email, '', code);
+        } else {
+            await this.emailService.sendMail(email, subjectMap[type], html);
+        }
+
         this.logger.log(`OTP sent to ${email} (type: ${type})`);
 
         return { message: 'Verification code sent to your email.' };
@@ -85,7 +91,7 @@ export class OtpService {
      * Verify a submitted OTP code.
      * Returns true if valid, throws otherwise.
      */
-    async verify(email: string, code: string, type: 'LOGIN' | 'EMAIL_VERIFY' | 'PHONE_VERIFY'): Promise<boolean> {
+    async verify(email: string, code: string, type: 'LOGIN' | 'EMAIL_VERIFY' | 'PHONE_VERIFY' | 'FORGOT_PASSWORD'): Promise<boolean> {
         // Find the most recent un-used, un-expired token
         const otp = await (this.prisma as any).otpCode.findFirst({
             where: {

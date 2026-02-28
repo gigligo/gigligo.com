@@ -1,12 +1,53 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 const PRO_PRICE_PKR = 1500;
 const PRO_DURATION_DAYS = 30;
 
 @Injectable()
 export class SubscriptionService {
+    private readonly logger = new Logger(SubscriptionService.name);
+
     constructor(private prisma: PrismaService) { }
+
+    @Cron(CronExpression.EVERY_HOUR)
+    async handleExpiredSubscriptions() {
+        this.logger.log('Checking for expired subscriptions...');
+        const now = new Date();
+
+        const expiredSubs = await this.prisma.subscription.findMany({
+            where: {
+                tier: 'PRO',
+                endDate: { lt: now }
+            }
+        });
+
+        if (expiredSubs.length > 0) {
+            for (const sub of expiredSubs) {
+                await this.prisma.$transaction(async (tx) => {
+                    // Downgrade subscription tier
+                    await tx.subscription.update({
+                        where: { id: sub.id },
+                        data: { tier: 'FREE' }
+                    });
+
+                    // Notify user of downgrade
+                    await tx.notification.create({
+                        data: {
+                            userId: sub.userId,
+                            type: 'SYSTEM',
+                            title: 'Pro Plan Expired',
+                            message: 'Your Pro Plan subscription has expired. You have been downgraded to the Free tier. Renew now to regain premium benefits.',
+                            link: '/dashboard',
+                        }
+                    });
+                });
+                this.logger.log(`Downgraded user ${sub.userId} to FREE due to subscription expiry.`);
+            }
+            this.logger.log(`Processed ${expiredSubs.length} expired subscriptions.`);
+        }
+    }
 
     async getStatus(userId: string) {
         const sub = await this.prisma.subscription.findUnique({ where: { userId } });
@@ -94,12 +135,23 @@ export class SubscriptionService {
         const endDate = new Date();
         endDate.setDate(endDate.getDate() + days);
 
-        const subscription = await this.prisma.subscription.upsert({
-            where: { userId },
-            create: { userId, tier: 'PRO', startDate: new Date(), endDate },
-            update: { tier: 'PRO', startDate: new Date(), endDate },
-        });
+        return this.prisma.$transaction(async (tx) => {
+            const subscription = await tx.subscription.upsert({
+                where: { userId },
+                create: { userId, tier: 'PRO', startDate: new Date(), endDate },
+                update: { tier: 'PRO', startDate: new Date(), endDate },
+            });
 
-        return { success: true, subscription, overriddenBy: adminId };
+            await tx.auditLog.create({
+                data: {
+                    userId: adminId,
+                    action: 'SUBSCRIPTION_OVERRIDE',
+                    targetId: userId,
+                    details: `Granted ${days} days of PRO access to user ${userId}`,
+                },
+            });
+
+            return { success: true, subscription, overriddenBy: adminId };
+        });
     }
 }

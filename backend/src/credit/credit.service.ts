@@ -63,8 +63,8 @@ export class CreditService {
         });
     }
 
-    async deductCredit(userId: string, reason: string) {
-        return this.prisma.$transaction(async (tx) => {
+    async deductCredit(userId: string, reason: string, providedTx?: any) {
+        const executeLogic = async (tx: any) => {
             // Atomic: decrement only if credits >= 1 (prevents race condition)
             let updated;
             try {
@@ -96,8 +96,9 @@ export class CreditService {
             }
 
             return { credits: updated.credits };
-        });
+        };
 
+        return providedTx ? executeLogic(providedTx) : this.prisma.$transaction(executeLogic);
     }
 
     async refundCredit(userId: string, reason: string) {

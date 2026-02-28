@@ -146,7 +146,7 @@ export class AdminService {
             // Audit log
             await tx.auditLog.create({
                 data: {
-                    adminId,
+                    userId: adminId,
                     action: `KYC_${status}`,
                     targetId: kycRecord.userId,
                     details: `KYC ${status.toLowerCase()} for user ${kycRecord.userId}`,
@@ -207,7 +207,7 @@ export class AdminService {
             // Audit log
             await tx.auditLog.create({
                 data: {
-                    adminId,
+                    userId: adminId,
                     action: 'CREDIT_ADJUSTMENT',
                     targetId: userId,
                     details: `Added ${amount} credits to user ${userId}. New balance: ${user.credits}`,
@@ -227,7 +227,7 @@ export class AdminService {
 
             await tx.auditLog.create({
                 data: {
-                    adminId,
+                    userId: adminId,
                     action: 'USER_SUSPENDED',
                     targetId: userId,
                     details: `User ${userId} suspended by admin ${adminId}`,
@@ -242,7 +242,7 @@ export class AdminService {
         const skip = (page - 1) * limit;
         const [items, total] = await Promise.all([
             this.prisma.auditLog.findMany({
-                include: { admin: { select: { email: true, profile: { select: { fullName: true } } } } },
+                include: { user: { select: { email: true, profile: { select: { fullName: true } } } } },
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limit,

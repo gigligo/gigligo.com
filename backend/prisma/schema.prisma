@@ -597,6 +597,8 @@ model Conversation {
   updatedAt DateTime @updatedAt
 
   @@unique([freelancerId, employerId, orderId])
+  @@index([freelancerId, updatedAt(sort: Desc)])
+  @@index([employerId, updatedAt(sort: Desc)])
 }
 
 model Message {
@@ -702,4 +704,5 @@ enum OtpType {
   LOGIN
   EMAIL_VERIFY
   PHONE_VERIFY
+  FORGOT_PASSWORD
 }

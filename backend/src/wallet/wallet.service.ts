@@ -207,11 +207,19 @@ export class WalletService {
     }
 
     async addCommission(tx: any, amount: number, sourceId: string, description: string, orderId?: string) {
-        // Find the platform admin user to credit commission
+        // Log platform revenue globally (this is independent of admin wallets)
+        await tx.platformRevenue.create({
+            data: {
+                amountPKR: amount,
+                reason: description,
+                orderId: orderId || null
+            }
+        });
+
+        // Find the platform admin user to credit commission to their personal wallet
         const adminUser = await tx.user.findFirst({ where: { role: 'ADMIN' } });
         if (!adminUser) {
-            // Log warning but don't crash — commission tracking via transaction records is sufficient
-            console.warn('No ADMIN user found for commission. Commission logged in transactions but not credited to a wallet.');
+            console.warn('No ADMIN user found for commission wallet credit. Commission logged in revenue but not credited to an admin wallet.');
             return;
         }
 
@@ -229,14 +237,6 @@ export class WalletService {
                 status: 'COMPLETED',
                 description: `Platform fee collected from ${sourceId}: ${description}`,
             },
-        });
-
-        await tx.platformRevenue.create({
-            data: {
-                amountPKR: amount,
-                reason: description,
-                orderId: orderId || null
-            }
         });
     }
 

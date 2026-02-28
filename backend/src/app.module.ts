@@ -5,6 +5,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { BlockedUserGuard } from './auth/blocked-user.guard';
+import { RolesGuard } from './auth/roles.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -88,6 +89,10 @@ import { EventsModule } from './events/events.module';
     {
       provide: APP_GUARD,
       useClass: BlockedUserGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })
