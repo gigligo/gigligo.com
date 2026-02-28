@@ -5,17 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import NotificationBell from './NotificationBell';
 import { MoreHorizontal, Coins, Menu, X } from 'lucide-react';
 import { creditApi, userStateApi } from '@/lib/api';
-
-/* ─── Premium G Logo (Charcoal & Gold) ─── */
-function GigligoMark({ size = 28 }: { size?: number }) {
-    return (
-        <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
-            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="#C9A227" strokeWidth="3" strokeLinecap="round" />
-            <path d="M19 18 H30" stroke="#C9A227" strokeWidth="3" strokeLinecap="round" />
-            <circle cx="19" cy="18" r="2" fill="#C9A227" />
-        </svg>
-    );
-}
+import { Logo } from '@/components/Logo';
 
 export function Navbar() {
     const { data: session } = useSession();
@@ -70,7 +60,7 @@ export function Navbar() {
                 <div className="max-container h-full flex items-center justify-between">
                     <div className="flex items-center gap-12">
                         <Link href="/" className="flex items-center gap-3 group">
-                            <GigligoMark size={32} />
+                            <Logo className="h-8" iconClassName="text-[#C9A227]" withText={false} />
                             <span className="font-sans text-xl font-bold tracking-tight text-white transition-colors group-hover:text-[#C9A227]">
                                 gigligo<span className="text-[#C9A227] opacity-80">.com</span>
                             </span>
@@ -161,7 +151,7 @@ export function Navbar() {
             {menuOpen && (
                 <div className="fixed inset-0 z-60 bg-[#1E1E1E] flex flex-col p-8 md:hidden">
                     <div className="flex justify-between items-center mb-10">
-                        <GigligoMark size={32} />
+                        <Logo className="h-8" iconClassName="text-[#C9A227]" withText={false} />
                         <button onClick={() => setMenuOpen(false)} className="text-white"><X size={28} /></button>
                     </div>
                     <nav className="flex flex-col gap-6">

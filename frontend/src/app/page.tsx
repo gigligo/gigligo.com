@@ -1,4 +1,8 @@
+'use client';
+
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Logo } from '@/components/Logo';
 
 export default function Home() {
   return (
@@ -8,11 +12,8 @@ export default function Home() {
 
       {/* Header */}
       <header className="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-[#1E1E1E]/95 backdrop-blur-md px-6 py-4 lg:px-12 transition-colors duration-300">
-        <div className="flex items-center gap-4">
-          <div className="size-8 flex items-center justify-center text-primary">
-            <span className="material-symbols-outlined text-3xl">diamond</span>
-          </div>
-          <h2 className="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight hover:text-primary transition-colors cursor-pointer">GIGLIGO</h2>
+        <div className="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity">
+          <Logo className="h-8" iconClassName="text-primary" />
         </div>
         <div className="hidden lg:flex flex-1 justify-end gap-10 items-center">
           <nav className="flex items-center gap-8">
@@ -37,7 +38,12 @@ export default function Home() {
 
             {/* Hero Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[500px]">
-              <div className="flex flex-col gap-8 order-2 lg:order-1">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="flex flex-col gap-8 order-2 lg:order-1"
+              >
                 <div className="flex flex-col gap-4 text-left">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 w-fit">
                     <span className="size-2 rounded-full bg-primary animate-pulse"></span>
@@ -66,9 +72,14 @@ export default function Home() {
                   </div>
                   <p>Trusted by 10,000+ elite professionals</p>
                 </div>
-              </div>
-              <div className="relative h-[500px] w-full rounded-2xl overflow-hidden order-1 lg:order-2 shadow-2xl">
-                <div className="absolute inset-0 bg-cover bg-center transition-transform hover:scale-105 duration-700" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuB5GR72RG7Tdf3F2RbbI3UPJTEVH-jOy_ucdEwuTHTR6TLdUhtgvJjZIEnmZWlusYNuVz8CmL34qasfc84-gkg_VrP34oMf1wOC0lYFmw8WgqXsbTIM1OFJ7HtGfFA98VWg1UE6wL0-fJ9ZRMp4lhc8ERm5F9s0kvQ1bWgYi6v5JJ6j3y2ynABFOV51tJYr_vN_pN8N6896sz8j0AydsFO2QGo4NLzaA3yOivouZH0JbYLmZ4xZiUGrrRFHwXaFmCLsF2khCa1JaPE")' }}>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                className="relative h-[500px] w-full rounded-2xl overflow-hidden order-1 lg:order-2 shadow-2xl"
+              >
+                <div className="absolute inset-0 bg-cover bg-center transition-transform hover:scale-105 duration-700" style={{ backgroundImage: 'url("/3d_handshake_partners_1772299828770.png")' }}>
                   <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
                 </div>
                 <div className="absolute bottom-0 left-0 p-8">
@@ -80,11 +91,17 @@ export default function Home() {
                     <p className="text-white/80 text-sm">&quot;GIGLIGO transformed how we source executive creative direction. Simply unmatched quality.&quot;</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* Verified Talent Section */}
-            <div className="flex flex-col gap-10">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col gap-10"
+            >
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-2">
                 <div className="max-w-2xl">
                   <h2 className="text-slate-900 dark:text-white text-3xl lg:text-4xl font-bold leading-tight tracking-tight mb-4">
@@ -165,10 +182,16 @@ export default function Home() {
                 </div>
 
               </div>
-            </div>
+            </motion.div>
 
             {/* Trust/Logos Section */}
-            <div className="py-10 border-t border-slate-200 dark:border-slate-800">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+              className="py-10 border-t border-slate-200 dark:border-slate-800"
+            >
               <p className="text-center text-sm font-semibold text-slate-400 uppercase tracking-widest mb-8">Trusted by global leaders</p>
               <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
                 <span className="text-2xl font-black text-slate-800 dark:text-slate-200">ACME<span className="text-primary">CORP</span></span>
@@ -177,7 +200,7 @@ export default function Home() {
                 <span className="text-2xl font-black text-slate-800 dark:text-slate-200 font-mono">Strata.</span>
                 <span className="text-2xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1"><span className="block size-4 bg-primary rounded-full"></span>Onyx</span>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </main>

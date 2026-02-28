@@ -1,15 +1,5 @@
 import Link from 'next/link';
-
-/* ─── Premium G Logo (Charcoal & Gold) ─── */
-function GigligoMark({ size = 24 }: { size?: number }) {
-    return (
-        <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
-            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="#C9A227" strokeWidth="3" strokeLinecap="round" />
-            <path d="M19 18 H30" stroke="#C9A227" strokeWidth="3" strokeLinecap="round" />
-            <circle cx="19" cy="18" r="2" fill="#C9A227" />
-        </svg>
-    );
-}
+import { Logo } from '@/components/Logo';
 
 function SocialIcon({ name }: { name: string }) {
     switch (name) {
@@ -52,10 +42,10 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
                     {/* About */}
                     <div className="md:col-span-1 border-gray-800 pr-8">
-                        <div className="flex items-center gap-3 mb-6">
-                            <GigligoMark size={32} />
+                        <Link href="/" className="flex items-center gap-3 mb-6">
+                            <Logo className="h-8" iconClassName="text-[#C9A227]" withText={false} />
                             <span className="font-sans text-xl font-bold tracking-tight text-[#FFFFFF]">gigligo<span className="text-[#C9A227] opacity-80">.com</span></span>
-                        </div>
+                        </Link>
                         <p className="mt-4 text-[15px] leading-relaxed max-w-xs text-[#F7F7F6]/60">
                             The professional arena where verified talent meets serious business.
                         </p>
