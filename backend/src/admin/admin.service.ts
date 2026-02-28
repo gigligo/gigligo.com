@@ -174,7 +174,7 @@ export class AdminService {
                 } else {
                     this.eventEmitter.emit(
                         Events.KYC_REJECTED,
-                        new KycRejectedEvent(user.id, user.email, fullName, kycRecord.rejectionReason || 'Did not meet verification criteria')
+                        new KycRejectedEvent(user.id, user.email, fullName, 'Did not meet verification criteria')
                     );
                 }
             }
