@@ -73,7 +73,7 @@ function SearchPageContent() {
                                         placeholder="Search talent, services, or skills..."
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-5 py-4 text-white placeholder:text-white/30 text-sm font-medium outline-none focus:border-primary/50 focus:bg-white/[0.08] transition-all backdrop-blur-sm"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-5 py-4 text-white placeholder:text-white/30 text-sm font-medium outline-none focus:border-primary/50 focus:bg-white/8 transition-all backdrop-blur-sm"
                                     />
                                 </div>
                                 <button type="submit" className="h-[54px] px-7 bg-primary text-white text-sm font-bold tracking-wide rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20">
@@ -92,8 +92,8 @@ function SearchPageContent() {
                                 key={cat}
                                 onClick={() => setCategory(cat)}
                                 className={`px-5 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 ${category === cat
-                                        ? 'bg-nav-bg text-white shadow-sm'
-                                        : 'bg-transparent text-text-muted hover:bg-background-light hover:text-text-main border border-transparent hover:border-border-light'
+                                    ? 'bg-nav-bg text-white shadow-sm'
+                                    : 'bg-transparent text-text-muted hover:bg-background-light hover:text-text-main border border-transparent hover:border-border-light'
                                     }`}
                             >
                                 {cat}
