@@ -50,7 +50,7 @@ export default function PricingPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-light text-text-main font-sans antialiased selection:bg-primary/30">
+        <div className="flex flex-col min-h-screen bg-background-light dark:bg-background-dark text-text-main dark:text-slate-100 font-sans antialiased selection:bg-primary/30">
             <Navbar />
 
             <main className="flex-1 w-full relative z-10" style={{ paddingTop: 96 }}>
