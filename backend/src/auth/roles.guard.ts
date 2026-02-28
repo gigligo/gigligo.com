@@ -14,6 +14,16 @@ export class RolesGuard implements CanActivate {
             return true;
         }
         const { user } = context.switchToHttp().getRequest();
+
+        if (!user || !user.role) {
+            return false;
+        }
+
+        // Global override: ADMIN can access anything that requires a role
+        if (user.role === 'ADMIN') {
+            return true;
+        }
+
         return requiredRoles.includes(user.role);
     }
 }

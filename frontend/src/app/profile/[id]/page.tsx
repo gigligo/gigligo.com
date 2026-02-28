@@ -125,7 +125,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                                                 Founding Member
                                             </span>
                                         )}
-                                        {user.subscriptionStatus === 'ACTIVE' && (
+                                        {user.subscriptions?.some((s: any) => s.endDate && new Date(s.endDate) > new Date()) && (
                                             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20" title="Active Pro Subscription">
                                                 <Star size={14} className="fill-amber-500 text-amber-500" />
                                                 Pro Member

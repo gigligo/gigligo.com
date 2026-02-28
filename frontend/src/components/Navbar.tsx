@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import NotificationBell from './NotificationBell';
 import { ThemeToggle } from './ui/ThemeToggle';
 import { MoreHorizontal, Coins } from 'lucide-react';
-import { creditApi } from '@/lib/api';
+import { creditApi, userStateApi } from '@/lib/api';
 
 /* ─── Gradient G Logo (shared across site) ─── */
 function GigligoMark({ size = 28 }: { size?: number }) {
@@ -60,6 +60,14 @@ export function Navbar() {
         handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll]);
+
+    const [userState, setUserState] = useState<any>(null);
+
+    useEffect(() => {
+        if (token) {
+            userStateApi.getState(token).then(res => setUserState(res)).catch(() => { });
+        }
+    }, [token]);
 
     useEffect(() => {
         if (token && isFreelancer) {
@@ -149,6 +157,20 @@ export function Navbar() {
                                         <div className="px-4 py-3 border-b border-slate-100 dark:border-white/5 mb-2">
                                             <p className="font-bold text-sm text-slate-900 dark:text-white truncate">{session.user?.name}</p>
                                             <p className="text-xs text-slate-500 dark:text-white/50 truncate">{session.user?.email}</p>
+                                            {userState?.entitlements && (
+                                                <div className="flex gap-2 mt-2">
+                                                    {userState.entitlements.isPro && (
+                                                        <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold tracking-wider border border-amber-200">
+                                                            PRO
+                                                        </span>
+                                                    )}
+                                                    {userState.entitlements.isFoundingMember && (
+                                                        <span className="px-2 py-0.5 rounded-full bg-slate-800 text-white text-[10px] font-bold tracking-wider border border-slate-700 dark:bg-white dark:text-black dark:border-slate-300">
+                                                            FOUNDER
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                         {(session as any)?.role === 'ADMIN' && (
                                             <Link href="/admin" className="px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-white/5 text-sm font-bold text-[#FE7743] transition-colors">Admin Dashboard</Link>

@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { EntitlementService } from '../entitlement/entitlement.service';
 
 @Injectable()
 export class UserStateService {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly entitlementService: EntitlementService
+    ) { }
 
     async getUserState(userId: string) {
         const user = await this.prisma.user.findUnique({
@@ -39,30 +43,14 @@ export class UserStateService {
         let kycStatus = 'NOT_SUBMITTED';
         if (user.kycStatus) kycStatus = user.kycStatus;
 
-        // Entitlements
-        // TODO: Move these deeper calculation to Phase 2 (Entitlement Engine) if needed, but keeping basic for now.
-        let proposalLimit = 10; // Default Free
-        if (subscriptionStatus === 'ACTIVE') {
-            if (sub?.tier === 'STANDARD') proposalLimit = 50;
-            if (sub?.tier === 'PREMIUM' || sub?.tier === 'PRO') proposalLimit = 9999;
-        }
-
-        let boostPriority = 0;
-        if (subscriptionStatus === 'ACTIVE' && (sub?.tier === 'PREMIUM' || sub?.tier === 'PRO')) {
-            boostPriority = 1;
-        }
+        // Dynamic Entitlements via EntitlementService
+        const entitlements = await this.entitlementService.getUserEntitlements(user.id);
 
         return {
             accountStatus,
             kycStatus,
             subscriptionStatus,
-            entitlements: {
-                isPro: subscriptionStatus === 'ACTIVE',
-                isVerified: kycStatus === 'APPROVED',
-                isFoundingMember: user.isFoundingMember,
-                proposalLimit,
-                boostPriority,
-            },
+            entitlements
         };
     }
 }

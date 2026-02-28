@@ -197,7 +197,7 @@ export default function GigDetailsPage({ params }: { params: { id: string } }) {
                                                 }
                                                 try {
                                                     const token = (session as any).accessToken;
-                                                    const myId = (session as any).user.id;
+                                                    const myId = (session as any)?.user?.id;
                                                     const res: any = await chatApi.findOrCreate(token, myId, gig.seller.id, undefined, undefined);
                                                     const convId = res?.data?.id || res?.id;
                                                     if (convId) router.push(`/dashboard/inbox?c=${convId}`);

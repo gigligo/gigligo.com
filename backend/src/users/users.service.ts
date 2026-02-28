@@ -126,4 +126,42 @@ export class UsersService {
         ]);
         return { items: items.map(u => { const { passwordHash, ...rest } = u; return rest; }), total, page, limit };
     }
+
+    // ═══════════════════════════════════════
+    // REFRESH TOKEN MANAGEMENT
+    // ═══════════════════════════════════════
+
+    async storeRefreshToken(userId: string, token: string, expiresInDays: number = 7) {
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + expiresInDays);
+
+        return this.prisma.refreshToken.create({
+            data: {
+                token,
+                userId,
+                expiresAt,
+            }
+        });
+    }
+
+    async findRefreshToken(token: string) {
+        return this.prisma.refreshToken.findUnique({
+            where: { token },
+            include: { user: true }
+        });
+    }
+
+    async revokeRefreshToken(token: string) {
+        return this.prisma.refreshToken.update({
+            where: { token },
+            data: { isRevoked: true }
+        });
+    }
+
+    async revokeAllUserRefreshTokens(userId: string) {
+        return this.prisma.refreshToken.updateMany({
+            where: { userId },
+            data: { isRevoked: true }
+        });
+    }
 }

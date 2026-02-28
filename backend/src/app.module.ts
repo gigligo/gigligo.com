@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { BlockedUserGuard } from './auth/blocked-user.guard';
@@ -34,6 +35,7 @@ import { NewsletterModule } from './newsletter/newsletter.module';
 import { ContractModule } from './contract/contract.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { UserStateModule } from './user-state/user-state.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { UserStateModule } from './user-state/user-state.module';
       ttl: 60000,
       limit: 100,
     }]),
+    EventEmitterModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
@@ -73,6 +76,7 @@ import { UserStateModule } from './user-state/user-state.module';
     ContractModule,
     SubscriptionModule,
     UserStateModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [

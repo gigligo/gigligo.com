@@ -1,12 +1,16 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
 import { JobService } from './job.service';
+import { MatchingEngineService } from './matching.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 
 @Controller('api/jobs')
 export class JobController {
-    constructor(private jobService: JobService) { }
+    constructor(
+        private jobService: JobService,
+        private matchingService: MatchingEngineService
+    ) { }
 
     @Get()
     findAll(
@@ -33,6 +37,12 @@ export class JobController {
     @UseGuards(JwtAuthGuard)
     getMyJobs(@Req() req: any) {
         return this.jobService.getMyJobs(req.user.id);
+    }
+
+    @Get('recommended')
+    @UseGuards(JwtAuthGuard)
+    getRecommendedJobs(@Req() req: any) {
+        return this.matchingService.getRecommendedJobs(req.user.id);
     }
 
     @Get(':id')

@@ -142,7 +142,7 @@ export class DisputeService {
 
         // After transaction: if seller won, use WalletService.addEarning for correct commission
         if (data.status === 'RESOLVED_SELLER' && dispute?.order) {
-            await this.walletService.addEarning(dispute!.order!.sellerId, dispute!.order!.escrowAmount, false);
+            await this.walletService.addEarning(dispute!.order!.sellerId, dispute!.order!.escrowAmount, false, dispute!.orderId as string);
         }
 
         return { success: true, disputeId };

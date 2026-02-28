@@ -41,6 +41,8 @@ export const jobApi = {
         apiFetch(`/api/jobs/${id}`, { method: 'DELETE', token }),
     getMyJobs: (token: string) =>
         apiFetch('/api/jobs/mine', { token }),
+    getRecommended: (token: string) =>
+        apiFetch('/api/jobs/recommended', { token }),
 };
 
 // Application APIs

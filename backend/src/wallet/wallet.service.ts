@@ -2,6 +2,8 @@ import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/
 import { PrismaService } from '../prisma/prisma.service';
 import { TwoFactorService } from '../auth/twoFactor.service';
 import Stripe from 'stripe';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Events, PaymentReceivedEvent } from '../events/event.dictionary';
 
 @Injectable()
 export class WalletService {
@@ -9,7 +11,8 @@ export class WalletService {
 
     constructor(
         private prisma: PrismaService,
-        private twoFactorService: TwoFactorService
+        private twoFactorService: TwoFactorService,
+        private eventEmitter: EventEmitter2
     ) {
         // In production, instantiate this with process.env.STRIPE_SECRET_KEY
         // Example: this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_...', { apiVersion: '2023-10-16' });
@@ -124,7 +127,7 @@ export class WalletService {
         return { received: true };
     }
 
-    async addEarning(userId: string, grossAmount: number, fromEscrow: boolean = false) {
+    async addEarning(userId: string, grossAmount: number, fromEscrow: boolean = false, orderId?: string) {
         // Fetch user to check for Founding Member status
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
@@ -189,26 +192,21 @@ export class WalletService {
             }
 
             // Notify freelancer
-            await tx.notification.create({
-                data: {
-                    userId,
-                    type: 'PAYMENT_RECEIVED',
-                    title: 'Payment Received',
-                    message: `You earned PKR ${netAmount} (PKR ${commission} platform fee deducted from PKR ${grossAmount})`,
-                    link: '/dashboard/earnings',
-                },
-            });
+            this.eventEmitter.emit(
+                Events.PAYMENT_RECEIVED,
+                new PaymentReceivedEvent(userId, netAmount, 'Gig Order', commission, grossAmount)
+            );
 
             // Add commission to platform admin wallet if > 0
             if (commission > 0) {
-                await this.addCommission(tx, commission, userId, 'Earning Deduction');
+                await this.addCommission(tx, commission, userId, 'Earning Deduction', orderId);
             }
 
             return { wallet, commission, netAmount, grossAmount };
         });
     }
 
-    async addCommission(tx: any, amount: number, sourceId: string, description: string) {
+    async addCommission(tx: any, amount: number, sourceId: string, description: string, orderId?: string) {
         // Find the platform admin user to credit commission
         const adminUser = await tx.user.findFirst({ where: { role: 'ADMIN' } });
         if (!adminUser) {
@@ -231,6 +229,14 @@ export class WalletService {
                 status: 'COMPLETED',
                 description: `Platform fee collected from ${sourceId}: ${description}`,
             },
+        });
+
+        await tx.platformRevenue.create({
+            data: {
+                amountPKR: amount,
+                reason: description,
+                orderId: orderId || null
+            }
         });
     }
 

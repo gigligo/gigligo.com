@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { adminApi, disputeApi } from '@/lib/api';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function AdminDashboardPage() {
     const { data: session, status } = useSession();
@@ -14,9 +15,10 @@ export default function AdminDashboardPage() {
     const [stats, setStats] = useState<any>(null);
     const [activity, setActivity] = useState<any>(null);
     const [founders, setFounders] = useState<any>(null);
+    const [analytics, setAnalytics] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'kyc' | 'transactions' | 'disputes'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'users' | 'kyc' | 'transactions' | 'disputes'>('overview');
 
     // Credit Modal State
     const [selectedUserForCredits, setSelectedUserForCredits] = useState<any>(null);
@@ -57,14 +59,16 @@ export default function AdminDashboardPage() {
 
         const load = async () => {
             try {
-                const [s, a, f] = await Promise.all([
+                const [s, a, f, an] = await Promise.all([
                     adminApi.getStats(token),
                     adminApi.getActivity(token),
                     adminApi.getFounders(token),
+                    adminApi.getAnalytics(token)
                 ]);
                 setStats(s);
                 setActivity(a);
                 setFounders(f);
+                setAnalytics(an);
             } catch (e: any) {
                 setError(e.message || 'Failed to load admin data');
             }
@@ -105,7 +109,7 @@ export default function AdminDashboardPage() {
                         <p className="text-[#EFEEEA]/50 text-sm mt-1">Platform overview, metrics, and management</p>
                     </div>
                     <div className="flex gap-2">
-                        {(['overview', 'users', 'kyc', 'transactions', 'disputes'] as const).map(tab => (
+                        {(['overview', 'analytics', 'users', 'kyc', 'transactions', 'disputes'] as const).map(tab => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -139,6 +143,77 @@ export default function AdminDashboardPage() {
                         </div>
 
                         <DisputesTab token={token} />
+                    </div>
+                )}
+
+                {activeTab === 'analytics' && (
+                    <div className="space-y-6">
+                        {/* Revenue & User Growth Charts */}
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                                <h3 className="text-lg font-bold text-white mb-6">Revenue Trend (30 Days)</h3>
+                                <div className="h-64 w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <LineChart data={analytics?.revenueTrend || []}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                            <XAxis dataKey="date" stroke="#888" fontSize={10} tickFormatter={(tick) => tick.substring(5)} />
+                                            <YAxis yAxisId="left" stroke="#888" fontSize={10} />
+                                            <Tooltip contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
+                                            <Line yAxisId="left" type="monotone" dataKey="revenue" stroke="#22c55e" strokeWidth={2} dot={false} />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                                <h3 className="text-lg font-bold text-white mb-6">User Growth (30 Days)</h3>
+                                <div className="h-64 w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <LineChart data={analytics?.userGrowth || []}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                            <XAxis dataKey="date" stroke="#888" fontSize={10} tickFormatter={(tick) => tick.substring(5)} />
+                                            <YAxis yAxisId="left" stroke="#888" fontSize={10} />
+                                            <Tooltip contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
+                                            <Line yAxisId="left" type="monotone" dataKey="total" stroke="#3b82f6" strokeWidth={2} dot={false} name="Total Users" />
+                                            <Line yAxisId="left" type="monotone" dataKey="sellers" stroke="#FE7743" strokeWidth={2} dot={false} name="Freelancers" />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Funnel & Categories */}
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                                <h3 className="text-lg font-bold text-white mb-6">Conversion Funnel</h3>
+                                <div className="h-64 w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={analytics?.funnel || []} layout="vertical" margin={{ left: 40 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" horizontal={true} vertical={false} />
+                                            <XAxis type="number" stroke="#888" fontSize={10} />
+                                            <YAxis dataKey="stage" type="category" stroke="#888" fontSize={10} axisLine={false} tickLine={false} />
+                                            <Tooltip contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
+                                            <Bar dataKey="count" fill="#a855f7" radius={[0, 4, 4, 0]} barSize={20} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            <div className="bg-[#111] rounded-2xl border border-white/10 p-6">
+                                <h3 className="text-lg font-bold text-white mb-6">Top Job Categories</h3>
+                                <div className="h-64 w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={analytics?.topCategories || []} margin={{ bottom: 40 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
+                                            <XAxis dataKey="category" stroke="#888" fontSize={10} angle={-45} textAnchor="end" />
+                                            <YAxis stroke="#888" fontSize={10} />
+                                            <Tooltip contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} />
+                                            <Bar dataKey="count" fill="#FE7743" radius={[4, 4, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
 

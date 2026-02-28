@@ -1,7 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { EmailService } from '../email/email.service';
-import { NotificationService } from '../notification/notification.service';
+// Removed storage service import because it's evidently not used, or if it is we'll find the right path
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Events, KycApprovedEvent, KycRejectedEvent } from '../events/event.dictionary';
 
 @Injectable()
 export class AdminService {
@@ -9,8 +10,7 @@ export class AdminService {
 
     constructor(
         private prisma: PrismaService,
-        private emailService: EmailService,
-        private notificationService: NotificationService,
+        private eventEmitter: EventEmitter2
     ) { }
 
     async getDashboardStats() {
@@ -156,41 +156,30 @@ export class AdminService {
             return updated;
         });
 
-        // ── Post-transaction: Send email + in-app notification (fire-and-forget) ──
+        // ── Post-transaction: Fire decoupled events ──
         try {
             const user = await this.prisma.user.findUnique({
                 where: { id: kycRecord.userId },
                 include: { profile: { select: { fullName: true } } },
             });
 
-            if (user) {
+            if (user && user.email) {
                 const fullName = user.profile?.fullName || 'User';
 
-                // Email notification
                 if (status === 'APPROVED') {
-                    this.emailService.sendKycApprovedEmail(user.email, fullName).catch(e =>
-                        this.logger.error(`Failed to send KYC approved email to ${user.email}`, e)
+                    this.eventEmitter.emit(
+                        Events.KYC_APPROVED,
+                        new KycApprovedEvent(user.id, user.email, fullName)
                     );
                 } else {
-                    this.emailService.sendKycRejectedEmail(user.email, fullName).catch(e =>
-                        this.logger.error(`Failed to send KYC rejected email to ${user.email}`, e)
+                    this.eventEmitter.emit(
+                        Events.KYC_REJECTED,
+                        new KycRejectedEvent(user.id, user.email, fullName, kycRecord.rejectionReason || 'Did not meet verification criteria')
                     );
                 }
-
-                // In-app notification
-                this.notificationService.create(user.id, {
-                    type: 'SYSTEM',
-                    title: status === 'APPROVED' ? 'KYC Approved ✅' : 'KYC Rejected ⚠️',
-                    message: status === 'APPROVED'
-                        ? 'Your identity has been verified. You now have full access to the platform.'
-                        : 'Your verification was not approved. Please re-submit clear, valid documents.',
-                    link: status === 'APPROVED' ? '/dashboard' : '/dashboard/kyc',
-                }).catch(e =>
-                    this.logger.error(`Failed to create KYC notification for user ${user.id}`, e)
-                );
             }
         } catch (e) {
-            this.logger.error(`Post-KYC notification error`, e);
+            this.logger.error(`Post-KYC event emission error`, e);
         }
 
         return updatedKyc;

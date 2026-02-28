@@ -145,7 +145,7 @@ export default function JobDetailPage() {
                                             onClick={async () => {
                                                 if (!token) return router.push('/login');
                                                 try {
-                                                    const myId = (session as any).user.id;
+                                                    const myId = (session as any)?.user?.id;
                                                     const res: any = await chatApi.findOrCreate(token, myId, job.employerId, undefined, job.id);
                                                     const convId = res?.data?.id || res?.id;
                                                     if (convId) router.push(`/dashboard/inbox?c=${convId}`);

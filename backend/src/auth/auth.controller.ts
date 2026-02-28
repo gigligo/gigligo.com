@@ -1,4 +1,5 @@
 import { Controller, Post, Get, Put, Body, UseGuards, Req } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -14,11 +15,13 @@ export class AuthController {
         private twoFactorService: TwoFactorService
     ) { }
 
+    @Throttle({ default: { limit: 5, ttl: 60000 } })
     @Post('register')
     async register(@Body() registerDto: RegisterDto) {
         return this.authService.register(registerDto);
     }
 
+    @Throttle({ default: { limit: 5, ttl: 60000 } })
     @Post('login')
     async login(@Body() loginDto: LoginDto) {
         return this.authService.login(loginDto);
@@ -32,6 +35,17 @@ export class AuthController {
     @Post('otp/resend')
     async resendOtp(@Body() body: { tempToken: string }) {
         return this.authService.resendLoginOtp(body.tempToken);
+    }
+
+    @Post('refresh')
+    async refresh(@Body() body: { refresh_token: string }) {
+        return this.authService.refreshToken(body.refresh_token);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('logout')
+    async logout(@Req() req: any) {
+        return this.authService.logout(req.user.id);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -88,6 +102,7 @@ export class AuthController {
     // PASSWORD RESET (Public)
     // ═══════════════════════════════════════
 
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
     @Post('forgot-password')
     async forgotPassword(@Body() body: { email: string }) {
         return this.authService.forgotPassword(body.email);

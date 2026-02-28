@@ -152,7 +152,7 @@ function ApplicationsContent() {
                                                     <button onClick={async () => {
                                                         try {
                                                             setActionLoading(app.id);
-                                                            const myId = (session as any).user.id;
+                                                            const myId = (session as any)?.user?.id;
                                                             const res: any = await chatApi.findOrCreate(token, app.freelancer.id, myId, undefined, app.jobId);
                                                             const convId = res?.data?.id || res?.id;
                                                             if (convId) router.push(`/dashboard/inbox?c=${convId}`);

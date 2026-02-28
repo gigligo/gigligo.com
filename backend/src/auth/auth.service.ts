@@ -69,22 +69,33 @@ export class AuthService {
         // Verify the OTP code
         await this.otpService.verify(decoded.email, code, 'LOGIN');
 
-        // OTP valid — issue full access token
+        // OTP valid — issue full access token & refresh token
         const user = await this.usersService.findByEmail(decoded.email);
         if (!user) throw new UnauthorizedException();
 
         const payload = { email: user.email, sub: user.id, role: user.role };
+
+        // Generate Access Token (1 Day)
+        const access_token = this.jwtService.sign(payload);
+
+        // Generate Refresh Token (7 Days)
+        const refresh_token = this.jwtService.sign(
+            { sub: user.id, purpose: 'refresh' },
+            { expiresIn: '7d' }
+        );
+
+        // Store Refresh Token in DB
+        await this.usersService.storeRefreshToken(user.id, refresh_token, 7);
+
         const { passwordHash, ...safeUser } = user;
 
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token,
+            refresh_token,
             user: safeUser,
         };
     }
 
-    /**
-     * Resend OTP for a login attempt (uses the temp token to identify the user).
-     */
     async resendLoginOtp(tempToken: string) {
         let decoded: any;
         try {
@@ -96,6 +107,40 @@ export class AuthService {
             throw new UnauthorizedException('Invalid token.');
         }
         return this.otpService.generateAndSend(decoded.email, 'LOGIN');
+    }
+
+    /**
+     * Exchange a valid Refresh Token for a new Access Token.
+     */
+    async refreshToken(refreshToken: string) {
+        // 1. Verify JWT signature & expiration
+        let decoded: any;
+        try {
+            decoded = this.jwtService.verify(refreshToken);
+        } catch {
+            throw new UnauthorizedException('Refresh token expired or invalid. Please log in again.');
+        }
+
+        if (decoded.purpose !== 'refresh') {
+            throw new UnauthorizedException('Invalid token purpose.');
+        }
+
+        // 2. Validate against Database (ensures it wasn't revoked)
+        const storedToken = await this.usersService.findRefreshToken(refreshToken);
+        if (!storedToken || storedToken.isRevoked) {
+            throw new UnauthorizedException('Refresh token revoked or missing. Please log in again.');
+        }
+
+        // 3. Get User to generate new payload
+        const user = await this.usersService.findById(decoded.sub);
+        if (!user || user.isSuspended) {
+            throw new UnauthorizedException('User account is invalid or suspended.');
+        }
+
+        const payload = { email: user.email, sub: user.id, role: user.role };
+        const access_token = this.jwtService.sign(payload);
+
+        return { access_token };
     }
 
     async register(registerDto: RegisterDto) {
@@ -143,6 +188,11 @@ export class AuthService {
         if (!user) throw new UnauthorizedException();
         const { passwordHash, ...result } = user;
         return result;
+    }
+
+    async logout(userId: string) {
+        await this.usersService.revokeAllUserRefreshTokens(userId);
+        return { message: 'Logged out successfully, all sessions revoked.' };
     }
 
     async googleLogin(profile: { email: string, name: string, picture?: string, googleId: string }) {

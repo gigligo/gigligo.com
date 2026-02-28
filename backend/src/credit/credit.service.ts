@@ -1,9 +1,14 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Events, LowCreditsEvent } from '../events/event.dictionary';
 
 @Injectable()
 export class CreditService {
-    constructor(private prisma: PrismaService) { }
+    constructor(
+        private prisma: PrismaService,
+        private eventEmitter: EventEmitter2
+    ) { }
 
     async getPackages() {
         return this.prisma.creditPackage.findMany({
@@ -82,17 +87,12 @@ export class CreditService {
                 },
             });
 
-            // Check if low credits -> notify
+            // Check if low credits -> notify via Event Bus
             if (updated.credits <= 3) {
-                await tx.notification.create({
-                    data: {
-                        userId,
-                        type: 'LOW_CREDITS',
-                        title: 'Low Credits',
-                        message: `You have ${updated.credits} credits remaining. Purchase more to keep applying.`,
-                        link: '/dashboard/credits',
-                    },
-                });
+                this.eventEmitter.emit(
+                    Events.LOW_CREDITS,
+                    new LowCreditsEvent(userId, updated.credits)
+                );
             }
 
             return { credits: updated.credits };

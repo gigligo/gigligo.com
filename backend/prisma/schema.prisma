@@ -28,6 +28,7 @@ model User {
   termsAcceptedAt  DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
 
   profile       Profile?
   kyc           KYC?
@@ -69,6 +70,9 @@ model User {
   referredUsers      User[]    @relation("UserReferral")
   referralsGiven     Referral[] @relation("ReferralGiver")
   referralsReceived  Referral[] @relation("ReferralReceiver")
+
+  // Authentication
+  refreshTokens      RefreshToken[]
 }
 
 model Profile {
@@ -94,6 +98,20 @@ model Profile {
   experiences    Experience[]
   educations     Education[]
   portfolioItems PortfolioItem[]
+}
+
+// ═══════════════════════════════════════
+// AUTHENTICATION
+// ═══════════════════════════════════════
+
+model RefreshToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  expiresAt   DateTime
+  isRevoked   Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }
 
 // ═══════════════════════════════════════
@@ -175,6 +193,7 @@ model Gig {
   isActive             Boolean  @default(true)
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+  deletedAt            DateTime?
   orders               Order[]
   reviews              Review[]
   boosts               Boost[]
@@ -206,6 +225,7 @@ model Job {
   boostExpiry  DateTime?
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+  deletedAt    DateTime?
   applications JobApplication[]
   contracts    Contract[]
   Conversation Conversation[]
@@ -286,6 +306,7 @@ model Order {
   buyerReview     String?
   escrowReleased  Boolean        @default(false)
   paymentIntentId String?
+  platformRevenue PlatformRevenue?
   Conversation    Conversation[]
   disputes        Dispute[]
 
@@ -358,6 +379,19 @@ model Transaction {
   createdAt   DateTime       @default(now())
 
   @@index([userId, createdAt])
+}
+
+// ═══════════════════════════════════════
+// PLATFORM REVENUE
+// ═══════════════════════════════════════
+
+model PlatformRevenue {
+  id          String   @id @default(cuid())
+  orderId     String?  @unique
+  order       Order?   @relation(fields: [orderId], references: [id])
+  amountPKR   Int
+  reason      String
+  createdAt   DateTime @default(now())
 }
 
 // ═══════════════════════════════════════
@@ -483,6 +517,8 @@ enum TxType {
   REFUND
   BOOST
   SUBSCRIPTION
+  PAYMENT
+  CREDIT_BONUS
 }
 
 enum TxStatus {
