@@ -1,8 +1,7 @@
-import { defineConfig, env } from '@prisma/config'
+import { defineConfig } from '@prisma/config'
 
 export default defineConfig({
-    earlyAccess: true,
     datasource: {
-        url: env("DATABASE_URL"),
+        url: process.env.DATABASE_URL,
     }
 })
