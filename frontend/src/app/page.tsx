@@ -9,6 +9,7 @@ import { ParallaxItem } from '@/components/animations/ParallaxItem';
 import { ScrollScaleImage } from '@/components/animations/ScrollScaleImage';
 import { TextHighlight } from '@/components/animations/TextHighlight';
 import HeroLottie from '@/components/animations/HeroLottie';
+import GraduatesLottie from '@/components/animations/GraduatesLottie';
 
 /* ──────────────────── Data ──────────────────── */
 const categoryCards = [
@@ -139,8 +140,8 @@ export default function Home() {
                 className="w-full h-auto rounded-2xl md:rounded-4xl shadow-2xl ring-1 ring-text-main/10"
               />
 
-              <ParallaxItem offset={-40} className="absolute -bottom-16 -right-10 md:-bottom-24 md:-right-24 z-20 hidden md:block w-[350px]">
-                <HeroLottie className="w-full h-[300px] drop-shadow-2xl" />
+              <ParallaxItem offset={-40} className="absolute -bottom-16 -right-6 md:-bottom-24 md:-right-24 z-20 w-[180px] md:w-[350px]">
+                <HeroLottie className="w-full h-auto drop-shadow-2xl" />
               </ParallaxItem>
             </div>
 
@@ -224,17 +225,8 @@ export default function Home() {
             </div>
 
             <Reveal direction="up" delay={0.4} className="w-full">
-              <div className="relative rounded-4xl overflow-hidden aspect-21/9 shadow-2xl w-full max-w-5xl mx-auto mt-8 group cursor-pointer ring-1 ring-text-main/10 bg-surface-light">
-                <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8oQoaeeFNqmdr9gq9DbiljoXOKTEyeXbmvQVWBAL1f4mte-pn5GcTqFnHTJYmq8G3iJhurMjmiDHXmwIplEn2U4AQh8hkbZoQW5-gWMHm1K6_VTFtoUVQEQZveoemOcccgWs5tRORtl3sTxyOD1BFLCn2iXu8df-Ae3rGHrXKmuo0eC5zcB9_s5mGDCj9EVMN9nw92AXp6l_qgJW1cOSCmTHlylJaqFAhj10DAJamuIMDoSKHcS5HcXY4bvpAIEzCji3vY8Bf9X8"
-                  alt="Team celebrating a successful project"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-text-main/20 hover:bg-text-main/10 transition-colors duration-500 backdrop-blur-[2px] hover:backdrop-blur-none">
-                  <button className="size-20 md:size-24 rounded-full bg-primary flex items-center justify-center text-text-main shadow-[0_0_40px_rgba(255,206,153,0.4)] transition-transform duration-500 hover:scale-110">
-                    <span className="material-symbols-outlined text-5xl md:text-6xl pl-1">play_arrow</span>
-                  </button>
-                </div>
+              <div className="relative rounded-4xl mt-8 mb-4 w-full max-w-5xl mx-auto flex justify-center items-center">
+                <GraduatesLottie className="w-full max-w-4xl h-auto drop-shadow-2xl" />
               </div>
             </Reveal>
           </section>
