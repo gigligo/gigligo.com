@@ -1,12 +1,10 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 // ═══════════════════════════════════════
@@ -75,6 +73,9 @@ model User {
 
   // Authentication
   refreshTokens      RefreshToken[]
+
+  // LinkedIn Layer
+  endorsementsGiven  Endorsement[] @relation("SkillEndorser")
 }
 
 model Profile {
@@ -97,9 +98,18 @@ model Profile {
   websiteUrl     String?
   linkedinUrl    String?
   githubUrl      String?
+  headline       String?
+  reputationScore Float    @default(0.0)
+  isVerifiedId    Boolean  @default(false)
+  kycLevel        Int      @default(0)
+  hasActiveGigs   Boolean  @default(false)
+
   experiences    Experience[]
   educations     Education[]
   portfolioItems PortfolioItem[]
+  endorsements   Endorsement[]
+  followers      FollowRelation[] @relation("Followers")
+  following      FollowRelation[] @relation("Following")
 }
 
 // ═══════════════════════════════════════
@@ -192,6 +202,7 @@ model Gig {
   deliveryTimeStandard Int
   deliveryTimePremium  Int
   portfolioUrls        String[]
+  isInstantBuy         Boolean  @default(true)
   isActive             Boolean  @default(true)
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
@@ -249,6 +260,7 @@ model JobApplication {
   coverLetter  String
   proposedRate Int?
   timeline     String?
+  aiOptimizationScore Float?
   status       ApplicationStatus @default(PENDING)
   appliedAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
@@ -274,10 +286,14 @@ model Contract {
   employer        User           @relation("EmployerContracts", fields: [employerId], references: [id])
   employerId      String
   amount          Int
+  currency        Currency       @default(USD)
   status          ContractStatus @default(ACTIVE)
   completedAt     DateTime?
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
+
+  milestones      Milestone[]
+  disputes        Dispute[]
 
   @@index([freelancerId])
   @@index([employerId])
@@ -341,11 +357,13 @@ model Review {
 // ═══════════════════════════════════════
 
 model Wallet {
-  id         String @id @default(cuid())
-  user       User   @relation(fields: [userId], references: [id])
-  userId     String @unique
-  balancePKR Int    @default(0)
-  pendingPKR Int    @default(0)
+  id              String   @id @default(cuid())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String   @unique
+  balanceUSD      Int      @default(0)
+  balancePKR      Int      @default(0)
+  escrowLockedUSD Int      @default(0)
+  escrowLockedPKR Int      @default(0)
 }
 
 model CreditPackage {
@@ -537,6 +555,19 @@ enum TxStatus {
   CANCELLED
 }
 
+enum Currency {
+  USD
+  PKR
+}
+
+enum MilestoneStatus {
+  PENDING
+  FUNDED_IN_ESCROW
+  SUBMITTED
+  APPROVED
+  RELEASED
+}
+
 enum PaymentMethod {
   JAZZCASH
   EASYPAISA
@@ -632,6 +663,8 @@ model Dispute {
   orderId     String?
   job         Job?          @relation(fields: [jobId], references: [id])
   jobId       String?
+  contract    Contract?     @relation(fields: [contractId], references: [id])
+  contractId  String?
   initiator   User          @relation("DisputeInitiator", fields: [initiatorId], references: [id])
   initiatorId String
   defendant   User          @relation("DisputeDefendant", fields: [defendantId], references: [id])
@@ -661,6 +694,46 @@ model Referral {
 
   @@unique([referrerId, refereeId])
   @@index([referrerId])
+}
+
+// ═══════════════════════════════════════
+// LINKEDIN LAYER & MILESTONES
+// ═══════════════════════════════════════
+
+model FollowRelation {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  follower    Profile  @relation("Following", fields: [followerId], references: [id])
+  following   Profile  @relation("Followers", fields: [followingId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+}
+
+model Endorsement {
+  id          String   @id @default(cuid())
+  profileId   String
+  endorserId  String
+  skill       String
+  profile     Profile  @relation(fields: [profileId], references: [id])
+  endorser    User     @relation("SkillEndorser", fields: [endorserId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@unique([profileId, endorserId, skill])
+}
+
+model Milestone {
+  id              String   @id @default(cuid())
+  contractId      String
+  contract        Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  description     String
+  amount          Int
+  status          MilestoneStatus @default(PENDING)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([contractId])
 }
 
 // ═══════════════════════════════════════
