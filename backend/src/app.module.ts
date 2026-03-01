@@ -39,17 +39,30 @@ import { UserStateModule } from './user-state/user-state.module';
 import { EventsModule } from './events/events.module';
 import { BoostModule } from './boost/boost.module';
 import { BackgroundWorkersModule } from './workers/background-workers.module';
+import { MilestoneModule } from './milestone/milestone.module';
+import { ReputationModule } from './reputation/reputation.module';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
+    // ── Rate Limiting ──
     ThrottlerModule.forRoot([{
       ttl: 60000,
       limit: 100,
     }]),
+    // ── Event System ──
     EventEmitterModule.forRoot(),
+    // ── Static Files ──
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
+    }),
+    // ── BullMQ Background Queues ──
+    BullModule.forRoot({
+      connection: {
+        host: process.env.REDIS_HOST || '127.0.0.1',
+        port: parseInt(process.env.REDIS_PORT || '6379', 10),
+      },
     }),
     PrismaModule,
     UsersModule,
@@ -82,6 +95,8 @@ import { BackgroundWorkersModule } from './workers/background-workers.module';
     UserStateModule,
     EventsModule,
     BackgroundWorkersModule,
+    MilestoneModule,
+    ReputationModule,
   ],
   controllers: [AppController],
   providers: [
