@@ -3,27 +3,11 @@
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { useEffect, useRef, useState } from 'react';
-
-/* ──────────────────── Scroll Reveal ──────────────────── */
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add('revealed'); io.unobserve(el); } },
-      { threshold: 0.12 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return ref;
-}
-function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const r = useReveal();
-  return <div ref={r} className={`reveal-up ${className}`} style={{ transitionDelay: `${delay}ms` }}>{children}</div>;
-}
+import { useState } from 'react';
+import { Reveal } from '@/components/animations/Reveal';
+import { ParallaxItem } from '@/components/animations/ParallaxItem';
+import { ScrollScaleImage } from '@/components/animations/ScrollScaleImage';
+import { TextHighlight } from '@/components/animations/TextHighlight';
 
 /* ──────────────────── Data ──────────────────── */
 const categoryCards = [
@@ -61,81 +45,122 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-sans">
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-white text-slate-900 font-sans selection:bg-primary selection:text-slate-900">
       <Navbar />
 
-      <main className="flex flex-col grow" style={{ paddingTop: 72 }}>
+      <main className="flex flex-col grow bg-grid">
 
         {/* ═══════════════════ HERO ═══════════════════ */}
-        <section className="relative">
-          <div className="flex min-h-[520px] md:min-h-[600px] flex-col items-center justify-center bg-slate-900 relative overflow-hidden text-center">
-            <div
-              className="absolute inset-0 z-0 opacity-40 bg-cover bg-center"
-              style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbzeUFdVJD4kn0wEhuothMopl__lqh2tF20gg_KLQiEOYF4NVi1jjI-_QXsSIWK1m5NvW8HF9gcnChWFTV3SU6QfF5HwFGFm6KVauRbBtQeAI8TrW8jVOqLkuhKavarc9D2Rle_CcgKwvXzJl2dnb-is81PeAdDl3eSI5YSWlO6Fz6TCu__RF71s44vui4ltzRUGELJJe723u_t_SCwubyJ31uEljrewC3CJddrP6MV9hhJLuScORYrDwd2U5y8jtqfGlgeGovwys')" }}
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-transparent to-slate-900/40 z-10" />
+        <section className="relative pt-32 pb-16 md:pt-48 md:pb-32 px-6 flex flex-col items-center text-center">
 
-            <div className="relative z-20 flex flex-col items-center justify-center gap-8 text-center px-6 max-w-4xl animate-hero-in mx-auto w-full">
-              <div className="flex flex-col items-center justify-center gap-4 w-full">
-                <h1 className="text-white text-4xl md:text-6xl font-black leading-tight tracking-tight text-center">
-                  Find the perfect <span className="text-primary">freelance</span> services for your business
-                </h1>
-                <p className="text-slate-300 text-lg md:text-xl font-medium text-center max-w-2xl">
-                  Work with talented experts around the globe at the right price.
-                </p>
+          <Reveal direction="up" delay={0.1}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200 text-sm font-semibold mb-8 hover:bg-slate-200 transition-colors">
+              <span className="flex size-2 rounded-full bg-primary animate-pulse relative">
+                <span className="absolute inset-0 rounded-full bg-primary blur-sm"></span>
+              </span>
+              Gigligo Network 2026 is Live
+            </div>
+          </Reveal>
+
+          <Reveal direction="up" delay={0.2} className="max-w-5xl z-20">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tight text-slate-900 mb-6 drop-shadow-sm">
+              The world's top talent, <br className="hidden md:block" />
+              <TextHighlight delay={0.8} highlightColor="#D4F252">in one place.</TextHighlight>
+            </h1>
+          </Reveal>
+
+          <Reveal direction="up" delay={0.3} className="max-w-2xl z-20">
+            <p className="text-lg md:text-2xl text-slate-600 font-medium mb-10 leading-relaxed">
+              Scale your business securely. Access on-demand elite freelancers, protected escrow payments, and agency-level tools instantly.
+            </p>
+          </Reveal>
+
+          <Reveal direction="up" delay={0.4} className="z-20 w-full max-w-xl">
+            <form onSubmit={handleSearch} className="flex w-full items-center rounded-2xl h-16 md:h-20 bg-white border-2 border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] overflow-hidden transition-all hover:shadow-[0_8px_40px_rgb(0,0,0,0.12)] hover:border-slate-200 group">
+              <div className="text-slate-400 flex items-center justify-center pl-6 transition-colors group-focus-within:text-slate-900">
+                <span className="material-symbols-outlined text-3xl">search</span>
               </div>
+              <input
+                className="w-full h-full border-none focus:ring-0 text-slate-900 px-4 text-lg md:text-xl font-medium placeholder:text-slate-300 bg-transparent outline-none"
+                placeholder='Search "mobile app dev"...'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <div className="px-3">
+                <button type="submit" className="h-12 md:h-14 px-8 bg-slate-900 text-white rounded-xl font-bold text-lg hover:bg-slate-800 hover:-translate-y-0.5 transition-all active:translate-y-0 shadow-md">
+                  Search
+                </button>
+              </div>
+            </form>
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-6 text-sm font-semibold text-slate-500">
+              <span>Trending:</span>
+              {['AI Automation', 'UI/UX Design', 'Shopify'].map(tag => (
+                <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`} className="hover:text-slate-900 transition-colors bg-slate-100 px-3 py-1 rounded-full border border-slate-200 hover:border-slate-300">
+                  {tag}
+                </Link>
+              ))}
+            </div>
+          </Reveal>
 
-              {/* Hero Search Bar */}
-              <div className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center">
-                <form onSubmit={handleSearch} className="flex w-full items-center justify-center rounded-xl h-14 md:h-16 bg-white overflow-hidden shadow-2xl relative">
-                  <div className="text-slate-400 flex items-center justify-center pl-5 absolute left-0 z-10">
-                    <span className="material-symbols-outlined text-2xl">search</span>
-                  </div>
-                  <input
-                    className="w-full h-full border-none focus:ring-0 text-slate-900 px-14 text-center text-base md:text-lg font-normal placeholder:text-slate-400 bg-transparent outline-none absolute inset-0 z-0"
-                    placeholder='Try "logo design" or "AI developer"'
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <div className="absolute right-2 h-10 md:h-12 flex items-center z-10">
-                    <button type="submit" className="h-full px-6 md:px-8 bg-primary text-slate-900 text-base font-bold rounded-lg transition-all hover:bg-primary/90">
-                      Search
-                    </button>
-                  </div>
-                </form>
+          {/* Floating Parallax Badges around the Hero Image */}
+          <div className="relative w-full max-w-6xl mx-auto mt-20 md:mt-32">
 
-                <div className="flex flex-wrap items-center justify-center gap-3 mt-5 text-white text-sm w-full">
-                  <span className="font-bold opacity-70">Popular:</span>
-                  {['Website Design', 'WordPress', 'Logo Design'].map(tag => (
-                    <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`} className="border border-white/30 rounded-full px-4 py-1.5 hover:bg-white/10 transition-all text-center">
-                      {tag}
-                    </Link>
-                  ))}
+            <ParallaxItem offset={-80} className="absolute -top-12 -left-4 md:-left-12 z-30 hidden md:block">
+              <div className="bg-white px-5 py-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 -rotate-3 hover:rotate-0 transition-all cursor-pointer">
+                <div className="size-10 rounded-full bg-[#D4F252] flex items-center justify-center">
+                  <span className="material-symbols-outlined text-slate-900 font-bold">verified</span>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Top 1%</p>
+                  <p className="text-sm font-bold text-slate-900">Vetted Talent</p>
                 </div>
               </div>
-            </div>
+            </ParallaxItem>
+
+            <ParallaxItem offset={50} className="absolute top-32 -right-4 md:-right-16 z-30 hidden md:block">
+              <div className="bg-white px-5 py-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 rotate-3 hover:rotate-0 transition-all cursor-pointer">
+                <div className="flex -space-x-3">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDifsW_ISHpDhS-k_4LVPU-3iTZ9SRTjBVHk51_soNwO7afiLW6D0iGLScYH6vwnSxlt2DJf83DYWxHg9fF5vuEoKESyMSJtac7YFNQRTWUW9z9vbwb8FlLecL3VqJvVRH3MPsG7pd_N4f0iH00y3BM5a1M_OKB4uW_HgRikF1uxwmqAaNx8tnvMcuCq8lS0Z-x8ehrwqm-RENytC0XHsSpXtcwq2cpc003BKepnCfGPljJ9yvYkvLf1lZ-amlYm5MvXXOY7-xBq9w" className="size-10 rounded-full border-2 border-white object-cover" alt="User" />
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHUVoE8lKE84DYLVmP-hekDz6smA953Op1VlvkqA22hCHxpS_TD2Nmd7hiuhbcV3xCt10tiFTBONF1Al2mSP91l_gnn58aezcBvYN2XyI_R0Tr-si-6ICCX74rmpoSP4rq2NoU4YeXgLrBOltPfeqxAEcMP4YNxwJhHhn6Y4YUjty6W0BRUrVAQuko7FcTlUezpYQ0U5adKs7rjJwfQ4MdQjsZvgzqfqXmr5kUDYa2nbWjNz5ghR5rR56TWSxekbt1S6ui75em1PY" className="size-10 rounded-full border-2 border-white object-cover" alt="User" />
+                  <div className="size-10 rounded-full border-2 border-white bg-slate-900 text-white flex items-center justify-center text-xs font-bold">+2k</div>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-900">Hired Today</p>
+                </div>
+              </div>
+            </ParallaxItem>
+
+            <ScrollScaleImage
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbzeUFdVJD4kn0wEhuothMopl__lqh2tF20gg_KLQiEOYF4NVi1jjI-_QXsSIWK1m5NvW8HF9gcnChWFTV3SU6QfF5HwFGFm6KVauRbBtQeAI8TrW8jVOqLkuhKavarc9D2Rle_CcgKwvXzJl2dnb-is81PeAdDl3eSI5YSWlO6Fz6TCu__RF71s44vui4ltzRUGELJJe723u_t_SCwubyJ31uEljrewC3CJddrP6MV9hhJLuScORYrDwd2U5y8jtqfGlgeGovwys"
+              alt="Gigligo Dashboard Platform"
+              startScale={0.85}
+              className="z-10 ring-1 ring-slate-900/5 rounded-2xl md:rounded-4xl overflow-hidden"
+            />
           </div>
+
         </section>
 
         {/* ═══════════════════ TRUSTED BY ═══════════════════ */}
-        <section className="bg-white dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800 text-center flex flex-col items-center justify-center">
-          <div className="max-w-7xl mx-auto w-full py-8 px-6 flex flex-col items-center justify-center gap-6 md:gap-8">
-            <span className="text-slate-400 font-bold text-sm uppercase tracking-widest text-center">Trusted by:</span>
-            <div className="flex flex-wrap justify-center items-center gap-10 grayscale opacity-60">
-              {trustedLogos.map(logo => (
-                <img key={logo.alt} src={logo.src} alt={logo.alt} className="h-6 md:h-8 object-contain" />
-              ))}
+        <Reveal direction="up" delay={0.2} className="w-full relative z-10 -mt-10 md:-mt-20">
+          <section className="bg-transparent text-center flex flex-col items-center justify-center">
+            <div className="max-w-7xl mx-auto w-full py-8 px-6 flex flex-col items-center justify-center gap-6 md:gap-8 border-b border-slate-200">
+              <span className="text-slate-400 font-bold text-sm uppercase tracking-widest text-center">Trusted by world-class teams</span>
+              <div className="flex flex-wrap justify-center items-center gap-10 grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-700">
+                {trustedLogos.map(logo => (
+                  <img key={logo.alt} src={logo.src} alt={logo.alt} className="h-6 md:h-8 object-contain mix-blend-multiply" />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </Reveal>
 
         {/* ═══════════════════ POPULAR SERVICES ═══════════════════ */}
-        <div className="max-w-7xl mx-auto w-full px-6 py-12 flex flex-col gap-20 items-center justify-center overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full px-6 py-24 flex flex-col gap-32 items-center justify-center overflow-hidden">
           <section className="w-full flex flex-col items-center text-center">
-            <Reveal className="w-full flex flex-col items-center text-center pb-8">
+            <Reveal direction="up" className="w-full flex flex-col items-center text-center pb-12">
               <div className="flex flex-col items-center justify-center gap-4 text-center w-full">
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 text-center">Popular professional services</h2>
-                <Link href="/search" className="text-primary font-bold hover:underline flex items-center justify-center gap-1">
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 text-center tracking-tight">Popular professional services</h2>
+                <Link href="/search" className="text-primary font-bold hover:underline flex items-center justify-center gap-1 mt-2">
                   View All <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </Link>
               </div>
@@ -143,14 +168,14 @@ export default function Home() {
 
             <div className="flex overflow-x-auto gap-6 pb-6 no-scrollbar w-full md:justify-center px-4 snap-x">
               {categoryCards.map((card, i) => (
-                <Reveal key={card.title} delay={i * 80} className="flex-none snap-center">
+                <Reveal direction="up" key={card.title} delay={0.1 * (i + 1)} className="flex-none snap-center">
                   <Link href={card.href} className="w-64 md:w-56 lg:w-48 group cursor-pointer flex flex-col items-center text-center">
-                    <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden mb-4 shadow-md">
-                      <div className="absolute inset-0 bg-linear-to-t from-slate-900/80 to-transparent z-10" />
-                      <img src={card.img} alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                      <div className="absolute bottom-4 left-0 right-0 z-20 flex flex-col items-center text-center px-2">
-                        <p className="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">{card.label}</p>
-                        <h3 className="text-white text-xl font-bold">{card.title}</h3>
+                    <div className="relative w-full aspect-4/5 rounded-2xl overflow-hidden mb-4 shadow-lg border border-slate-100">
+                      <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-slate-900/20 to-transparent z-10" />
+                      <img src={card.img} alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <div className="absolute bottom-6 left-0 right-0 z-20 flex flex-col items-center text-center px-4">
+                        <p className="text-[#D4F252] text-xs font-bold uppercase tracking-widest mb-1.5">{card.label}</p>
+                        <h3 className="text-white text-xl font-bold leading-tight">{card.title}</h3>
                       </div>
                     </div>
                   </Link>
@@ -160,67 +185,76 @@ export default function Home() {
           </section>
 
           {/* ═══════════════════ VALUE PROPS ═══════════════════ */}
-          <Reveal className="w-full">
-            <section className="flex flex-col gap-12 items-center justify-center bg-slate-100 dark:bg-slate-900/30 rounded-3xl p-8 md:p-16 text-center shadow-inner max-w-5xl mx-auto w-full">
-              <div className="flex flex-col items-center justify-center gap-10 w-full">
-                <h2 className="text-3xl md:text-5xl font-black text-center max-w-3xl leading-tight">
-                  A whole world of freelance talent at your fingertips
-                </h2>
-                <div className="grid md:grid-cols-3 gap-8 w-full max-w-4xl">
-                  {[
-                    { title: 'The best for every budget', desc: 'Find high-quality services at every price point. No hourly rates, just project-based pricing.' },
-                    { title: 'Quality work done quickly', desc: 'Find the right freelancer to begin working on your project within minutes.' },
-                    { title: 'Protected payments, every time', desc: "Always know what you'll pay upfront. Your payment isn't released until you approve the work." },
-                  ].map(item => (
-                    <div key={item.title} className="flex flex-col items-center justify-start gap-4 text-center">
-                      <span className="material-symbols-outlined text-primary text-5xl opacity-90 mx-auto">check_circle</span>
-                      <div className="flex flex-col items-center gap-2">
-                        <h4 className="text-xl font-bold">{item.title}</h4>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="relative rounded-2xl overflow-hidden aspect-video shadow-2xl w-full max-w-4xl mx-auto mt-4 group cursor-pointer">
-                <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8oQoaeeFNqmdr9gq9DbiljoXOKTEyeXbmvQVWBAL1f4mte-pn5GcTqFnHTJYmq8G3iJhurMjmiDHXmwIplEn2U4AQh8hkbZoQW5-gWMHm1K6_VTFtoUVQEQZveoemOcccgWs5tRORtl3sTxyOD1BFLCn2iXu8df-Ae3rGHrXKmuo0eC5zcB9_s5mGDCj9EVMN9nw92AXp6l_qgJW1cOSCmTHlylJaqFAhj10DAJamuIMDoSKHcS5HcXY4bvpAIEzCji3vY8Bf9X8"
-                  alt="Team celebrating a successful project"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/20 group-hover:bg-slate-900/30 transition-all">
-                  <button className="size-20 md:size-24 rounded-full bg-white flex items-center justify-center text-slate-900 shadow-xl transition-transform hover:scale-110">
-                    <span className="material-symbols-outlined text-5xl md:text-6xl pl-1 text-primary">play_arrow</span>
-                  </button>
-                </div>
-              </div>
-            </section>
-          </Reveal>
-
-          {/* ═══════════════════ INSPIRATION ═══════════════════ */}
-          <section className="w-full flex flex-col items-center">
-            <Reveal className="w-full flex flex-col items-center text-center pb-8">
-              <div className="flex flex-col items-center justify-center gap-4 w-full text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 text-center max-w-2xl">
-                  Get inspired with projects made on GIGLIGO
+          <section className="flex flex-col gap-16 items-center justify-center w-full max-w-6xl mx-auto py-12">
+            <Reveal direction="up">
+              <div className="flex flex-col items-center justify-center gap-6 w-full text-center">
+                <h2 className="text-4xl md:text-6xl font-black text-center max-w-4xl leading-tight tracking-tight text-slate-900 drop-shadow-sm">
+                  A whole world of freelance talent <br className="hidden md:block" />
+                  <TextHighlight delay={0.3} highlightColor="#e2e8f0">at your fingertips.</TextHighlight>
                 </h2>
               </div>
             </Reveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 w-full max-w-6xl mx-auto justify-items-center">
+
+            <div className="grid md:grid-cols-3 gap-12 w-full max-w-5xl mt-6">
+              {[
+                { title: 'The best for every budget', desc: 'Find high-quality services at every price point. No hourly rates, just project-based pricing.', icon: 'payments' },
+                { title: 'Quality work done quickly', desc: 'Find the right freelancer to begin working on your project within minutes.', icon: 'bolt' },
+                { title: 'Protected payments, every time', desc: "Always know what you'll pay upfront. Your payment isn't released until you approve the work.", icon: 'shield' },
+              ].map((item, i) => (
+                <Reveal direction="up" delay={0.2 * (i + 1)} key={item.title}>
+                  <div className="flex flex-col items-center justify-start gap-5 text-center p-6 rounded-3xl bg-white border border-slate-100 shadow-xl hover:-translate-y-2 transition-transform duration-500">
+                    <div className="size-16 rounded-2xl bg-slate-900 flex items-center justify-center text-[#D4F252] shadow-md">
+                      <span className="material-symbols-outlined text-3xl">{item.icon}</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-3">
+                      <h4 className="text-xl font-bold text-slate-900 leading-snug">{item.title}</h4>
+                      <p className="text-slate-500 text-base leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal direction="up" delay={0.4} className="w-full">
+              <div className="relative rounded-4xl overflow-hidden aspect-21/9 shadow-2xl w-full max-w-5xl mx-auto mt-8 group cursor-pointer ring-1 ring-slate-900/5 bg-slate-100">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8oQoaeeFNqmdr9gq9DbiljoXOKTEyeXbmvQVWBAL1f4mte-pn5GcTqFnHTJYmq8G3iJhurMjmiDHXmwIplEn2U4AQh8hkbZoQW5-gWMHm1K6_VTFtoUVQEQZveoemOcccgWs5tRORtl3sTxyOD1BFLCn2iXu8df-Ae3rGHrXKmuo0eC5zcB9_s5mGDCj9EVMN9nw92AXp6l_qgJW1cOSCmTHlylJaqFAhj10DAJamuIMDoSKHcS5HcXY4bvpAIEzCji3vY8Bf9X8"
+                  alt="Team celebrating a successful project"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/20 hover:bg-slate-900/10 transition-colors duration-500 backdrop-blur-[2px] hover:backdrop-blur-none">
+                  <button className="size-20 md:size-24 rounded-full bg-[#D4F252] flex items-center justify-center text-slate-900 shadow-[0_0_40px_rgba(212,242,82,0.4)] transition-transform duration-500 hover:scale-110">
+                    <span className="material-symbols-outlined text-5xl md:text-6xl pl-1">play_arrow</span>
+                  </button>
+                </div>
+              </div>
+            </Reveal>
+          </section>
+
+          {/* ═══════════════════ INSPIRATION ═══════════════════ */}
+          <section className="w-full flex flex-col items-center max-w-7xl mx-auto py-24 px-6 overflow-hidden">
+            <Reveal direction="up" className="w-full flex flex-col items-center text-center pb-12">
+              <div className="flex flex-col items-center justify-center gap-4 w-full text-center">
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 text-center tracking-tight">
+                  <TextHighlight delay={0.2} highlightColor="#e2e8f0">Inspiring</TextHighlight> projects on Gigligo
+                </h2>
+              </div>
+            </Reveal>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 w-full justify-items-center">
               {inspirationItems.map((item, i) => (
-                <Reveal key={item.title} delay={i * 80} className="flex flex-col items-center text-center w-full">
-                  <div className="flex flex-col items-center gap-4 group w-full max-w-[280px]">
-                    <div className="aspect-square w-full bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md">
-                      <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
+                <Reveal direction="up" key={item.title} delay={0.1 * (i + 1)} className="flex flex-col items-center text-center w-full">
+                  <div className="flex flex-col items-center gap-5 group w-full cursor-pointer">
+                    <div className="aspect-square w-full bg-slate-100 rounded-3xl overflow-hidden shadow-md ring-1 ring-slate-900/5">
+                      <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
                     </div>
                     <div className="flex flex-col items-center justify-center gap-3 w-full">
-                      <div className="size-10 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden shadow-sm border-2 border-white dark:border-slate-700">
+                      <div className="size-12 rounded-full bg-slate-200 overflow-hidden shadow-sm border-2 border-white">
                         <img src={item.avatar} alt={item.author} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex flex-col items-center text-center">
-                        <p className="text-base font-bold text-slate-900 dark:text-white leading-tight">{item.title}</p>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">by {item.author}</p>
+                        <p className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{item.title}</p>
+                        <p className="text-sm font-medium text-slate-500 mt-1">by {item.author}</p>
                       </div>
                     </div>
                   </div>
@@ -231,19 +265,22 @@ export default function Home() {
         </div>
 
         {/* ═══════════════════ FINAL CTA ═══════════════════ */}
-        <section className="px-6 py-24 md:py-32 bg-slate-900 text-white relative overflow-hidden flex flex-col items-center justify-center text-center w-full">
-          <div className="absolute right-1/2 top-1/2 w-full max-w-3xl h-full bg-primary/20 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-          <Reveal className="w-full flex flex-col items-center justify-center relative z-10 text-center mx-auto max-w-4xl">
-            <div className="flex flex-col items-center justify-center gap-8 w-full">
-              <h2 className="text-4xl md:text-6xl font-black text-center leading-tight">
-                Suddenly, it&apos;s all so easy.
+        <section className="px-6 py-32 md:py-48 bg-slate-900 text-white relative overflow-hidden flex flex-col items-center justify-center text-center w-full mt-12 shadow-[0_-20px_50px_rgba(0,0,0,0.1)]">
+          <div className="absolute top-0 w-[200%] h-px bg-linear-to-r from-transparent via-slate-700 to-transparent" />
+          <div className="absolute right-1/2 top-1/2 w-full max-w-4xl h-full bg-[#D4F252]/10 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+
+          <Reveal direction="up" className="w-full flex flex-col items-center justify-center relative z-10 text-center mx-auto max-w-5xl">
+            <div className="flex flex-col items-center justify-center gap-10 w-full">
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-center leading-[1.05] tracking-tight">
+                Suddenly, <br className="hidden md:block" />it's all so <span className="text-[#D4F252]">easy.</span>
               </h2>
-              <p className="text-slate-400 text-lg md:text-2xl font-medium text-center max-w-2xl px-4">
-                Join the millions of businesses using GIGLIGO to find the best talent and get work done fast.
+              <p className="text-slate-400 text-xl md:text-2xl font-medium text-center max-w-2xl px-4 leading-relaxed">
+                Join the millions of businesses using GIGLIGO to find the best talent and scale their operations securely.
               </p>
-              <div className="mt-4 flex justify-center w-full">
-                <Link href="/register" className="inline-flex items-center justify-center bg-primary text-slate-900 px-12 py-5 rounded-xl font-bold text-xl hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-2xl shadow-primary/20">
-                  Join GIGLIGO Now
+              <div className="mt-8 flex justify-center w-full">
+                <Link href="/register" className="inline-flex items-center justify-center bg-[#D4F252] text-slate-900 px-12 py-5 rounded-2xl font-bold text-xl hover:bg-white hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-[#D4F252]/10 group">
+                  Start Hiring Now
+                  <span className="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
                 </Link>
               </div>
             </div>
