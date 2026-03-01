@@ -45,7 +45,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-white text-slate-900 font-sans selection:bg-primary selection:text-slate-900">
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-white text-text-main font-sans selection:bg-primary selection:text-text-main">
       <Navbar />
 
       <main className="flex flex-col grow bg-grid">
@@ -54,7 +54,7 @@ export default function Home() {
         <section className="relative pt-32 pb-16 md:pt-48 md:pb-32 px-6 flex flex-col items-center text-center">
 
           <Reveal direction="up" delay={0.1}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200 text-sm font-semibold mb-8 hover:bg-slate-200 transition-colors">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-light border border-border-light text-sm font-semibold mb-8 hover:bg-border-light transition-colors">
               <span className="flex size-2 rounded-full bg-primary animate-pulse relative">
                 <span className="absolute inset-0 rounded-full bg-primary blur-sm"></span>
               </span>
@@ -63,39 +63,39 @@ export default function Home() {
           </Reveal>
 
           <Reveal direction="up" delay={0.2} className="max-w-5xl z-20">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tight text-slate-900 mb-6 drop-shadow-sm">
-              The world's top talent, <br className="hidden md:block" />
-              <TextHighlight delay={0.8} highlightColor="#D4F252">in one place.</TextHighlight>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tight text-text-main mb-6 drop-shadow-sm">
+              The <TextHighlight delay={0.8} highlightColor="#FFCE99">Pakistan's</TextHighlight> top talent, <br className="hidden md:block" />
+              in one place.
             </h1>
           </Reveal>
 
           <Reveal direction="up" delay={0.3} className="max-w-2xl z-20">
-            <p className="text-lg md:text-2xl text-slate-600 font-medium mb-10 leading-relaxed">
+            <p className="text-lg md:text-2xl text-text-muted font-medium mb-10 leading-relaxed">
               Scale your business securely. Access on-demand elite freelancers, protected escrow payments, and agency-level tools instantly.
             </p>
           </Reveal>
 
           <Reveal direction="up" delay={0.4} className="z-20 w-full max-w-xl">
-            <form onSubmit={handleSearch} className="flex w-full items-center rounded-2xl h-16 md:h-20 bg-white border-2 border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] overflow-hidden transition-all hover:shadow-[0_8px_40px_rgb(0,0,0,0.12)] hover:border-slate-200 group">
-              <div className="text-slate-400 flex items-center justify-center pl-6 transition-colors group-focus-within:text-slate-900">
+            <form onSubmit={handleSearch} className="flex w-full items-center rounded-2xl h-16 md:h-20 bg-white border-2 border-border-light/50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] overflow-hidden transition-all hover:shadow-[0_8px_40px_rgb(0,0,0,0.12)] hover:border-border-light group">
+              <div className="text-text-muted flex items-center justify-center pl-6 transition-colors group-focus-within:text-text-main">
                 <span className="material-symbols-outlined text-3xl">search</span>
               </div>
               <input
-                className="w-full h-full border-none focus:ring-0 text-slate-900 px-4 text-lg md:text-xl font-medium placeholder:text-slate-300 bg-transparent outline-none"
+                className="w-full h-full border-none focus:ring-0 text-text-main px-4 text-lg md:text-xl font-medium placeholder:text-text-muted/70 bg-transparent outline-none"
                 placeholder='Search "mobile app dev"...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <div className="px-3">
-                <button type="submit" className="h-12 md:h-14 px-8 bg-slate-900 text-white rounded-xl font-bold text-lg hover:bg-slate-800 hover:-translate-y-0.5 transition-all active:translate-y-0 shadow-md">
+                <button type="submit" className="h-12 md:h-14 px-8 bg-text-main text-white rounded-xl font-bold text-lg hover:bg-text-main/90 hover:-translate-y-0.5 transition-all active:translate-y-0 shadow-md">
                   Search
                 </button>
               </div>
             </form>
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-6 text-sm font-semibold text-slate-500">
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-6 text-sm font-semibold text-text-muted">
               <span>Trending:</span>
               {['AI Automation', 'UI/UX Design', 'Shopify'].map(tag => (
-                <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`} className="hover:text-slate-900 transition-colors bg-slate-100 px-3 py-1 rounded-full border border-slate-200 hover:border-slate-300">
+                <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`} className="hover:text-text-main transition-colors bg-surface-light px-3 py-1 rounded-full border border-border-light hover:border-primary">
                   {tag}
                 </Link>
               ))}
@@ -106,26 +106,26 @@ export default function Home() {
           <div className="relative w-full max-w-6xl mx-auto mt-20 md:mt-32">
 
             <ParallaxItem offset={-80} className="absolute -top-12 -left-4 md:-left-12 z-30 hidden md:block">
-              <div className="bg-white px-5 py-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 -rotate-3 hover:rotate-0 transition-all cursor-pointer">
-                <div className="size-10 rounded-full bg-[#D4F252] flex items-center justify-center">
-                  <span className="material-symbols-outlined text-slate-900 font-bold">verified</span>
+              <div className="bg-white px-5 py-4 rounded-2xl shadow-xl border border-border-light/50 flex items-center gap-3 -rotate-3 hover:rotate-0 transition-all cursor-pointer">
+                <div className="size-10 rounded-full bg-[#FFCE99] flex items-center justify-center">
+                  <span className="material-symbols-outlined text-text-main font-bold">verified</span>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Top 1%</p>
-                  <p className="text-sm font-bold text-slate-900">Vetted Talent</p>
+                  <p className="text-xs font-bold text-text-muted uppercase tracking-wider">Top 1%</p>
+                  <p className="text-sm font-bold text-text-main">Vetted Talent</p>
                 </div>
               </div>
             </ParallaxItem>
 
             <ParallaxItem offset={50} className="absolute top-32 -right-4 md:-right-16 z-30 hidden md:block">
-              <div className="bg-white px-5 py-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 rotate-3 hover:rotate-0 transition-all cursor-pointer">
+              <div className="bg-white px-5 py-4 rounded-2xl shadow-xl border border-border-light/50 flex items-center gap-3 rotate-3 hover:rotate-0 transition-all cursor-pointer">
                 <div className="flex -space-x-3">
                   <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDifsW_ISHpDhS-k_4LVPU-3iTZ9SRTjBVHk51_soNwO7afiLW6D0iGLScYH6vwnSxlt2DJf83DYWxHg9fF5vuEoKESyMSJtac7YFNQRTWUW9z9vbwb8FlLecL3VqJvVRH3MPsG7pd_N4f0iH00y3BM5a1M_OKB4uW_HgRikF1uxwmqAaNx8tnvMcuCq8lS0Z-x8ehrwqm-RENytC0XHsSpXtcwq2cpc003BKepnCfGPljJ9yvYkvLf1lZ-amlYm5MvXXOY7-xBq9w" className="size-10 rounded-full border-2 border-white object-cover" alt="User" />
                   <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHUVoE8lKE84DYLVmP-hekDz6smA953Op1VlvkqA22hCHxpS_TD2Nmd7hiuhbcV3xCt10tiFTBONF1Al2mSP91l_gnn58aezcBvYN2XyI_R0Tr-si-6ICCX74rmpoSP4rq2NoU4YeXgLrBOltPfeqxAEcMP4YNxwJhHhn6Y4YUjty6W0BRUrVAQuko7FcTlUezpYQ0U5adKs7rjJwfQ4MdQjsZvgzqfqXmr5kUDYa2nbWjNz5ghR5rR56TWSxekbt1S6ui75em1PY" className="size-10 rounded-full border-2 border-white object-cover" alt="User" />
-                  <div className="size-10 rounded-full border-2 border-white bg-slate-900 text-white flex items-center justify-center text-xs font-bold">+2k</div>
+                  <div className="size-10 rounded-full border-2 border-white bg-text-main text-white flex items-center justify-center text-xs font-bold">+2k</div>
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-slate-900">Hired Today</p>
+                  <p className="text-sm font-bold text-text-main">Hired Today</p>
                 </div>
               </div>
             </ParallaxItem>
@@ -134,7 +134,7 @@ export default function Home() {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbzeUFdVJD4kn0wEhuothMopl__lqh2tF20gg_KLQiEOYF4NVi1jjI-_QXsSIWK1m5NvW8HF9gcnChWFTV3SU6QfF5HwFGFm6KVauRbBtQeAI8TrW8jVOqLkuhKavarc9D2Rle_CcgKwvXzJl2dnb-is81PeAdDl3eSI5YSWlO6Fz6TCu__RF71s44vui4ltzRUGELJJe723u_t_SCwubyJ31uEljrewC3CJddrP6MV9hhJLuScORYrDwd2U5y8jtqfGlgeGovwys"
               alt="Gigligo Dashboard Platform"
               startScale={0.85}
-              className="z-10 ring-1 ring-slate-900/5 rounded-2xl md:rounded-4xl overflow-hidden"
+              className="z-10 ring-1 ring-text-main/10 rounded-2xl md:rounded-4xl overflow-hidden"
             />
           </div>
 
@@ -143,8 +143,8 @@ export default function Home() {
         {/* ═══════════════════ TRUSTED BY ═══════════════════ */}
         <Reveal direction="up" delay={0.2} className="w-full relative z-10 -mt-10 md:-mt-20">
           <section className="bg-transparent text-center flex flex-col items-center justify-center">
-            <div className="max-w-7xl mx-auto w-full py-8 px-6 flex flex-col items-center justify-center gap-6 md:gap-8 border-b border-slate-200">
-              <span className="text-slate-400 font-bold text-sm uppercase tracking-widest text-center">Trusted by world-class teams</span>
+            <div className="max-w-7xl mx-auto w-full py-8 px-6 flex flex-col items-center justify-center gap-6 md:gap-8 border-b border-border-light">
+              <span className="text-text-muted font-bold text-sm uppercase tracking-widest text-center">Trusted by world-class teams</span>
               <div className="flex flex-wrap justify-center items-center gap-10 grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-700">
                 {trustedLogos.map(logo => (
                   <img key={logo.alt} src={logo.src} alt={logo.alt} className="h-6 md:h-8 object-contain mix-blend-multiply" />
@@ -159,7 +159,7 @@ export default function Home() {
           <section className="w-full flex flex-col items-center text-center">
             <Reveal direction="up" className="w-full flex flex-col items-center text-center pb-12">
               <div className="flex flex-col items-center justify-center gap-4 text-center w-full">
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 text-center tracking-tight">Popular professional services</h2>
+                <h2 className="text-4xl md:text-5xl font-black text-text-main text-center tracking-tight">Popular professional services</h2>
                 <Link href="/search" className="text-primary font-bold hover:underline flex items-center justify-center gap-1 mt-2">
                   View All <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </Link>
@@ -170,11 +170,11 @@ export default function Home() {
               {categoryCards.map((card, i) => (
                 <Reveal direction="up" key={card.title} delay={0.1 * (i + 1)} className="flex-none snap-center">
                   <Link href={card.href} className="w-64 md:w-56 lg:w-48 group cursor-pointer flex flex-col items-center text-center">
-                    <div className="relative w-full aspect-4/5 rounded-2xl overflow-hidden mb-4 shadow-lg border border-slate-100">
-                      <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-slate-900/20 to-transparent z-10" />
+                    <div className="relative w-full aspect-4/5 rounded-2xl overflow-hidden mb-4 shadow-lg border border-border-light/50">
+                      <div className="absolute inset-0 bg-linear-to-t from-text-main/90 via-text-main/20 to-transparent z-10" />
                       <img src={card.img} alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                       <div className="absolute bottom-6 left-0 right-0 z-20 flex flex-col items-center text-center px-4">
-                        <p className="text-[#D4F252] text-xs font-bold uppercase tracking-widest mb-1.5">{card.label}</p>
+                        <p className="text-[#FFCE99] text-xs font-bold uppercase tracking-widest mb-1.5">{card.label}</p>
                         <h3 className="text-white text-xl font-bold leading-tight">{card.title}</h3>
                       </div>
                     </div>
@@ -188,7 +188,7 @@ export default function Home() {
           <section className="flex flex-col gap-16 items-center justify-center w-full max-w-6xl mx-auto py-12">
             <Reveal direction="up">
               <div className="flex flex-col items-center justify-center gap-6 w-full text-center">
-                <h2 className="text-4xl md:text-6xl font-black text-center max-w-4xl leading-tight tracking-tight text-slate-900 drop-shadow-sm">
+                <h2 className="text-4xl md:text-6xl font-black text-center max-w-4xl leading-tight tracking-tight text-text-main drop-shadow-sm">
                   A whole world of freelance talent <br className="hidden md:block" />
                   <TextHighlight delay={0.3} highlightColor="#e2e8f0">at your fingertips.</TextHighlight>
                 </h2>
@@ -202,13 +202,13 @@ export default function Home() {
                 { title: 'Protected payments, every time', desc: "Always know what you'll pay upfront. Your payment isn't released until you approve the work.", icon: 'shield' },
               ].map((item, i) => (
                 <Reveal direction="up" delay={0.2 * (i + 1)} key={item.title}>
-                  <div className="flex flex-col items-center justify-start gap-5 text-center p-6 rounded-3xl bg-white border border-slate-100 shadow-xl hover:-translate-y-2 transition-transform duration-500">
-                    <div className="size-16 rounded-2xl bg-slate-900 flex items-center justify-center text-[#D4F252] shadow-md">
+                  <div className="flex flex-col items-center justify-start gap-5 text-center p-6 rounded-3xl bg-white border border-border-light/50 shadow-xl hover:-translate-y-2 transition-transform duration-500">
+                    <div className="size-16 rounded-2xl bg-text-main flex items-center justify-center text-[#FFCE99] shadow-md">
                       <span className="material-symbols-outlined text-3xl">{item.icon}</span>
                     </div>
                     <div className="flex flex-col items-center gap-3">
-                      <h4 className="text-xl font-bold text-slate-900 leading-snug">{item.title}</h4>
-                      <p className="text-slate-500 text-base leading-relaxed">{item.desc}</p>
+                      <h4 className="text-xl font-bold text-text-main leading-snug">{item.title}</h4>
+                      <p className="text-text-muted text-base leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -216,14 +216,14 @@ export default function Home() {
             </div>
 
             <Reveal direction="up" delay={0.4} className="w-full">
-              <div className="relative rounded-4xl overflow-hidden aspect-21/9 shadow-2xl w-full max-w-5xl mx-auto mt-8 group cursor-pointer ring-1 ring-slate-900/5 bg-slate-100">
+              <div className="relative rounded-4xl overflow-hidden aspect-21/9 shadow-2xl w-full max-w-5xl mx-auto mt-8 group cursor-pointer ring-1 ring-text-main/10 bg-surface-light">
                 <img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8oQoaeeFNqmdr9gq9DbiljoXOKTEyeXbmvQVWBAL1f4mte-pn5GcTqFnHTJYmq8G3iJhurMjmiDHXmwIplEn2U4AQh8hkbZoQW5-gWMHm1K6_VTFtoUVQEQZveoemOcccgWs5tRORtl3sTxyOD1BFLCn2iXu8df-Ae3rGHrXKmuo0eC5zcB9_s5mGDCj9EVMN9nw92AXp6l_qgJW1cOSCmTHlylJaqFAhj10DAJamuIMDoSKHcS5HcXY4bvpAIEzCji3vY8Bf9X8"
                   alt="Team celebrating a successful project"
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-900/20 hover:bg-slate-900/10 transition-colors duration-500 backdrop-blur-[2px] hover:backdrop-blur-none">
-                  <button className="size-20 md:size-24 rounded-full bg-[#D4F252] flex items-center justify-center text-slate-900 shadow-[0_0_40px_rgba(212,242,82,0.4)] transition-transform duration-500 hover:scale-110">
+                <div className="absolute inset-0 flex items-center justify-center bg-text-main/20 hover:bg-text-main/10 transition-colors duration-500 backdrop-blur-[2px] hover:backdrop-blur-none">
+                  <button className="size-20 md:size-24 rounded-full bg-[#FFCE99] flex items-center justify-center text-text-main shadow-[0_0_40px_rgba(255,206,153,0.4)] transition-transform duration-500 hover:scale-110">
                     <span className="material-symbols-outlined text-5xl md:text-6xl pl-1">play_arrow</span>
                   </button>
                 </div>
@@ -235,7 +235,7 @@ export default function Home() {
           <section className="w-full flex flex-col items-center max-w-7xl mx-auto py-24 px-6 overflow-hidden">
             <Reveal direction="up" className="w-full flex flex-col items-center text-center pb-12">
               <div className="flex flex-col items-center justify-center gap-4 w-full text-center">
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 text-center tracking-tight">
+                <h2 className="text-4xl md:text-5xl font-black text-text-main text-center tracking-tight">
                   <TextHighlight delay={0.2} highlightColor="#e2e8f0">Inspiring</TextHighlight> projects on Gigligo
                 </h2>
               </div>
@@ -245,16 +245,16 @@ export default function Home() {
               {inspirationItems.map((item, i) => (
                 <Reveal direction="up" key={item.title} delay={0.1 * (i + 1)} className="flex flex-col items-center text-center w-full">
                   <div className="flex flex-col items-center gap-5 group w-full cursor-pointer">
-                    <div className="aspect-square w-full bg-slate-100 rounded-3xl overflow-hidden shadow-md ring-1 ring-slate-900/5">
+                    <div className="aspect-square w-full bg-surface-light rounded-3xl overflow-hidden shadow-md ring-1 ring-text-main/10">
                       <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
                     </div>
                     <div className="flex flex-col items-center justify-center gap-3 w-full">
-                      <div className="size-12 rounded-full bg-slate-200 overflow-hidden shadow-sm border-2 border-white">
+                      <div className="size-12 rounded-full bg-border-light overflow-hidden shadow-sm border-2 border-white">
                         <img src={item.avatar} alt={item.author} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex flex-col items-center text-center">
-                        <p className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{item.title}</p>
-                        <p className="text-sm font-medium text-slate-500 mt-1">by {item.author}</p>
+                        <p className="text-lg font-bold text-text-main group-hover:text-primary transition-colors">{item.title}</p>
+                        <p className="text-sm font-medium text-text-muted mt-1">by {item.author}</p>
                       </div>
                     </div>
                   </div>
@@ -265,20 +265,20 @@ export default function Home() {
         </div>
 
         {/* ═══════════════════ FINAL CTA ═══════════════════ */}
-        <section className="px-6 py-32 md:py-48 bg-slate-900 text-white relative overflow-hidden flex flex-col items-center justify-center text-center w-full mt-12 shadow-[0_-20px_50px_rgba(0,0,0,0.1)]">
-          <div className="absolute top-0 w-[200%] h-px bg-linear-to-r from-transparent via-slate-700 to-transparent" />
-          <div className="absolute right-1/2 top-1/2 w-full max-w-4xl h-full bg-[#D4F252]/10 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <section className="px-6 py-32 md:py-48 bg-text-main text-white relative overflow-hidden flex flex-col items-center justify-center text-center w-full mt-12 shadow-[0_-20px_50px_rgba(0,0,0,0.1)]">
+          <div className="absolute top-0 w-[200%] h-px bg-linear-to-r from-transparent via-text-main/80 to-transparent" />
+          <div className="absolute right-1/2 top-1/2 w-full max-w-4xl h-full bg-[#FFCE99]/10 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
           <Reveal direction="up" className="w-full flex flex-col items-center justify-center relative z-10 text-center mx-auto max-w-5xl">
             <div className="flex flex-col items-center justify-center gap-10 w-full">
               <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-center leading-[1.05] tracking-tight">
-                Suddenly, <br className="hidden md:block" />it's all so <span className="text-[#D4F252]">easy.</span>
+                Suddenly, <br className="hidden md:block" />it's all so <span className="text-[#FFCE99]">easy.</span>
               </h2>
-              <p className="text-slate-400 text-xl md:text-2xl font-medium text-center max-w-2xl px-4 leading-relaxed">
+              <p className="text-text-muted text-xl md:text-2xl font-medium text-center max-w-2xl px-4 leading-relaxed">
                 Join the millions of businesses using GIGLIGO to find the best talent and scale their operations securely.
               </p>
               <div className="mt-8 flex justify-center w-full">
-                <Link href="/register" className="inline-flex items-center justify-center bg-[#D4F252] text-slate-900 px-12 py-5 rounded-2xl font-bold text-xl hover:bg-white hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-[#D4F252]/10 group">
+                <Link href="/register" className="inline-flex items-center justify-center bg-[#FFCE99] text-text-main px-12 py-5 rounded-2xl font-bold text-xl hover:bg-white hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-[#FFCE99]/10 group">
                   Start Hiring Now
                   <span className="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
                 </Link>

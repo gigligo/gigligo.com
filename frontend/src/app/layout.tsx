@@ -66,7 +66,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#f8f7f6" />
       </head>
-      <body className={`${inter.className} min-h-screen bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col`}>
+      <body className={`${inter.className} min-h-screen bg-background-light dark:bg-background-dark text-text-main dark:text-slate-100 flex flex-col`}>
         <Providers>
           <SmoothScrollProvider>
             {children}

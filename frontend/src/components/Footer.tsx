@@ -36,18 +36,18 @@ function SocialIcon({ name }: { name: string }) {
 
 export function Footer() {
     return (
-        <footer className="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 py-12 px-6">
+        <footer className="bg-white dark:bg-background-dark border-t border-border-light dark:border-slate-800 py-12 px-6">
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-12">
                     {/* Brand */}
                     <div className="col-span-2 lg:col-span-1">
-                        <Link href="/" className="flex items-center gap-2 text-slate-900 dark:text-slate-100 mb-6">
+                        <Link href="/" className="flex items-center gap-2 text-text-main dark:text-slate-100 mb-6">
                             <div className="size-6 bg-primary rounded flex items-center justify-center">
-                                <span className="material-symbols-outlined text-slate-900 text-xs font-bold">token</span>
+                                <span className="material-symbols-outlined text-text-main text-xs font-bold">token</span>
                             </div>
                             <h2 className="text-base font-black uppercase tracking-tight">GIGLIGO</h2>
                         </Link>
-                        <p className="text-slate-500 text-sm leading-relaxed">
+                        <p className="text-text-muted text-sm leading-relaxed">
                             Connecting businesses with the world&apos;s most talented freelancers to get things done.
                         </p>
                         <div className="flex gap-3 mt-6">
@@ -64,7 +64,7 @@ export function Footer() {
                                         href={urls[social]}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all duration-300"
+                                        className="w-9 h-9 rounded-full border border-border-light dark:border-slate-700 flex items-center justify-center text-text-muted/80 hover:border-primary hover:text-primary transition-all duration-300"
                                         aria-label={social}
                                     >
                                         <SocialIcon name={social} />
@@ -76,8 +76,8 @@ export function Footer() {
 
                     {/* Categories */}
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100">Categories</h4>
-                        <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
+                        <h4 className="font-bold text-text-main dark:text-slate-100">Categories</h4>
+                        <ul className="flex flex-col gap-2 text-sm text-text-muted dark:text-text-muted/80">
                             <li><Link href="/search?category=Design" className="hover:text-primary transition-colors">Graphics &amp; Design</Link></li>
                             <li><Link href="/search?category=Marketing" className="hover:text-primary transition-colors">Digital Marketing</Link></li>
                             <li><Link href="/search?category=Writing" className="hover:text-primary transition-colors">Writing &amp; Translation</Link></li>
@@ -87,8 +87,8 @@ export function Footer() {
 
                     {/* About */}
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100">About</h4>
-                        <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
+                        <h4 className="font-bold text-text-main dark:text-slate-100">About</h4>
+                        <ul className="flex flex-col gap-2 text-sm text-text-muted dark:text-text-muted/80">
                             <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
                             <li><Link href="/blog" className="hover:text-primary transition-colors">Press &amp; News</Link></li>
                             <li><Link href="/referral" className="hover:text-primary transition-colors">Partnerships</Link></li>
@@ -99,8 +99,8 @@ export function Footer() {
 
                     {/* Support */}
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100">Support</h4>
-                        <ul className="flex flex-col gap-2 text-sm text-slate-500 dark:text-slate-400">
+                        <h4 className="font-bold text-text-main dark:text-slate-100">Support</h4>
+                        <ul className="flex flex-col gap-2 text-sm text-text-muted dark:text-text-muted/80">
                             <li><Link href="/help" className="hover:text-primary transition-colors">Help Center</Link></li>
                             <li><Link href="/faq" className="hover:text-primary transition-colors">Trust &amp; Safety</Link></li>
                             <li><Link href="/register?role=SELLER" className="hover:text-primary transition-colors">Selling on GIGLIGO</Link></li>
@@ -110,7 +110,7 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-xs">
+                <div className="pt-8 border-t border-border-light/50 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-text-muted/80 text-xs">
                     <p>&copy; GIGLIGO International Ltd. {new Date().getFullYear()}</p>
                     <div className="flex gap-6">
                         <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">share</span>

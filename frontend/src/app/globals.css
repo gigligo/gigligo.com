@@ -5,17 +5,17 @@
 
 /* stylelint-disable-next-line at-rule-no-unknown */
 @theme {
-  --color-primary: #f2b90d;
-  --color-primary-dark: #d9a60b;
-  --color-background-light: #f8f8f5;
-  --color-background-dark: #221e10;
+  --color-primary: #FF9644;
+  --color-primary-dark: #d67930;
+  --color-background-light: #FFFDF1;
+  --color-background-dark: #2d1900;
   --color-surface-light: #ffffff;
-  --color-surface-dark: #2a261a;
-  --color-nav-bg: #1a1814;
-  --color-border-light: #e5e5e5;
-  --color-border-dark: #3a3426;
-  --color-text-main: #0f172a;
-  --color-text-muted: #64748b;
+  --color-surface-dark: #402300;
+  --color-nav-bg: #562F00;
+  --color-border-light: #FFCE99;
+  --color-border-dark: #8c4c00;
+  --color-text-main: #562F00;
+  --color-text-muted: #8c6a46;
 
   --font-display: 'Inter', sans-serif;
   --font-sans: 'Inter', sans-serif;
