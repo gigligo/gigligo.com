@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+// @ts-ignore
 import Lenis from '@studio-freight/lenis';
 
 export default function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
@@ -8,7 +9,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
         // Initialize Lenis for buttery smooth scrolling
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
