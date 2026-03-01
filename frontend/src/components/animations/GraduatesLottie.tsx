@@ -6,30 +6,32 @@ export default function GraduatesLottie({ className }: { className?: string }) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        let animation: any = null;
+        let anim: any = null;
 
-        // @ts-ignore: Bypass local typescript warnings since lottie-web was forcefully injected
-        import('lottie-web').then((lottieModule) => {
-            // Handle both ESModule default exports and direct exports
-            const lottie = lottieModule.default || lottieModule;
+        // @ts-ignore
+        import('lottie-web').then((mod) => {
+            const lottie = mod.default || mod;
+            if (!containerRef.current) return;
 
-            if (containerRef.current) {
-                animation = lottie.loadAnimation({
-                    container: containerRef.current,
-                    renderer: 'svg',
-                    loop: true,
-                    autoplay: true,
-                    path: '/graduates-scroll.json',
-                });
-            }
+            anim = lottie.loadAnimation({
+                container: containerRef.current,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: '/graduates-scroll.json',
+            });
         });
 
         return () => {
-            if (animation) {
-                animation.destroy();
-            }
+            if (anim) anim.destroy();
         };
     }, []);
 
-    return <div ref={containerRef} className={className || "w-full max-w-5xl mx-auto"} />;
+    return (
+        <div
+            ref={containerRef}
+            className={className || 'w-full max-w-5xl mx-auto'}
+            style={{ minHeight: 300 }}
+        />
+    );
 }

@@ -6,49 +6,45 @@ export default function HeroLottie({ className }: { className?: string }) {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        let animation: any = null;
+        let anim: any = null;
+        let onScroll: (() => void) | null = null;
 
-        // Dynamically import lottie-web on the client side only
-        import('lottie-web').then((lottieModule) => {
-            const lottie = lottieModule.default;
+        // @ts-ignore
+        import('lottie-web').then((mod) => {
+            const lottie = mod.default || mod;
+            if (!containerRef.current) return;
 
-            if (containerRef.current) {
-                animation = lottie.loadAnimation({
-                    container: containerRef.current,
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: false,
-                    path: '/handshake-contract.json',
-                });
+            anim = lottie.loadAnimation({
+                container: containerRef.current,
+                renderer: 'svg',
+                loop: false,
+                autoplay: false,
+                path: '/handshake-contract.json',
+            });
 
-                const handleScroll = () => {
-                    if (!containerRef.current) return;
-                    const position = containerRef.current.getBoundingClientRect().top;
-                    const screenHeight = window.innerHeight;
+            onScroll = () => {
+                if (!containerRef.current) return;
+                const rect = containerRef.current.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    anim.play();
+                }
+            };
 
-                    if (position < screenHeight - 100) {
-                        animation.play();
-                    }
-                };
-
-                window.addEventListener('scroll', handleScroll);
-
-                // Check once on mount
-                handleScroll();
-
-                return () => {
-                    window.removeEventListener('scroll', handleScroll);
-                    animation.destroy();
-                };
-            }
+            window.addEventListener('scroll', onScroll);
+            onScroll();
         });
 
         return () => {
-            if (animation) {
-                animation.destroy();
-            }
+            if (onScroll) window.removeEventListener('scroll', onScroll);
+            if (anim) anim.destroy();
         };
     }, []);
 
-    return <div ref={containerRef} className={className || "w-full max-w-lg mx-auto h-[400px]"} />;
+    return (
+        <div
+            ref={containerRef}
+            className={className || 'w-full max-w-lg mx-auto'}
+            style={{ minHeight: 300 }}
+        />
+    );
 }
