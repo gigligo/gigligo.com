@@ -38,6 +38,7 @@ import { SubscriptionModule } from './subscription/subscription.module';
 import { UserStateModule } from './user-state/user-state.module';
 import { EventsModule } from './events/events.module';
 import { BoostModule } from './boost/boost.module';
+import { BackgroundWorkersModule } from './workers/background-workers.module';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { BoostModule } from './boost/boost.module';
     SubscriptionModule,
     UserStateModule,
     EventsModule,
+    BackgroundWorkersModule,
   ],
   controllers: [AppController],
   providers: [
