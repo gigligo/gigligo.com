@@ -47,7 +47,6 @@ export const metadata: Metadata = {
 };
 
 import { Providers } from "@/components/Providers";
-import { AuthProvider } from "@/providers/AuthProvider";
 import CookieConsent from "@/components/CookieConsent";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
@@ -69,11 +68,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} min-h-screen bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col`}>
         <Providers>
-          <AuthProvider>
-            <SmoothScrollProvider>
-              {children}
-            </SmoothScrollProvider>
-          </AuthProvider>
+          <SmoothScrollProvider>
+            {children}
+          </SmoothScrollProvider>
           <CookieConsent />
         </Providers>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"} />
