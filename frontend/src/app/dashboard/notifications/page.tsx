@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { notificationApi } from '@/lib/api';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 interface Notification {
     id: string;
