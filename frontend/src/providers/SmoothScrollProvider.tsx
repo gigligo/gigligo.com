@@ -1,35 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
-// @ts-ignore
-import Lenis from '@studio-freight/lenis';
-
+// Removed Lenis smooth scroll initialization to fix website scroll lag and improve performance
 export default function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
-    useEffect(() => {
-        // Initialize Lenis for buttery smooth scrolling
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-        } as any);
-
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-
-        return () => {
-            lenis.destroy();
-        };
-    }, []);
-
     return <>{children}</>;
 }

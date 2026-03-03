@@ -56,32 +56,32 @@ export default function Home() {
             Gigligo Network 2026 is Live
           </div>
 
-          <div className="max-w-5xl z-20">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tight text-text-main mb-6 drop-shadow-sm">
-              The <span className="bg-primary/30 px-2 rounded-lg">Pakistan&apos;s</span> top talent, <br className="hidden md:block" />
+          <div className="max-w-4xl z-20">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-text-main mb-6">
+              The Pakistan&apos;s top talent, <br className="hidden md:block" />
               in one place.
             </h1>
           </div>
 
-          <div className="max-w-2xl z-20">
-            <p className="text-lg md:text-2xl text-text-muted font-medium mb-10 leading-relaxed">
+          <div className="max-w-3xl z-20">
+            <p className="text-lg md:text-xl text-text-muted font-normal mb-10 leading-relaxed">
               Scale your business securely. Access on-demand elite freelancers, protected escrow payments, and agency-level tools instantly.
             </p>
           </div>
 
-          <div className="z-20 w-full max-w-xl">
-            <form onSubmit={handleSearch} className="flex w-full items-center rounded-2xl h-16 md:h-20 bg-white border-2 border-border-light/50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] overflow-hidden transition-all hover:shadow-[0_8px_40px_rgb(0,0,0,0.12)] hover:border-border-light group">
+          <div className="z-20 w-full max-w-2xl">
+            <form onSubmit={handleSearch} className="flex w-full items-center rounded-full h-14 md:h-16 bg-white border border-border-light shadow-sm hover:shadow-md transition-all group overflow-hidden">
               <div className="text-text-muted flex items-center justify-center pl-6 transition-colors group-focus-within:text-text-main">
-                <span className="material-symbols-outlined text-3xl">search</span>
+                <span className="material-symbols-outlined text-[24px]">search</span>
               </div>
               <input
-                className="w-full h-full border-none focus:ring-0 text-text-main px-4 text-lg md:text-xl font-medium placeholder:text-text-muted/70 bg-transparent outline-none"
+                className="w-full h-full border-none focus:ring-0 text-text-main px-4 text-base md:text-lg font-normal placeholder:text-text-muted/70 bg-transparent outline-none"
                 placeholder='Search "mobile app dev"...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <div className="px-3">
-                <button type="submit" className="h-12 md:h-14 px-8 bg-text-main text-white rounded-xl font-bold text-lg hover:bg-text-main/90 transition-all shadow-md">
+              <div className="px-2">
+                <button type="submit" className="h-10 md:h-12 px-6 bg-primary text-white rounded-full font-semibold text-base hover:bg-primary-dark transition-colors">
                   Search
                 </button>
               </div>
@@ -157,7 +157,7 @@ export default function Home() {
           <section className="w-full flex flex-col items-center text-center">
             <div className="w-full flex flex-col items-center text-center pb-12">
               <div className="flex flex-col items-center justify-center gap-4 text-center w-full">
-                <h2 className="text-4xl md:text-5xl font-black text-text-main text-center tracking-tight">Popular professional services</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-text-main text-center tracking-tight">Popular professional services</h2>
                 <Link href="/search" className="text-primary font-bold hover:underline flex items-center justify-center gap-1 mt-2">
                   View All <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </Link>
@@ -185,9 +185,9 @@ export default function Home() {
           {/* ═══════════════════ VALUE PROPS ═══════════════════ */}
           <section className="flex flex-col gap-16 items-center justify-center w-full max-w-6xl mx-auto py-12">
             <div className="flex flex-col items-center justify-center gap-6 w-full text-center">
-              <h2 className="text-4xl md:text-6xl font-black text-center max-w-4xl leading-tight tracking-tight text-text-main drop-shadow-sm">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center max-w-4xl leading-tight tracking-tight text-text-main">
                 A whole world of freelance talent <br className="hidden md:block" />
-                <span className="bg-slate-200/50 px-2 rounded-lg">at your fingertips.</span>
+                <span className="text-text-muted">at your fingertips.</span>
               </h2>
             </div>
 
@@ -214,8 +214,8 @@ export default function Home() {
           <section className="w-full flex flex-col items-center max-w-7xl mx-auto py-24 px-6 overflow-hidden">
             <div className="w-full flex flex-col items-center text-center pb-12">
               <div className="flex flex-col items-center justify-center gap-4 w-full text-center">
-                <h2 className="text-4xl md:text-5xl font-black text-text-main text-center tracking-tight">
-                  <span className="bg-slate-200/50 px-2 rounded-lg">Inspiring</span> projects on Gigligo
+                <h2 className="text-3xl md:text-4xl font-bold text-text-main text-center tracking-tight">
+                  <span className="text-text-muted">Inspiring</span> projects on Gigligo
                 </h2>
               </div>
             </div>
@@ -250,7 +250,7 @@ export default function Home() {
 
           <div className="w-full flex flex-col items-center justify-center relative z-10 text-center mx-auto max-w-5xl">
             <div className="flex flex-col items-center justify-center gap-10 w-full">
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-center leading-[1.05] tracking-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center leading-[1.1] tracking-tight">
                 Suddenly, <br className="hidden md:block" />it&apos;s all so <span className="text-primary">easy.</span>
               </h2>
               <p className="text-text-muted text-xl md:text-2xl font-medium text-center max-w-2xl px-4 leading-relaxed">
