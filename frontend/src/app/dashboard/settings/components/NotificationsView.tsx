@@ -1,6 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+    Bell,
+    Mail,
+    Smartphone,
+    Zap,
+    Activity,
+    ShieldCheck,
+    Save,
+    Loader2,
+    MessageSquare,
+    Clock,
+    CreditCard
+} from 'lucide-react';
+import { toast } from 'sonner';
 
 export function NotificationsView() {
     const [preferences, setPreferences] = useState({
@@ -20,109 +35,131 @@ export function NotificationsView() {
     const [saving, setSaving] = useState(false);
     const handleSave = () => {
         setSaving(true);
-        setTimeout(() => setSaving(false), 800);
+        setTimeout(() => {
+            setSaving(false);
+            toast.success("Signal protocols synchronized.");
+        }, 1200);
     };
 
     return (
-        <div className="space-y-10 animate-fade-in">
-            <div>
-                <h2 className="text-2xl font-bold tracking-tight text-text-main">Notification Settings</h2>
-                <p className="text-text-muted mt-1 text-sm">Control how and when you receive alerts from the platform.</p>
+        <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <div className="space-y-4">
+                <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Signal Protocols</h2>
+                <p className="text-xl font-bold italic text-white/40 leading-tight border-l-2 border-primary/20 pl-6">Calibrate incoming data streams and alert frequencies for your operative terminal.</p>
             </div>
 
-            <div className="bg-surface-light border border-border-light rounded-2xl p-6 sm:p-8 space-y-8">
+            <div className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden space-y-16">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
 
-                {/* Email Notifications */}
-                <div>
-                    <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">email</span>
-                        Email Notifications
-                    </h3>
-                    <div className="space-y-4">
+                {/* Email Section */}
+                <div className="space-y-10">
+                    <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                            <Mail size={24} strokeWidth={1.5} />
+                        </div>
+                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">SMTP Uplink</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-6">
                         <ToggleRow
-                            title="Direct Messages"
-                            description="Receive an email when a client or team member messages you."
+                            title="Direct Transmissions"
+                            description="Asynchronous email alerts for incoming peer-to-peer messages."
+                            icon={MessageSquare}
                             checked={preferences.email_messages}
                             onChange={() => togglePref('email_messages')}
                         />
                         <ToggleRow
-                            title="Contract & Escrow Updates"
-                            description="Critical alerts regarding active projects, funding, and approvals."
+                            title="Mandate & Escrow Cycles"
+                            description="Critical telemetry regarding active project funding and clearance."
+                            icon={Activity}
                             checked={preferences.email_contracts}
                             onChange={() => togglePref('email_contracts')}
                             disabled={true}
+                            mandatory={true}
                         />
                         <ToggleRow
-                            title="Marketing & Newsletters"
-                            description="Occasional updates about new GIGLIGO features and top talent spotlights."
+                            title="Intelligence Briefings"
+                            description="Occasional updates about new GIGLIGO vector features and spotlights."
+                            icon={Zap}
                             checked={preferences.email_marketing}
                             onChange={() => togglePref('email_marketing')}
                         />
                     </div>
                 </div>
 
-                <hr className="border-border-light" />
+                <div className="h-px bg-white/5" />
 
-                {/* Push Notifications */}
-                <div>
-                    <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">notifications_active</span>
-                        Push Notifications
-                    </h3>
-                    <div className="space-y-4">
+                {/* Push Section */}
+                <div className="space-y-10">
+                    <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                            <Bell size={24} strokeWidth={1.5} />
+                        </div>
+                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Real-Time Pings</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-6">
                         <ToggleRow
-                            title="In-App Messages"
-                            description="Browser or mobile push notifications for instant chats."
+                            title="In-App Comms"
+                            description="Browser or mobile push notifications for instant operative chat."
+                            icon={MessageSquare}
                             checked={preferences.push_messages}
                             onChange={() => togglePref('push_messages')}
                         />
                         <ToggleRow
-                            title="Deadline Reminders"
-                            description="Alerts 24 hours before a major project milestone is due."
+                            title="Deadline Proximity"
+                            description="Alerts 24 hours before a major project milestone threshold is reached."
+                            icon={Clock}
                             checked={preferences.push_reminders}
                             onChange={() => togglePref('push_reminders')}
                         />
                     </div>
                 </div>
 
-                <hr className="border-border-light" />
+                <div className="h-px bg-white/5" />
 
-                {/* SMS Notifications */}
-                <div>
-                    <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">sms</span>
-                        SMS Texts
-                    </h3>
-                    <div className="space-y-4">
+                {/* SMS Section */}
+                <div className="space-y-10">
+                    <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                            <Smartphone size={24} strokeWidth={1.5} />
+                        </div>
+                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Cellular Backup</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-6">
                         <ToggleRow
-                            title="Critical Security Alerts"
-                            description="Immediate text messages for unauthorized login attempts or password changes."
+                            title="Hard-Security Alerts"
+                            description="Immediate SMS for unauthorized access attempts or key rotations."
+                            icon={ShieldCheck}
                             checked={preferences.sms_security}
                             onChange={() => togglePref('sms_security')}
                             disabled={true}
+                            mandatory={true}
                         />
                         <ToggleRow
-                            title="Withdrawal Status"
-                            description="Texts when your funds successfully land in your bank account."
+                            title="Extraction Confirmations"
+                            description="Telemetric confirmation when capital successfully hits your bank node."
+                            icon={CreditCard}
                             checked={preferences.sms_alerts}
                             onChange={() => togglePref('sms_alerts')}
                         />
                     </div>
                 </div>
 
-                <div className="flex justify-end pt-6 border-t border-border-light">
+                <div className="flex justify-end pt-12 border-t border-white/5">
                     <button
                         onClick={handleSave}
                         disabled={saving}
-                        className="px-8 py-3 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20 flex items-center gap-2"
+                        className="h-20 px-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-primary-dark transition-all shadow-3xl shadow-primary/40 flex items-center gap-6 italic active:scale-95 disabled:opacity-20"
                     >
                         {saving ? (
-                            <>
-                                <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
-                                Saving...
-                            </>
+                            <Loader2 className="animate-spin" size={24} />
                         ) : (
-                            "Save Preferences"
+                            <>
+                                SAVE SIGNAL PREFERENCES
+                                <Save size={24} />
+                            </>
                         )}
                     </button>
                 </div>
@@ -131,21 +168,39 @@ export function NotificationsView() {
     );
 }
 
-function ToggleRow({ title, description, checked, onChange, disabled = false }: any) {
+function ToggleRow({ title, description, icon: Icon, checked, onChange, disabled = false, mandatory = false }: any) {
     return (
-        <div className={`flex items-start justify-between gap-6 p-4 rounded-xl border border-transparent hover:border-border-light transition-colors ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`}>
-            <div>
-                <h4 className="font-bold text-text-main text-sm mb-1">{title}</h4>
-                <p className="text-xs text-text-muted leading-relaxed max-w-md">{description}</p>
-                {disabled && title.includes('Escrow') && <span className="text-[10px] text-primary font-bold uppercase tracking-widest mt-2 block">Required for service</span>}
-                {disabled && title.includes('Security') && <span className="text-[10px] text-green-500 font-bold uppercase tracking-widest mt-2 block">Mandatory Protocol</span>}
+        <label className={`flex items-center justify-between gap-10 p-8 rounded-4xl border transition-all duration-500 cursor-pointer group ${disabled ? 'opacity-30' : 'hover:bg-white/2 border-white/5 hover:border-primary/20'
+            } ${checked && !disabled ? 'bg-primary/3 border-primary/20' : ''}`}>
+            <div className="flex items-center gap-8 min-w-0">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${checked ? 'bg-primary/20 text-primary' : 'bg-black text-white/10 group-hover:text-white/30'}`}>
+                    <Icon size={20} strokeWidth={1.5} />
+                </div>
+                <div className="space-y-2 truncate">
+                    <div className="flex items-center gap-4">
+                        <h4 className="text-xl font-black text-white italic uppercase tracking-tighter">{title}</h4>
+                        {mandatory && <span className="text-[8px] font-black text-primary uppercase tracking-[0.2em] border border-primary/20 px-3 py-1 rounded-full italic pulse">Critical Protocol</span>}
+                    </div>
+                    <p className="text-sm font-bold italic text-white/20 leading-relaxed max-w-xl truncate md:whitespace-normal">{description}</p>
+                </div>
             </div>
-            <button
-                onClick={disabled ? undefined : onChange}
-                className={`w-12 h-6 rounded-full relative transition-colors duration-300 shrink-0 border border-border-light ${checked ? 'bg-primary' : 'bg-background-light'}`}
-            >
-                <div className={`w-4 h-4 rounded-full bg-white absolute top-0.5 transition-all duration-300 shadow-sm ${checked ? 'left-7' : 'left-0.5'}`}></div>
-            </button>
-        </div>
+
+            <div className="relative shrink-0">
+                <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={disabled ? undefined : onChange}
+                    className="sr-only"
+                />
+                <div className={`w-16 h-8 rounded-full transition-all duration-500 border border-white/10 relative ${checked ? 'bg-primary' : 'bg-black'}`}>
+                    <motion.div
+                        initial={false}
+                        animate={{ x: checked ? 34 : 4 }}
+                        className="w-6 h-6 rounded-full bg-white absolute top-1 shadow-2xl"
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                </div>
+            </div>
+        </label>
     );
 }

@@ -1,5 +1,7 @@
 'use client';
+
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 
@@ -50,68 +52,105 @@ export default function FAQPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-light font-sans text-text-main antialiased selection:bg-primary/30">
+        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
+                {/* Cinematic Header */}
+                <div className="relative pt-32 pb-40 overflow-hidden bg-background-dark text-white px-6">
+                    {/* Mesh Blurs */}
+                    <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-primary/20 rounded-full blur-[150px] pointer-events-none opacity-50" />
 
-                {/* Ultra-Premium Header Section */}
-                <div className="relative pt-20 pb-20 overflow-hidden bg-slate-900 text-white">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,157,40,0.05)_0%,transparent_70%)] pointer-events-none" />
-
-                    <div className="max-w-4xl mx-auto px-6 text-center relative z-10 animate-fade-in">
-                        <div className="inline-block px-5 py-2 bg-primary/10 text-primary font-bold text-xs uppercase tracking-[0.2em] rounded-full mb-8 border border-primary/20 shadow-lg shadow-primary/5">
+                    <div className="max-w-5xl mx-auto text-center relative z-10">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="inline-block px-8 py-2 bg-white/5 border border-white/10 text-primary font-black text-[10px] uppercase tracking-[0.4em] rounded-full mb-12 backdrop-blur-3xl"
+                        >
                             Knowledge Base
-                        </div>
-                        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-                            Frequently Asked <span className="text-primary italic font-serif">Questions.</span>
-                        </h1>
-                        <p className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto font-normal leading-relaxed">
-                            Everything you need to know about navigating the Gigligo ecosystem.
-                        </p>
+                        </motion.div>
+                        <motion.h1
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-6xl md:text-[8rem] font-black tracking-tighter mb-10 uppercase leading-[0.9]"
+                        >
+                            Common <span className="text-primary italic">Questions.</span>
+                        </motion.h1>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-xl md:text-2xl text-white/50 max-w-2xl mx-auto font-medium leading-tight"
+                        >
+                            Everything you need to know about navigating the Gigligo ecosystem and mastering the marketplace.
+                        </motion.p>
                     </div>
                 </div>
 
-                <div className="max-w-3xl mx-auto px-6 py-24 -mt-16 relative z-10">
-                    <div className="space-y-4 animate-fade-in" style={{ animationDelay: '200ms' }}>
+                <div className="max-w-3xl mx-auto px-6 py-32 -mt-24 relative z-20">
+                    <div className="space-y-6">
                         {faqs.map((faq, i) => (
-                            <div
+                            <motion.div
                                 key={i}
-                                className="border border-border-light rounded-2xl overflow-hidden bg-surface-light shadow-sm hover:border-primary/30 transition-all duration-300"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: i * 0.05 }}
+                                viewport={{ once: true }}
+                                className="rounded-4xl overflow-hidden bg-white dark:bg-white/5 border border-border-light dark:border-white/10 shadow-xl backdrop-blur-3xl transition-all hover:border-primary/40 group"
                             >
                                 <button
                                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                    className="w-full flex items-center justify-between p-6 sm:p-8 text-left bg-background-light hover:bg-surface-light transition-colors group"
+                                    className="w-full flex items-center justify-between p-8 sm:p-10 text-left transition-colors group"
                                 >
-                                    <span className="font-bold text-text-main text-lg group-hover:text-primary transition-colors pr-8">{faq.q}</span>
-                                    <span className={`material-symbols-outlined text-primary text-2xl transition-transform duration-500 ease-in-out shrink-0 ${openIndex === i ? 'rotate-135' : ''}`}>
-                                        add
-                                    </span>
-                                </button>
-                                <div
-                                    className={`overflow-hidden transition-all duration-500 ease-in-out ${openIndex === i ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
-                                >
-                                    <div className="p-6 sm:p-8 pt-0 border-t border-border-light text-text-muted leading-relaxed font-medium">
-                                        {faq.a}
+                                    <span className="font-black text-background-dark dark:text-white text-xl md:text-2xl tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors pr-12">{faq.q}</span>
+                                    <div className="w-12 h-12 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shrink-0">
+                                        <span className={`material-symbols-outlined text-2xl transition-transform duration-500 ease-in-out ${openIndex === i ? 'rotate-45' : ''}`}>
+                                            add
+                                        </span>
                                     </div>
-                                </div>
-                            </div>
+                                </button>
+                                <AnimatePresence>
+                                    {openIndex === i && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                                        >
+                                            <div className="px-10 pb-12 text-text-muted dark:text-white/60 text-lg leading-relaxed font-bold border-t border-border-light dark:border-white/5 pt-8">
+                                                {faq.a}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
                         ))}
                     </div>
 
-                    <div className="mt-20 text-center p-12 rounded-3xl bg-surface-light border border-border-light shadow-2xl animate-fade-in" style={{ animationDelay: '400ms' }}>
-                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-6">
-                            <span className="material-symbols-outlined text-3xl">support_agent</span>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                        className="mt-32 text-center p-16 rounded-[4rem] bg-background-dark text-white border border-white/5 shadow-2xl relative overflow-hidden"
+                    >
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none opacity-50" />
+                        <div className="relative z-10 flex flex-col items-center">
+                            <div className="w-24 h-24 bg-white/5 rounded-2xl flex items-center justify-center text-primary mb-10 border border-white/10 shadow-inner">
+                                <span className="material-symbols-outlined text-5xl font-light">support_agent</span>
+                            </div>
+                            <h3 className="text-4xl font-black mb-4 uppercase tracking-tighter">Still Unclear?</h3>
+                            <p className="text-white/50 mb-12 font-medium text-lg leading-tight max-w-sm">Our elite support concierge is standing by to resolve any mission objectives.</p>
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Link
+                                    href="/contact"
+                                    className="px-12 py-5 bg-primary text-white text-sm font-black uppercase tracking-widest rounded-full shadow-2xl shadow-primary/20 flex items-center gap-3"
+                                >
+                                    Contact Support
+                                </Link>
+                            </motion.div>
                         </div>
-                        <h3 className="text-2xl font-bold text-text-main mb-3 tracking-tight">Still have questions?</h3>
-                        <p className="text-text-muted mb-8 font-medium">Our world-class support concierge is here to assist you.</p>
-                        <a
-                            href="/contact"
-                            className="inline-flex px-8 py-4 bg-primary text-white text-sm font-bold uppercase tracking-wide rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20 items-center justify-center gap-2"
-                        >
-                            Contact Concierge
-                        </a>
-                    </div>
+                    </motion.div>
                 </div>
             </main>
 
@@ -119,4 +158,3 @@ export default function FAQPage() {
         </div>
     );
 }
-

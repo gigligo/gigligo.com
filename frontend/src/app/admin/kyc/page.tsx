@@ -63,7 +63,7 @@ export default function AdminKYCPage() {
 
             {/* Main Admin Content */}
             <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
-                <div className="absolute inset-0 bg-pattern opacity-[0.02] pointer-events-none"></div>
+                <div className="absolute inset-0 bg-pattern opacity-2 pointer-events-none"></div>
 
                 {/* Topbar */}
                 <header className="h-16 flex items-center justify-between px-8 border-b border-border-light bg-surface-light relative z-10 shrink-0">

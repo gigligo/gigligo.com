@@ -4,9 +4,25 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 import { applicationApi, jobApi, chatApi } from '@/lib/api';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    Zap,
+    ChevronLeft,
+    MessageSquare,
+    UserCheck,
+    XCircle,
+    Clock,
+    Target,
+    ShieldCheck,
+    Briefcase,
+    FileText,
+    History,
+    MoreVertical,
+    CheckCircle2
+} from 'lucide-react';
+import { toast } from 'sonner';
 
 function ApplicationsContent() {
     const { data: session, status } = useSession();
@@ -41,7 +57,10 @@ function ApplicationsContent() {
                     const apps = await applicationApi.getMine(token);
                     setApplications(apps);
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error(e);
+                toast.error("Failed to synchronize mission data.");
+            }
             setLoading(false);
         };
         load();
@@ -62,202 +81,300 @@ function ApplicationsContent() {
                 }
                 return app;
             }));
-        } catch (e) { alert((e as Error).message); }
+            toast.success(`Protocol ${action.toUpperCase()} executed.`);
+        } catch (e) {
+            toast.error((e as Error).message);
+        }
         setActionLoading(null);
     };
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-background-light flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen bg-background-dark flex items-center justify-center">
+                <Loader2 />
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-light text-text-main font-sans antialiased">
+        <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
-            <main className="flex-1" style={{ paddingTop: 96 }}>
-                {/* Editorial Header */}
-                <div className="bg-slate-900 text-white py-16 md:py-20 relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-[0.03]">
-                        <div className="absolute top-0 right-0 w-72 h-72 border border-white/20 rounded-full translate-x-1/3 -translate-y-1/3"></div>
-                    </div>
-                    <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
-                        <Link href="/dashboard" className="text-xs text-white/30 hover:text-primary transition mb-6 inline-flex items-center gap-1">
-                            <span className="material-symbols-outlined text-sm">arrow_back</span> Dashboard
-                        </Link>
-                        {isEmployer ? (
-                            <>
-                                <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-3">
-                                    Active <span className="text-primary">Projects.</span>
-                                </h1>
-                                <p className="text-white/40 text-lg max-w-lg">
-                                    Orchestrate your high-stakes initiatives with precision and elegance.
-                                </p>
-                                {jobDetails && (
-                                    <div className="mt-6 inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-3">
-                                        <span className="material-symbols-outlined text-primary text-xl">work</span>
+            <main className="flex-1" style={{ paddingTop: 72 }}>
+                {/* Tactical Header */}
+                <div className="relative border-b border-white/5 bg-black/40 overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,124,255,0.05)_0%,transparent_50%)] pointer-events-none" />
+
+                    <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative z-10">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                            <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12">
+                                <span className="material-symbols-outlined text-xl group-hover:-translate-x-3 transition-transform">arrow_back</span> Dashboard
+                            </Link>
+
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                                <div className="space-y-6">
+                                    <h1 className="text-5xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
+                                        {isEmployer ? "Candidate " : "Mission "} <span className="text-primary not-italic">Protocols.</span>
+                                    </h1>
+                                    <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
+                                        {isEmployer
+                                            ? `Orchestrate high-stakes talent acquisition for "${jobDetails?.title || 'Active Project'}" with precision.`
+                                            : "Track your active deployments and authorization status across the global network."}
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-6">
+                                    <div className="bg-white/5 border border-white/10 rounded-3xl px-10 py-6 flex flex-col gap-2 min-w-[140px] shadow-2xl backdrop-blur-3xl">
+                                        <Clock className="text-primary" size={24} />
                                         <div>
-                                            <p className="text-white font-semibold text-sm">{jobDetails.title}</p>
-                                            <p className="text-white/30 text-xs">{applications.length} applicant{applications.length !== 1 ? 's' : ''}</p>
-                                        </div>
-                                    </div>
-                                )}
-                            </>
-                        ) : (
-                            <>
-                                <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-3">
-                                    My <span className="text-primary">Applications</span>
-                                </h1>
-                                <p className="text-white/40 text-lg">Track the status of jobs you&apos;ve applied to.</p>
-                            </>
-                        )}
-                    </div>
-                </div>
-
-                {/* Applications List */}
-                <div className="max-w-5xl mx-auto px-6 md:px-12 py-10">
-                    {applications.length === 0 ? (
-                        <div className="text-center py-24 border border-border-light rounded-2xl bg-surface-light">
-                            <span className="material-symbols-outlined text-5xl text-text-muted/20 mb-4">folder_open</span>
-                            <h3 className="text-xl font-bold text-text-main mb-2">No applications yet</h3>
-                            <p className="text-text-muted text-sm">
-                                {isEmployer ? 'No applicants yet for this job.' : 'You haven\'t applied to any jobs yet.'}
-                            </p>
-                        </div>
-                    ) : (
-                        <div className="space-y-4">
-                            {applications.map((app: any) => (
-                                <div key={app.id} className="bg-surface-light border border-border-light rounded-xl overflow-hidden hover:border-primary/20 transition-colors group">
-                                    <div className="p-6">
-                                        <div className="flex flex-col md:flex-row justify-between gap-6">
-                                            <div className="flex-1">
-                                                {isEmployer ? (
-                                                    <div className="flex items-center gap-4 mb-4">
-                                                        <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-primary font-bold text-lg ring-2 ring-primary/20">
-                                                            {app.freelancer?.profile?.fullName?.[0] || 'U'}
-                                                        </div>
-                                                        <div className="flex-1">
-                                                            <div className="flex items-center gap-2 mb-1">
-                                                                <h3 className="font-bold text-text-main text-lg">{app.freelancer?.profile?.fullName || 'Freelancer'}</h3>
-                                                                {(app.freelancer?.isFoundingMember || app.freelancer?.role === 'PRO' || app.freelancer?.profile?.sellerLevel === 'TOP_RATED') && (
-                                                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-linear-to-r from-amber-400 to-yellow-600 text-white rounded-md font-bold text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.2)]">
-                                                                        <span className="material-symbols-outlined text-[12px]">workspace_premium</span>
-                                                                        <span>{app.freelancer?.isFoundingMember ? 'Founding PRO' : 'PRO'}</span>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            <p className="text-xs text-text-muted">
-                                                                {app.freelancer?.profile?.skills?.[0] || 'Professional'} • {app.proposedRate ? `PKR ${app.proposedRate.toLocaleString()}` : 'Standard Rate'}
-                                                            </p>
-                                                        </div>
-                                                        <StatusBadge status={app.status} />
-                                                    </div>
-                                                ) : (
-                                                    <div className="flex justify-between items-start border-b border-border-light pb-4 mb-4">
-                                                        <div>
-                                                            <Link href={`/jobs/${app.job.id}`} className="font-bold text-text-main text-lg hover:text-primary transition">{app.job.title}</Link>
-                                                            <p className="text-xs text-text-muted mt-1">
-                                                                {app.job.employer?.profile?.fullName || 'Employer'} • {app.proposedRate ? `Proposed: PKR ${app.proposedRate.toLocaleString()}` : 'Standard Rate'}
-                                                            </p>
-                                                        </div>
-                                                        <StatusBadge status={app.status} />
-                                                    </div>
-                                                )}
-
-                                                {/* Cover Letter */}
-                                                <div className="bg-background-light rounded-xl p-5 border border-border-light">
-                                                    <div className="flex justify-between items-start mb-2">
-                                                        <p className="text-xs text-text-muted uppercase tracking-widest font-semibold">Cover Letter</p>
-                                                        {app.timeline && (
-                                                            <span className="text-xs text-primary font-semibold bg-primary/5 px-3 py-1 rounded-lg border border-primary/10">
-                                                                Timeline: {app.timeline}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <p className="text-sm text-text-muted whitespace-pre-wrap leading-relaxed">{app.coverLetter}</p>
-                                                </div>
-                                                <p className="text-[10px] text-text-muted/50 mt-3">Applied: {new Date(app.appliedAt).toLocaleDateString()}</p>
-                                            </div>
-
-                                            {/* Actions */}
-                                            <div className="md:w-48 flex flex-col gap-2 justify-center border-t md:border-t-0 md:border-l border-border-light pt-4 md:pt-0 md:pl-6">
-                                                {isEmployer && ['PENDING', 'SHORTLISTED'].includes(app.status) && (
-                                                    <>
-                                                        <button onClick={async () => {
-                                                            try {
-                                                                setActionLoading(app.id);
-                                                                const myId = (session as any)?.user?.id;
-                                                                const res: any = await chatApi.findOrCreate(token, app.freelancer.id, myId, undefined, app.jobId);
-                                                                const convId = res?.data?.id || res?.id;
-                                                                if (convId) router.push(`/dashboard/inbox?c=${convId}`);
-                                                            } catch (error) { console.error("Failed to start chat", error); }
-                                                            finally { setActionLoading(null); }
-                                                        }} disabled={!!actionLoading}
-                                                            className="w-full py-2.5 bg-background-light border border-border-light text-text-main font-semibold rounded-lg text-xs hover:border-primary/30 transition disabled:opacity-50">
-                                                            {actionLoading === app.id ? '...' : 'Message'}
-                                                        </button>
-                                                        <button onClick={() => handleAction(app.id, 'hire')} disabled={!!actionLoading}
-                                                            className="w-full py-2.5 bg-green-50 text-green-700 border border-green-200 font-semibold rounded-lg text-xs hover:bg-green-100 transition disabled:opacity-50">
-                                                            {actionLoading === app.id ? '...' : 'Hire Candidate'}
-                                                        </button>
-                                                        {app.status === 'PENDING' && (
-                                                            <button onClick={() => handleAction(app.id, 'shortlist')} disabled={!!actionLoading}
-                                                                className="w-full py-2.5 bg-blue-50 text-blue-700 border border-blue-200 font-semibold rounded-lg text-xs hover:bg-blue-100 transition disabled:opacity-50">
-                                                                Shortlist
-                                                            </button>
-                                                        )}
-                                                        <button onClick={() => handleAction(app.id, 'reject')} disabled={!!actionLoading}
-                                                            className="w-full py-2.5 bg-red-50 text-red-700 border border-red-200 font-semibold rounded-lg text-xs hover:bg-red-100 transition disabled:opacity-50">
-                                                            Decline
-                                                        </button>
-                                                    </>
-                                                )}
-                                                {!isEmployer && app.status === 'PENDING' && (
-                                                    <button onClick={() => handleAction(app.id, 'withdraw')} disabled={!!actionLoading}
-                                                        className="w-full py-2.5 bg-red-50 text-red-700 border border-red-200 font-semibold rounded-lg text-xs hover:bg-red-100 transition disabled:opacity-50">
-                                                        {actionLoading === app.id ? '...' : 'Withdraw Application'}
-                                                    </button>
-                                                )}
-                                            </div>
+                                            <p className="text-4xl font-black text-white italic tracking-tighter">{applications.length}</p>
+                                            <p className="text-[9px] text-white/20 uppercase tracking-[0.4em] font-black mt-1">Pending Sync</p>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
+
+                {/* Engagement Grid */}
+                <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24">
+                    {applications.length === 0 ? (
+                        <div className="text-center py-48 bg-white/2 border border-white/5 rounded-[4rem] flex flex-col items-center justify-center">
+                            <span className="material-symbols-outlined text-9xl text-white/5 mb-8 font-thin">grid_view</span>
+                            <h3 className="text-2xl font-black text-white/20 uppercase tracking-[0.5em] italic text-center">No active protocols detected.</h3>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-10">
+                            <AnimatePresence>
+                                {applications.map((app: any, idx) => (
+                                    <ApplicationCard
+                                        key={app.id}
+                                        app={app}
+                                        isEmployer={isEmployer}
+                                        token={token}
+                                        index={idx}
+                                        onAction={handleAction}
+                                        actionLoading={actionLoading}
+                                        session={session}
+                                        router={router}
+                                    />
+                                ))}
+                            </AnimatePresence>
                         </div>
                     )}
                 </div>
             </main>
-            <Footer />
+        </div>
+    );
+}
+
+function ApplicationCard({ app, isEmployer, token, index, onAction, actionLoading, session, router }: any) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    return (
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className={`bg-white/2 border border-white/5 rounded-[3rem] overflow-hidden transition-all duration-700 backdrop-blur-3xl hover:border-primary/30 group ${isExpanded ? 'ring-1 ring-primary/20 shadow-[0_0_50px_rgba(0,124,255,0.1)]' : 'shadow-2xl'}`}
+        >
+            <div
+                className="p-10 cursor-pointer select-none"
+                onClick={() => setIsExpanded(!isExpanded)}
+            >
+                <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-10">
+                    <div className="flex items-start lg:items-center gap-10 flex-1">
+                        {isEmployer ? (
+                            <div className="relative">
+                                <div className="w-20 h-20 rounded-3xl bg-black border border-white/10 flex items-center justify-center text-primary font-black text-3xl italic shadow-2xl group-hover:border-primary/50 transition-colors">
+                                    {app.freelancer?.profile?.fullName?.[0] || 'U'}
+                                </div>
+                                {app.freelancer?.profile?.sellerLevel === 'TOP_RATED' && (
+                                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center border-4 border-background-dark shadow-xl">
+                                        <span className="material-symbols-outlined text-white text-[14px]">workspace_premium</span>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="w-20 h-20 bg-black/40 rounded-3xl border border-white/10 flex items-center justify-center shrink-0 group-hover:border-primary/50 transition-colors shadow-black shadow-2xl">
+                                <Target className="text-primary" size={32} />
+                            </div>
+                        )}
+
+                        <div className="flex-1 space-y-4">
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+                                <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter group-hover:text-primary transition-colors">
+                                    {isEmployer ? app.freelancer?.profile?.fullName : app.job.title}
+                                </h3>
+                                <StatusBadge status={app.status} />
+                            </div>
+                            <div className="flex flex-wrap items-center gap-10 text-[10px] uppercase font-black tracking-[0.4em] text-white/20 italic">
+                                <span className="flex items-center gap-3">
+                                    <span className="material-symbols-outlined text-lg font-light">account_balance_wallet</span>
+                                    PKR {app.proposedRate?.toLocaleString()}
+                                </span>
+                                <span className="flex items-center gap-3">
+                                    <span className="material-symbols-outlined text-lg font-light">schedule</span>
+                                    Applied {new Date(app.appliedAt).toLocaleDateString()}
+                                </span>
+                                {!isEmployer && (
+                                    <span className="flex items-center gap-3 text-primary">
+                                        <span className="material-symbols-outlined text-lg font-light">business</span>
+                                        {app.job.employer?.profile?.fullName || 'Strategic Partner'}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+
+                        <span className={`material-symbols-outlined text-white/20 text-4xl font-thin transition-transform duration-700 hidden lg:block ${isExpanded ? 'rotate-180 text-primary' : ''}`}>
+                            keyboard_arrow_down
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <AnimatePresence>
+                {isExpanded && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        className="border-t border-white/5 bg-black/40 overflow-hidden"
+                    >
+                        <div className="p-12 lg:p-16 space-y-12">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                                <div className="space-y-8">
+                                    <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] flex items-center gap-4 italic">
+                                        <FileText size={18} />
+                                        Mission Statement
+                                    </h4>
+                                    <div className="bg-white/1 border border-white/5 rounded-2xl p-10 relative">
+                                        <p className="text-xl font-bold italic text-white/60 leading-relaxed whitespace-pre-wrap">
+                                            "{app.coverLetter}"
+                                        </p>
+                                        <div className="absolute top-6 right-6 opacity-10">
+                                            <span className="material-symbols-outlined text-6xl">format_quote</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-10">
+                                    <div className="bg-white/1 border border-white/5 rounded-2xl p-10 space-y-8">
+                                        <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em] italic">Deployment Intel</h4>
+                                        <div className="grid md:grid-cols-2 gap-8">
+                                            <div>
+                                                <p className="text-[9px] font-black text-primary uppercase tracking-[0.4em] mb-2">TIMELINE</p>
+                                                <p className="text-xl font-black text-white italic">{app.timeline || 'Unspecified'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[9px] font-black text-primary uppercase tracking-[0.4em] mb-2">RATE PKT</p>
+                                                <p className="text-xl font-black text-white italic">PKR {app.proposedRate?.toLocaleString()}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Hub */}
+                                    <div className="flex flex-wrap gap-6">
+                                        {isEmployer && ['PENDING', 'SHORTLISTED'].includes(app.status) && (
+                                            <>
+                                                <button
+                                                    onClick={async (e) => {
+                                                        e.stopPropagation();
+                                                        try {
+                                                            const myId = (session as any)?.user?.id;
+                                                            const res: any = await chatApi.findOrCreate(token, app.freelancer.id, myId, undefined, app.jobId);
+                                                            const convId = res?.data?.id || res?.id;
+                                                            if (convId) router.push(`/dashboard/inbox?c=${convId}`);
+                                                        } catch (error) { toast.error("Communication failure."); }
+                                                    }}
+                                                    className="h-16 px-10 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-white/10 transition-all flex items-center gap-4 italic"
+                                                >
+                                                    <MessageSquare size={18} />
+                                                    INITIATE COMMS
+                                                </button>
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); onAction(app.id, 'hire'); }}
+                                                    className="h-16 px-10 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/30 flex items-center gap-4 italic active:scale-95"
+                                                >
+                                                    <UserCheck size={18} />
+                                                    AUTHORIZE HIRE
+                                                </button>
+                                                {app.status === 'PENDING' && (
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); onAction(app.id, 'shortlist'); }}
+                                                        className="h-16 px-10 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-blue-600 hover:border-blue-600 transition-all flex items-center gap-4 italic"
+                                                    >
+                                                        SHORTLIST OPERATIVE
+                                                    </button>
+                                                )}
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); onAction(app.id, 'reject'); }}
+                                                    className="h-16 px-10 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-red-600 hover:border-red-600 transition-all flex items-center gap-4 italic"
+                                                >
+                                                    DECLINE PROTOCOL
+                                                </button>
+                                            </>
+                                        )}
+                                        {!isEmployer && app.status === 'PENDING' && (
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); onAction(app.id, 'withdraw'); }}
+                                                className="h-16 px-10 bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-red-700 transition-all shadow-2xl shadow-red-500/20 flex items-center gap-4 italic active:scale-95"
+                                            >
+                                                <XCircle size={18} />
+                                                WITHDRAW MISSION
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+}
+
+function StatusBadge({ status }: { status: string }) {
+    const config: Record<string, { label: string; color: string; icon: any }> = {
+        PENDING: { label: 'In Review', color: 'text-amber-500 bg-amber-500/10 border-amber-500/20', icon: Clock },
+        SHORTLISTED: { label: 'Strategic Priority', color: 'text-blue-500 bg-blue-500/10 border-blue-500/20', icon: Target },
+        HIRED: { label: 'Active Deployment', color: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20', icon: CheckCircle2 },
+        REJECTED: { label: 'Discontinued', color: 'text-white/20 bg-white/5 border-white/10', icon: XCircle },
+        WITHDRAWN: { label: 'Archived', color: 'text-white/20 bg-white/5 border-white/10', icon: History },
+    };
+
+    const cfg = config[status] || config.PENDING;
+    const Icon = cfg.icon;
+
+    return (
+        <span className={`px-5 py-2 text-[9px] font-black uppercase tracking-[0.4em] rounded-full border flex items-center gap-3 ${cfg.color} italic shadow-lg`}>
+            <Icon size={12} strokeWidth={3} />
+            {cfg.label}
+        </span>
+    );
+}
+
+function Loader2() {
+    return (
+        <div className="flex flex-col items-center gap-6">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin shadow-2xl shadow-primary/20" />
+            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic animate-pulse">Synchronizing Tactical Data...</p>
         </div>
     );
 }
 
 export default function ApplicationsPage() {
     return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-background-light flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
-        }>
+        <Suspense fallback={<div className="min-h-screen bg-background-dark flex items-center justify-center"><Loader2 /></div>}>
             <ApplicationsContent />
         </Suspense>
-    );
-}
-
-function StatusBadge({ status }: { status: string }) {
-    const colors: Record<string, string> = {
-        PENDING: 'bg-amber-50 text-amber-700 border-amber-200',
-        SHORTLISTED: 'bg-blue-50 text-blue-700 border-blue-200',
-        HIRED: 'bg-green-50 text-green-700 border-green-200',
-        REJECTED: 'bg-red-50 text-red-700 border-red-200',
-        WITHDRAWN: 'bg-slate-100 text-slate-500 border-slate-200',
-    };
-    return (
-        <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full border ${colors[status] || 'bg-slate-100 text-slate-500 border-slate-200'}`}>
-            {status}
-        </span>
     );
 }

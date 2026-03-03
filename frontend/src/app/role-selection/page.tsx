@@ -4,6 +4,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Logo } from '@/components/Logo';
 
 export default function RoleSelectionPage() {
     const { data: session, status, update } = useSession();
@@ -37,7 +39,6 @@ export default function RoleSelectionPage() {
 
             if (res.ok) {
                 const data = await res.json();
-                // Tell NextAuth to update the session with the new role
                 await update({ role: data.user.role, isNewGoogleUser: false });
                 router.push('/dashboard');
             } else {
@@ -54,85 +55,111 @@ export default function RoleSelectionPage() {
 
     if (status === 'loading' || !isNewGoogleUser) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-500 text-sm">
-                Loading...
+            <div className="min-h-screen flex items-center justify-center bg-background-dark text-white/20 text-[10px] font-black uppercase tracking-[0.5em]">
+                Authenticating Network...
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-12">
-            <div className="bg-slate-900 p-10 rounded-3xl shadow-2xl border border-white/10 max-w-2xl w-full">
-                <div className="text-center mb-10">
-                    <Link href="/" className="inline-flex items-center gap-2 justify-center mb-6">
-                        <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
-                            <defs><linearGradient id="lgRole" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stopColor="#00f5d4" /><stop offset="1" stopColor="#4f46e5" /></linearGradient></defs>
-                            <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="url(#lgRole)" strokeWidth="3.5" strokeLinecap="round" />
-                            <path d="M19 18 H30" stroke="url(#lgRole)" strokeWidth="3.5" strokeLinecap="round" />
-                            <circle cx="19" cy="18" r="2" fill="#00f5d4" />
-                        </svg>
-                        <span className="font-display text-2xl font-black tracking-tighter text-white">gigligo<span className="text-teal-vibrant opacity-60">.com</span></span>
+        <div className="min-h-screen flex items-center justify-center bg-background-dark px-6 py-20 relative overflow-hidden">
+            {/* Cinematic Background */}
+            <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-primary/20 rounded-full blur-[150px] pointer-events-none opacity-40" />
+            <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none opacity-20" />
+
+            <div className="max-w-4xl w-full relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-center mb-20"
+                >
+                    <Link href="/" className="inline-block mb-12">
+                        <Logo className="h-4 w-auto" variant="white" />
                     </Link>
-                    <h1 className="text-3xl font-bold text-white tracking-tight mb-3">Welcome to Gigligo!</h1>
-                    <p className="text-slate-400 text-base max-w-lg mx-auto">
-                        To tailor your experience, please tell us how you plan to use the platform. You are almost done.
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6 uppercase leading-none italic">
+                        Select Your <span className="text-primary not-italic">Identity.</span>
+                    </h1>
+                    <p className="text-white/40 text-lg md:text-xl font-bold max-w-lg mx-auto leading-tight uppercase tracking-widest opacity-60">
+                        Tailor your experience within the Gigligo ecosystem. This action is final.
                     </p>
-                </div>
+                </motion.div>
 
-                {error && (
-                    <div className="bg-red-500/20 text-red-400 p-3 rounded-xl text-sm mb-6 text-center border border-red-500/20">{error}</div>
-                )}
+                <AnimatePresence>
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="bg-red-500/10 text-red-500 p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest mb-10 text-center border border-red-500/20"
+                        >
+                            {error}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-10">
                     {/* Freelancer Option */}
-                    <button
+                    <motion.button
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        whileHover={{ y: -10, scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => handleRoleSelect('SELLER')}
                         disabled={isLoading}
-                        className="group relative bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-teal-vibrant/50 rounded-2xl p-8 text-left transition-all overflow-hidden flex flex-col h-full"
+                        className="group relative bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/50 rounded-[3.5rem] p-12 text-left transition-all backdrop-blur-3xl overflow-hidden flex flex-col h-full shadow-2xl"
                     >
-                        <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="w-6 h-6 rounded-full bg-teal-vibrant/20 flex items-center justify-center">
-                                <svg className="w-4 h-4 text-teal-vibrant" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                            </div>
+                        <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="material-symbols-outlined text-primary text-3xl font-light">verified</span>
                         </div>
-                        <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
-                            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
+                        <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-10 text-primary border border-primary/20 shadow-inner group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                            <span className="material-symbols-outlined text-4xl font-light">work</span>
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-teal-vibrant transition-colors">I want to Work</h3>
-                        <p className="text-slate-400 text-sm leading-relaxed grow">
-                            Join as a Freelancer. Offer your skills, browse jobs, and build your digital career globally.
+                        <h3 className="text-3xl font-black text-white mb-4 uppercase tracking-tighter italic grayscale group-hover:grayscale-0 transition-all">I want to Work</h3>
+                        <p className="text-white/40 text-base font-bold leading-tight uppercase tracking-wide grow">
+                            Join as an elite operative. Deploy your skills, conquer missions, and scale your digital empire.
                         </p>
-                    </button>
+                        <div className="mt-10 flex items-center gap-3 text-primary text-[10px] font-black uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">
+                            Initialize Freelancer <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </motion.button>
 
                     {/* Employer Option */}
-                    <button
+                    <motion.button
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 }}
+                        whileHover={{ y: -10, scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => handleRoleSelect('EMPLOYER')}
                         disabled={isLoading}
-                        className="group relative bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-indigo-400/50 rounded-2xl p-8 text-left transition-all overflow-hidden flex flex-col h-full"
+                        className="group relative bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/50 rounded-[3.5rem] p-12 text-left transition-all backdrop-blur-3xl overflow-hidden flex flex-col h-full shadow-2xl"
                     >
-                        <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="w-6 h-6 rounded-full bg-indigo-400/20 flex items-center justify-center">
-                                <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                            </div>
+                        <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="material-symbols-outlined text-primary text-3xl font-light">verified</span>
                         </div>
-                        <div className="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center mb-6 text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500/20 transition-all">
-                            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
+                        <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-10 text-primary border border-primary/20 shadow-inner group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                            <span className="material-symbols-outlined text-4xl font-light">person_add</span>
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">I want to Hire</h3>
-                        <p className="text-slate-400 text-sm leading-relaxed grow">
-                            Join as a Client. Post jobs, browse talented freelancers, and get your projects done efficiently.
+                        <h3 className="text-3xl font-black text-white mb-4 uppercase tracking-tighter italic grayscale group-hover:grayscale-0 transition-all">I want to Hire</h3>
+                        <p className="text-white/40 text-base font-bold leading-tight uppercase tracking-wide grow">
+                            Join as a commander. Deploy capital, recruit top-tier talent, and execute visionary projects.
                         </p>
-                    </button>
+                        <div className="mt-10 flex items-center gap-3 text-primary text-[10px] font-black uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">
+                            Initialize Employer <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </motion.button>
                 </div>
 
                 {isLoading && (
-                    <div className="mt-8 text-center text-teal-vibrant text-sm animate-pulse font-medium">
-                        Saving your preferences...
-                    </div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="mt-16 text-center text-primary text-[10px] font-black uppercase tracking-[0.5em] animate-pulse"
+                    >
+                        WRITING IDENTITY TO NETWORK...
+                    </motion.div>
                 )}
             </div>
         </div>

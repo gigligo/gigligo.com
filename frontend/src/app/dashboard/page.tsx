@@ -3,8 +3,9 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { creditApi, walletApi, applicationApi, jobApi, orderApi, disputeApi, reviewApi, analyticsApi, userStateApi } from '@/lib/api';
+import { creditApi, walletApi, applicationApi, jobApi, orderApi, userStateApi } from '@/lib/api';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function DashboardPage() {
     const { data: session, status, update: updateSession } = useSession();
@@ -13,12 +14,9 @@ export default function DashboardPage() {
     const [wallet, setWallet] = useState<any>(null);
     const [applications, setApplications] = useState<any[]>([]);
     const [myJobs, setMyJobs] = useState<any[]>([]);
-    const [myGigs, setMyGigs] = useState<any[]>([]);
-    const [purchasedGigs, setPurchasedGigs] = useState<any[]>([]);
     const [recommendedJobs, setRecommendedJobs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
     const [userState, setUserState] = useState<any>(null);
 
     const token = (session as any)?.accessToken;
@@ -61,16 +59,13 @@ export default function DashboardPage() {
                         jobApi.getRecommended(token)
                     ]);
                     setApplications(apps);
-                    setMyGigs(sales);
                     setRecommendedJobs(recs || []);
                 }
                 if (isEmployer) {
-                    const [jobs, purchases] = await Promise.all([
+                    const [jobs] = await Promise.all([
                         jobApi.getMyJobs(token),
-                        orderApi.getMyPurchases(token)
                     ]);
                     setMyJobs(jobs);
-                    setPurchasedGigs(purchases);
                 }
             } catch (e) { console.error(e); }
             setLoading(false);
@@ -80,347 +75,267 @@ export default function DashboardPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen bg-background-dark flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
-
-    const pendingApps = applications.filter(a => a.status === 'PENDING').length;
 
     const kycStatus = userState?.kycStatus || (session as any)?.kycStatus || 'UNVERIFIED';
     const showKycBlocker = isFreelancer && kycStatus !== 'APPROVED';
-    const stateLoading = isFreelancer && userState === null;
-
-    if (stateLoading) {
-        return (
-            <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
-    }
 
     if (showKycBlocker) {
         return (
-            <div className="flex h-screen w-full bg-background-light dark:bg-background-dark items-center justify-center p-6">
-                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-10 max-w-lg w-full text-center shadow-sm">
-                    <div className="w-20 h-20 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-100">
-                        <span className="material-symbols-outlined text-4xl">warning</span>
+            <div className="flex min-h-screen w-full bg-background-dark items-center justify-center p-6">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-white/5 border border-white/10 backdrop-blur-3xl rounded-[4rem] p-16 max-w-2xl w-full text-center shadow-2xl"
+                >
+                    <div className="w-32 h-32 bg-red-500/10 text-red-500 rounded-4xl flex items-center justify-center mx-auto mb-10 border border-red-500/20">
+                        <span className="material-symbols-outlined text-6xl font-light">verified_user</span>
                     </div>
-                    <h2 className="text-2xl font-bold text-text-main mb-3 tracking-tight">Verification Required</h2>
+                    <h2 className="text-4xl font-black text-white mb-6 uppercase tracking-tighter italic">Strategic <span className="text-red-500 not-italic">Verification.</span></h2>
+                    <p className="text-xl text-white/40 font-bold italic mb-12 leading-tight">
+                        To maintain elite operational integrity, all tactical operatives must complete identity authentication before accessing the executive command center.
+                    </p>
                     {kycStatus === 'UNVERIFIED' || kycStatus === 'REJECTED' ? (
-                        <>
-                            <p className="text-text-muted mb-8">
-                                {kycStatus === 'REJECTED'
-                                    ? "Your previous verification attempt was rejected. Please submit clear, valid documents."
-                                    : "To protect our community, all professionals must complete Identity Verification (KYC) before accessing the executive suite."}
-                            </p>
-                            <Link href="/dashboard/kyc" className="flex items-center justify-center h-12 rounded-lg bg-primary text-white font-bold tracking-wide w-full shadow-md hover:bg-primary-dark transition-colors">
-                                Complete Verification Now
+                        <div className="space-y-6">
+                            <Link href="/dashboard/kyc" className="flex items-center justify-center h-24 rounded-full bg-primary text-white font-black uppercase tracking-[0.3em] text-sm w-full shadow-2xl shadow-primary/30 hover:bg-primary-dark transition-all">
+                                Initialize Authentication Protocol
                             </Link>
-                        </>
+                            {kycStatus === 'REJECTED' && (
+                                <p className="text-red-500 text-[10px] font-black uppercase tracking-[0.4em]">Previous submission compromised. Clear biometric data required.</p>
+                            )}
+                        </div>
                     ) : (
-                        <>
-                            <p className="text-text-muted mb-8">
-                                Your documents have been received and are currently under review by our moderation team. You will be able to access the platform once approved.
-                            </p>
-                            <button disabled className="w-full h-12 bg-background-light text-text-muted font-bold rounded-lg cursor-not-allowed border border-border-light">
-                                Review Pending...
+                        <div className="space-y-6">
+                            <p className="text-primary text-[10px] font-black uppercase tracking-[0.5em] animate-pulse">Encryption analysis in progress...</p>
+                            <button disabled className="w-full h-24 bg-white/5 text-white/20 font-black uppercase tracking-[0.3em] rounded-full text-xs border border-white/10 cursor-not-allowed">
+                                Protocol Pending Approval
                             </button>
-                        </>
+                        </div>
                     )}
-                    <button onClick={() => router.push('/')} className="mt-6 text-sm font-medium text-text-muted hover:text-text-main transition">
-                        Return to Homepage
+                    <button onClick={() => router.push('/')} className="mt-12 text-[10px] font-black text-white/30 uppercase tracking-[0.4em] hover:text-white transition-all italic">
+                        Abort and Return to Grid
                     </button>
-                </div>
+                </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-text-main dark:text-slate-100 font-sans antialiased">
-            {/* Mobile Overlay */}
-            {isMobileMenuOpen && (
-                <div
-                    className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm transition-opacity"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                />
-            )}
-
-            {/* Sidebar Navigation */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-64 md:relative transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out bg-slate-900 dark:bg-slate-950 text-white flex flex-col justify-between border-r border-slate-800 shrink-0`}>
-                <div className="p-6 flex flex-col gap-8">
-                    {/* User Profile / Brand */}
-                    <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-                        <div className="h-10 w-10 rounded-full bg-slate-700 bg-cover bg-center ring-2 ring-primary/30" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBECihEFRoS1E7671uBNHtaYth0GmBiZQBv_cHh2NzpKIfuwtRcAnZsbYAf5N46bgnIAOjJtqf9SqbuCvlqK7QlY-KKhFhq5U9eQARcnjEbYh5ba7vxD7pHtHHlh6fUPMylKMqV30WUtdGq-2u107hNG6_pfdnZUULJUcdZE39TJlYW-j7LjteTOvsCeX8tk7SRBxEHKB8kaSTJa4u39hmIpsuKSUylkybQTpt4s88jE1diEQQ2VDOQSBP4cawz_GxECXmdq1JJAPo')" }}></div>
+        <div className="flex h-screen w-full overflow-hidden bg-background-dark text-white font-sans antialiased selection:bg-primary/30">
+            {/* Sidebar Navigation - Tactical Wing */}
+            <aside className={`fixed inset-y-0 left-0 z-50 w-[300px] md:relative transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-all duration-700 ease-[0.16, 1, 0.3, 1] bg-black border-r border-white/5 flex flex-col justify-between shrink-0 shadow-2xl shadow-black`}>
+                <div className="p-10 flex flex-col gap-16">
+                    {/* Logo & HQ */}
+                    <Link href="/" className="flex items-center gap-5 group cursor-pointer">
+                        <div className="h-14 w-14 rounded-2xl bg-white/5 p-1 border border-white/10 group-hover:border-primary/50 transition-all duration-700">
+                            <div className="w-full h-full bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/40">
+                                <span className="material-symbols-outlined text-white text-2xl font-black">bolt</span>
+                            </div>
+                        </div>
                         <div className="flex flex-col">
-                            <h1 className="text-sm font-semibold tracking-wide text-white">GIGLIGO</h1>
-                            <span className="text-[10px] uppercase tracking-wider text-primary font-bold">Executive Suite</span>
+                            <h1 className="text-xl font-black tracking-tighter text-white uppercase italic">GIGLIGO.</h1>
+                            <span className="text-[9px] uppercase tracking-[0.6em] text-primary font-black">Executive Command</span>
                         </div>
                     </Link>
 
-                    {/* Navigation Links */}
-                    <nav className="flex flex-col gap-1">
-                        <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white active-nav-icon shadow-sm shadow-primary/20 transition-all">
-                            <span className="material-symbols-outlined text-xl">dashboard</span>
-                            <span className="text-sm font-medium">Dashboard</span>
-                        </Link>
-                        <Link href={isFreelancer ? "/dashboard/applications" : "/dashboard/jobs"} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                            <span className="material-symbols-outlined text-xl">work</span>
-                            <span className="text-sm font-medium">{isFreelancer ? 'Proposals' : 'Job Postings'}</span>
-                        </Link>
-                        <Link href="/dashboard/inbox" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                            <span className="material-symbols-outlined text-xl">chat</span>
-                            <span className="text-sm font-medium">Inbox</span>
-                        </Link>
-                        <Link href="/dashboard/projects" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                            <span className="material-symbols-outlined text-xl">assignment</span>
-                            <span className="text-sm font-medium">Projects</span>
-                        </Link>
-                        <Link href="/dashboard/finance" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                            <span className="material-symbols-outlined text-xl">account_balance</span>
-                            <span className="text-sm font-medium">Finance</span>
-                        </Link>
-                        <Link href="/dashboard/earnings" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                            <span className="material-symbols-outlined text-xl">payments</span>
-                            <span className="text-sm font-medium">Wallet & Earnings</span>
-                        </Link>
-                        <Link href="/dashboard/contracts" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                            <span className="material-symbols-outlined text-xl">gavel</span>
-                            <span className="text-sm font-medium">Contracts</span>
-                        </Link>
-                        <Link href="/search" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                            <span className="material-symbols-outlined text-xl">person_search</span>
-                            <span className="text-sm font-medium">Talent Search</span>
-                        </Link>
+                    {/* Mission Control Nav */}
+                    <nav className="flex flex-col gap-4">
+                        <NavItem href="/dashboard" icon="dashboard" label="Overview" active />
+                        <NavItem href={isFreelancer ? "/dashboard/applications" : "/dashboard/jobs"} icon="work" label={isFreelancer ? 'Missions' : 'Objectives'} />
+                        <NavItem href="/dashboard/inbox" icon="chat" label="Frequency" />
+                        <NavItem href="/dashboard/projects" icon="assignment" label="Logistics" />
+                        <NavItem href="/dashboard/finance" icon="account_balance" label="Treasury" />
+                        <NavItem href="/dashboard/earnings" icon="payments" label="Yield" />
+                        <NavItem href="/dashboard/contracts" icon="gavel" label="Protocols" />
+                        <NavItem href="/search" icon="person_search" label="Intel Scan" />
                     </nav>
                 </div>
-                <div className="p-6 flex flex-col gap-4">
-                    <Link href="/dashboard/settings" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-                        <span className="material-symbols-outlined text-xl">settings</span>
-                        <span className="text-sm font-medium">Settings</span>
+
+                <div className="p-10 flex flex-col gap-8">
+                    <Link href="/dashboard/settings" className="flex items-center gap-5 px-6 py-4 rounded-2xl text-white/30 hover:text-white hover:bg-white/5 transition-all duration-500 group">
+                        <span className="material-symbols-outlined text-2xl font-light group-hover:rotate-90 transition-transform duration-700">settings</span>
+                        <span className="text-xs font-black uppercase tracking-[0.4em]">Parameters</span>
                     </Link>
-                    {isFreelancer ? (
-                        <Link href="/jobs" className="w-full flex items-center justify-center gap-2 h-10 rounded-lg border border-primary/40 text-primary hover:bg-primary hover:text-white transition-all duration-300 text-sm font-semibold tracking-wide uppercase">
-                            <span className="material-symbols-outlined text-lg">search</span>
-                            <span>Find Jobs</span>
-                        </Link>
-                    ) : (
-                        <Link href="/jobs/post" className="w-full flex items-center justify-center gap-2 h-10 rounded-lg border border-primary/40 text-primary hover:bg-primary hover:text-white transition-all duration-300 text-sm font-semibold tracking-wide uppercase">
-                            <span className="material-symbols-outlined text-lg">add</span>
-                            <span>Post Job</span>
-                        </Link>
-                    )}
+
+                    <Link href={isFreelancer ? "/jobs" : "/jobs/post"} className="w-full">
+                        <motion.button
+                            whileHover={{ scale: 1.02, backgroundColor: '#007CFF', color: 'white' }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full h-16 rounded-full border border-primary/40 text-primary text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-500 flex items-center justify-center gap-3"
+                        >
+                            <span className="material-symbols-outlined text-lg">{isFreelancer ? 'search' : 'add'}</span>
+                            {isFreelancer ? 'Scan Grid' : 'Deploy Objective'}
+                        </motion.button>
+                    </Link>
                 </div>
             </aside>
 
-            {/* Main Content Area */}
-            <main className="flex-1 h-full overflow-y-auto bg-background-light dark:bg-background-dark">
-                <div className="max-w-7xl mx-auto px-8 py-8 flex flex-col gap-10">
+            {/* Main Command Display */}
+            <main className="flex-1 h-full overflow-y-auto bg-background-dark relative">
+                {/* Background Atmosphere */}
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[200px] pointer-events-none opacity-50" />
 
-                    {/* Header */}
-                    <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 relative">
-                        <div className="flex items-center gap-3">
+                <div className="max-w-7xl mx-auto px-12 py-16 flex flex-col gap-20 relative z-10">
+                    {/* Command Header */}
+                    <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                        <div className="flex items-center gap-8">
                             <button
-                                className="md:hidden p-2 -ml-2 text-text-muted hover:text-text-main transition-colors"
+                                className="md:hidden w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white/40"
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             >
                                 <span className="material-symbols-outlined text-3xl">menu</span>
                             </button>
                             <div>
-                                <div className="flex items-center gap-3 mb-1">
-                                    <h2 className="text-2xl sm:text-3xl font-bold text-text-main tracking-tight">Executive Overview</h2>
-                                    <span className="px-2 py-0.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-[10px] font-bold tracking-wider uppercase hidden sm:inline-block">Pro</span>
+                                <div className="flex items-center gap-6 mb-4">
+                                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase italic leading-none">Command <span className="text-primary not-italic">Center.</span></h2>
+                                    <span className="px-5 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-[10px] font-black tracking-[0.4em] uppercase hidden sm:inline-block">Elite Operational Status</span>
                                 </div>
-                                <p className="text-text-muted font-normal text-sm sm:text-base">Welcome back, {(session?.user as any)?.name?.split(' ')[0] || 'User'}. Your metrics are looking pristine.</p>
+                                <p className="text-white/30 font-bold text-xl italic leading-none">Welcome back, {(session?.user as any)?.name?.split(' ')[0] || 'Operative'}. The network is stable.</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4 self-end sm:self-auto">
-                            <button className="p-2 text-slate-400 hover:text-slate-600 transition-colors rounded-full hover:bg-slate-100 relative">
-                                <span className="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-background-light"></span>
-                                <span className="material-symbols-outlined">notifications</span>
-                            </button>
-                            {isFreelancer && (
-                                <div className="text-right">
-                                    <p className="text-xs text-text-muted uppercase tracking-widest font-semibold">Current Rate</p>
-                                    <p className="text-text-main font-bold">PKR 5K/hr</p>
+
+                        <div className="flex items-center gap-10">
+                            <div className="h-16 w-px bg-white/5 hidden lg:block" />
+                            <div className="flex items-center gap-6">
+                                <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-white/30 hover:text-white transition-all relative border border-white/5"
+                                >
+                                    <span className="absolute top-3 right-3 w-2 h-2 bg-primary rounded-full shadow-lg shadow-primary"></span>
+                                    <span className="material-symbols-outlined text-2xl font-light">notifications</span>
+                                </motion.button>
+
+                                <div className="flex items-center gap-5">
+                                    <div className="w-16 h-16 rounded-2xl bg-cover bg-center border-2 border-primary/30 p-1" style={{ backgroundImage: `url('https://api.dicebear.com/7.x/avataaars/svg?seed=${(session?.user as any)?.email}&backgroundColor=040300')` }}>
+                                        <div className="w-full h-full bg-background-dark/20 backdrop-blur-sm rounded-lg" />
+                                    </div>
+                                    <div className="hidden lg:flex flex-col">
+                                        <span className="text-[9px] text-white/30 font-black uppercase tracking-[0.4em] mb-1">Rank</span>
+                                        <span className="text-sm font-black text-white tracking-tighter uppercase">PREMIUM AGENT</span>
+                                    </div>
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </header>
 
-                    {/* Metrics Row */}
-                    <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Card 1 */}
-                        <div className="bg-surface-light rounded-xl p-6 border border-border-light shadow-sm flex flex-col justify-between gap-4 relative overflow-hidden group hover:border-primary/30 transition-colors">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <p className="text-sm font-medium text-text-muted">{isFreelancer ? 'Total Earnings' : 'Total Spent'}</p>
-                                    <h3 className="text-3xl font-bold text-text-main mt-1 tracking-tight">PKR {wallet?.balancePKR?.toLocaleString() || '0'}</h3>
-                                </div>
-                                <span className={`p-2 rounded-lg ${isFreelancer ? 'bg-green-50 text-green-700' : 'bg-slate-50 text-slate-700'}`}>
-                                    <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
-                                </span>
-                            </div>
-                            {wallet?.pendingPKR > 0 && (
-                                <div className="flex items-center gap-2 text-sm">
-                                    <span className="text-primary font-medium bg-primary/10 px-1.5 py-0.5 rounded">PKR {wallet.pendingPKR.toLocaleString()}</span>
-                                    <span className="text-text-muted">pending withdrawal</span>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Card 2 */}
-                        <div className="bg-surface-light rounded-xl p-6 border border-border-light shadow-sm flex flex-col justify-between gap-4 relative overflow-hidden group hover:border-primary/30 transition-colors">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <p className="text-sm font-medium text-text-muted">{isFreelancer ? 'Active Proposals' : 'Active Jobs'}</p>
-                                    <h3 className="text-3xl font-bold text-text-main mt-1 tracking-tight">{isFreelancer ? pendingApps : myJobs.filter(j => j.status === 'OPEN').length}</h3>
-                                </div>
-                                <span className="p-2 bg-blue-50 rounded-lg text-blue-700">
-                                    <span className="material-symbols-outlined text-xl">send</span>
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                                <span className="text-blue-600 font-medium bg-blue-50 px-1.5 py-0.5 rounded">{isFreelancer ? applications.length : myJobs.length}</span>
-                                <span className="text-text-muted">total</span>
-                            </div>
-                        </div>
-
-                        {/* Card 3 */}
-                        <div className="bg-surface-light rounded-xl p-6 border border-border-light shadow-sm flex flex-col justify-between gap-4 relative overflow-hidden group hover:border-primary/30 transition-colors">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <p className="text-sm font-medium text-text-muted">{isFreelancer ? 'Credits' : 'Hired'}</p>
-                                    <h3 className="text-3xl font-bold text-text-main mt-1 tracking-tight">{isFreelancer ? credits : myJobs.filter(j => j.status === 'FILLED').length}</h3>
-                                </div>
-                                <span className="p-2 bg-primary/10 rounded-lg text-primary">
-                                    <span className="material-symbols-outlined text-xl">{isFreelancer ? 'stars' : 'verified'}</span>
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm">
-                                {isFreelancer && (
-                                    <>
-                                        <span className="text-primary font-medium bg-primary/5 px-1.5 py-0.5 rounded">Top 1%</span>
-                                        <span className="text-text-muted">of talent pool</span>
-                                    </>
-                                )}
-                            </div>
-                            {isFreelancer && (
-                                <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-100">
-                                    <div className="h-full bg-primary w-[98%]"></div>
-                                </div>
-                            )}
-                        </div>
+                    {/* Operational Metrics */}
+                    <section className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <MetricCard
+                            label={isFreelancer ? 'Total Yield' : 'Total Allocation'}
+                            value={`PKR ${wallet?.balancePKR?.toLocaleString() || '0'}`}
+                            subLabel={wallet?.pendingPKR > 0 ? `PKR ${wallet.pendingPKR.toLocaleString()} in transit` : 'Settled funds'}
+                            icon="account_balance_wallet"
+                            color="primary"
+                        />
+                        <MetricCard
+                            label={isFreelancer ? 'Active Engagements' : 'Deployed Missions'}
+                            value={isFreelancer ? applications.filter(a => a.status === 'PENDING').length : myJobs.filter(j => j.status === 'OPEN').length}
+                            subLabel={`${isFreelancer ? applications.length : myJobs.length} accumulated across all cycles`}
+                            icon="rocket_launch"
+                            color="white"
+                        />
+                        <MetricCard
+                            label={isFreelancer ? 'Protocol Units' : 'Successful Hires'}
+                            value={isFreelancer ? credits : myJobs.filter(j => j.status === 'FILLED').length}
+                            subLabel={isFreelancer ? 'Executive intelligence remaining' : 'Elite talent secured'}
+                            icon={isFreelancer ? 'bolt' : 'verified'}
+                            color="primary"
+                            progress={isFreelancer ? (credits / 20) * 100 : undefined}
+                        />
                     </section>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-10">
-
-                        {/* Recent Activity */}
-                        <section className="lg:col-span-2 flex flex-col gap-5">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-bold text-text-main">Recent Activity</h3>
-                                <Link className="text-sm font-medium text-primary hover:text-primary-dark transition-colors" href="/dashboard/applications">View All</Link>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 pb-20">
+                        {/* Pulse - Recent Activity */}
+                        <section className="lg:col-span-2 flex flex-col gap-10">
+                            <div className="flex items-center justify-between border-b border-white/5 pb-8">
+                                <h3 className="text-3xl font-black uppercase tracking-tighter italic">Mission <span className="text-primary not-italic">Pulse.</span></h3>
+                                <Link className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] hover:text-primary transition-all" href="/dashboard/applications">Analyze All</Link>
                             </div>
-                            <div className="bg-surface-light rounded-xl border border-border-light shadow-sm divide-y divide-border-light">
 
-                                {isFreelancer && applications.slice(0, 3).map((app: any) => (
-                                    <div key={app.id} className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
-                                                    <span className="material-symbols-outlined">edit_document</span>
-                                                </div>
-                                                <div>
-                                                    <p className="text-text-main font-semibold text-sm">Proposal: {app.job?.title || 'Job'}</p>
-                                                    <p className="text-text-muted text-xs mt-0.5">Client: {app.job?.employer?.profile?.fullName || 'Employer'} • Budget: PKR {app.job?.budgetMin?.toLocaleString()}</p>
-                                                </div>
-                                            </div>
-                                            <div className="text-right flex flex-col items-end">
-                                                <StatusBadge status={app.status} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-
-                                {isEmployer && myJobs.slice(0, 3).map((job: any) => (
-                                    <div key={job.id} className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                                                    <span className="material-symbols-outlined">work</span>
-                                                </div>
-                                                <div>
-                                                    <p className="text-text-main font-semibold text-sm">Job Posting: {job.title}</p>
-                                                    <p className="text-text-muted text-xs mt-0.5">{job._count?.applications || 0} Applicants • PKR {job.budgetMin?.toLocaleString()} - {job.budgetMax?.toLocaleString()}</p>
-                                                </div>
-                                            </div>
-                                            <div className="text-right flex flex-col items-end">
-                                                <StatusBadge status={job.status} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-
-                                {((isFreelancer && applications.length === 0) || (isEmployer && myJobs.length === 0)) && (
-                                    <div className="p-8 text-center text-text-muted text-sm font-medium">
-                                        No recent activity to display.
+                            <div className="space-y-6">
+                                {isFreelancer && applications.length > 0 ? applications.slice(0, 4).map((app: any) => (
+                                    <ActivityItem
+                                        key={app.id}
+                                        title={`Proposal: ${app.job?.title || 'Data Stream'}`}
+                                        meta={`Commander: ${app.job?.employer?.profile?.fullName || 'Anon'} • Allocation: PKR ${app.job?.budgetMin?.toLocaleString()}`}
+                                        status={app.status}
+                                        icon="database"
+                                    />
+                                )) : isEmployer && myJobs.length > 0 ? myJobs.slice(0, 4).map((job: any) => (
+                                    <ActivityItem
+                                        key={job.id}
+                                        title={`Mission: ${job.title}`}
+                                        meta={`${job._count?.applications || 0} Operatives Engaged • Range: PKR ${job.budgetMin?.toLocaleString()} - ${job.budgetMax?.toLocaleString()}`}
+                                        status={job.status}
+                                        icon="rocket"
+                                    />
+                                )) : (
+                                    <div className="py-24 text-center bg-white/5 rounded-[3rem] border border-dashed border-white/10">
+                                        <span className="material-symbols-outlined text-6xl text-white/5 font-thin mb-6">sensors</span>
+                                        <p className="text-[10px] text-white/30 font-black uppercase tracking-[0.4em]">No active signal detected.</p>
                                     </div>
                                 )}
                             </div>
                         </section>
 
-                        {/* Recommended Gigs / Postings */}
-                        <section className="flex flex-col gap-5">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-bold text-text-main">{isFreelancer ? 'Recommended Jobs' : 'Top Talent'}</h3>
-                                <button className="p-1 text-slate-400 hover:text-primary transition-colors">
-                                    <span className="material-symbols-outlined text-xl">tune</span>
-                                </button>
+                        {/* Top Intel - Recommendations */}
+                        <section className="flex flex-col gap-10">
+                            <div className="flex items-center justify-between border-b border-white/5 pb-8">
+                                <h3 className="text-3xl font-black uppercase tracking-tighter italic">{isFreelancer ? 'Top <span className="text-primary not-italic">Intel.</span>' : 'Top <span className="text-primary not-italic">Assets.</span>'}</h3>
+                                <button className="text-white/20 hover:text-white transition-all"><span className="material-symbols-outlined font-light">tune</span></button>
                             </div>
 
-                            {isFreelancer ? (
-                                recommendedJobs.length > 0 ? (
-                                    recommendedJobs.slice(0, 3).map((job: any) => (
-                                        <Link href={`/jobs/${job.id}`} key={job.id} className="bg-surface-light rounded-xl border border-border-light p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
-                                            <div className="flex justify-between items-start mb-3">
-                                                <div className="w-10 h-10 border border-border-light rounded-lg bg-background-light text-text-main flex items-center justify-center font-bold text-xs uppercase">
+                            <div className="space-y-8">
+                                {isFreelancer ? (
+                                    recommendedJobs.length > 0 ? recommendedJobs.slice(0, 3).map((job: any) => (
+                                        <motion.div
+                                            key={job.id}
+                                            whileHover={{ y: -5 }}
+                                            className="bg-white/5 border border-white/10 p-8 rounded-4xl shadow-2xl backdrop-blur-3xl group"
+                                        >
+                                            <div className="flex justify-between items-start mb-6">
+                                                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center font-black text-white text-xs shadow-lg shadow-primary/30 uppercase">
                                                     {job.employer?.profile?.fullName?.[0] || 'C'}
                                                 </div>
-                                                <span className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wide rounded">{job.matchScore}% Match</span>
+                                                <span className="px-3 py-1 bg-primary/10 text-primary text-[8px] font-black uppercase tracking-[0.4em] rounded-full border border-primary/20">{job.matchScore}% SYNC</span>
                                             </div>
-                                            <h4 className="text-text-main font-bold text-base mb-1 group-hover:text-primary transition-colors">{job.title}</h4>
-                                            <p className="text-text-muted text-xs mb-4">{job.employer?.profile?.fullName || 'Client'}</p>
-                                            <div className="flex flex-wrap gap-2 mb-4">
+                                            <Link href={`/jobs/${job.id}`} className="block">
+                                                <h4 className="text-white font-black text-xl uppercase tracking-tighter mb-2 group-hover:text-primary transition-all leading-tight italic">{job.title}</h4>
+                                            </Link>
+                                            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.3em] mb-6 italic">{job.employer?.profile?.fullName || 'COMMANDER'}</p>
+                                            <div className="flex flex-wrap gap-2 mb-8">
                                                 {job.skills?.slice(0, 2).map((skill: any) => (
-                                                    <span key={skill.id} className="px-2 py-1 border border-border-light rounded text-[10px] text-text-muted font-medium">{skill.name}</span>
+                                                    <span key={skill.id} className="px-3 py-1 bg-white/5 rounded-full text-[8px] text-white/40 font-black uppercase tracking-[0.3em] border border-white/5">{skill.name}</span>
                                                 ))}
                                             </div>
-                                            <div className="flex items-center justify-between pt-3 border-t border-border-light">
-                                                <span className="text-text-main font-bold text-sm">PKR {job.budgetMax?.toLocaleString()}</span>
+                                            <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                                                <span className="text-white font-black text-lg tracking-tighter uppercase italic">PKR {job.budgetMax?.toLocaleString()}</span>
+                                                <span className="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
                                             </div>
-                                        </Link>
-                                    ))
+                                        </motion.div>
+                                    )) : (
+                                        <div className="p-10 text-center bg-white/5 rounded-[3rem] border border-white/10">
+                                            <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.4em] leading-relaxed">Update tactical competencies to calibrate AI matchmaking engines.</p>
+                                        </div>
+                                    )
                                 ) : (
-                                    <div className="bg-surface-light rounded-xl border border-border-light p-8 text-center shadow-sm">
-                                        <p className="text-sm text-text-muted">Update your profile skills to get AI job match recommendations.</p>
+                                    /* Asset Spotlight Placeholder */
+                                    <div className="bg-white/5 border border-white/10 p-10 rounded-[3.5rem] relative overflow-hidden group">
+                                        <div className="absolute top-0 left-0 w-full h-1 bg-primary/20" />
+                                        <div className="flex items-center gap-6 mb-8 text-primary">
+                                            <span className="material-symbols-outlined text-5xl font-thin">verified</span>
+                                            <span className="text-[10px] font-black uppercase tracking-[0.5em]">OPERATIVE OF THE CYCLE</span>
+                                        </div>
+                                        <h4 className="text-2xl font-black uppercase tracking-tighter text-white italic mb-2">Systems Architect <span className="text-primary not-italic">X.</span></h4>
+                                        <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.3em] mb-10 leading-relaxed italic">Expert specialization in neural network deployment and cloud security infrastructure.</p>
+                                        <button className="w-full h-16 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.4em] rounded-full text-[9px] hover:bg-white/10 transition-all">Scan Full Dossier</button>
                                     </div>
-                                )
-                            ) : (
-                                /* Employer side placeholder for top talent */
-                                <div className="bg-surface-light rounded-xl border border-border-light p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <div className="w-10 h-10 rounded-lg bg-black text-white flex items-center justify-center font-bold text-xs">A</div>
-                                        <span className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wide rounded">Top Rated</span>
-                                    </div>
-                                    <h4 className="text-text-main font-bold text-base mb-1 group-hover:text-primary transition-colors">Senior Software Engineer</h4>
-                                    <p className="text-text-muted text-xs mb-4">React, Node.js, AWS</p>
-                                    <div className="flex items-center justify-between pt-3 border-t border-border-light">
-                                        <span className="text-text-main font-bold text-sm">PKR 8,000/hr</span>
-                                    </div>
-                                </div>
-                            )}
-
+                                )}
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -429,14 +344,75 @@ export default function DashboardPage() {
     );
 }
 
+function NavItem({ href, icon, label, active = false }: { href: string, icon: string, label: string, active?: boolean }) {
+    return (
+        <Link href={href} className={`flex items-center gap-5 px-6 py-4 rounded-2xl transition-all duration-700 group relative ${active ? 'bg-primary text-white shadow-xl shadow-primary/30' : 'text-white/30 hover:text-white hover:bg-white/5'}`}>
+            <span className={`material-symbols-outlined text-2xl font-light ${active ? 'text-white' : 'group-hover:text-primary'} transition-colors duration-700`}>{icon}</span>
+            <span className="text-xs font-black uppercase tracking-[0.4em]">{label}</span>
+            {active && <motion.div layoutId="nav-active" className="absolute left-0 w-1.5 h-6 bg-white rounded-r-full" />}
+        </Link>
+    );
+}
+
+function MetricCard({ label, value, subLabel, icon, color, progress }: any) {
+    return (
+        <motion.div
+            whileHover={{ y: -5 }}
+            className="bg-white/5 rounded-[4rem] p-12 border border-white/10 shadow-3xl shadow-black relative overflow-hidden group"
+        >
+            <div className="absolute top-0 left-0 w-full h-1 bg-white/5" />
+            <div className="flex justify-between items-start mb-10">
+                <div className="flex flex-col gap-2">
+                    <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic">{label}</span>
+                    <h3 className="text-4xl font-black text-white tracking-tighter uppercase italic">{value}</h3>
+                </div>
+                <div className={`p-4 rounded-2xl ${color === 'primary' ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-white/5 text-white/50 border border-white/10'}`}>
+                    <span className="material-symbols-outlined text-2xl font-light">{icon}</span>
+                </div>
+            </div>
+            <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.4em] italic mb-6">{subLabel}</p>
+            {progress !== undefined && (
+                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                    <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="h-full bg-primary shadow-[0_0_10px_rgba(0,124,255,0.5)]"
+                    />
+                </div>
+            )}
+        </motion.div>
+    );
+}
+
+function ActivityItem({ title, meta, status, icon }: any) {
+    return (
+        <motion.div
+            whileHover={{ x: 10 }}
+            className="p-8 bg-white/2 border border-white/5 rounded-4xl hover:bg-white/4 hover:border-white/10 transition-all duration-700 cursor-pointer group flex items-center justify-between gap-6"
+        >
+            <div className="flex items-center gap-8">
+                <div className="h-16 w-16 rounded-3xl bg-white/5 text-primary flex items-center justify-center shrink-0 border border-white/5 group-hover:border-primary/40 transition-all duration-700">
+                    <span className="material-symbols-outlined text-2xl font-light">{icon}</span>
+                </div>
+                <div>
+                    <p className="text-white font-black text-lg tracking-tighter uppercase italic mb-1">{title}</p>
+                    <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.4em] italic">{meta}</p>
+                </div>
+            </div>
+            <StatusBadge status={status} />
+        </motion.div>
+    );
+}
+
 function StatusBadge({ status }: { status: string }) {
-    let colorClass = "bg-slate-100 text-slate-600";
-    if (['PENDING', 'OPEN'].includes(status)) colorClass = "bg-primary/10 text-primary border border-primary/20";
-    if (['HIRED', 'FILLED'].includes(status)) colorClass = "bg-green-100 text-green-700 border border-green-200";
-    if (['REJECTED', 'EXPIRED'].includes(status)) colorClass = "bg-red-100 text-red-700 border border-red-200";
+    let style = "bg-white/5 text-white/30 border border-white/10";
+    if (['PENDING', 'OPEN'].includes(status)) style = "bg-primary/10 text-primary border border-primary/20";
+    if (['HIRED', 'FILLED', 'ACTIVE'].includes(status)) style = "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shadow-lg shadow-emerald-500/10";
+    if (['REJECTED', 'EXPIRED', 'TERMINATED'].includes(status)) style = "bg-red-500/10 text-red-500 border border-red-500/20";
 
     return (
-        <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${colorClass}`}>
+        <span className={`px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.4em] italic ${style}`}>
             {status}
         </span>
     );

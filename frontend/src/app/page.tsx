@@ -105,7 +105,7 @@ export default function Home() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <div className="px-1 py-1 h-full flex items-center">
-                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} type="submit" className="h-full px-8 bg-primary text-white rounded-[1.25rem] font-bold text-lg hover:bg-primary-dark transition-colors shadow-md">
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} type="submit" className="h-full px-8 bg-primary text-white rounded-2xl font-bold text-lg hover:bg-primary-dark transition-colors shadow-md">
                   Search
                 </motion.button>
               </div>
@@ -135,7 +135,7 @@ export default function Home() {
               transition={{ delay: 0.8, type: "spring", damping: 12 }}
               className="absolute -top-10 -left-4 md:-left-12 z-30 hidden md:block"
             >
-              <div className="bg-white px-5 py-4 rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-border-light flex items-center gap-4">
+              <div className="bg-white px-5 py-4 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-border-light flex items-center gap-4">
                 <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                   <span className="material-symbols-outlined font-bold text-[28px]">verified</span>
                 </div>
@@ -153,7 +153,7 @@ export default function Home() {
               transition={{ delay: 1, type: "spring", damping: 12 }}
               className="absolute bottom-16 -right-4 md:-right-16 z-30 hidden md:block"
             >
-              <div className="bg-white px-5 py-4 rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-border-light flex items-center gap-4">
+              <div className="bg-white px-5 py-4 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-border-light flex items-center gap-4">
                 <div className="flex -space-x-4">
                   <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDifsW_ISHpDhS-k_4LVPU-3iTZ9SRTjBVHk51_soNwO7afiLW6D0iGLScYH6vwnSxlt2DJf83DYWxHg9fF5vuEoKESyMSJtac7YFNQRTWUW9z9vbwb8FlLecL3VqJvVRH3MPsG7pd_N4f0iH00y3BM5a1M_OKB4uW_HgRikF1uxwmqAaNx8tnvMcuCq8lS0Z-x8ehrwqm-RENytC0XHsSpXtcwq2cpc003BKepnCfGPljJ9yvYkvLf1lZ-amlYm5MvXXOY7-xBq9w" className="size-12 rounded-full border-[3px] border-white object-cover shadow-sm bg-surface-light" alt="User" />
                   <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHUVoE8lKE84DYLVmP-hekDz6smA953Op1VlvkqA22hCHxpS_TD2Nmd7hiuhbcV3xCt10tiFTBONF1Al2mSP91l_gnn58aezcBvYN2XyI_R0Tr-si-6ICCX74rmpoSP4rq2NoU4YeXgLrBOltPfeqxAEcMP4YNxwJhHhn6Y4YUjty6W0BRUrVAQuko7FcTlUezpYQ0U5adKs7rjJwfQ4MdQjsZvgzqfqXmr5kUDYa2nbWjNz5ghR5rR56TWSxekbt1S6ui75em1PY" className="size-12 rounded-full border-[3px] border-white object-cover shadow-sm bg-surface-light" alt="User" />
@@ -165,11 +165,11 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <div className="relative z-10 w-full mx-auto rounded-[2rem] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] bg-white p-2 border border-border-light/50">
+            <div className="relative z-10 w-full mx-auto rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08)] bg-white p-2 border border-border-light/50">
               <img
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80"
                 alt="3 people collaborating at a table on a Gigligo project"
-                className="w-full h-auto rounded-[1.5rem] object-cover aspect-21/9"
+                className="w-full h-auto rounded-3xl object-cover aspect-21/9"
               />
             </div>
 
@@ -229,7 +229,7 @@ export default function Home() {
                   className="flex-none snap-center"
                 >
                   <Link href={card.href} className="w-[280px] md:w-[240px] lg:w-[220px] group cursor-pointer flex flex-col items-center text-center">
-                    <div className="relative w-full aspect-4/5 rounded-[2rem] overflow-hidden mb-4 shadow-sm border border-border-light/50 transition-all duration-500 group-hover:shadow-[0_10px_40px_rgba(0,124,255,0.15)] group-hover:-translate-y-2">
+                    <div className="relative w-full aspect-4/5 rounded-2xl overflow-hidden mb-4 shadow-sm border border-border-light/50 transition-all duration-500 group-hover:shadow-[0_10px_40px_rgba(0,124,255,0.15)] group-hover:-translate-y-2">
                       <div className="absolute inset-0 bg-linear-to-t from-text-main/80 via-transparent to-transparent z-10 transition-opacity group-hover:opacity-90" />
                       <img src={card.img} alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute bottom-6 left-0 right-0 z-20 flex flex-col items-start text-left px-6">
@@ -278,9 +278,9 @@ export default function Home() {
                     visible: { opacity: 1, y: 0, transition: { type: "spring", damping: 14 } }
                   }}
                   key={item.title}
-                  className="flex flex-col items-center justify-start gap-6 text-center p-10 rounded-[2rem] bg-surface-light border border-border-light shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:-translate-y-2 transition-all duration-300"
+                  className="flex flex-col items-center justify-start gap-6 text-center p-10 rounded-2xl bg-surface-light border border-border-light shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:-translate-y-2 transition-all duration-300"
                 >
-                  <div className="size-20 rounded-[1.25rem] bg-primary/10 flex items-center justify-center text-primary">
+                  <div className="size-20 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
                     <span className="material-symbols-outlined text-[40px]">{item.icon}</span>
                   </div>
                   <div className="flex flex-col items-center gap-4">
@@ -328,7 +328,7 @@ export default function Home() {
                   className="flex flex-col items-center text-center w-full"
                 >
                   <div className="flex flex-col items-center gap-6 group w-full cursor-pointer">
-                    <div className="aspect-square w-full bg-surface-light rounded-[2rem] overflow-hidden shadow-sm border border-border-light group-hover:shadow-lg transition-all duration-500">
+                    <div className="aspect-square w-full bg-surface-light rounded-2xl overflow-hidden shadow-sm border border-border-light group-hover:shadow-lg transition-all duration-500">
                       <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                     <div className="flex flex-col items-center justify-center gap-4 w-full">
@@ -372,7 +372,7 @@ export default function Home() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    className="inline-flex items-center justify-center bg-primary text-white px-12 py-5 rounded-[1.5rem] font-bold text-xl hover:bg-primary-dark shadow-[0_10px_40px_rgba(0,124,255,0.4)] transition-colors group"
+                    className="inline-flex items-center justify-center bg-primary text-white px-12 py-5 rounded-3xl font-bold text-xl hover:bg-primary-dark shadow-[0_10px_40px_rgba(0,124,255,0.4)] transition-colors group"
                   >
                     Start Hiring Now
                     <span className="material-symbols-outlined ml-3 text-[24px]">arrow_forward</span>

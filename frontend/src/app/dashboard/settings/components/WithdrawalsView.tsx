@@ -1,103 +1,151 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import {
+    Wallet,
+    ArrowRight,
+    Banknote,
+    Bitcoin,
+    CheckCircle2,
+    MoreVertical,
+    History,
+    Activity,
+    Zap,
+    Download
+} from 'lucide-react';
+
 export function WithdrawalsView() {
     return (
-        <div className="space-y-10 animate-fade-in">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h2 className="text-2xl font-bold tracking-tight text-text-main">Withdrawals</h2>
-                    <p className="text-text-muted mt-1 text-sm">Manage payout methods and monitor your available cleared balance.</p>
-                </div>
+        <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <div className="space-y-4">
+                <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Capital Extraction</h2>
+                <p className="text-xl font-bold italic text-white/40 leading-tight border-l-2 border-primary/20 pl-6">Manage payout conduits and monitor available liquidity for high-frequency extraction.</p>
             </div>
 
-            {/* Balance Overview */}
-            <div className="bg-primary border border-primary-dark rounded-2xl p-8 relative overflow-hidden shadow-2xl shadow-primary/10">
-                <div className="absolute top-0 right-0 p-8 opacity-10">
-                    <span className="material-symbols-outlined text-[140px] text-white">account_balance_wallet</span>
+            {/* Balance Overview Card */}
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-primary border border-primary-dark rounded-[4rem] p-12 md:p-16 relative overflow-hidden shadow-3xl shadow-primary/20 group"
+            >
+                <div className="absolute top-0 right-0 p-12 opacity-10 group-hover:rotate-12 transition-transform duration-1000">
+                    <Wallet size={200} className="text-white" strokeWidth={1} />
                 </div>
-                <div className="relative z-10 text-white">
-                    <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-2">Available to Withdraw</p>
-                    <h3 className="text-5xl md:text-6xl font-black tracking-tighter mb-6 font-mono">$24,580<span className="text-3xl text-white/50">.00</span></h3>
 
-                    <button className="px-8 py-4 bg-white text-primary text-sm font-bold rounded-xl hover:bg-slate-100 transition-colors shadow-xl shadow-black/10 flex items-center justify-center gap-2">
-                        Request Payout <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-12">
+                    <div className="space-y-6">
+                        <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.5em] italic">Available Liquidity</p>
+                        <h3 className="text-7xl md:text-[8rem] font-black tracking-tighter text-white leading-none font-mono italic">
+                            $24,580<span className="text-3xl text-white/30">.00</span>
+                        </h3>
+                    </div>
+
+                    <button className="h-20 px-12 bg-white text-primary text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-slate-100 transition-all shadow-3xl shadow-black/20 flex items-center justify-center gap-6 italic active:scale-95 group/btn">
+                        REQUEST PAYOUT
+                        <ArrowRight size={24} className="group-hover/btn:translate-x-4 transition-transform" />
                     </button>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="space-y-8">
-                {/* Payout Methods */}
-                <div className="bg-surface-light border border-border-light rounded-2xl p-6 sm:p-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 className="text-lg font-bold text-text-main flex items-center gap-2">
-                            <span className="material-symbols-outlined text-primary text-xl">account_balance</span>
-                            Withdrawal Linked Accounts
-                        </h3>
-                        <button className="text-sm font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[18px]">add</span> Add Account
+            <div className="grid grid-cols-1 gap-12">
+
+                {/* Withdrawal Linked Accounts */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden"
+                >
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
+                        <div className="flex items-center gap-6">
+                            <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                                <Activity size={24} strokeWidth={1.5} />
+                            </div>
+                            <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Extraction Nodes</h3>
+                        </div>
+                        <button className="text-[10px] font-black text-primary hover:text-white uppercase tracking-[0.4em] transition-all italic flex items-center gap-3">
+                            <Zap size={16} /> ADD NEW CONDUIT
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Bank Account */}
-                        <div className="p-6 rounded-2xl border-2 border-border-light bg-background-light relative overflow-hidden flex items-center gap-6 group hover:border-primary/50 transition-colors">
-                            <div className="p-4 bg-surface-light rounded-xl border border-border-light shrink-0">
-                                <span className="material-symbols-outlined text-3xl text-text-main">account_balance</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Chase Card */}
+                        <div className="p-8 rounded-4xl border border-white/5 bg-white/1 flex items-center gap-8 group hover:border-primary/50 transition-all duration-700 hover:shadow-3xl hover:shadow-primary/5">
+                            <div className="w-16 h-16 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-white/40 group-hover:text-primary transition-all duration-700">
+                                <Banknote size={32} strokeWidth={1.5} />
                             </div>
-                            <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <h4 className="font-bold text-text-main">Chase Business</h4>
-                                    <span className="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold uppercase tracking-widest rounded">Default</span>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-4 mb-2">
+                                    <h4 className="text-xl font-black text-white italic uppercase tracking-tighter truncate">Chase Business</h4>
+                                    <span className="px-3 py-1 bg-primary/10 text-primary text-[8px] font-black uppercase tracking-widest rounded-full italic">DEFAULT</span>
                                 </div>
-                                <p className="text-sm text-text-muted font-mono">•••• 8392</p>
+                                <p className="text-sm font-black text-white/20 font-mono tracking-widest">•••• 8392</p>
                             </div>
-                            <span className="material-symbols-outlined text-text-muted hover:text-text-main cursor-pointer shrink-0">more_vert</span>
+                            <button className="text-white/10 hover:text-white transition-colors">
+                                <MoreVertical size={20} />
+                            </button>
                         </div>
 
-                        {/* Crypto Wallet Alternative */}
-                        <div className="p-6 rounded-2xl border-2 border-border-light bg-background-light relative overflow-hidden flex items-center gap-6 group hover:border-primary/50 transition-colors">
-                            <div className="p-4 bg-surface-light rounded-xl border border-border-light shrink-0">
-                                <span className="material-symbols-outlined text-3xl text-text-main">currency_bitcoin</span>
+                        {/* USDC Wallet */}
+                        <div className="p-8 rounded-4xl border border-white/5 bg-white/1 flex items-center gap-8 group hover:border-primary/50 transition-all duration-700 hover:shadow-3xl hover:shadow-primary/5">
+                            <div className="w-16 h-16 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-white/40 group-hover:text-primary transition-all duration-700">
+                                <Bitcoin size={32} strokeWidth={1.5} />
                             </div>
-                            <div className="flex-1">
-                                <h4 className="font-bold text-text-main mb-1">USDC Wallet (Ethereum)</h4>
-                                <p className="text-sm text-text-muted font-mono truncate max-w-[120px] sm:max-w-[200px]">0x71C...4d90</p>
+                            <div className="flex-1 min-w-0">
+                                <h4 className="text-xl font-black text-white italic uppercase tracking-tighter truncate mb-2">USDC Matrix (ETH)</h4>
+                                <p className="text-sm font-black text-white/20 font-mono tracking-widest truncate">0x71C...4D90</p>
                             </div>
-                            <span className="material-symbols-outlined text-text-muted hover:text-text-main cursor-pointer shrink-0">more_vert</span>
+                            <button className="text-white/10 hover:text-white transition-colors">
+                                <MoreVertical size={20} />
+                            </button>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
-                {/* Recent Payouts */}
-                <div className="bg-surface-light border border-border-light rounded-2xl p-6 sm:p-8">
-                    <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">history</span>
-                        Recent Payouts
-                    </h3>
+                {/* Recent Payouts Historical Ledger */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden"
+                >
+                    <div className="flex items-center gap-6 mb-12">
+                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                            <History size={24} strokeWidth={1.5} />
+                        </div>
+                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Extraction Archive</h3>
+                    </div>
 
-                    <div className="space-y-4">
+                    <div className="grid grid-cols-1 gap-6">
                         {[
-                            { date: 'Nov 01, 2024', method: 'Chase Business •••• 8392', amount: '$15,000.00', status: 'Completed' },
-                            { date: 'Oct 15, 2024', method: 'USDC Wallet (Ethereum)', amount: '$8,250.00', status: 'Completed' },
+                            { date: 'NOV 01, 2024', method: 'CHASE BUSINESS •••• 8392', amount: '$15,000.00', status: 'SYNCHRONIZED' },
+                            { date: 'OCT 15, 2024', method: 'USDC MATRIX (ETHEREUM)', amount: '$8,250.00', status: 'SYNCHRONIZED' },
                         ].map((payout, i) => (
-                            <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-border-light bg-background-light gap-4 hover:border-primary/30 transition-colors">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center shrink-0">
-                                        <span className="material-symbols-outlined text-[18px]">check</span>
+                            <div key={i} className="flex flex-col md:flex-row md:items-center justify-between p-10 rounded-[3rem] border border-white/5 bg-black/40 gap-8 hover:bg-white/2 hover:border-primary/20 transition-all duration-500 group">
+                                <div className="flex items-center gap-8">
+                                    <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 border border-emerald-500/10">
+                                        <CheckCircle2 size={32} strokeWidth={1.5} />
                                     </div>
-                                    <div>
-                                        <p className="font-bold text-sm text-text-main">{payout.method}</p>
-                                        <p className="text-xs text-text-muted">{payout.date}</p>
+                                    <div className="space-y-2">
+                                        <p className="text-xl font-black text-white italic uppercase tracking-tighter group-hover:text-primary transition-colors">{payout.method}</p>
+                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">{payout.date}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center sm:flex-col sm:items-end justify-between sm:justify-start">
-                                    <span className="text-lg font-bold font-mono text-text-main">{payout.amount}</span>
-                                    <span className="text-xs text-green-500 font-bold uppercase tracking-widest">{payout.status}</span>
+                                <div className="flex items-center md:items-end justify-between md:justify-center gap-4 md:flex-col">
+                                    <span className="text-3xl font-black text-white italic tracking-tighter font-mono">{payout.amount}</span>
+                                    <span className="text-[10px] text-emerald-500 font-black uppercase tracking-[0.3em] italic animate-pulse">{payout.status}</span>
                                 </div>
                             </div>
                         ))}
                     </div>
-                </div>
+
+                    <div className="mt-12 pt-12 border-t border-white/5 flex justify-center">
+                        <button className="text-[10px] font-black text-white/20 hover:text-white uppercase tracking-[0.5em] italic transition-all flex items-center gap-4">
+                            VIEW FULL LEDGER <Download size={16} />
+                        </button>
+                    </div>
+                </motion.div>
+
             </div>
         </div>
     );

@@ -1,219 +1,316 @@
 'use client';
 
-import React from 'react';
+import { useState } from 'react';
+import { Navbar } from '@/components/Navbar';
+import { PageTransition } from '@/components/ui/PageTransition';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    Zap,
+    ArrowUpRight,
+    ArrowDownLeft,
+    Download,
+    TrendingUp,
+    DollarSign,
+    ShieldCheck,
+    Clock,
+    ChevronRight,
+    ArrowDownRight,
+    PieChart as PieChartIcon,
+    Globe,
+    Lock,
+    Verified
+} from 'lucide-react';
+import {
+    AreaChart,
+    Area,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer
+} from 'recharts';
+
+// Tactical Financial Intel
+const REVENUE_DATA = [
+    { name: 'JAN', value: 35000 },
+    { name: 'FEB', value: 34000 },
+    { name: 'MAR', value: 25000 },
+    { name: 'APR', value: 28000 },
+    { name: 'MAY', value: 31000 },
+    { name: 'JUN', value: 45000 },
+    { name: 'JUL', value: 42000 },
+    { name: 'AUG', value: 48000 },
+    { name: 'SEP', value: 52000 },
+    { name: 'OCT', value: 64000 },
+    { name: 'NOV', value: 58000 },
+    { name: 'DEC', value: 72000 },
+];
+
+const TOP_ENTITIES = [
+    { name: 'NOVA SYSTEMS', sector: 'TECH', value: '$45,200', img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100' },
+    { name: 'GLOBEX INTEL', sector: 'RETAIL', value: '$28,100', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100' },
+    { name: 'APEX LOGISTICS', sector: 'DEFENSE', value: '$12,400', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=100' },
+];
+
+const RECENT_LEDGER = [
+    { type: 'in', label: 'Mandate Authorization', id: 'INV-2024-001', amount: '+$14,200', date: '2H AGO', status: 'SYNCHRONIZED' },
+    { type: 'out', label: 'Protocol Overhead', id: 'SUBSCRIPTION', amount: '-$120', date: '5H AGO', status: 'PROCESSED' },
+    { type: 'in', label: 'Escrow Fufillment', id: 'INV-2024-003', amount: '+$8,800', date: '1D AGO', status: 'SYNCHRONIZED' },
+    { type: 'in', label: 'Bonus Incentive', id: 'PERFORMANCE', amount: '+$2,500', date: '2D AGO', status: 'SYNCHRONIZED' },
+];
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-black/90 border border-white/10 p-6 rounded-2xl backdrop-blur-3xl shadow-3xl shadow-black">
+                <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-3">{label} AUDIT</p>
+                <div className="flex items-center gap-4 text-sm font-bold italic">
+                    <span className="text-white/60 uppercase tracking-tighter">TOTAL CAPITAL:</span>
+                    <span className="text-primary">${payload[0].value.toLocaleString()}</span>
+                </div>
+            </div>
+        );
+    }
+    return null;
+};
 
 export default function FinanceDashboardPage() {
     return (
-        <div className="flex flex-col gap-8 max-w-[1600px] w-full mx-auto animate-in fade-in zoom-in-95 duration-500">
-            {/* Header */}
-            <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
-                <div className="flex flex-col gap-1 w-full md:w-auto">
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-text-main dark:text-white">Earnings Overview</h2>
-                    <p className="text-text-muted text-sm md:text-base font-light">Financial performance for current quarter</p>
-                </div>
-                <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
-                    <button className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20">
-                        <span className="material-symbols-outlined text-lg">download</span>
-                        Export Report
-                    </button>
-                </div>
-            </header>
+        <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
+            <Navbar />
 
-            {/* KPI Cards Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                {/* KPI Card 1 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
-                    <div className="flex justify-between items-start mb-4">
-                        <p className="text-text-muted text-xs font-bold uppercase tracking-wider">Total Revenue</p>
-                        <span className="flex items-center text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-400/10 px-2 py-0.5 rounded text-xs font-bold">
-                            <span className="material-symbols-outlined text-sm mr-0.5">trending_up</span> +12%
-                        </span>
-                    </div>
-                    <div>
-                        <p className="text-3xl font-black tracking-tight mb-1 text-text-main dark:text-white">$124,500</p>
-                        <p className="text-text-muted text-xs">vs. last quarter</p>
-                    </div>
-                </div>
+            <PageTransition className="flex-1" style={{ paddingTop: 72 }}>
+                {/* Tactical Header */}
+                <div className="relative border-b border-white/5 bg-black/40 overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,124,255,0.05)_0%,transparent_50%)] pointer-events-none" />
 
-                {/* KPI Card 2 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
-                    <div className="flex justify-between items-start mb-4">
-                        <p className="text-text-muted text-xs font-bold uppercase tracking-wider">Net Profit</p>
-                        <span className="flex items-center text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-400/10 px-2 py-0.5 rounded text-xs font-bold">
-                            <span className="material-symbols-outlined text-sm mr-0.5">trending_up</span> +8%
-                        </span>
-                    </div>
-                    <div>
-                        <p className="text-3xl font-black tracking-tight mb-1 text-text-main dark:text-white">$98,200</p>
-                        <p className="text-text-muted text-xs">vs. last quarter</p>
-                    </div>
-                </div>
+                    <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative z-10">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                            <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12">
+                                <span className="material-symbols-outlined text-xl group-hover:-translate-x-3 transition-transform">arrow_back</span> Dashboard
+                            </Link>
 
-                {/* KPI Card 3 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-text-main dark:bg-slate-800 text-white shadow-lg shadow-text-main/10 group overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
-                    <div className="flex justify-between items-start mb-4">
-                        <p className="text-white/60 text-xs font-bold uppercase tracking-wider">Pending Invoices</p>
-                        <span className="flex items-center text-red-400 bg-white/10 px-2 py-0.5 rounded text-xs font-bold">
-                            <span className="material-symbols-outlined text-sm mr-0.5">trending_down</span> -2%
-                        </span>
-                    </div>
-                    <div>
-                        <p className="text-white text-3xl font-black tracking-tight mb-1">$12,450</p>
-                        <p className="text-white/60 text-xs font-medium">Needs attention</p>
-                    </div>
-                </div>
-
-                {/* KPI Card 4 */}
-                <div className="relative flex flex-col justify-between p-6 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all group overflow-hidden">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
-                    <div className="flex justify-between items-start mb-4">
-                        <p className="text-text-muted text-xs font-bold uppercase tracking-wider">Avg Deal Size</p>
-                        <span className="flex items-center text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-400/10 px-2 py-0.5 rounded text-xs font-bold">
-                            <span className="material-symbols-outlined text-sm mr-0.5">trending_up</span> +5%
-                        </span>
-                    </div>
-                    <div>
-                        <p className="text-3xl font-black tracking-tight mb-1 text-text-main dark:text-white">$4,800</p>
-                        <p className="text-text-muted text-xs">vs. last quarter</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Chart Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[400px]">
-                {/* Large Chart */}
-                <div className="lg:col-span-2 rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 p-8 flex flex-col relative overflow-hidden shadow-sm">
-                    <div className="flex justify-between items-center mb-8 relative z-10">
-                        <div>
-                            <h3 className="text-xl font-bold text-text-main dark:text-white">Revenue Growth</h3>
-                            <p className="text-text-muted text-sm mt-1">Detailed breakdown of income streams</p>
-                        </div>
-                        <div className="flex gap-2">
-                            <button className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 text-text-main dark:text-white/70 text-xs font-medium hover:bg-gray-100 dark:hover:bg-white/10 transition">1M</button>
-                            <button className="px-4 py-2 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition shadow-md shadow-primary/20">3M</button>
-                            <button className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 text-text-main dark:text-white/70 text-xs font-medium hover:bg-gray-100 dark:hover:bg-white/10 transition">1Y</button>
-                        </div>
-                    </div>
-                    <div className="flex-1 w-full h-full min-h-[300px] relative">
-                        {/* Grid Lines */}
-                        <div className="absolute inset-0 flex flex-col justify-between text-xs text-text-muted/30 font-mono pointer-events-none">
-                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
-                            <div className="w-full border-b border-gray-100 dark:border-slate-800 h-0"></div>
-                        </div>
-                        {/* SVG Chart */}
-                        <svg className="w-full h-full absolute inset-0 z-10" preserveAspectRatio="none" viewBox="0 0 1000 400">
-                            <defs>
-                                <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                    <stop offset="0%" stopColor="#c9a326" stopOpacity="0.2"></stop>
-                                    <stop offset="100%" stopColor="#c9a326" stopOpacity="0"></stop>
-                                </linearGradient>
-                            </defs>
-                            <path d="M0,350 C100,340 150,250 250,280 C350,310 400,150 500,180 C600,210 650,100 750,120 C850,140 900,50 1000,80 V400 H0 Z" fill="url(#chartGradient)"></path>
-                            <path d="M0,350 C100,340 150,250 250,280 C350,310 400,150 500,180 C600,210 650,100 750,120 C850,140 900,50 1000,80" fill="none" stroke="#c9a326" strokeWidth="3"></path>
-                            {/* Interactive Dots */}
-                            <circle cx="250" cy="280" fill="white" r="5" stroke="#c9a326" strokeWidth="2"></circle>
-                            <circle cx="500" cy="180" fill="white" r="5" stroke="#c9a326" strokeWidth="2"></circle>
-                            <circle className="animate-pulse" cx="750" cy="120" fill="#c9a326" r="6" stroke="white" strokeWidth="2"></circle>
-                            {/* Tooltip */}
-                            <g transform="translate(710, 50)">
-                                <rect fill="#2d2926" height="36" rx="6" width="80" x="0" y="0"></rect>
-                                <text fill="white" fontFamily="inherit" fontSize="12" fontWeight="bold" textAnchor="middle" x="40" y="22">$32,400</text>
-                            </g>
-                        </svg>
-                    </div>
-                    <div className="flex justify-between mt-4 text-xs text-text-muted font-medium uppercase tracking-wider px-2">
-                        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
-                    </div>
-                </div>
-
-                {/* Side Stats / Transactions */}
-                <div className="flex flex-col gap-6">
-                    {/* Stat Box */}
-                    <div className="rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 p-6 shadow-sm">
-                        <h3 className="text-base font-bold mb-4 text-text-main dark:text-white">Top Clients</h3>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="size-8 rounded-full bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100')" }}></div>
-                                    <div className="flex flex-col">
-                                        <span className="text-sm font-semibold text-text-main dark:text-white">Acme Corp</span>
-                                        <span className="text-text-muted text-xs">Tech</span>
-                                    </div>
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                                <div className="space-y-6">
+                                    <h1 className="text-5xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
+                                        Capital <span className="text-primary not-italic">Control.</span>
+                                    </h1>
+                                    <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
+                                        Precision-engineered visibility into your professional capital trajectory, decentralized escrow fulfillment, and tactical liquidity.
+                                    </p>
                                 </div>
-                                <span className="text-sm font-bold text-text-main dark:text-white">$45,200</span>
+
+                                <button className="h-16 px-12 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-primary hover:border-primary transition-all duration-500 flex items-center gap-4 italic shadow-2xl">
+                                    <Download size={18} />
+                                    EXTRACT AUDIT PDF
+                                </button>
                             </div>
-                            <div className="h-px bg-gray-50 dark:bg-white/5 w-full"></div>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="size-8 rounded-full bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100')" }}></div>
-                                    <div className="flex flex-col">
-                                        <span className="text-sm font-semibold text-text-main dark:text-white">Globex</span>
-                                        <span className="text-text-muted text-xs">Retail</span>
-                                    </div>
-                                </div>
-                                <span className="text-sm font-bold text-text-main dark:text-white">$28,100</span>
-                            </div>
-                        </div>
+                        </motion.div>
+                    </div>
+                </div>
+
+                <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 space-y-24">
+
+                    {/* Capital KPI Field */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+                        <KPICard title="Accumulated Capital" value="$124,500" growth="+12.4%" icon={TrendingUp} />
+                        <KPICard title="Net Operative Profit" value="$98,200" growth="+8.2%" icon={DollarSign} />
+                        <KPICard title="Pending Authorization" value="$12,450" growth="-2.1%" icon={Clock} isNegative />
+                        <KPICard title="Average Protocol" value="$4,800" growth="+5.0%" icon={Zap} />
                     </div>
 
-                    {/* Recent Transactions List */}
-                    <div className="rounded-xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 flex-1 p-6 overflow-hidden flex flex-col shadow-sm">
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-base font-bold text-text-main dark:text-white">Recent</h3>
-                            <button className="text-primary text-xs font-bold uppercase tracking-wider hover:text-primary-dark transition-colors">View All</button>
-                        </div>
-                        <div className="flex flex-col gap-3 overflow-y-auto pr-2" style={{ scrollbarWidth: 'thin' }}>
-                            {[
-                                { status: 'in', label: 'Payment Received', id: 'Inv-2024-001', amount: '+$4,200', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-100 dark:bg-green-500/20', icon: 'arrow_downward' },
-                                { status: 'out', label: 'Software Sub', id: 'Monthly', amount: '-$120', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-500/20', icon: 'arrow_upward' },
-                                { status: 'in', label: 'Payment Received', id: 'Inv-2024-003', amount: '+$2,800', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-100 dark:bg-green-500/20', icon: 'arrow_downward' }
-                            ].map((tx, idx) => (
-                                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-white/5 border border-transparent hover:border-primary/20 transition-colors cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <div className={`p-2 rounded-full ${tx.bg} ${tx.color}`}>
-                                            <span className="material-symbols-outlined text-[18px]">{tx.icon}</span>
+                    {/* Capital Trajectory Chart */}
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="xl:col-span-2 bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden"
+                        >
+                            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+
+                            <div className="flex justify-between items-center mb-16 relative z-10">
+                                <div className="space-y-4">
+                                    <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic">Capital Trajectory Stream</h4>
+                                    <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Gross Periodic Revenue</h3>
+                                </div>
+                                <div className="flex gap-4">
+                                    {['1M', '3M', '1Y'].map(p => (
+                                        <button key={p} className={`w-12 h-12 rounded-xl text-[10px] font-black flex items-center justify-center transition-all ${p === '1Y' ? 'bg-primary text-white' : 'bg-white/5 text-white/20 hover:text-white'}`}>
+                                            {p}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="h-[450px] w-full relative z-10">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={REVENUE_DATA} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                        <defs>
+                                            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#007CFF" stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor="#007CFF" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.03)" />
+                                        <XAxis
+                                            dataKey="name"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10, fontWeight: 900, letterSpacing: '0.2em' }}
+                                            dy={20}
+                                        />
+                                        <YAxis
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10, fontWeight: 900 }}
+                                            dx={-10}
+                                        />
+                                        <Tooltip content={<CustomTooltip />} />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="value"
+                                            stroke="#007CFF"
+                                            strokeWidth={4}
+                                            fillOpacity={1}
+                                            fill="url(#colorRevenue)"
+                                            animationDuration={2500}
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </motion.div>
+
+                        {/* Recent Ledger */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden h-full flex flex-col"
+                        >
+                            <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic mb-12">Transactional Ledger</h4>
+                            <div className="space-y-10 flex-1">
+                                {RECENT_LEDGER.map((tx, i) => (
+                                    <div key={i} className="flex justify-between items-center group cursor-pointer">
+                                        <div className="flex gap-6 items-center">
+                                            <div className={`w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center shadow-2xl shadow-black ${tx.type === 'in' ? 'text-primary' : 'text-red-500'}`}>
+                                                {tx.type === 'in' ? <ArrowDownLeft size={24} /> : <ArrowUpRight size={24} />}
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="text-lg font-bold italic text-white uppercase tracking-tight group-hover:text-primary transition-colors">{tx.label}</p>
+                                                <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.4em]">{tx.id} • {tx.date}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-semibold text-text-main dark:text-white">{tx.label}</p>
-                                            <p className="text-text-muted text-xs">{tx.id}</p>
+                                        <div className="text-right">
+                                            <p className={`text-xl font-black italic tracking-tighter ${tx.type === 'in' ? 'text-white' : 'text-red-500/50'}`}>{tx.amount}</p>
+                                            <p className="text-[8px] font-black text-white/10 uppercase tracking-[0.3em]">{tx.status}</p>
                                         </div>
                                     </div>
-                                    <span className={`font-bold text-sm ${tx.status === 'out' ? 'text-red-600 dark:text-red-400' : 'text-text-main dark:text-white'}`}>{tx.amount}</span>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                            <button className="w-full mt-16 px-8 py-5 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-white/10 transition-all italic">
+                                VIEW FULL LEDGER
+                            </button>
+                        </motion.div>
                     </div>
-                </div>
-            </div>
 
-            {/* Footer / Extra Details Area */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 mt-4">
-                <div className="rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-800 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div className="flex gap-4 items-center">
-                        <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                            <span className="material-symbols-outlined">description</span>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-lg text-text-main dark:text-white">Quarterly Report</h4>
-                            <p className="text-text-muted text-sm">Download the full financial breakdown.</p>
+                    {/* Entities & High-Level Stats */}
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+                        {/* Strategic Entities */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black h-fit"
+                        >
+                            <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic mb-12">Strategic Entities (TOP)</h4>
+                            <div className="space-y-10">
+                                {TOP_ENTITIES.map((ent, i) => (
+                                    <div key={i} className="flex justify-between items-center group">
+                                        <div className="flex gap-6 items-center">
+                                            <div className="w-16 h-16 rounded-3xl overflow-hidden border border-white/10 group-hover:border-primary transition-colors duration-500">
+                                                <img src={ent.img} alt={ent.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="text-xl font-black italic text-white uppercase tracking-tighter">{ent.name}</p>
+                                                <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.4em]">{ent.sector} COMMAND</p>
+                                            </div>
+                                        </div>
+                                        <span className="text-2xl font-black italic tracking-tighter text-primary">{ent.value}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Extra Intelligence Panels */}
+                        <div className="xl:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div className="bg-linear-to-r from-primary/20 to-transparent border border-primary/20 rounded-[4rem] p-12 flex flex-col justify-between group hover:from-primary/30 transition-all duration-700 h-[320px]">
+                                <div className="space-y-6">
+                                    <div className="w-16 h-16 bg-primary rounded-3xl flex items-center justify-center text-white shadow-2xl shadow-primary/30 group-hover:scale-110 transition-transform duration-700">
+                                        <ShieldCheck size={32} />
+                                    </div>
+                                    <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Tactical Audit</h3>
+                                    <p className="text-lg font-bold italic text-white/40 leading-relaxed max-w-[240px]">Download full Periodic Financial Intelligence for tax synchronization.</p>
+                                </div>
+                                <button className="self-start text-[10px] font-black uppercase tracking-[0.4em] text-primary hover:text-white transition-colors flex items-center gap-4 italic group">
+                                    INITIATE DOWNLOAD <ChevronRight size={14} className="group-hover:translate-x-2 transition-transform" />
+                                </button>
+                            </div>
+
+                            <div className="bg-white/2 border border-white/5 rounded-[4rem] p-12 flex flex-col justify-between h-[320px] relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[60px] pointer-events-none" />
+                                <div className="space-y-6">
+                                    <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center text-emerald-500 shadow-2xl">
+                                        <Verified size={32} />
+                                    </div>
+                                    <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Operational Plan</h3>
+                                    <p className="text-lg font-bold italic text-white/40 leading-relaxed max-w-[240px]">Operative Limit: <span className="text-emerald-500">Tier 1 Elite</span>. Verified network node status confirmed.</p>
+                                </div>
+                                <button className="h-14 px-8 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[9px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-emerald-500 hover:text-white transition-all duration-500 self-start italic">
+                                    UPGRADE ARCHITECTURE
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <button className="bg-text-main dark:bg-white text-white dark:text-text-main px-6 py-3 rounded-lg font-bold text-sm hover:opacity-90 transition whitespace-nowrap">Download PDF</button>
+
                 </div>
-                <div className="rounded-xl bg-linear-to-r from-primary/10 to-transparent border border-primary/20 p-6 flex items-center justify-between">
-                    <div>
-                        <h4 className="text-primary font-bold text-lg mb-1">Premium Plan</h4>
-                        <p className="text-text-muted text-sm max-w-[250px]">You are using 80% of your current plan limits.</p>
-                    </div>
-                    <button className="bg-primary text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-primary-dark transition shadow-sm">Upgrade</button>
-                </div>
-            </div>
+            </PageTransition>
         </div>
+    );
+}
+
+function KPICard({ title, value, growth, icon: Icon, isNegative = false, isPercentage = false }: any) {
+    const isPositive = growth.startsWith('+');
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white/2 border border-white/5 rounded-[3rem] p-10 backdrop-blur-3xl shadow-2xl relative overflow-hidden group hover:border-primary/50 transition-all duration-500"
+        >
+            <div className={`absolute top-0 left-0 w-2 h-full ${isPositive ? 'bg-primary' : (isNegative ? 'bg-red-500' : 'bg-white/10')} opacity-30`} />
+
+            <div className="flex justify-between items-start mb-8">
+                <div className={`w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center ${isNegative ? 'text-red-500' : 'text-primary'} shadow-2xl shadow-black group-hover:scale-110 transition-transform duration-700`}>
+                    <Icon size={24} strokeWidth={1.5} />
+                </div>
+                <div className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest ${isPositive ? 'bg-primary/10 text-primary' : 'bg-white/5 text-white/40'} italic`}>
+                    {growth}
+                </div>
+            </div>
+
+            <div className="space-y-2">
+                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">{title}</p>
+                <div className="flex items-baseline gap-2">
+                    <h2 className="text-5xl font-black italic tracking-tighter text-white">{value}</h2>
+                </div>
+            </div>
+        </motion.div>
     );
 }

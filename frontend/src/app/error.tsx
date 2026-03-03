@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function GlobalError({
     error,
@@ -14,30 +16,52 @@ export default function GlobalError({
     }, [error]);
 
     return (
-        <div className="min-h-screen bg-background-light flex items-center justify-center p-6 font-sans">
-            <div className="max-w-md w-full bg-surface-light rounded-2xl border border-border-light p-8 text-center shadow-lg">
-                <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-200">
-                    <span className="material-symbols-outlined text-3xl">warning</span>
+        <div className="min-h-screen bg-white dark:bg-background-dark flex items-center justify-center p-6 relative overflow-hidden">
+            {/* Mesh Blurs */}
+            <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-red-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-red-500/5 rounded-full blur-[80px] pointer-events-none" />
+
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="max-w-xl w-full bg-white dark:bg-white/5 p-12 md:p-16 rounded-[3rem] border border-red-500/20 shadow-2xl backdrop-blur-3xl text-center relative z-10"
+            >
+                <div className="w-24 h-24 bg-red-500/10 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-10 border border-red-500/20 shadow-inner">
+                    <span className="material-symbols-outlined text-5xl font-light">warning</span>
                 </div>
-                <h2 className="text-xl font-bold text-text-main mb-2">Something went wrong</h2>
-                <p className="text-sm text-text-muted mb-6 leading-relaxed">
-                    {error.message || 'An unexpected error occurred. Please try again.'}
+
+                <h2 className="text-4xl font-bold text-background-dark dark:text-white mb-4 tracking-tight">System Glitch</h2>
+
+                <p className="text-lg text-text-muted dark:text-white/60 mb-10 leading-relaxed font-medium">
+                    {error.message || 'An unexpected error occurred during execution. Our team has been notified.'}
                 </p>
-                <div className="flex gap-3 justify-center">
-                    <button
+
+                <div className="flex flex-col sm:flex-row gap-5 justify-center">
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => reset()}
-                        className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary-dark transition shadow-lg shadow-primary/20"
+                        className="px-10 py-5 bg-red-500 text-white font-extrabold rounded-full text-[15px] shadow-xl shadow-red-500/20 hover:bg-red-600 transition-all uppercase tracking-widest"
                     >
-                        Try Again
-                    </button>
-                    <button
+                        Force Restart
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => window.location.href = '/'}
-                        className="px-6 py-2.5 bg-background-light border border-border-light text-text-main font-bold rounded-xl text-sm hover:border-primary/50 transition"
+                        className="px-10 py-5 bg-white dark:bg-white/5 border border-border-light dark:border-white/10 text-background-dark dark:text-white font-bold rounded-full text-[15px] hover:border-red-500/50 transition-all backdrop-blur-xl uppercase tracking-widest"
                     >
-                        Go Home
-                    </button>
+                        Abort to Home
+                    </motion.button>
                 </div>
-            </div>
+
+                <div className="mt-12 pt-8 border-t border-border-light dark:border-white/5">
+                    <p className="text-[10px] text-text-muted dark:text-white/30 font-bold uppercase tracking-[0.3em]">
+                        Error Digest: {error.digest || 'N/A'}
+                    </p>
+                </div>
+            </motion.div>
         </div>
     );
 }

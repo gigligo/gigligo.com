@@ -4,30 +4,60 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 import { walletApi } from '@/lib/api';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    Zap,
+    ArrowUpRight,
+    ArrowDownLeft,
+    Clock,
+    Wallet,
+    History,
+    ChevronRight,
+    Send,
+    ShieldCheck,
+    TrendingUp,
+    Download,
+    Filter,
+    Activity,
+    CheckCircle2,
+    XCircle,
+    Receipt
+} from 'lucide-react';
+import {
+    AreaChart,
+    Area,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer
+} from 'recharts';
+import { toast } from 'sonner';
 
-// Inline mini bar chart component (pure CSS, no chart library needed)
-function MiniBarChart({ data, color = 'bg-primary' }: { data: number[], color?: string }) {
-    const max = Math.max(...data, 1);
-    return (
-        <div className="flex items-end gap-[3px] h-16">
-            {data.map((v, i) => (
-                <div key={i} className="flex-1 flex flex-col justify-end">
-                    <div
-                        className={`${color} rounded-sm w-full min-h-[3px] transition-all duration-700`}
-                        style={{ height: `${(v / max) * 100}%`, opacity: 0.4 + (v / max) * 0.6 }}
-                    />
+// Mock/Static Data for Visuals
+const MONTHLY_EARNINGS = [
+    { name: 'JAN', value: 12000 }, { name: 'FEB', value: 18500 }, { name: 'MAR', value: 9200 },
+    { name: 'APR', value: 31000 }, { name: 'MAY', value: 22000 }, { name: 'JUN', value: 45000 },
+    { name: 'JUL', value: 38000 }, { name: 'AUG', value: 51000 }, { name: 'SEP', value: 42000 },
+    { name: 'OCT', value: 60000 }, { name: 'NOV', value: 55000 }, { name: 'DEC', value: 72000 },
+];
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-black/90 border border-white/10 p-6 rounded-2xl backdrop-blur-3xl shadow-3xl shadow-black">
+                <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-3">{label} EARNINGS</p>
+                <div className="flex items-center gap-4 text-sm font-bold italic">
+                    <span className="text-white/60 uppercase tracking-tighter">CAPITAL GENERATED:</span>
+                    <span className="text-primary">PKR {payload[0].value.toLocaleString()}</span>
                 </div>
-            ))}
-        </div>
-    );
-}
-
-// Monthly earnings mock data for the chart
-const MONTHLY_EARNINGS = [12000, 18500, 9200, 31000, 22000, 45000, 38000, 51000, 42000, 60000, 55000, 72000];
-const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            </div>
+        );
+    }
+    return null;
+};
 
 export default function EarningsPage() {
     const { data: session, status } = useSession();
@@ -39,7 +69,6 @@ export default function EarningsPage() {
     const [withdrawAmount, setWithdrawAmount] = useState('');
     const [withdrawMethod, setWithdrawMethod] = useState('BANK_TRANSFER');
     const [withdrawing, setWithdrawing] = useState(false);
-    const [message, setMessage] = useState('');
     const [activeFilter, setActiveFilter] = useState('ALL');
 
     const token = (session as any)?.accessToken;
@@ -55,29 +84,28 @@ export default function EarningsPage() {
                     walletApi.getTransactions(token),
                 ]);
                 setWallet(w);
-                setTransactions(t.items || []);
+                setTransactions(Array.isArray(t) ? t : (t.items || []));
             } catch (e) { console.error(e); }
             setLoading(false);
         };
         load();
-    }, [status, token]);
+    }, [status, token, router]);
 
     const handleWithdraw = async (e: React.FormEvent) => {
         e.preventDefault();
         setWithdrawing(true);
-        setMessage('');
         try {
             await walletApi.withdraw(token, parseInt(withdrawAmount), withdrawMethod);
-            setMessage('Withdrawal request submitted successfully.');
+            toast.success('Withdrawal protocol initiated successfully.');
             setWithdrawAmount('');
             const [w, t] = await Promise.all([
                 walletApi.getBalance(token),
                 walletApi.getTransactions(token),
             ]);
             setWallet(w);
-            setTransactions(t.items || []);
+            setTransactions(Array.isArray(t) ? t : (t.items || []));
         } catch (e: any) {
-            setMessage(`Error: ${e.message}`);
+            toast.error(e.message || 'Withdrawal failure.');
         }
         setWithdrawing(false);
     };
@@ -88,233 +116,298 @@ export default function EarningsPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-background-light flex items-center justify-center">
-                <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen bg-background-dark flex items-center justify-center">
+                <div className="flex flex-col items-center gap-6">
+                    <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin shadow-2xl shadow-primary/20" />
+                    <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic animate-pulse">Accessing Secure Ledger...</p>
+                </div>
             </div>
         );
     }
 
-    const lifetimeEarnings = MONTHLY_EARNINGS.reduce((a, b) => a + b, 0);
+    const lifetimeEarnings = MONTHLY_EARNINGS.reduce((a, b) => a + b.value, 0);
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-light text-text-main font-sans antialiased selection:bg-primary/30">
+        <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
-            <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
-                {/* Executive Header */}
-                <div className="border-b border-border-light bg-surface-light relative overflow-hidden">
-                    <div className="absolute inset-0 bg-pattern opacity-[0.02] pointer-events-none" />
-                    <div className="max-w-6xl mx-auto px-6 md:px-12 py-12 relative z-10">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Link href="/dashboard" className="text-text-muted hover:text-text-main transition-colors">
-                                <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            <main className="flex-1" style={{ paddingTop: 72 }}>
+                {/* Tactical Header */}
+                <div className="relative border-b border-white/5 bg-black/40 overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,124,255,0.05)_0%,transparent_50%)] pointer-events-none" />
+
+                    <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative z-10">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                            <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12">
+                                <span className="material-symbols-outlined text-xl group-hover:-translate-x-3 transition-transform">arrow_back</span> Dashboard
                             </Link>
-                            <span className="material-symbols-outlined text-primary text-3xl">account_balance_wallet</span>
-                            <h1 className="text-3xl md:text-5xl font-black tracking-tight">Financial Ledger</h1>
-                        </div>
-                        <p className="text-text-muted mt-2 text-sm md:text-base max-w-xl pl-10">
-                            Real-time overview of your earnings, pending clearances, and withdrawal mandates.
-                        </p>
+
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                                <div className="space-y-6">
+                                    <h1 className="text-5xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
+                                        Payout <span className="text-primary not-italic">Protocol.</span>
+                                    </h1>
+                                    <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
+                                        Execute high-frequency withdrawals and audit your capital generation stream across the global professional network.
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-6">
+                                    <div className="bg-primary border border-primary-light rounded-3xl px-12 py-8 flex flex-col gap-2 min-w-[240px] shadow-2xl shadow-primary/40 active:scale-95 transition-transform cursor-pointer overflow-hidden relative group">
+                                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <Wallet size={24} className="mb-2" />
+                                        <div>
+                                            <p className="text-4xl font-black italic tracking-tighter">PKR {wallet?.balancePKR?.toLocaleString() || '0'}</p>
+                                            <p className="text-[10px] uppercase font-black tracking-[0.4em] mt-1 opacity-60">Available Capital</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
 
-                <div className="max-w-6xl mx-auto px-6 md:px-12 py-12 space-y-8">
+                <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 space-y-24">
 
-                    {/* KPI Cards Row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
-                        {/* Available Balance */}
-                        <div className="bg-slate-900 text-white rounded-2xl p-6 border border-white/5 relative overflow-hidden col-span-1 sm:col-span-2 lg:col-span-1">
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(200,157,40,0.15)_0%,transparent_60%)] pointer-events-none" />
-                            <div className="relative z-10">
-                                <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-3">Available Balance</p>
-                                <p className="text-3xl font-black text-primary font-mono">
-                                    PKR {wallet?.balancePKR?.toLocaleString() || '0'}
-                                </p>
-                                {wallet?.pendingPKR > 0 && (
-                                    <p className="text-xs text-yellow-400 mt-2 font-medium flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[14px]">schedule</span>
-                                        PKR {wallet.pendingPKR.toLocaleString()} pending
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Lifetime Earnings */}
-                        <div className="bg-surface-light border border-border-light rounded-2xl p-6">
-                            <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3">Lifetime Earnings</p>
-                            <p className="text-2xl font-black text-text-main font-mono">PKR {lifetimeEarnings.toLocaleString()}</p>
-                            <div className="mt-4">
-                                <MiniBarChart data={MONTHLY_EARNINGS} color="bg-green-500" />
-                            </div>
-                        </div>
-
-                        {/* Pending Clearance */}
-                        <div className="bg-surface-light border border-border-light rounded-2xl p-6">
-                            <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3">Pending Clearance</p>
-                            <p className="text-2xl font-black text-yellow-600 font-mono">PKR {wallet?.pendingPKR?.toLocaleString() || '0'}</p>
-                            <p className="text-xs text-text-muted mt-3">Escrow funds awaiting milestone approval</p>
-                        </div>
-
-                        {/* Total Withdrawn */}
-                        <div className="bg-surface-light border border-border-light rounded-2xl p-6">
-                            <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3">Total Withdrawn</p>
-                            <p className="text-2xl font-black text-text-main font-mono">PKR {wallet?.totalWithdrawn?.toLocaleString() || '0'}</p>
-                            <p className="text-xs text-text-muted mt-3">Across all payout methods</p>
-                        </div>
+                    {/* Performance Matrix */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+                        <KPICard title="Lifetime Capital" value={`PKR ${(lifetimeEarnings / 1000).toFixed(0)}K`} growth="+18.4%" icon={TrendingUp} />
+                        <KPICard title="Pending Clearance" value={`PKR ${((wallet?.pendingPKR || 0) / 1000).toFixed(0)}K`} growth="3.2%" icon={Clock} isNegative={wallet?.pendingPKR > 0} />
+                        <KPICard title="Total Extraction" value={`PKR ${((wallet?.totalWithdrawn || 0) / 1000).toFixed(0)}K`} growth="+5.2%" icon={ArrowUpRight} />
+                        <KPICard title="Active Mandates" value="12" growth="+2" icon={Zap} />
                     </div>
 
-                    {/* Revenue Chart + Withdrawal Panel */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+                        {/* Capital Stream Chart */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="xl:col-span-2 bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden"
+                        >
+                            <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
-                        {/* Monthly Revenue Chart */}
-                        <div className="lg:col-span-2 bg-surface-light border border-border-light rounded-2xl p-6 sm:p-8">
-                            <div className="flex justify-between items-center mb-8">
-                                <h3 className="text-lg font-bold text-text-main">Monthly Revenue</h3>
-                                <span className="text-xs font-bold text-text-muted uppercase tracking-wider">2024</span>
-                            </div>
-                            <div className="flex items-end gap-2 h-48">
-                                {MONTHLY_EARNINGS.map((val, i) => {
-                                    const max = Math.max(...MONTHLY_EARNINGS);
-                                    const height = (val / max) * 100;
-                                    return (
-                                        <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
-                                            <span className="text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                                                {(val / 1000).toFixed(0)}k
-                                            </span>
-                                            <div
-                                                className="w-full bg-primary/20 rounded-t-md relative overflow-hidden transition-all duration-500 group-hover:bg-primary/30"
-                                                style={{ height: `${height}%` }}
-                                            >
-                                                <div
-                                                    className="absolute bottom-0 w-full bg-primary rounded-t-md transition-all duration-700"
-                                                    style={{ height: `${40 + Math.random() * 60}%` }}
-                                                />
-                                            </div>
-                                            <span className="text-[10px] text-text-muted font-medium">{MONTH_LABELS[i]}</span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        {/* Withdrawal Panel */}
-                        <div className="bg-surface-light border border-primary/20 rounded-2xl p-6 sm:p-8 shadow-lg shadow-primary/5">
-                            <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary text-xl">send_money</span>
-                                Request Payout
-                            </h3>
-
-                            {message && (
-                                <div className={`p-3 rounded-lg text-xs mb-4 font-bold ${message.startsWith('Error') ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200'}`}>
-                                    {message}
+                            <div className="flex justify-between items-center mb-16 relative z-10">
+                                <div className="space-y-4">
+                                    <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic">Earning Trajectory Stream</h4>
+                                    <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Capital Generation Flow</h3>
                                 </div>
-                            )}
+                                <button className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-white/10 transition-all font-black italic text-white/40">
+                                    <Download size={20} />
+                                </button>
+                            </div>
 
-                            <form onSubmit={handleWithdraw} className="space-y-5">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Amount (PKR)</label>
-                                    <input
-                                        type="number"
-                                        value={withdrawAmount}
-                                        onChange={e => setWithdrawAmount(e.target.value)}
-                                        required
-                                        min="1000"
-                                        max={wallet?.balancePKR || 0}
-                                        placeholder="Min 1,000"
-                                        className="w-full bg-background-light border border-border-light rounded-lg px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all"
-                                    />
+                            <div className="h-[450px] w-full relative z-10">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={MONTHLY_EARNINGS} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                        <defs>
+                                            <linearGradient id="colorEarning" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#007CFF" stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor="#007CFF" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.03)" />
+                                        <XAxis
+                                            dataKey="name"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10, fontWeight: 900, letterSpacing: '0.2em' }}
+                                            dy={20}
+                                        />
+                                        <YAxis
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10, fontWeight: 900 }}
+                                            dx={-10}
+                                        />
+                                        <Tooltip content={<CustomTooltip />} />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="value"
+                                            stroke="#007CFF"
+                                            strokeWidth={4}
+                                            fillOpacity={1}
+                                            fill="url(#colorEarning)"
+                                            animationDuration={2500}
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </motion.div>
+
+                        {/* Payout Mandate Form */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="bg-white/2 border border-primary/20 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-primary/5 relative overflow-hidden"
+                        >
+                            <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic mb-12 flex items-center gap-4">
+                                <Send size={18} />
+                                Initiate Extraction
+                            </h4>
+
+                            <form onSubmit={handleWithdraw} className="space-y-10 relative z-10">
+                                <div className="space-y-4">
+                                    <label className="text-[9px] font-black text-white/30 uppercase tracking-[0.4em] italic mb-2 block">Extraction Amount (PKR)</label>
+                                    <div className="relative group">
+                                        <input
+                                            type="number"
+                                            value={withdrawAmount}
+                                            onChange={e => setWithdrawAmount(e.target.value)}
+                                            required
+                                            min="1000"
+                                            max={wallet?.balancePKR || 0}
+                                            placeholder="MIN 1,000"
+                                            className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-5 text-xl font-black italic tracking-tighter text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/10"
+                                        />
+                                        <span className="absolute right-8 top-1/2 -translate-y-1/2 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">MAX {wallet?.balancePKR?.toLocaleString() || '0'}</span>
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Method</label>
+
+                                <div className="space-y-4">
+                                    <label className="text-[9px] font-black text-white/30 uppercase tracking-[0.4em] italic mb-2 block">Payout Architecture</label>
                                     <select
                                         value={withdrawMethod}
                                         onChange={e => setWithdrawMethod(e.target.value)}
-                                        className="w-full bg-background-light border border-border-light rounded-lg px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all appearance-none"
+                                        className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-5 text-sm font-black italic tracking-widest text-white focus:outline-none focus:border-primary transition-all appearance-none uppercase"
                                     >
-                                        <option value="BANK_TRANSFER">Bank Transfer (1-3 days)</option>
-                                        <option value="JAZZCASH">JazzCash (Instant)</option>
-                                        <option value="EASYPAISA">Easypaisa (Instant)</option>
+                                        <option value="BANK_TRANSFER">Direct Ledger Transfer (1-3 D)</option>
+                                        <option value="JAZZCASH">JazzCash Instant Protocol</option>
+                                        <option value="EASYPAISA">Easypaisa Instant Node</option>
                                     </select>
                                 </div>
+
                                 <button
                                     type="submit"
                                     disabled={withdrawing || !withdrawAmount || parseInt(withdrawAmount) > (wallet?.balancePKR || 0)}
-                                    className="w-full py-3.5 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20 disabled:opacity-50"
+                                    className="w-full py-6 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/30 disabled:opacity-20 flex items-center justify-center gap-4 italic active:scale-95"
                                 >
-                                    {withdrawing ? 'Processing...' : 'Initiate Withdrawal'}
+                                    {withdrawing ? (
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    ) : (
+                                        <>
+                                            <ShieldCheck size={18} />
+                                            AUTHORIZE PAYOUT
+                                        </>
+                                    )}
                                 </button>
+
+                                <p className="text-[9px] font-bold text-white/20 uppercase tracking-[0.2em] italic text-center leading-relaxed">
+                                    Security synchronization required. Funds will be cleared based on protocol limits.
+                                </p>
                             </form>
-                        </div>
+                        </motion.div>
                     </div>
 
-                    {/* Transaction Ledger */}
-                    <div className="bg-surface-light border border-border-light rounded-2xl overflow-hidden animate-fade-in" style={{ animationDelay: '200ms' }}>
-                        <div className="p-6 sm:p-8 border-b border-border-light flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <h3 className="text-lg font-bold text-text-main">Transaction Ledger</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {['ALL', 'EARNING', 'WITHDRAWAL', 'COMMISSION'].map(filter => (
+                    {/* Transaction Registry */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="bg-white/2 border border-white/5 rounded-[4rem] backdrop-blur-3xl shadow-3xl shadow-black overflow-hidden"
+                    >
+                        <div className="p-12 md:p-16 border-b border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
+                            <div className="space-y-4">
+                                <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic">Historical Registry</h4>
+                                <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Operational Ledger</h3>
+                            </div>
+                            <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-3xl overflow-x-auto max-w-full">
+                                {['ALL', 'EARNING', 'WITHDRAWAL', 'COMMISSION'].map(f => (
                                     <button
-                                        key={filter}
-                                        onClick={() => setActiveFilter(filter)}
-                                        className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${activeFilter === filter
-                                                ? 'bg-slate-900 text-white shadow-md'
-                                                : 'bg-background-light text-text-muted border border-border-light hover:border-primary/50'
-                                            }`}
+                                        key={f}
+                                        onClick={() => setActiveFilter(f)}
+                                        className={`px-6 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.3em] transition-all relative shrink-0 ${activeFilter === f ? 'text-white' : 'text-white/20 hover:text-white'}`}
                                     >
-                                        {filter === 'ALL' ? 'All' : filter.charAt(0) + filter.slice(1).toLowerCase().replace('_', ' ')}
+                                        {activeFilter === f && (
+                                            <motion.div layoutId="filter-bg" className="absolute inset-0 bg-primary/20 rounded-xl z-0" />
+                                        )}
+                                        <span className="relative z-10 italic">{f === 'ALL' ? 'Total' : f.charAt(0) + f.slice(1).toLowerCase().replace('_', ' ')}</span>
                                     </button>
                                 ))}
                             </div>
                         </div>
+
                         {filteredTransactions.length === 0 ? (
-                            <div className="p-12 text-center">
-                                <span className="material-symbols-outlined text-5xl text-text-muted/20 mb-4 block">receipt_long</span>
-                                <p className="text-text-muted text-sm font-medium">No transactions found</p>
+                            <div className="py-48 text-center flex flex-col items-center justify-center space-y-8">
+                                <History size={80} className="text-white/5 font-thin" strokeWidth={1} />
+                                <h3 className="text-2xl font-black text-white/10 uppercase tracking-[0.5em] italic">No archived signals detected.</h3>
                             </div>
                         ) : (
-                            <div className="divide-y divide-border-light">
-                                {filteredTransactions.map((t: any) => (
-                                    <div key={t.id} className="px-6 sm:px-8 py-5 flex items-center justify-between hover:bg-background-light/50 transition-colors">
-                                        <div className="flex items-center gap-4">
-                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${t.type === 'EARNING' ? 'bg-green-500/10 text-green-600' :
-                                                    t.type === 'WITHDRAWAL' ? 'bg-primary/10 text-primary' :
-                                                        t.type === 'COMMISSION' ? 'bg-red-500/10 text-red-500' :
-                                                            'bg-blue-500/10 text-blue-500'
+                            <div className="divide-y divide-white/5">
+                                {filteredTransactions.map((tx: any, idx: number) => (
+                                    <div key={tx.id} className="p-10 md:p-12 flex items-center justify-between hover:bg-white/1 transition-colors group">
+                                        <div className="flex items-center gap-10">
+                                            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 shadow-2xl shadow-black border border-white/5 group-hover:border-primary/30 transition-all ${tx.type === 'EARNING' ? 'text-emerald-500 bg-emerald-500/5' :
+                                                tx.type === 'WITHDRAWAL' ? 'text-primary bg-primary/5' :
+                                                    'text-amber-500 bg-amber-500/5'
                                                 }`}>
-                                                <span className="material-symbols-outlined text-[20px]">
-                                                    {t.type === 'EARNING' ? 'south_west' :
-                                                        t.type === 'WITHDRAWAL' ? 'north_east' :
-                                                            t.type === 'COMMISSION' ? 'receipt' : 'credit_card'}
-                                                </span>
+                                                {tx.type === 'EARNING' ? <ArrowDownLeft size={28} /> :
+                                                    tx.type === 'WITHDRAWAL' ? <ArrowUpRight size={28} /> :
+                                                        <Receipt size={28} />}
                                             </div>
-                                            <div>
-                                                <p className="text-sm font-bold text-text-main">{t.type.replace('_', ' ')}</p>
-                                                <p className="text-xs text-text-muted mt-0.5">{t.description}</p>
-                                                <p className="text-[10px] text-text-muted/60 mt-1 font-medium">
-                                                    {new Date(t.createdAt).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                            <div className="space-y-2">
+                                                <p className="text-[10px] font-black text-primary uppercase tracking-[0.4em] italic">{tx.type.replace('_', ' ')}</p>
+                                                <p className="text-xl font-black italic text-white group-hover:text-primary transition-colors">{tx.description}</p>
+                                                <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.4em]">
+                                                    {new Date(tx.createdAt).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <p className={`font-bold text-sm font-mono ${['EARNING', 'REFUND'].includes(t.type) ? 'text-green-600' : 'text-text-main'}`}>
-                                                {['EARNING', 'REFUND'].includes(t.type) ? '+' : '-'}{t.amountPKR?.toLocaleString()} PKR
+                                        <div className="text-right space-y-3">
+                                            <p className={`text-2xl font-black italic tracking-tighter ${['EARNING', 'REFUND'].includes(tx.type) ? 'text-white' : 'text-white/40'}`}>
+                                                {['EARNING', 'REFUND'].includes(tx.type) ? '+' : '-'}{tx.amountPKR?.toLocaleString()} <span className="text-[10px] text-primary">PKR</span>
                                             </p>
-                                            <span className={`inline-block mt-1.5 px-2.5 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded-full ${t.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
-                                                    t.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'
+                                            <span className={`px-4 py-1.5 text-[8px] font-black uppercase tracking-[0.3em] rounded-full border italic ${tx.status === 'COMPLETED' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
+                                                tx.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                                    'bg-red-500/10 text-red-500 border-red-500/20'
                                                 }`}>
-                                                {t.status}
-                                            </span>
+                                                {tx.status}
+                                            </span   >
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         )}
-                    </div>
+                    </motion.div>
 
                 </div>
             </main>
-
-            <Footer />
         </div>
+    );
+}
+
+function KPICard({ title, value, growth, icon: Icon, isNegative = false }: any) {
+    const isPositive = growth.startsWith('+');
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white/2 border border-white/5 rounded-[3rem] p-10 backdrop-blur-3xl shadow-2xl relative overflow-hidden group hover:border-primary/50 transition-all duration-500"
+        >
+            <div className={`absolute top-0 left-0 w-2 h-full ${isPositive ? 'bg-primary' : (isNegative ? 'bg-amber-500' : 'bg-white/10')} opacity-30`} />
+
+            <div className="flex justify-between items-start mb-8">
+                <div className={`w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center ${isNegative ? 'text-amber-500' : 'text-primary'} shadow-2xl shadow-black group-hover:scale-110 transition-transform duration-700`}>
+                    <Icon size={24} strokeWidth={1.5} />
+                </div>
+                <div className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest ${isPositive ? 'bg-primary/10 text-primary' : 'bg-white/5 text-white/40'} italic`}>
+                    {growth}
+                </div>
+            </div>
+
+            <div className="space-y-2">
+                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">{title}</p>
+                <div className="flex items-baseline gap-2">
+                    <h2 className="text-5xl font-black italic tracking-tighter text-white">{value}</h2>
+                </div>
+            </div>
+        </motion.div>
     );
 }

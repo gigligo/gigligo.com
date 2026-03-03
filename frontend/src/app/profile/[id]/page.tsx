@@ -95,7 +95,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
             {/* Profile Hero Header */}
             <section className="relative bg-slate-900 dark:bg-slate-950 text-white overflow-hidden" style={{ paddingTop: 96 }}>
                 {/* Abstract Background */}
-                <div className="absolute inset-0 opacity-[0.03]">
+                <div className="absolute inset-0 opacity-3">
                     <div className="absolute top-0 right-0 w-96 h-96 border border-white/20 rounded-full -translate-y-1/2 translate-x-1/3"></div>
                     <div className="absolute bottom-0 left-0 w-56 h-56 border border-white/10 rotate-45 translate-y-1/3"></div>
                 </div>

@@ -1,9 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+    Mail,
+    Phone,
+    MapPin,
+    CheckCircle2,
+    ShieldCheck,
+    Plus,
+    Save,
+    Loader2,
+    Globe,
+    Activity,
+    Lock
+} from 'lucide-react';
+import { toast } from 'sonner';
 
 export function ContactInfoView({ userData }: { userData: any; token: string; apiUrl: string }) {
-    const [primaryEmail, setPrimaryEmail] = useState(userData?.email || '');
+    const [primaryEmail, setPrimaryEmail] = useState(userData?.email || 'OPERATIVE@GIGLIGO.COM');
     const [secondaryEmail, setSecondaryEmail] = useState('');
     const [phoneCode, setPhoneCode] = useState('+1');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -12,128 +27,151 @@ export function ContactInfoView({ userData }: { userData: any; token: string; ap
 
     const handleSave = () => {
         setSaving(true);
-        setTimeout(() => setSaving(false), 800);
+        setTimeout(() => {
+            setSaving(false);
+            toast.success("Signal uplink points updated.");
+        }, 1200);
     };
 
     return (
-        <div className="space-y-10 animate-fade-in">
-            <div>
-                <h2 className="text-2xl font-bold tracking-tight text-text-main">Contact Info</h2>
-                <p className="text-text-muted mt-1 text-sm">Manage how clients and GIGLIGO communicate with you.</p>
+        <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <div className="space-y-4">
+                <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Comm Channels</h2>
+                <p className="text-xl font-bold italic text-white/40 leading-tight border-l-2 border-primary/20 pl-6">Calibrate your primary signal endpoints and physical deployment coordinates.</p>
             </div>
 
-            <div className="bg-surface-light border border-border-light rounded-2xl p-6 sm:p-8 space-y-8">
+            <div className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden space-y-16">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
 
-                {/* Email Addresses */}
-                <div>
-                    <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">mail</span>
-                        Email Addresses
-                    </h3>
-                    <div className="space-y-6">
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Primary Email</label>
-                            <div className="flex gap-4 items-center">
-                                <input
-                                    type="email"
-                                    value={primaryEmail}
-                                    readOnly
-                                    className="flex-1 bg-background-light border border-border-light rounded-lg px-4 py-3 text-sm text-text-muted cursor-not-allowed focus:outline-none transition-all"
-                                    placeholder="Enter primary email"
-                                />
-                                <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 border border-green-500/20 text-green-500 rounded-md text-xs font-bold uppercase tracking-wider shrink-0">
-                                    <span className="material-symbols-outlined text-[16px]">verified</span>
-                                    Verified
+                {/* Email Addresses Section */}
+                <div className="space-y-10">
+                    <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                            <Mail size={24} strokeWidth={1.5} />
+                        </div>
+                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">SMTP Relays</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-10">
+                        <div className="space-y-4">
+                            <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic block pl-4">Primary Command Uplink</label>
+                            <div className="flex flex-col md:flex-row gap-6 items-center">
+                                <div className="flex-1 w-full relative group">
+                                    <input
+                                        type="email"
+                                        value={primaryEmail}
+                                        readOnly
+                                        className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-6 text-lg font-black italic uppercase tracking-widest text-white/30 cursor-not-allowed focus:outline-none transition-all"
+                                    />
+                                    <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center gap-3 text-emerald-500 bg-emerald-500/5 px-4 py-2 rounded-full border border-emerald-500/10">
+                                        <ShieldCheck size={16} />
+                                        <span className="text-[10px] font-black uppercase tracking-widest italic">VERIFIED</span>
+                                    </div>
                                 </div>
                             </div>
-                            <p className="text-xs text-text-muted/60">This email receives critical account security and billing notices.</p>
+                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] italic pl-4">Mandatory endpoint for critical account telemetry and extraction alerts.</p>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Secondary Email (Optional)</label>
-                            <div className="flex gap-4 items-center">
+                        <div className="space-y-4">
+                            <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic block pl-4">Secondary Tactical Relay (Optional)</label>
+                            <div className="flex flex-col md:flex-row gap-6 items-center">
                                 <input
                                     type="email"
                                     value={secondaryEmail}
                                     onChange={(e) => setSecondaryEmail(e.target.value)}
-                                    className="flex-1 bg-background-light border border-dashed border-border-light rounded-lg px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all"
-                                    placeholder="Enter secondary email"
+                                    className="flex-1 w-full bg-black/40 border border-dashed border-white/10 rounded-2xl px-8 py-6 text-lg font-black italic uppercase tracking-widest text-white focus:outline-none focus:border-primary transition-all hover:bg-white/2"
+                                    placeholder="ENTER SECONDARY UPLINK..."
                                 />
-                                <button className="px-4 py-3 bg-background-light border border-border-light text-text-muted text-sm font-bold rounded-lg hover:border-primary/50 transition-colors shrink-0">
-                                    Add Email
+                                <button className="h-20 px-10 bg-white/5 border border-white/10 text-white/40 text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-white/10 hover:text-white transition-all italic active:scale-95 shrink-0 flex items-center gap-4">
+                                    <Plus size={20} /> ADD RELAY
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <hr className="border-border-light" />
+                <div className="h-px bg-white/5" />
 
-                {/* Telephone */}
-                <div>
-                    <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">call</span>
-                        Phone Number
-                    </h3>
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Primary Phone</label>
-                        <div className="flex gap-3">
-                            <select
-                                value={phoneCode}
-                                onChange={(e) => setPhoneCode(e.target.value)}
-                                className="w-24 bg-background-light border border-border-light rounded-lg px-3 py-3 text-sm text-text-main focus:outline-none focus:border-primary appearance-none transition-colors"
-                            >
-                                <option value="+1">+1 (US)</option>
-                                <option value="+44">+44 (UK)</option>
-                                <option value="+91">+91 (IN)</option>
-                                <option value="+61">+61 (AU)</option>
-                            </select>
+                {/* Telephone Section */}
+                <div className="space-y-10">
+                    <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                            <Phone size={24} strokeWidth={1.5} />
+                        </div>
+                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Cellular Uplink</h3>
+                    </div>
+
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic block pl-4">Primary Cellular Endpoint</label>
+                        <div className="flex flex-col md:flex-row gap-6">
+                            <div className="relative w-full md:w-48 group">
+                                <select
+                                    value={phoneCode}
+                                    onChange={(e) => setPhoneCode(e.target.value)}
+                                    className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-6 text-lg font-black italic uppercase tracking-widest text-white/60 focus:outline-none focus:border-primary appearance-none transition-all hover:bg-white/2"
+                                >
+                                    <option value="+1">+1 (US)</option>
+                                    <option value="+44">+44 (UK)</option>
+                                    <option value="+91">+91 (IN)</option>
+                                    <option value="+61">+61 (AU)</option>
+                                </select>
+                            </div>
                             <input
                                 type="tel"
                                 value={phoneNumber}
                                 onChange={(e) => setPhoneNumber(e.target.value)}
-                                className="flex-1 bg-background-light border border-border-light rounded-lg px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all"
+                                className="flex-1 w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-6 text-lg font-black italic uppercase tracking-widest text-white focus:outline-none focus:border-primary transition-all hover:bg-white/2"
                                 placeholder="(555) 000-0000"
                             />
                         </div>
-                        <p className="text-xs text-text-muted/60">Used for 2-Step Verification backup and critical contract alerts.</p>
+                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] italic pl-4">Hardware redundancy for 2-Step Auth and tactical contract pings.</p>
                     </div>
                 </div>
 
-                <hr className="border-border-light" />
+                <div className="h-px bg-white/5" />
 
-                {/* Physical Address */}
-                <div>
-                    <h3 className="text-lg font-bold text-text-main mb-6 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">home_pin</span>
-                        Physical Address
-                    </h3>
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Mailing Address</label>
+                {/* Physical Address Section */}
+                <div className="space-y-10">
+                    <div className="flex items-center gap-6">
+                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
+                            <MapPin size={24} strokeWidth={1.5} />
+                        </div>
+                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Geospatial Coordinates</h3>
+                    </div>
+
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic block pl-4">Primary Deployment Address</label>
                         <textarea
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            rows={3}
-                            className="w-full bg-background-light border border-border-light rounded-lg px-4 py-3 text-sm text-text-main focus:outline-none focus:border-primary transition-all resize-y"
-                            placeholder="Enter your full business or personal address..."
+                            rows={4}
+                            className="w-full bg-black/40 border border-white/5 rounded-[3rem] px-10 py-10 text-lg font-bold italic text-white focus:outline-none focus:border-primary transition-all resize-none hover:bg-white/2"
+                            placeholder="ENTER FULL NAV-STRING (STREET, CITY, STATE, ARCHIVE CODE)..."
                         ></textarea>
-                        <p className="text-xs text-text-muted/60">Required for invoicing and strict compliance standards.</p>
+                        <div className="flex items-center gap-4 pl-4 text-white/20 italic">
+                            <Lock size={14} />
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em]">Encrypted Data - Restricted For Invoicing Compliance</p>
+                        </div>
                     </div>
                 </div>
 
-                <div className="flex justify-end pt-6 border-t border-border-light">
+                <div className="flex justify-between items-center pt-12 border-t border-white/5">
+                    <div className="flex items-center gap-4 text-white/20 italic">
+                        <Activity size={20} className="animate-pulse" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Grid Relays Synchronized</span>
+                    </div>
                     <button
                         onClick={handleSave}
                         disabled={saving}
-                        className="px-8 py-3 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20 flex items-center gap-2"
+                        className="h-20 px-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-3xl shadow-primary/40 hover:bg-primary-dark transition-all flex items-center gap-6 italic active:scale-95 disabled:opacity-20"
                     >
                         {saving ? (
-                            <>
-                                <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
-                                Saving...
-                            </>
+                            <Loader2 className="animate-spin" size={24} />
                         ) : (
-                            "Save Contact Info"
+                            <>
+                                SYNC COMM CHANNELS
+                                <Save size={24} />
+                            </>
                         )}
                     </button>
                 </div>

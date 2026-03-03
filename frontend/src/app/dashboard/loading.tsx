@@ -1,22 +1,37 @@
+import { SkeletonCard, SkeletonChart, SkeletonLine, SkeletonRow } from '@/components/ui/SkeletonPulse';
+import { TacticalSpinner } from '@/components/ui/TacticalSpinner';
+
 export default function DashboardLoading() {
     return (
-        <div className="flex flex-col min-h-screen bg-background-light text-text-main font-sans antialiased">
-            <div className="h-[76px] bg-slate-900 border-b border-border-light animate-pulse" />
-            <main className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-12 py-16">
-                <div className="space-y-8">
-                    <div className="h-10 w-64 bg-border-light rounded-xl animate-pulse" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[...Array(4)].map((_, i) => (
-                            <div key={i} className="bg-surface-light border border-border-light rounded-2xl p-6 space-y-3 animate-pulse">
-                                <div className="h-3 w-20 bg-border-light rounded" />
-                                <div className="h-8 w-32 bg-border-light rounded" />
-                            </div>
-                        ))}
+        <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased">
+            {/* Navbar placeholder */}
+            <div className="h-[72px] bg-black/60 border-b border-white/5 skeleton-shimmer shrink-0" />
+
+            <main className="flex-1 w-full max-w-[1440px] mx-auto px-10 md:px-20 py-16 space-y-12">
+                {/* Header skeleton */}
+                <div className="space-y-6">
+                    <SkeletonLine className="w-72 h-10 rounded-2xl" />
+                    <SkeletonLine className="w-96 h-4" />
+                </div>
+
+                {/* KPI Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {[...Array(4)].map((_, i) => (
+                        <SkeletonCard key={i} />
+                    ))}
+                </div>
+
+                {/* Chart area */}
+                <SkeletonChart />
+
+                {/* Table rows */}
+                <div className="bg-white/2 border border-white/5 rounded-3xl overflow-hidden">
+                    <div className="p-8 border-b border-white/5">
+                        <SkeletonLine className="w-48 h-4" />
                     </div>
-                    <div className="bg-surface-light border border-border-light rounded-2xl p-8 space-y-4 animate-pulse">
-                        <div className="h-4 w-48 bg-border-light rounded" />
-                        <div className="h-64 w-full bg-border-light rounded-xl" />
-                    </div>
+                    {[...Array(5)].map((_, i) => (
+                        <SkeletonRow key={i} />
+                    ))}
                 </div>
             </main>
         </div>

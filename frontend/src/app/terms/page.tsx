@@ -1,86 +1,134 @@
 'use client';
+
+import { motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import Link from 'next/link';
 
 export default function TermsPage() {
+    const fadeIn = {
+        hidden: { opacity: 0, y: 20 },
+        visible: (i: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: i * 0.1,
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1]
+            }
+        })
+    };
+
     return (
-        <div className="flex flex-col min-h-screen bg-background-light font-sans text-text-main antialiased selection:bg-primary/30">
+        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 antialiased overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
-                {/* Executive Header Section */}
-                <div className="relative border-b border-border-light bg-surface-light overflow-hidden">
-                    <div className="absolute inset-0 bg-pattern opacity-[0.02] pointer-events-none"></div>
-                    <div className="max-w-4xl mx-auto px-6 py-20 relative z-10 animate-fade-in">
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="w-12 h-[2px] bg-primary"></span>
-                            <span className="text-primary font-bold text-xs uppercase tracking-[0.2em]">Legal Contract</span>
-                        </div>
-                        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                            Terms of Service
-                        </h1>
-                        <p className="text-lg text-text-muted max-w-2xl font-medium leading-relaxed">
-                            These Terms of Service ("Agreement") govern your access to and utilization of the Gigligo elite talent network. Effective Date: October 14, 2024.
-                        </p>
+                {/* Executive Header */}
+                <div className="relative pt-32 pb-40 overflow-hidden bg-white dark:bg-background-dark px-6 border-b border-border-light dark:border-white/5">
+                    {/* Mesh Blurs */}
+                    <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] bg-primary/10 rounded-full blur-[120px] pointer-events-none opacity-40" />
+
+                    <div className="max-w-6xl mx-auto flex flex-col items-start relative z-10">
+                        <motion.div
+                            custom={0}
+                            initial="hidden"
+                            animate="visible"
+                            variants={fadeIn}
+                            className="flex items-center gap-4 mb-8"
+                        >
+                            <span className="w-16 h-[3px] bg-primary rounded-full"></span>
+                            <span className="text-primary font-black text-[10px] uppercase tracking-[0.4em]">Operational Charter</span>
+                        </motion.div>
+
+                        <motion.h1
+                            custom={1}
+                            initial="hidden"
+                            animate="visible"
+                            variants={fadeIn}
+                            className="text-6xl md:text-[8rem] font-black tracking-tighter mb-10 uppercase leading-[0.9]"
+                        >
+                            Terms of <span className="text-primary italic">Service.</span>
+                        </motion.h1>
+
+                        <motion.p
+                            custom={2}
+                            initial="hidden"
+                            animate="visible"
+                            variants={fadeIn}
+                            className="text-2xl text-text-muted dark:text-white/50 max-w-3xl font-bold leading-tight"
+                        >
+                            Governing the access and utilization of the Gigligo elite talent network. <br /><span className="text-primary">Effective Date: October 14, 2024.</span>
+                        </motion.p>
                     </div>
                 </div>
 
-                <div className="max-w-4xl mx-auto px-6 py-16 animate-fade-in flex flex-col md:flex-row gap-12">
-
+                <div className="max-w-6xl mx-auto px-6 py-32 animate-fade-in flex flex-col md:flex-row gap-24 relative z-20">
                     {/* Navigation Sidebar */}
-                    <div className="w-full md:w-64 shrink-0 hidden md:block">
-                        <div className="sticky top-32 space-y-4 border-l-2 border-border-light pl-6">
-                            <a href="#acceptance" className="block text-sm font-bold text-primary hover:text-primary-dark transition-colors">1. Acceptance of Terms</a>
-                            <a href="#escrow" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">2. Escrow & Wallet Holds</a>
-                            <a href="#disputes" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">3. Arbitration & Disputes</a>
-                            <a href="#milestones" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">4. Milestone Payouts</a>
-                            <a href="#liability" className="block text-sm font-medium text-text-muted hover:text-text-main transition-colors">5. Limitation of Liability</a>
+                    <div className="w-full md:w-72 shrink-0 hidden md:block">
+                        <div className="sticky top-40 space-y-6 border-l-2 border-border-light dark:border-white/10 pl-10">
+                            {[
+                                { id: 'acceptance', title: '01 Acceptance' },
+                                { id: 'escrow', title: '02 Escrow Holds' },
+                                { id: 'disputes', title: '03 Arbitration' },
+                                { id: 'milestones', title: '04 Payouts' },
+                                { id: 'liability', title: '05 Liability' },
+                            ].map((item, i) => (
+                                <a
+                                    key={i}
+                                    href={`#${item.id}`}
+                                    className="block text-xs font-black uppercase tracking-[0.2em] text-text-muted dark:text-white/40 hover:text-primary transition-all"
+                                >
+                                    {item.title}
+                                </a>
+                            ))}
                         </div>
                     </div>
 
                     {/* Content Body */}
-                    <div className="flex-1 space-y-12 text-text-muted leading-relaxed font-medium">
+                    <div className="flex-1 space-y-24 text-text-muted dark:text-white/60 leading-relaxed font-bold">
 
-                        <section id="acceptance" className="scroll-mt-32">
-                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">1. Acceptance of Terms</h2>
-                            <p>
-                                By registering on the Gigligo platform (the "Site") as either a verified Client or an Executive Consultant, you expressly agree to be bound by these Terms. If you are accepting these Terms on behalf of an enterprise entity, you represent that you possess the requisite legal authority to bind that entity to this Agreement.
+                        <section id="acceptance" className="scroll-mt-48">
+                            <h2 className="text-4xl font-black text-background-dark dark:text-white mb-8 tracking-tighter uppercase italic leading-none">01. Terms Acceptance</h2>
+                            <p className="text-xl">
+                                By registering on the Gigligo platform (the "Site") as either a verified Client or an Executive Consultant, you expressly agree to be bound by these Terms. If you're accepting on behalf of an enterprise, you represent legal authority to bind that entity.
                             </p>
                         </section>
 
-                        <section id="escrow" className="scroll-mt-32">
-                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">2. Escrow & Wallet Holds</h2>
-                            <p className="mb-4">
-                                Gigligo operates a strictly regulated marketplace framework. To initiate an Executive Contract, the Client must deposit the full sum—or the agreed upon First Milestone block—into the Gigligo Corporate Escrow infrastructure.
+                        <section id="escrow" className="scroll-mt-48">
+                            <h2 className="text-4xl font-black text-background-dark dark:text-white mb-8 tracking-tighter uppercase italic leading-none">02. Escrow holds</h2>
+                            <p className="text-xl mb-10">
+                                Gigligo operates a strictly regulated marketplace framework. To initiate an Executive Contract, the Client must deposit the full sum—or the First Milestone block—into the Gigligo Corporate Escrow.
                             </p>
-                            <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-xl my-6">
-                                <h4 className="text-primary font-bold mb-2">Notice on Asset Freezes</h4>
-                                <p className="text-sm text-text-main">Funds placed in Escrow are strictly bound. They cannot be mutually withdrawn by the Client without the Consultant's authorization unless a formal Dispute is arbitrated via the Gigligo Resolution Center.</p>
-                            </div>
+                            <motion.div
+                                whileInView={{ scale: [0.95, 1] }}
+                                className="bg-black/5 dark:bg-white/5 border-l-8 border-primary p-10 rounded-r-3xl"
+                            >
+                                <h4 className="text-primary font-black uppercase tracking-widest text-sm mb-4">Escrow Protocol Notice</h4>
+                                <p className="text-lg text-background-dark dark:text-white leading-tight">Funds in Escrow are strictly bound. They cannot be unilaterally withdrawn without mutual authorization or formal arbitration.</p>
+                            </motion.div>
                         </section>
 
-                        <section id="disputes" className="scroll-mt-32">
-                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">3. Arbitration & Disputes</h2>
-                            <p>
-                                Should a disagreement arise regarding the quality or execution of deliverables, either party may invoke the formal Dispute process. Upon invocation, all Escrow funds remaining for the active milestone are immediately locked. An internal Gigligo arbitrator will review uploaded communications, GitHub repositories, and specified deliverables against the precise scope defined in the <Link href="/dashboard/contracts/sign" className="text-primary font-bold hover:underline">Executive Contract Interface</Link>. The arbitrator's decision is final and binding.
-                            </p>
-                        </section>
-
-                        <section id="milestones" className="scroll-mt-32">
-                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">4. Milestone Payouts</h2>
-                            <p>
-                                For enterprise contracts exceeding standard thresholds, execution is governed by Milestone Payouts. Consultants are prohibited from demanding upfront compensation outside of the platform Escrow. Gigligo releases Escrow blocks linearly upon the Client's manual approval of the submitted milestone artifacts.
+                        <section id="disputes" className="scroll-mt-48">
+                            <h2 className="text-4xl font-black text-background-dark dark:text-white mb-8 tracking-tighter uppercase italic leading-none">03. Arbitration</h2>
+                            <p className="text-xl">
+                                Should a disagreement arise, either party may invoke formal Dispute protocols. Upon invocation, all remaining funds are immediately locked. Our internal arbitrators review communications, repositories, and deliverables against the precise scope defined in the <Link href="/search" className="text-primary font-black hover:underline underline-offset-8">Executive Interface</Link>. Decisions are final.
                             </p>
                         </section>
 
-                        <section id="liability" className="scroll-mt-32">
-                            <h2 className="text-2xl font-bold text-text-main mb-4 tracking-tight">5. Limitation of Liability</h2>
-                            <p>
-                                In no event shall Gigligo, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service.
+                        <section id="milestones" className="scroll-mt-48">
+                            <h2 className="text-4xl font-black text-background-dark dark:text-white mb-8 tracking-tighter uppercase italic leading-none">04. Milestone release</h2>
+                            <p className="text-xl">
+                                Enterprise contracts are governed by Milestone Payouts. Consultants are prohibited from demanding upfront compensation outside platform Escrow. Gigligo releases blocks linearly upon manual approval of artifact submissions.
                             </p>
                         </section>
 
+                        <section id="liability" className="scroll-mt-48 pb-20">
+                            <h2 className="text-4xl font-black text-background-dark dark:text-white mb-8 tracking-tighter uppercase italic leading-none">05. Limitation of liability</h2>
+                            <p className="text-xl">
+                                In no event shall Gigligo, its directors, or affiliates be liable for indirect, incidental, or special damages, including loss of profits or data, resulting from (i) access or use of the service; (ii) third-party conduct; (iii) content obtained from the network.
+                            </p>
+                        </section>
                     </div>
                 </div>
             </main>

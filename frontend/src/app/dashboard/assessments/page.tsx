@@ -3,45 +3,66 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Navbar } from '@/components/Navbar';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    Zap,
+    Code,
+    Database,
+    Palette,
+    Cloud,
+    BarChart,
+    Smartphone,
+    Timer,
+    Trophy,
+    RotateCcw,
+    ChevronRight,
+    Terminal,
+    ShieldCheck,
+    CheckCircle2,
+    XCircle,
+    ArrowLeft,
+    Monitor,
+    Cpu,
+    Target
+} from 'lucide-react';
 
-// Mock assessment catalog
 const ASSESSMENTS = [
-    { id: 'react', name: 'React & Next.js', icon: 'code', questions: 15, duration: '15 min', difficulty: 'Advanced', badge: 'React Expert', taken: false, score: null },
-    { id: 'nodejs', name: 'Node.js Architecture', icon: 'dns', questions: 12, duration: '12 min', difficulty: 'Advanced', badge: 'Backend Pro', taken: true, score: 92 },
-    { id: 'uiux', name: 'UI/UX Design Principles', icon: 'palette', questions: 10, duration: '10 min', difficulty: 'Intermediate', badge: 'Design Verified', taken: false, score: null },
-    { id: 'devops', name: 'DevOps & Cloud Infrastructure', icon: 'cloud', questions: 12, duration: '12 min', difficulty: 'Advanced', badge: 'Cloud Architect', taken: false, score: null },
-    { id: 'python', name: 'Python & Data Science', icon: 'analytics', questions: 15, duration: '15 min', difficulty: 'Advanced', badge: 'Data Expert', taken: true, score: 78 },
-    { id: 'mobile', name: 'Mobile Development (React Native)', icon: 'smartphone', questions: 10, duration: '10 min', difficulty: 'Intermediate', badge: 'Mobile Dev', taken: false, score: null },
+    { id: 'react', name: 'React & Next.js', icon: Code, questions: 15, duration: '15 min', difficulty: 'EXTREME', badge: 'React Architect', taken: false, score: null, color: '#007CFF' },
+    { id: 'nodejs', name: 'Node.js Systems', icon: Cpu, questions: 12, duration: '12 min', difficulty: 'ADVANCED', badge: 'Backend Elite', taken: true, score: 92, color: '#10B981' },
+    { id: 'uiux', name: 'Cinematic Design', icon: Palette, questions: 10, duration: '10 min', difficulty: 'ELITE', badge: 'Aesthetic Operative', taken: false, score: null, color: '#8B5CF6' },
+    { id: 'devops', name: 'Cloud Protocols', icon: Cloud, questions: 12, duration: '12 min', difficulty: 'ADVANCED', badge: 'Infa Strategist', taken: false, score: null, color: '#F43F5E' },
+    { id: 'python', name: 'Python Intelligence', icon: BarChart, questions: 15, duration: '15 min', difficulty: 'ADVANCED', badge: 'Data Specialist', taken: true, score: 78, color: '#F59E0B' },
+    { id: 'mobile', name: 'Mobile Node', icon: Smartphone, questions: 10, duration: '10 min', difficulty: 'ELITE', badge: 'Mobile Vanguard', taken: false, score: null, color: '#EC4899' },
 ];
 
 const SAMPLE_QUESTIONS = [
     {
-        question: 'What does React.memo() do?',
+        question: 'What does React.memo() execute within the reconciliation engine?',
         options: [
             'Memoizes render output to prevent unnecessary re-renders',
-            'Stores state persistently in localStorage',
-            'Caches API responses in memory',
-            'Creates a ref to a DOM element',
+            'Stores state persistently in global infrastructure',
+            'Caches API responses in the edge network',
+            'Creates a stable reference to a DOM node',
         ],
         correct: 0,
     },
     {
-        question: 'In Next.js App Router, what is the purpose of a layout.tsx file?',
+        question: 'In Next.js App Router, what defines the visual envelope for nested segments?',
         options: [
-            'It defines metadata for SEO optimization',
-            'It defines shared UI that wraps pages in the same directory',
-            'It replaces the need for a root page.tsx file',
-            'It sets global CSS variables automatically',
+            'SEO Metadata manifests',
+            'Shared layout.tsx wrappers',
+            'Root page.tsx overrides',
+            'Global CSS variable definitions',
         ],
         correct: 1,
     },
     {
-        question: 'What is the purpose of useMemo in React?',
+        question: 'What is the primary objective of the useMemo hook?',
         options: [
-            'To store mutable values between renders',
-            'To create a stable reference to a callback function',
-            'To memoize expensive computations between renders',
-            'To create a side effect after rendering',
+            'To store mutable references across cycles',
+            'To stabilize callback function identities',
+            'To memoize heavy computational results between cycles',
+            'To trigger side effects post-commit phase',
         ],
         correct: 2,
     },
@@ -61,7 +82,7 @@ export default function AssessmentsPage() {
         setSelected(null);
         setAnswers([]);
         setQuizComplete(false);
-        setTimeLeft(SAMPLE_QUESTIONS.length * 60); // 1 min per question
+        setTimeLeft(SAMPLE_QUESTIONS.length * 60);
     };
 
     const handleNext = () => {
@@ -81,7 +102,6 @@ export default function AssessmentsPage() {
         ? Math.round((answers.filter((a, i) => a === SAMPLE_QUESTIONS[i].correct).length / SAMPLE_QUESTIONS.length) * 100)
         : 0;
 
-    // Timer
     useEffect(() => {
         if (!activeQuiz || quizComplete || timeLeft <= 0) return;
         const interval = setInterval(() => setTimeLeft(t => t - 1), 1000);
@@ -95,208 +115,248 @@ export default function AssessmentsPage() {
     }, []);
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-light text-text-main font-sans antialiased selection:bg-primary/30">
+        <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
-            <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
-                {/* Header */}
-                <div className="border-b border-border-light bg-surface-light relative overflow-hidden">
-                    <div className="absolute inset-0 bg-pattern opacity-[0.02] pointer-events-none" />
-                    <div className="max-w-6xl mx-auto px-6 md:px-12 py-12 relative z-10">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Link href="/dashboard" className="text-text-muted hover:text-text-main transition-colors">
-                                <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-                            </Link>
-                            <span className="material-symbols-outlined text-primary text-3xl">workspace_premium</span>
-                            <h1 className="text-3xl md:text-5xl font-black tracking-tight">Skill Assessments</h1>
-                        </div>
-                        <p className="text-text-muted mt-2 text-sm md:text-base max-w-xl pl-10">
-                            Prove your expertise. Pass assessments to earn verified badges that boost your search ranking and client trust.
-                        </p>
-                    </div>
-                </div>
+            <main className="flex-1" style={{ paddingTop: 72 }}>
 
-                <div className="max-w-6xl mx-auto px-6 md:px-12 py-12">
+                <AnimatePresence mode="wait">
                     {!activeQuiz ? (
-                        /* Assessment Catalog */
-                        <div className="space-y-8 animate-fade-in">
-                            {/* Stats Bar */}
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                <div className="bg-surface-light border border-border-light rounded-2xl p-6">
-                                    <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Badges Earned</p>
-                                    <p className="text-3xl font-black text-primary">{ASSESSMENTS.filter(a => a.taken && (a.score || 0) >= 70).length}</p>
+                        <motion.div
+                            key="catalog"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="w-full"
+                        >
+                            {/* Tactical Header */}
+                            <div className="relative border-b border-white/5 bg-black/40 overflow-hidden">
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,124,255,0.05)_0%,transparent_50%)] pointer-events-none" />
+
+                                <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative z-10">
+                                    <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12">
+                                        <ArrowLeft size={16} className="group-hover:-translate-x-3 transition-transform" /> Dashboard
+                                    </Link>
+
+                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                                        <div className="space-y-6">
+                                            <h1 className="text-5xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
+                                                Validation <span className="text-primary not-italic">Hub.</span>
+                                            </h1>
+                                            <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
+                                                Prove your technical dominance. Pass high-stakes skill validation to earn elite badges and priority network placement.
+                                            </p>
+                                        </div>
+
+                                        <div className="grid grid-cols-3 gap-6">
+                                            <StatBlock title="Badges" value={ASSESSMENTS.filter(a => a.taken && (a.score || 0) >= 70).length} />
+                                            <StatBlock title="Pending" value={ASSESSMENTS.filter(a => !a.taken).length} />
+                                            <StatBlock title="Avg. Rank" value={`${Math.round(ASSESSMENTS.filter(a => a.taken).reduce((sum, a) => sum + (a.score || 0), 0) / Math.max(ASSESSMENTS.filter(a => a.taken).length, 1))}%`} />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="bg-surface-light border border-border-light rounded-2xl p-6">
-                                    <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Available Tests</p>
-                                    <p className="text-3xl font-black text-text-main">{ASSESSMENTS.filter(a => !a.taken).length}</p>
+                            </div>
+
+                            <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24">
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+                                    {ASSESSMENTS.map((assessment, i) => (
+                                        <AssessmentCard
+                                            key={assessment.id}
+                                            assessment={assessment}
+                                            index={i}
+                                            onStart={() => startQuiz(assessment)}
+                                        />
+                                    ))}
                                 </div>
-                                <div className="bg-surface-light border border-border-light rounded-2xl p-6">
-                                    <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Average Score</p>
-                                    <p className="text-3xl font-black text-text-main">
-                                        {Math.round(ASSESSMENTS.filter(a => a.taken).reduce((sum, a) => sum + (a.score || 0), 0) / Math.max(ASSESSMENTS.filter(a => a.taken).length, 1))}%
+                            </div>
+                        </motion.div>
+                    ) : quizComplete ? (
+                        <motion.div
+                            key="results"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="max-w-4xl mx-auto px-10 py-32 text-center space-y-16"
+                        >
+                            <div className="space-y-8 flex flex-col items-center">
+                                <div className={`w-32 h-32 rounded-4xl flex items-center justify-center shadow-3xl ${score >= 70 ? 'bg-emerald-500 shadow-emerald-500/20' : 'bg-red-500 shadow-red-500/20'}`}>
+                                    {score >= 70 ? <Trophy size={60} strokeWidth={2.5} /> : <RotateCcw size={60} strokeWidth={2.5} />}
+                                </div>
+                                <div className="space-y-4">
+                                    <h2 className="text-6xl md:text-8xl font-black italic uppercase tracking-tighter">
+                                        {score >= 70 ? 'Clearance <span className="text-emerald-500">Granted.</span>' : 'Validation <span className="text-red-500">Failed.</span>'}
+                                    </h2>
+                                    <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl mx-auto leading-relaxed">
+                                        {score >= 70
+                                            ? `Protocol successful. The "${activeQuiz.badge}" credentials have been synchronized with your personal dossier.`
+                                            : `Capability threshold not met. Minimum 70% accuracy required for badge authorization. Retake protocol available.`
+                                        }
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Assessment Cards */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {ASSESSMENTS.map(assessment => (
-                                    <div key={assessment.id} className="bg-surface-light border border-border-light rounded-2xl p-6 flex flex-col hover:shadow-lg transition-shadow">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                                                <span className="material-symbols-outlined text-2xl">{assessment.icon}</span>
-                                            </div>
-                                            {assessment.taken && (
-                                                <span className={`px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full ${(assessment.score || 0) >= 70 ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                                                    }`}>
-                                                    {(assessment.score || 0) >= 70 ? 'Passed' : 'Retake Available'}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <h3 className="text-lg font-bold text-text-main mb-1">{assessment.name}</h3>
-                                        <div className="flex items-center gap-3 text-xs text-text-muted mb-4 font-medium">
-                                            <span>{assessment.questions} Questions</span>
-                                            <span>•</span>
-                                            <span>{assessment.duration}</span>
-                                            <span>•</span>
-                                            <span className={assessment.difficulty === 'Advanced' ? 'text-red-500' : 'text-primary'}>{assessment.difficulty}</span>
-                                        </div>
-
-                                        {assessment.taken && (
-                                            <div className="mb-4">
-                                                <div className="flex justify-between text-xs font-bold mb-1.5">
-                                                    <span className="text-text-muted">Score</span>
-                                                    <span className={`${(assessment.score || 0) >= 70 ? 'text-green-600' : 'text-yellow-600'}`}>{assessment.score}%</span>
-                                                </div>
-                                                <div className="w-full bg-border-light rounded-full h-2 overflow-hidden">
-                                                    <div className={`h-full rounded-full transition-all duration-1000 ${(assessment.score || 0) >= 70 ? 'bg-green-500' : 'bg-yellow-500'}`}
-                                                        style={{ width: `${assessment.score}%` }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className="mt-auto pt-4 border-t border-border-light flex items-center justify-between">
-                                            <div className="flex items-center gap-1.5 text-xs text-primary font-bold">
-                                                <span className="material-symbols-outlined text-[14px]">verified</span>
-                                                {assessment.badge}
-                                            </div>
-                                            <button
-                                                onClick={() => startQuiz(assessment)}
-                                                className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-dark transition-colors shadow-md shadow-primary/20"
-                                            >
-                                                {assessment.taken ? 'Retake' : 'Start Quiz'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="text-[12rem] font-black italic tracking-tighter text-white/5 font-mono leading-none">
+                                {score}%
                             </div>
-                        </div>
-                    ) : quizComplete ? (
-                        /* Results Screen */
-                        <div className="max-w-2xl mx-auto animate-fade-in">
-                            <div className="bg-surface-light border border-border-light rounded-3xl p-8 sm:p-12 text-center">
-                                <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center ${score >= 70 ? 'bg-green-500/10 text-green-600' : 'bg-yellow-500/10 text-yellow-600'}`}>
-                                    <span className="material-symbols-outlined text-5xl">{score >= 70 ? 'emoji_events' : 'refresh'}</span>
-                                </div>
-                                <h2 className="text-3xl font-black text-text-main mb-2">
-                                    {score >= 70 ? 'Assessment Passed!' : 'Almost There!'}
-                                </h2>
-                                <p className="text-text-muted text-lg mb-8">
-                                    {score >= 70
-                                        ? `Congratulations! You earned the "${activeQuiz.badge}" badge.`
-                                        : `You scored ${score}%. A score of 70% or higher is required to earn the badge.`
-                                    }
-                                </p>
-                                <div className="text-6xl font-black text-primary font-mono mb-8">{score}%</div>
-                                <div className="flex justify-center gap-4">
-                                    <button
-                                        onClick={() => setActiveQuiz(null)}
-                                        className="px-8 py-3 bg-background-light border border-border-light text-text-main text-sm font-bold rounded-xl hover:border-primary/50 transition-colors"
-                                    >
-                                        Back to Catalog
+
+                            <div className="flex justify-center gap-8">
+                                <button onClick={() => setActiveQuiz(null)} className="px-12 py-6 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-white/10 transition-all italic h-20">
+                                    CATALOG ARCHIVE
+                                </button>
+                                {score < 70 && (
+                                    <button onClick={() => startQuiz(activeQuiz)} className="px-12 py-6 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-2xl shadow-primary/30 italic h-20 active:scale-95">
+                                        REINITIALIZE TEST
                                     </button>
-                                    {score < 70 && (
-                                        <button
-                                            onClick={() => startQuiz(activeQuiz)}
-                                            className="px-8 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20"
-                                        >
-                                            Retry Assessment
-                                        </button>
-                                    )}
-                                </div>
+                                )}
                             </div>
-                        </div>
+                        </motion.div>
                     ) : (
-                        /* Active Quiz */
-                        <div className="max-w-3xl mx-auto animate-fade-in">
-                            {/* Quiz Header */}
-                            <div className="flex justify-between items-center mb-8">
-                                <div>
-                                    <h2 className="text-xl font-bold text-text-main">{activeQuiz.name}</h2>
-                                    <p className="text-sm text-text-muted">Question {currentQ + 1} of {SAMPLE_QUESTIONS.length}</p>
-                                </div>
-                                <div className="flex items-center gap-4">
-                                    <div className={`px-4 py-2 rounded-lg font-mono text-sm font-bold ${timeLeft < 60 ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-surface-light border border-border-light text-text-main'}`}>
-                                        <span className="material-symbols-outlined text-[14px] mr-1 align-middle">timer</span>
-                                        {formatTime(timeLeft)}
+                        <motion.div
+                            key="quiz"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="max-w-[1440px] mx-auto px-10 md:px-20 py-24"
+                        >
+                            <div className="max-w-4xl mx-auto space-y-16">
+                                {/* Quiz HUD */}
+                                <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+                                    <div className="space-y-3">
+                                        <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter flex items-center gap-6">
+                                            <span className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center border border-primary/20">
+                                                <Terminal size={24} className="text-primary" />
+                                            </span>
+                                            {activeQuiz.name}
+                                        </h2>
+                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic pl-20">ENCRYPTED VALIDATION TERMINAL</p>
+                                    </div>
+                                    <div className="flex items-center gap-8">
+                                        <div className="text-right">
+                                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-1">REMAINING WINDOW</p>
+                                            <p className={`text-4xl font-black italic tracking-tighter font-mono ${timeLeft < 60 ? 'text-red-500 animate-pulse' : 'text-primary'}`}>{formatTime(timeLeft)}</p>
+                                        </div>
+                                        <div className="w-px h-16 bg-white/10" />
+                                        <div className="text-right">
+                                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-1">TRANSMISSION</p>
+                                            <p className="text-4xl font-black italic tracking-tighter text-white font-mono">{currentQ + 1}<span className="text-white/20">/</span>{SAMPLE_QUESTIONS.length}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Progress */}
-                            <div className="w-full bg-border-light rounded-full h-1.5 mb-8 overflow-hidden">
-                                <div className="h-full bg-primary rounded-full transition-all duration-500"
-                                    style={{ width: `${((currentQ + 1) / SAMPLE_QUESTIONS.length) * 100}%` }}
-                                />
-                            </div>
+                                <div className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-20 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
 
-                            {/* Question Card */}
-                            <div className="bg-surface-light border border-border-light rounded-2xl p-8 sm:p-10 mb-8">
-                                <h3 className="text-xl font-bold text-text-main mb-8 leading-relaxed">
-                                    {SAMPLE_QUESTIONS[currentQ].question}
-                                </h3>
-                                <div className="space-y-3">
-                                    {SAMPLE_QUESTIONS[currentQ].options.map((opt, i) => (
-                                        <button
-                                            key={i}
-                                            onClick={() => setSelected(i)}
-                                            className={`w-full text-left p-4 rounded-xl border-2 transition-all flex items-center gap-4 ${selected === i
-                                                    ? 'border-primary bg-primary/5 shadow-md'
-                                                    : 'border-border-light hover:border-primary/30 hover:bg-background-light'
-                                                }`}
-                                        >
-                                            <span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm font-bold ${selected === i ? 'bg-primary text-white' : 'bg-background-light text-text-muted border border-border-light'
-                                                }`}>
-                                                {String.fromCharCode(65 + i)}
-                                            </span>
-                                            <span className="text-sm font-medium text-text-main">{opt}</span>
-                                        </button>
-                                    ))}
+                                    <h3 className="text-3xl font-black italic text-white uppercase tracking-tighter leading-tight mb-16">
+                                        {SAMPLE_QUESTIONS[currentQ].question}
+                                    </h3>
+
+                                    <div className="grid grid-cols-1 gap-6">
+                                        {SAMPLE_QUESTIONS[currentQ].options.map((opt, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => setSelected(i)}
+                                                className={`text-left p-8 rounded-3xl border transition-all duration-500 flex items-center gap-8 group ${selected === i
+                                                    ? 'border-primary bg-primary/10 shadow-3xl shadow-primary/5'
+                                                    : 'border-white/5 bg-white/1 hover:border-white/20 hover:bg-white/3'
+                                                    }`}
+                                            >
+                                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 font-black italic transition-all duration-500 ${selected === i ? 'bg-primary text-white scale-110' : 'bg-black text-white/20 group-hover:text-white/40'}`}>
+                                                    {String.fromCharCode(65 + i)}
+                                                </div>
+                                                <span className={`text-xl font-bold italic tracking-tight transition-colors ${selected === i ? 'text-white' : 'text-white/40 group-hover:text-white'}`}>{opt}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between items-center px-10">
+                                    <button onClick={() => setActiveQuiz(null)} className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] hover:text-red-500 transition-colors italic">ABORT PROTOCOL</button>
+                                    <button
+                                        onClick={handleNext}
+                                        disabled={selected === null}
+                                        className="h-20 px-12 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl disabled:opacity-20 transition-all shadow-2xl shadow-primary/30 italic active:scale-95 flex items-center gap-6"
+                                    >
+                                        {currentQ + 1 >= SAMPLE_QUESTIONS.length ? 'FINALIZE TRANSMISSION' : 'NEXT PROTOCOL'}
+                                        <ChevronRight size={18} />
+                                    </button>
                                 </div>
                             </div>
-
-                            {/* Actions */}
-                            <div className="flex justify-between items-center">
-                                <button
-                                    onClick={() => setActiveQuiz(null)}
-                                    className="text-sm font-bold text-text-muted hover:text-red-500 transition-colors"
-                                >
-                                    Abandon Quiz
-                                </button>
-                                <button
-                                    onClick={handleNext}
-                                    disabled={selected === null}
-                                    className="px-8 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20 disabled:opacity-50 flex items-center gap-2"
-                                >
-                                    {currentQ + 1 >= SAMPLE_QUESTIONS.length ? 'Submit Assessment' : 'Next Question'}
-                                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                </button>
-                            </div>
-                        </div>
+                        </motion.div>
                     )}
-                </div>
+                </AnimatePresence>
+
             </main>
+        </div>
+    );
+}
+
+function AssessmentCard({ assessment, index, onStart }: any) {
+    const Icon = assessment.icon;
+    const isPassed = assessment.taken && (assessment.score || 0) >= 70;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="group bg-white/2 border border-white/5 rounded-[3.5rem] p-10 backdrop-blur-3xl shadow-2xl relative overflow-hidden hover:border-primary/50 transition-all duration-700 hover:shadow-primary/5"
+        >
+            <div className={`absolute top-0 right-0 w-px h-full bg-linear-to-b from-transparent via-${assessment.color} to-transparent opacity-20`} />
+
+            <div className="flex justify-between items-start mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black group-hover:scale-110 transition-transform duration-700">
+                    <Icon size={28} strokeWidth={1.5} />
+                </div>
+                {assessment.taken && (
+                    <div className={`px-4 py-1.5 rounded-xl text-[8px] font-black uppercase tracking-widest italic border ${isPassed ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'}`}>
+                        {isPassed ? 'AUTHORIZED' : 'RETRIAL REQ.'}
+                    </div>
+                )}
+            </div>
+
+            <h3 className="text-2xl font-black italic tracking-tighter text-white uppercase group-hover:text-primary transition-colors mb-2">{assessment.name}</h3>
+
+            <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-8 italic">
+                <span>{assessment.questions} PROTOCOLS</span>
+                <span className="w-1 h-1 bg-white/10 rounded-full" />
+                <span className={assessment.difficulty === 'EXTREME' ? 'text-red-500' : 'text-primary'}>{assessment.difficulty}</span>
+            </div>
+
+            {assessment.taken && (
+                <div className="mb-10 space-y-3">
+                    <div className="flex justify-between text-[10px] font-black italic tracking-tighter text-white/30 truncate">
+                        <span>ACCURACY LEVEL</span>
+                        <span className={isPassed ? 'text-emerald-500' : 'text-amber-500'}>{assessment.score}%</span>
+                    </div>
+                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${assessment.score}%` }}
+                            className={`h-full ${isPassed ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-amber-500'}`}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <div className="mt-8 pt-8 border-t border-white/5 flex items-center justify-between">
+                <div className="flex items-center gap-3 text-[10px] font-black text-primary uppercase tracking-[0.3em] italic">
+                    <ShieldCheck size={14} />
+                    {assessment.badge}
+                </div>
+                <button
+                    onClick={onStart}
+                    className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-white/10 text-white transition-all group-hover:bg-primary group-hover:border-primary group-hover:shadow-2xl active:scale-90"
+                >
+                    <ChevronRight size={20} />
+                </button>
+            </div>
+        </motion.div>
+    );
+}
+
+function StatBlock({ title, value }: any) {
+    return (
+        <div className="bg-white/5 border border-white/10 rounded-2xl px-8 py-5 flex flex-col items-center justify-center min-w-[120px] backdrop-blur-3xl">
+            <p className="text-3xl font-black text-white italic tracking-tighter">{value}</p>
+            <p className="text-[9px] text-white/20 uppercase tracking-[0.4em] font-black mt-1 text-center">{title}</p>
         </div>
     );
 }

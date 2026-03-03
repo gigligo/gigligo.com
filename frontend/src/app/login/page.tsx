@@ -5,6 +5,7 @@ import React, { Suspense, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function LoginContent() {
     const searchParams = useSearchParams();
@@ -217,146 +218,182 @@ function LoginContent() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#F7F7F6] px-4 relative">
-            <div className="bg-[#FFFFFF] p-10 rounded-[10px] shadow-sm border border-[#E5E5E5] max-w-md w-full my-8">
-                <div className="text-center mb-10">
-                    <Link href="/" className="inline-block">
-                        <span className="font-display text-2xl font-black tracking-tighter text-[#1E1E1E]">gigligo<span className="text-[#C9A227]">.com</span></span>
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-background-dark px-4 relative overflow-hidden">
+            {/* Mesh Blurs */}
+            <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
+
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-white dark:bg-white/5 p-10 md:p-14 rounded-[3rem] shadow-2xl border border-border-light dark:border-white/10 max-w-md w-full my-12 relative z-10 backdrop-blur-2xl"
+            >
+                <div className="text-center mb-12">
+                    <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
+                        <span className="font-display text-3xl font-black tracking-tighter text-background-dark dark:text-white uppercase">gigligo<span className="text-primary italic">.com</span></span>
                     </Link>
 
-                    {forgotStep !== 'idle' ? (
-                        <>
-                            <h1 className="h3 text-[#1E1E1E] mt-8 tracking-tight">
-                                {forgotStep === 'done' ? 'Password Reset!' : 'Reset Password'}
-                            </h1>
-                            <p className="body-regular text-[#3A3A3A]/70 mt-2">
-                                {forgotStep === 'email' && 'Enter your email to receive a reset code'}
-                                {forgotStep === 'code' && <>We sent a code to <strong className="text-[#1E1E1E]">{resetEmail}</strong></>}
-                                {forgotStep === 'done' && 'You can now sign in with your new password'}
-                            </p>
-                        </>
-                    ) : !otpStep ? (
-                        <>
-                            <h1 className="h3 text-[#1E1E1E] mt-8 tracking-tight">Welcome</h1>
-                            <p className="body-regular text-[#3A3A3A]/70 mt-2">Sign in to continue</p>
-                        </>
-                    ) : (
-                        <>
-                            <h1 className="h3 text-[#1E1E1E] mt-8 tracking-tight">Verify Your Identity</h1>
-                            <p className="body-regular text-[#3A3A3A]/70 mt-2">We sent a 6-digit code to <strong className="text-[#1E1E1E]">{email}</strong></p>
-                        </>
-                    )}
+                    <AnimatePresence mode="wait">
+                        {forgotStep !== 'idle' ? (
+                            <motion.div
+                                key="forgot"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                            >
+                                <h1 className="text-3xl font-bold text-background-dark dark:text-white mt-8 tracking-tight">
+                                    {forgotStep === 'done' ? 'Password Reset!' : 'Reset Password'}
+                                </h1>
+                                <p className="text-text-muted dark:text-white/60 mt-3 font-medium">
+                                    {forgotStep === 'email' && 'Enter your email to receive a reset code'}
+                                    {forgotStep === 'code' && <>We sent a code to <strong className="text-background-dark dark:text-white">{resetEmail}</strong></>}
+                                    {forgotStep === 'done' && 'You can now sign in with your new password'}
+                                </p>
+                            </motion.div>
+                        ) : !otpStep ? (
+                            <motion.div
+                                key="login"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                            >
+                                <h1 className="text-4xl font-bold text-background-dark dark:text-white mt-10 tracking-tight">Welcome back</h1>
+                                <p className="text-text-muted dark:text-white/60 mt-3 font-medium text-lg">Sign in to continue your journey</p>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="otp"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                            >
+                                <h1 className="text-3xl font-bold text-background-dark dark:text-white mt-8 tracking-tight">Verify Identity</h1>
+                                <p className="text-text-muted dark:text-white/60 mt-3 font-medium">We sent a 6-digit code to <strong className="text-background-dark dark:text-white">{email}</strong></p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {error && (
-                    <div className="mb-6 p-4 bg-[#C62828]/5 border border-[#C62828]/20 rounded-[8px] text-[#C62828] text-sm text-center font-medium">
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-sm text-center font-bold"
+                    >
                         {error}
-                    </div>
+                    </motion.div>
                 )}
 
                 {forgotStep === 'email' ? (
-                    <form onSubmit={handleForgotSubmitEmail} className="space-y-5 mb-8">
+                    <form onSubmit={handleForgotSubmitEmail} className="space-y-6 mb-8">
                         <div>
-                            <label className="micro-label text-[#3A3A3A] mb-2 block">Email Address</label>
+                            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Email Address</label>
                             <input
                                 type="email"
                                 required
                                 value={resetEmail}
                                 onChange={e => setResetEmail(e.target.value)}
-                                className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
-                                placeholder="you@example.com"
+                                className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
+                                placeholder="name@domain.com"
                             />
                         </div>
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             type="submit"
                             disabled={resetLoading}
-                            className="btn-primary w-full py-3.5 shadow-md disabled:opacity-50"
+                            className="w-full py-5 bg-primary text-white font-bold rounded-full shadow-xl shadow-primary/25 disabled:opacity-50 transition-all text-[15px]"
                         >
-                            {resetLoading ? 'Sending Code...' : 'Send Reset Code'}
-                        </button>
-                        <button type="button" onClick={() => { setForgotStep('idle'); setError(''); }} className="w-full py-2 text-[14px] font-medium text-[#3A3A3A]/60 hover:text-[#1E1E1E] transition">
-                            ← Back to Sign In
+                            {resetLoading ? 'Sending Authorization...' : 'Send Reset Code'}
+                        </motion.button>
+                        <button type="button" onClick={() => { setForgotStep('idle'); setError(''); }} className="w-full py-2 text-[13px] font-bold text-text-muted hover:text-primary dark:hover:text-white transition-colors">
+                            ← Return to Sign In
                         </button>
                     </form>
                 ) : forgotStep === 'code' ? (
-                    <form onSubmit={handleForgotResetPassword} className="space-y-5 mb-8">
+                    <form onSubmit={handleForgotResetPassword} className="space-y-6 mb-8">
                         <div>
-                            <label className="micro-label text-[#3A3A3A] mb-2 block">Reset Code</label>
+                            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Reset Code</label>
                             <input
                                 type="text"
                                 required
                                 value={resetCode}
                                 onChange={e => setResetCode(e.target.value)}
-                                className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors text-center tracking-[0.3em] font-mono text-lg placeholder:text-[#3A3A3A]/30"
+                                className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white focus:outline-none focus:border-primary transition-all text-center tracking-[0.5em] font-mono text-xl placeholder:text-text-muted/20"
                                 placeholder="000000"
                                 maxLength={6}
                             />
                         </div>
                         <div>
-                            <label className="micro-label text-[#3A3A3A] mb-2 block">New Password</label>
+                            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">New Password</label>
                             <input
                                 type="password"
                                 required
                                 value={resetNewPassword}
                                 onChange={e => setResetNewPassword(e.target.value)}
-                                className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
-                                placeholder="Minimum 8 characters"
+                                className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
+                                placeholder="At least 8 characters"
                             />
                         </div>
                         <div>
-                            <label className="micro-label text-[#3A3A3A] mb-2 block">Confirm New Password</label>
+                            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Confirm New Password</label>
                             <input
                                 type="password"
                                 required
                                 value={resetConfirmPassword}
                                 onChange={e => setResetConfirmPassword(e.target.value)}
-                                className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
+                                className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
                                 placeholder="Re-enter new password"
                             />
                         </div>
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             type="submit"
                             disabled={resetLoading}
-                            className="btn-primary w-full py-3.5 shadow-md disabled:opacity-50"
+                            className="w-full py-5 bg-primary text-white font-bold rounded-full shadow-xl shadow-primary/25 disabled:opacity-50 transition-all text-[15px]"
                         >
-                            {resetLoading ? 'Resetting...' : 'Reset Password'}
-                        </button>
-                        <button type="button" onClick={() => { setForgotStep('email'); setError(''); }} className="w-full py-2 text-[14px] font-medium text-[#3A3A3A]/60 hover:text-[#1E1E1E] transition">
-                            ← Change Email
+                            {resetLoading ? 'Resetting...' : 'Confirm New Password'}
+                        </motion.button>
+                        <button type="button" onClick={() => { setForgotStep('email'); setError(''); }} className="w-full py-2 text-[13px] font-bold text-text-muted hover:text-primary dark:hover:text-white transition-colors">
+                            ← Use different email
                         </button>
                     </form>
                 ) : forgotStep === 'done' ? (
-                    <div className="text-center space-y-6 mb-8">
-                        <div className="w-20 h-20 bg-[#F7F7F6] text-[#C9A227] rounded-full flex items-center justify-center mx-auto border border-[#E5E5E5]">
-                            <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    <div className="text-center space-y-8 mb-8">
+                        <div className="w-24 h-24 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto border border-primary/20">
+                            <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                         </div>
-                        <p className="text-[#1E1E1E] font-bold text-[15px]">{resetSuccess}</p>
-                        <button
+                        <p className="text-background-dark dark:text-white font-bold text-lg leading-tight">{resetSuccess}</p>
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             onClick={() => { setForgotStep('idle'); setError(''); setResetEmail(''); setResetCode(''); setResetNewPassword(''); setResetConfirmPassword(''); }}
-                            className="btn-primary w-full py-3.5 shadow-md mt-4"
+                            className="w-full py-5 bg-primary text-white font-bold rounded-full shadow-xl shadow-primary/25 transition-all text-[15px]"
                         >
                             Back to Sign In
-                        </button>
+                        </motion.button>
                     </div>
                 ) : !otpStep ? (
                     <>
-                        <form onSubmit={handleCredentialsLogin} className="space-y-5 mb-8">
+                        <form onSubmit={handleCredentialsLogin} className="space-y-6 mb-10">
                             <div>
-                                <label className="micro-label text-[#3A3A3A] mb-2 block">Email</label>
+                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Email</label>
                                 <input
                                     type="email"
                                     required
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
-                                    placeholder="you@example.com"
+                                    className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
+                                    placeholder="name@domain.com"
                                 />
                             </div>
                             <div>
-                                <div className="flex justify-between items-center mb-2">
-                                    <label className="micro-label text-[#3A3A3A]">Password</label>
-                                    <button type="button" onClick={() => { setForgotStep('email'); setResetEmail(email); setError(''); }} className="text-[12px] text-[#C9A227] hover:text-[#1E1E1E] font-bold uppercase tracking-widest transition-colors">
-                                        Forgot Password?
+                                <div className="flex justify-between items-center mb-3 px-1">
+                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40">Password</label>
+                                    <button type="button" onClick={() => { setForgotStep('email'); setResetEmail(email); setError(''); }} className="text-[10px] text-primary hover:text-primary/70 font-bold uppercase tracking-widest transition-colors">
+                                        Forgot?
                                     </button>
                                 </div>
                                 <input
@@ -364,32 +401,36 @@ function LoginContent() {
                                     required
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
-                                    className="w-full px-4 py-3.5 bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] text-[15px] font-medium focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors placeholder:text-[#3A3A3A]/40"
+                                    className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
                                     placeholder="••••••••"
                                 />
                             </div>
-                            <button
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                                 type="submit"
                                 disabled={isLoading}
-                                className="btn-primary w-full py-3.5 shadow-md disabled:opacity-50 mt-2"
+                                className="w-full py-5 bg-background-dark dark:bg-white dark:text-background-dark text-white font-extrabold rounded-full shadow-2xl disabled:opacity-50 mt-4 transition-all text-[15px]"
                             >
-                                {isLoading ? 'Signing in...' : 'Sign In'}
-                            </button>
+                                {isLoading ? 'Authenticating...' : 'Sign In'}
+                            </motion.button>
                         </form>
 
-                        <div className="relative mb-8">
-                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#E5E5E5]"></div></div>
-                            <div className="relative flex justify-center text-[12px] font-bold uppercase tracking-widest"><span className="bg-[#FFFFFF] px-4 text-[#3A3A3A]/40">or continue with</span></div>
+                        <div className="relative mb-10">
+                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border-light dark:border-white/10"></div></div>
+                            <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-[0.3em]"><span className="bg-white dark:bg-background-dark px-6 text-text-muted dark:text-white/30 backdrop-blur-xl">OR</span></div>
                         </div>
 
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             type="button"
                             onClick={() => {
                                 setIsLoading(true);
                                 signIn('google', { callbackUrl });
                             }}
                             disabled={isLoading}
-                            className="w-full py-3.5 bg-[#FFFFFF] text-[#1E1E1E] font-semibold rounded-[8px] border border-[#E5E5E5] hover:bg-[#F7F7F6] transition-all text-[15px] flex items-center justify-center gap-3 disabled:opacity-50"
+                            className="w-full py-5 bg-white dark:bg-white/5 text-background-dark dark:text-white font-bold rounded-full border border-border-light dark:border-white/10 hover:border-primary transition-all text-[15px] flex items-center justify-center gap-4 disabled:opacity-50"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
                                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -397,17 +438,17 @@ function LoginContent() {
                                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                             </svg>
-                            {isLoading ? 'Connecting to Google...' : 'Continue with Google'}
-                        </button>
-                        <p className="mt-8 text-center text-[14px] text-[#3A3A3A]/70 font-medium">
+                            {isLoading ? 'Connecting...' : 'Continue with Google'}
+                        </motion.button>
+                        <p className="mt-10 text-center text-[15px] text-text-muted dark:text-white/50 font-bold">
                             Don't have an account?{' '}
-                            <Link href="/register" className="font-bold text-[#1E1E1E] hover:text-[#C9A227] transition-colors">Sign up</Link>
+                            <Link href="/register" className="text-primary hover:text-primary/70 dark:text-white dark:hover:text-primary underline underline-offset-8 transition-colors">Create one</Link>
                         </p>
                     </>
                 ) : (
                     /* ═══ OTP VERIFICATION STEP ═══ */
-                    <div className="space-y-8">
-                        <div className="flex justify-center gap-3" onPaste={handleOtpPaste}>
+                    <div className="space-y-10">
+                        <div className="flex justify-center gap-4" onPaste={handleOtpPaste}>
                             {otpCode.map((digit, i) => (
                                 <input
                                     key={i}
@@ -418,46 +459,48 @@ function LoginContent() {
                                     value={digit}
                                     onChange={e => handleOtpChange(i, e.target.value)}
                                     onKeyDown={e => handleOtpKeyDown(i, e)}
-                                    className="w-12 h-14 text-center text-[22px] font-bold bg-[#F7F7F6] border border-transparent rounded-[8px] text-[#1E1E1E] focus:outline-none focus:bg-[#FFFFFF] focus:border-[#C9A227] transition-colors shadow-sm"
+                                    className="w-12 h-16 text-center text-2xl font-black bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white focus:outline-none focus:border-primary transition-all shadow-sm"
                                     autoFocus={i === 0}
                                 />
                             ))}
                         </div>
 
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             onClick={handleVerifyOtp}
                             disabled={isLoading || otpCode.join('').length !== 6}
-                            className="btn-primary w-full py-3.5 shadow-md disabled:opacity-50"
+                            className="w-full py-5 bg-primary text-white font-bold rounded-full shadow-xl shadow-primary/25 disabled:opacity-50 transition-all text-[15px]"
                         >
                             {isLoading ? 'Verifying...' : 'Verify & Sign In'}
-                        </button>
+                        </motion.button>
 
-                        <div className="text-center space-y-3">
+                        <div className="text-center space-y-4">
                             <button
                                 onClick={handleResendOtp}
                                 disabled={resendCooldown > 0}
-                                className="text-[14px] text-[#1E1E1E] hover:text-[#C9A227] font-bold disabled:text-[#3A3A3A]/40 disabled:cursor-not-allowed transition-colors"
+                                className="text-[14px] text-background-dark dark:text-white hover:text-primary font-bold disabled:text-text-muted/40 transition-colors"
                             >
                                 {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
                             </button>
                             <br />
                             <button
                                 onClick={() => { setOtpStep(false); setError(''); setOtpCode(['', '', '', '', '', '']); }}
-                                className="text-[13px] font-medium text-[#3A3A3A]/60 hover:text-[#1E1E1E] transition-colors"
+                                className="text-[13px] font-bold text-text-muted hover:text-background-dark dark:hover:text-white transition-colors"
                             >
                                 ← Back to sign in
                             </button>
                         </div>
                     </div>
                 )}
-            </div>
+            </motion.div>
         </div>
     );
 }
 
 export default function LoginPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F7F7F6]"><div className="w-8 h-8 border-2 border-[#C9A227] border-t-transparent rounded-full animate-spin" /></div>}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white dark:bg-background-dark"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
             <LoginContent />
         </Suspense>
     );

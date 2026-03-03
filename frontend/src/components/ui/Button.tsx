@@ -1,9 +1,15 @@
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'accent' | 'outline';
+    variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
     size?: 'sm' | 'md' | 'lg';
     fullWidth?: boolean;
+    loading?: boolean;
+    icon?: React.ReactNode;
 }
 
 export function Button({
@@ -11,30 +17,41 @@ export function Button({
     variant = 'primary',
     size = 'md',
     fullWidth = false,
+    loading = false,
+    icon,
     className = '',
+    disabled,
     ...props
 }: ButtonProps) {
-    const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2';
+    const base = 'inline-flex items-center justify-center gap-3 font-black uppercase tracking-[0.3em] italic rounded-2xl transition-all duration-500 active:scale-95 disabled:opacity-40 disabled:pointer-events-none';
 
     const variants = {
-        primary: 'bg-primary text-white hover:bg-primary/90 focus:ring-primary shadow-sm',
-        secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-200',
-        accent: 'bg-accent text-white hover:bg-accent/90 focus:ring-accent shadow-md shadow-accent/20',
-        outline: 'border border-gray-200 text-primary hover:border-primary/30 hover:bg-gray-50 focus:ring-primary',
+        primary: 'bg-primary text-white hover:bg-primary-dark shadow-2xl shadow-primary/30 border border-primary/50',
+        secondary: 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20',
+        ghost: 'bg-transparent text-white/40 hover:text-white hover:bg-white/5',
+        danger: 'bg-red-600 text-white hover:bg-red-700 shadow-2xl shadow-red-500/20 border border-red-500/50',
     };
 
-    const sizes = {
-        sm: 'px-4 py-2 text-xs',
-        md: 'px-5 py-2.5 text-sm',
-        lg: 'px-8 py-3.5 text-base',
+    const sizeMap = {
+        sm: 'px-6 py-3 text-[9px]',
+        md: 'px-10 py-4 text-[10px]',
+        lg: 'px-14 py-5 text-[11px]',
     };
 
     return (
-        <button
-            className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${className}`}
-            {...props}
+        <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className={`${base} ${variants[variant]} ${sizeMap[size]} ${fullWidth ? 'w-full' : ''} ${className}`}
+            disabled={disabled || loading}
+            {...(props as any)}
         >
+            {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+            ) : icon ? (
+                icon
+            ) : null}
             {children}
-        </button>
+        </motion.button>
     );
 }

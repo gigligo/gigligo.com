@@ -60,7 +60,7 @@ export default function MilestoneContractPage() {
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
                 {/* Header */}
                 <div className="border-b border-border-light bg-surface-light relative overflow-hidden">
-                    <div className="absolute inset-0 bg-pattern opacity-[0.02] pointer-events-none" />
+                    <div className="absolute inset-0 bg-pattern opacity-2 pointer-events-none" />
                     <div className="max-w-6xl mx-auto px-6 md:px-12 py-12 relative z-10">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
                             <div>

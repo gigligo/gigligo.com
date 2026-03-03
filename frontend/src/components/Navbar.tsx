@@ -95,7 +95,7 @@ export function Navbar() {
                                     More <span className="material-symbols-outlined text-xs">expand_more</span>
                                 </button>
                                 <div
-                                    className={`absolute top-full left-0 mt-2 w-48 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-[1.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-2 z-50 transition-all ${moreOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                                    className={`absolute top-full left-0 mt-2 w-48 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-2 z-50 transition-all ${moreOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
                                     onMouseEnter={() => setMoreOpen(true)}
                                     onMouseLeave={() => setMoreOpen(false)}
                                 >
@@ -130,7 +130,7 @@ export function Navbar() {
                                     <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm cursor-pointer hover:scale-105 transition-transform shadow-md">
                                         {session.user?.name?.[0] || 'U'}
                                     </div>
-                                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-[1.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all z-50">
+                                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all z-50">
                                         <div className="px-5 py-3 border-b border-border-light/50 dark:border-white/10 mb-2">
                                             <p className="text-sm font-bold text-text-main dark:text-white truncate">{session.user?.name}</p>
                                             <p className="text-xs text-text-muted dark:text-white/60 truncate mt-0.5">{session.user?.email}</p>
@@ -150,7 +150,7 @@ export function Navbar() {
                                 <Link href="/login" className="text-text-main dark:text-white/80 text-sm font-bold hover:text-primary transition-colors border border-border-light/50 px-4 py-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5">
                                     Sign In
                                 </Link>
-                                <Link href="/register" className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-[1.25rem] h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:bg-primary-dark shadow-sm">
+                                <Link href="/register" className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-2xl h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:bg-primary-dark shadow-sm">
                                     Join
                                 </Link>
                             </>
@@ -196,8 +196,8 @@ export function Navbar() {
                     </nav>
                     {!session && (
                         <div className="mt-auto flex flex-col gap-4">
-                            <Link href="/login" className="text-center py-4 text-base font-bold text-text-main dark:text-white border border-border-light dark:border-white/10 rounded-[1.5rem]" onClick={() => setMenuOpen(false)}>Sign In</Link>
-                            <Link href="/register" className="text-center py-4 text-base font-bold bg-primary text-white rounded-[1.5rem]" onClick={() => setMenuOpen(false)}>Join Free</Link>
+                            <Link href="/login" className="text-center py-4 text-base font-bold text-text-main dark:text-white border border-border-light dark:border-white/10 rounded-3xl" onClick={() => setMenuOpen(false)}>Sign In</Link>
+                            <Link href="/register" className="text-center py-4 text-base font-bold bg-primary text-white rounded-3xl" onClick={() => setMenuOpen(false)}>Join Free</Link>
                         </div>
                     )}
                 </div>
