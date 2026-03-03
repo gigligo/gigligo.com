@@ -5,25 +5,28 @@
 
 /* stylelint-disable-next-line at-rule-no-unknown */
 @theme {
-  --color-primary: #0089FF;
-  --color-primary-dark: #006BCE;
+  --color-primary: #007CFF;
+  --color-primary-dark: #0062D1;
   --color-background-light: #FFFFFF;
   --color-background-dark: #040300;
   --color-surface-light: #FFFFFF;
-  --color-surface-dark: #402100;
+  --color-surface-dark: #040300;
   --color-nav-bg: #FFFFFF;
-  --color-border-light: #e5e7eb;
-  --color-border-dark: #736A1F;
+  --color-border-light: #0403001A;
+  /* 10% black */
+  --color-border-dark: #FFFFFF1A;
+  /* 10% white */
   --color-text-main: #040300;
-  --color-text-muted: #736A1F;
+  --color-text-muted: #04030099;
+  /* 60% black */
 
   --font-display: 'Inter', sans-serif;
   --font-sans: 'Inter', sans-serif;
 
-  --radius-DEFAULT: 0.25rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
+  --radius-DEFAULT: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
   --radius-full: 9999px;
 }
 

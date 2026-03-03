@@ -95,7 +95,7 @@ export function Navbar() {
                                     More <span className="material-symbols-outlined text-xs">expand_more</span>
                                 </button>
                                 <div
-                                    className={`absolute top-full left-0 mt-2 w-48 bg-white dark:bg-background-dark border border-border-light dark:border-slate-700 rounded-xl shadow-xl py-2 z-50 transition-all ${moreOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                                    className={`absolute top-full left-0 mt-2 w-48 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-[1.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-2 z-50 transition-all ${moreOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
                                     onMouseEnter={() => setMoreOpen(true)}
                                     onMouseLeave={() => setMoreOpen(false)}
                                 >
@@ -103,7 +103,7 @@ export function Navbar() {
                                         <Link
                                             key={link.label}
                                             href={link.href}
-                                            className="block px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-text-main/90 text-sm font-medium text-slate-700 dark:text-text-muted/60 hover:text-primary transition-colors"
+                                            className="block px-4 py-2.5 hover:bg-black/5 dark:hover:bg-white/10 text-sm font-medium text-text-main dark:text-white/80 hover:text-primary transition-colors mx-2 rounded-xl"
                                         >
                                             {link.label}
                                         </Link>
@@ -117,37 +117,40 @@ export function Navbar() {
                         {session ? (
                             <>
                                 {isFreelancer && credits !== null && (
-                                    <Link href="/dashboard/credits" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
+                                    <Link href="/dashboard/credits" className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-primary/10 border border-primary/20 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
                                         <Coins size={14} />
                                         {credits}
                                     </Link>
                                 )}
                                 <NotificationBell />
-                                <button onClick={toggleDarkMode} className="w-9 h-9 rounded-full border border-border-light dark:border-slate-700 flex items-center justify-center text-text-muted dark:text-text-muted/80 hover:text-primary hover:border-primary/30 transition-colors" aria-label="Toggle dark mode">
+                                <button onClick={toggleDarkMode} className="w-9 h-9 rounded-full border border-border-light dark:border-white/10 flex items-center justify-center text-text-muted dark:text-white/80 hover:text-primary hover:border-primary/30 transition-colors" aria-label="Toggle dark mode">
                                     <span className="material-symbols-outlined text-[18px]">{darkMode ? 'light_mode' : 'dark_mode'}</span>
                                 </button>
                                 <div className="relative group ml-1">
-                                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-text-main font-bold text-sm cursor-pointer hover:scale-105 transition-transform">
+                                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm cursor-pointer hover:scale-105 transition-transform shadow-md">
                                         {session.user?.name?.[0] || 'U'}
                                     </div>
-                                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-background-dark border border-border-light dark:border-slate-700 rounded-xl shadow-xl py-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all z-50">
-                                        <div className="px-5 py-3 border-b border-border-light/50 dark:border-slate-700 mb-1">
-                                            <p className="text-sm font-bold text-text-main dark:text-slate-100 truncate">{session.user?.name}</p>
-                                            <p className="text-xs text-text-muted truncate mt-0.5">{session.user?.email}</p>
+                                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-[1.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all z-50">
+                                        <div className="px-5 py-3 border-b border-border-light/50 dark:border-white/10 mb-2">
+                                            <p className="text-sm font-bold text-text-main dark:text-white truncate">{session.user?.name}</p>
+                                            <p className="text-xs text-text-muted dark:text-white/60 truncate mt-0.5">{session.user?.email}</p>
                                         </div>
-                                        <Link href="/dashboard" className="block px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-text-main/90 text-sm font-medium text-slate-700 dark:text-text-muted/60 transition-colors">Dashboard</Link>
-                                        <Link href="/dashboard/inbox" className="block px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-text-main/90 text-sm font-medium text-slate-700 dark:text-text-muted/60 transition-colors">Inbox</Link>
-                                        <Link href="/dashboard/settings" className="block px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-text-main/90 text-sm font-medium text-slate-700 dark:text-text-muted/60 transition-colors">Settings</Link>
-                                        <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full text-left px-5 py-2.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-sm font-semibold text-red-600 transition-colors">Logout</button>
+                                        <div className="px-2 flex flex-col gap-1">
+                                            <Link href="/dashboard" className="block px-4 py-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-xl text-sm font-medium text-text-main dark:text-white/80 transition-colors">Dashboard</Link>
+                                            <Link href="/dashboard/inbox" className="block px-4 py-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-xl text-sm font-medium text-text-main dark:text-white/80 transition-colors">Inbox</Link>
+                                            <Link href="/dashboard/settings" className="block px-4 py-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-xl text-sm font-medium text-text-main dark:text-white/80 transition-colors">Settings</Link>
+                                            <div className="h-px bg-border-light/50 dark:bg-white/5 my-1 mx-2"></div>
+                                            <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl text-sm font-semibold text-red-600 transition-colors">Logout</button>
+                                        </div>
                                     </div>
                                 </div>
                             </>
                         ) : (
                             <>
-                                <Link href="/login" className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors">
+                                <Link href="/login" className="text-text-main dark:text-white/80 text-sm font-bold hover:text-primary transition-colors border border-border-light/50 px-4 py-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5">
                                     Sign In
                                 </Link>
-                                <Link href="/register" className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-text-main text-sm font-bold transition-all hover:bg-primary/90 shadow-sm">
+                                <Link href="/register" className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-[1.25rem] h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:bg-primary-dark shadow-sm">
                                     Join
                                 </Link>
                             </>
@@ -169,9 +172,9 @@ export function Navbar() {
                             <Logo className="h-16 w-auto dark:hidden" variant="dark" />
                             <Logo className="h-16 w-auto hidden dark:block" variant="white" />
                         </div>
-                        <button onClick={() => setMenuOpen(false)} className="text-text-main dark:text-slate-100"><X size={28} /></button>
+                        <button onClick={() => setMenuOpen(false)} className="text-text-main dark:text-white"><X size={28} /></button>
                     </div>
-                    <nav className="flex flex-col gap-5">
+                    <nav className="flex flex-col gap-5 text-center">
                         {[
                             { label: 'Explore', href: '/search' },
                             { label: 'Browse Jobs', href: '/jobs' },
@@ -184,7 +187,7 @@ export function Navbar() {
                             <Link
                                 key={item.label}
                                 href={item.href}
-                                className="text-xl font-bold text-slate-800 dark:text-slate-200"
+                                className="text-[22px] font-bold text-text-main dark:text-white"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 {item.label}
@@ -193,8 +196,8 @@ export function Navbar() {
                     </nav>
                     {!session && (
                         <div className="mt-auto flex flex-col gap-4">
-                            <Link href="/login" className="text-center py-4 text-sm font-semibold text-slate-700 dark:text-text-muted/60 border border-border-light dark:border-slate-700 rounded-lg" onClick={() => setMenuOpen(false)}>Sign In</Link>
-                            <Link href="/register" className="text-center py-4 text-sm font-bold bg-primary text-text-main rounded-lg" onClick={() => setMenuOpen(false)}>Join Free</Link>
+                            <Link href="/login" className="text-center py-4 text-base font-bold text-text-main dark:text-white border border-border-light dark:border-white/10 rounded-[1.5rem]" onClick={() => setMenuOpen(false)}>Sign In</Link>
+                            <Link href="/register" className="text-center py-4 text-base font-bold bg-primary text-white rounded-[1.5rem]" onClick={() => setMenuOpen(false)}>Join Free</Link>
                         </div>
                     )}
                 </div>

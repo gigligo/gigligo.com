@@ -37,19 +37,19 @@ function SocialIcon({ name }: { name: string }) {
 
 export function Footer() {
     return (
-        <footer className="bg-white dark:bg-background-dark border-t border-border-light dark:border-slate-800 py-12 px-6">
+        <footer className="bg-white dark:bg-background-dark border-t border-border-light dark:border-white/10 py-16 px-6 relative z-10">
             <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
                     {/* Brand */}
                     <div className="col-span-2 lg:col-span-1">
                         <Link href="/" className="flex items-center mb-6">
                             <Logo className="h-60 w-auto dark:hidden" variant="dark" />
                             <Logo className="h-60 w-auto hidden dark:block" variant="white" />
                         </Link>
-                        <p className="text-text-muted text-sm leading-relaxed">
+                        <p className="text-text-muted dark:text-white/60 text-sm font-medium leading-relaxed">
                             Connecting businesses with the world&apos;s most talented freelancers to get things done.
                         </p>
-                        <div className="flex gap-3 mt-6">
+                        <div className="flex gap-4 mt-8">
                             {(['twitter', 'linkedin', 'instagram', 'github'] as const).map(social => {
                                 const urls: Record<string, string> = {
                                     twitter: 'https://twitter.com/gigligo',
@@ -63,7 +63,7 @@ export function Footer() {
                                         href={urls[social]}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-9 h-9 rounded-full border border-border-light dark:border-slate-700 flex items-center justify-center text-text-muted/80 hover:border-primary hover:text-primary transition-all duration-300"
+                                        className="w-10 h-10 rounded-full border border-border-light dark:border-white/10 flex items-center justify-center text-text-muted/80 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 hover:border-primary hover:text-primary dark:hover:text-primary transition-all duration-300"
                                         aria-label={social}
                                     >
                                         <SocialIcon name={social} />
@@ -74,9 +74,9 @@ export function Footer() {
                     </div>
 
                     {/* Categories */}
-                    <div className="flex flex-col gap-4">
-                        <h4 className="font-bold text-text-main dark:text-slate-100">Categories</h4>
-                        <ul className="flex flex-col gap-2 text-sm text-text-muted dark:text-text-muted/80">
+                    <div className="flex flex-col gap-5">
+                        <h4 className="font-bold text-lg text-text-main dark:text-white">Categories</h4>
+                        <ul className="flex flex-col gap-3 text-sm font-medium text-text-muted dark:text-white/60">
                             <li><Link href="/search?category=Design" className="hover:text-primary transition-colors">Graphics &amp; Design</Link></li>
                             <li><Link href="/search?category=Marketing" className="hover:text-primary transition-colors">Digital Marketing</Link></li>
                             <li><Link href="/search?category=Writing" className="hover:text-primary transition-colors">Writing &amp; Translation</Link></li>
@@ -85,9 +85,9 @@ export function Footer() {
                     </div>
 
                     {/* About */}
-                    <div className="flex flex-col gap-4">
-                        <h4 className="font-bold text-text-main dark:text-slate-100">About</h4>
-                        <ul className="flex flex-col gap-2 text-sm text-text-muted dark:text-text-muted/80">
+                    <div className="flex flex-col gap-5">
+                        <h4 className="font-bold text-lg text-text-main dark:text-white">About</h4>
+                        <ul className="flex flex-col gap-3 text-sm font-medium text-text-muted dark:text-white/60">
                             <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
                             <li><Link href="/blog" className="hover:text-primary transition-colors">Press &amp; News</Link></li>
                             <li><Link href="/referral" className="hover:text-primary transition-colors">Partnerships</Link></li>
@@ -97,9 +97,9 @@ export function Footer() {
                     </div>
 
                     {/* Support */}
-                    <div className="flex flex-col gap-4">
-                        <h4 className="font-bold text-text-main dark:text-slate-100">Support</h4>
-                        <ul className="flex flex-col gap-2 text-sm text-text-muted dark:text-text-muted/80">
+                    <div className="flex flex-col gap-5">
+                        <h4 className="font-bold text-lg text-text-main dark:text-white">Support</h4>
+                        <ul className="flex flex-col gap-3 text-sm font-medium text-text-muted dark:text-white/60">
                             <li><Link href="/help" className="hover:text-primary transition-colors">Help Center</Link></li>
                             <li><Link href="/faq" className="hover:text-primary transition-colors">Trust &amp; Safety</Link></li>
                             <li><Link href="/register?role=SELLER" className="hover:text-primary transition-colors">Selling on GIGLIGO</Link></li>
@@ -109,9 +109,9 @@ export function Footer() {
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-border-light/50 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-text-muted/80 text-xs">
+                <div className="pt-8 border-t border-border-light/50 dark:border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-text-muted dark:text-white/60 text-sm font-medium">
                     <p>&copy; GIGLIGO International Ltd. {new Date().getFullYear()}</p>
-                    <div className="flex gap-6">
+                    <div className="flex gap-8">
                         <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">share</span>
                         <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">language</span>
                         <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">currency_exchange</span>
