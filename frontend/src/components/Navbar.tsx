@@ -79,8 +79,8 @@ export function Navbar() {
                 <div className="max-w-7xl mx-auto px-6 md:px-10 h-full flex items-center justify-between">
                     <div className="flex items-center gap-8">
                         <Link href="/" className="flex items-center">
-                            <Logo className="h-14 w-auto dark:hidden" variant="dark" />
-                            <Logo className="h-14 w-auto hidden dark:block" variant="white" />
+                            <Logo className="h-24 w-auto dark:hidden" variant="dark" />
+                            <Logo className="h-24 w-auto hidden dark:block" variant="white" />
                         </Link>
                         <nav className="hidden md:flex items-center gap-6">
                             <Link href="/search" className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors">Explore</Link>
@@ -166,8 +166,8 @@ export function Navbar() {
                 <div className="fixed inset-0 z-60 bg-white dark:bg-background-dark flex flex-col p-8 md:hidden">
                     <div className="flex justify-between items-center mb-10">
                         <div className="flex items-center">
-                            <Logo className="h-10 w-auto dark:hidden" variant="dark" />
-                            <Logo className="h-10 w-auto hidden dark:block" variant="white" />
+                            <Logo className="h-16 w-auto dark:hidden" variant="dark" />
+                            <Logo className="h-16 w-auto hidden dark:block" variant="white" />
                         </div>
                         <button onClick={() => setMenuOpen(false)} className="text-text-main dark:text-slate-100"><X size={28} /></button>
                     </div>
