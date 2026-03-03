@@ -34,7 +34,7 @@ export default function ContactPage() {
                             <ContactInfo icon={<Clock className="w-5 h-5" />} label="Support" value="Mon–Sat, 9:00 AM – 6:00 PM PKT" />
                         </div>
 
-                        <div className="mt-16 p-8 bg-[#F5F5F5] rounded-[32px] border border-[#212121]/5">
+                        <div className="mt-16 p-8 bg-background-light rounded-[32px] border border-[#212121]/5">
                             <h3 className="font-bold text-[#212121] mb-4 text-sm uppercase tracking-widest opacity-60">Direct Channels</h3>
                             <div className="space-y-4 text-sm font-normal">
                                 <p className="text-[#424242]/60 flex items-center gap-3">
@@ -59,7 +59,7 @@ export default function ContactPage() {
                                 </div>
                                 <h2 className="text-2xl font-bold text-[#212121] mb-3">Message Sent</h2>
                                 <p className="text-[#424242]/60 font-normal max-w-xs mx-auto mb-10">We&apos;ll get back to you within 24 hours.</p>
-                                <button onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }} className="px-8 py-4 bg-[#F5F5F5] text-[#212121] rounded-xl text-sm font-bold hover:bg-[#212121] hover:text-white transition-all">
+                                <button onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }} className="px-8 py-4 bg-background-light text-[#212121] rounded-xl text-sm font-bold hover:bg-[#212121] hover:text-white transition-all">
                                     Send Another
                                 </button>
                             </div>
@@ -74,7 +74,7 @@ export default function ContactPage() {
                                             type="text" required
                                             value={formData.name}
                                             onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                            className="w-full px-5 py-3.5 bg-[#F5F5F5] border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold placeholder:text-[#424242]/20 shadow-sm"
+                                            className="w-full px-5 py-3.5 bg-background-light border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold placeholder:text-[#424242]/20 shadow-sm"
                                             placeholder="Your name"
                                         />
                                     </div>
@@ -85,7 +85,7 @@ export default function ContactPage() {
                                             type="email" required
                                             value={formData.email}
                                             onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                            className="w-full px-5 py-3.5 bg-[#F5F5F5] border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold placeholder:text-[#424242]/20 shadow-sm"
+                                            className="w-full px-5 py-3.5 bg-background-light border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold placeholder:text-[#424242]/20 shadow-sm"
                                             placeholder="you@email.com"
                                         />
                                     </div>
@@ -97,7 +97,7 @@ export default function ContactPage() {
                                         value={formData.subject}
                                         onChange={e => setFormData({ ...formData, subject: e.target.value })}
                                         required
-                                        className="w-full px-5 py-3.5 bg-[#F5F5F5] border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold shadow-sm"
+                                        className="w-full px-5 py-3.5 bg-background-light border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold shadow-sm"
                                     >
                                         <option value="">Select a topic</option>
                                         <option value="general">General Inquiry</option>
@@ -115,7 +115,7 @@ export default function ContactPage() {
                                         required rows={4}
                                         value={formData.message}
                                         onChange={e => setFormData({ ...formData, message: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-[#F5F5F5] border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold placeholder:text-[#424242]/20 shadow-sm resize-none"
+                                        className="w-full px-5 py-3.5 bg-background-light border border-transparent rounded-xl text-[#212121] text-sm focus:outline-none focus:bg-white focus:border-[#DAA520]/20 transition-all font-bold placeholder:text-[#424242]/20 shadow-sm resize-none"
                                         placeholder="Tell us how we can help..."
                                     />
                                 </div>
