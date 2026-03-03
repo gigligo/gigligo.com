@@ -43,8 +43,8 @@ export function Footer() {
                     {/* Brand */}
                     <div className="col-span-2 lg:col-span-1">
                         <Link href="/" className="flex items-center mb-6">
-                            <Logo className="h-32 w-auto dark:hidden" variant="dark" />
-                            <Logo className="h-32 w-auto hidden dark:block" variant="white" />
+                            <Logo className="h-44 w-auto dark:hidden" variant="dark" />
+                            <Logo className="h-44 w-auto hidden dark:block" variant="white" />
                         </Link>
                         <p className="text-text-muted text-sm leading-relaxed">
                             Connecting businesses with the world&apos;s most talented freelancers to get things done.
