@@ -79,8 +79,8 @@ export function Navbar() {
                 <div className="max-w-7xl mx-auto px-6 md:px-10 h-full flex items-center justify-between">
                     <div className="flex items-center gap-8">
                         <Link href="/" className="flex items-center">
-                            <Logo className="h-24 w-auto dark:hidden" variant="dark" />
-                            <Logo className="h-24 w-auto hidden dark:block" variant="white" />
+                            <Logo className="h-28 w-auto dark:hidden" variant="dark" />
+                            <Logo className="h-28 w-auto hidden dark:block" variant="white" />
                         </Link>
                         <nav className="hidden md:flex items-center gap-6">
                             <Link href="/search" className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors">Explore</Link>
