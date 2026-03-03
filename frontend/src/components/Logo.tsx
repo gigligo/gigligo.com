@@ -14,7 +14,7 @@ export function Logo({
             alt="GIGLIGO"
             width={340}
             height={90}
-            className={className}
+            className={`${className} w-auto`}
             priority
         />
     );
