@@ -1,11 +1,4 @@
-<svg width="64" height="64" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="gLG" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-      <stop stopColor="#FE7743" />
-      <stop offset="1" stopColor="#273F4F" />
-    </linearGradient>
-  </defs>
-  <path d="M26.5 9 A12 12 0 1 0 30 18" stroke="url(#gLG)" strokeWidth="3.5" strokeLinecap="round" />
-  <path d="M19 18 H30" stroke="url(#gLG)" strokeWidth="3.5" strokeLinecap="round" />
-  <circle cx="19" cy="18" r="2" fill="#FE7743" />
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="14" fill="#212121"/>
+  <text x="32" y="47" text-anchor="middle" font-family="'Playfair Display', 'Georgia', serif" font-weight="900" font-size="36" fill="#FFF200" letter-spacing="-1">GO</text>
 </svg>

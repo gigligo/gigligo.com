@@ -78,11 +78,9 @@ export function Navbar() {
             >
                 <div className="max-w-7xl mx-auto px-6 md:px-10 h-full flex items-center justify-between">
                     <div className="flex items-center gap-8">
-                        <Link href="/" className="flex items-center gap-3">
-                            <div className="size-8 bg-primary rounded flex items-center justify-center">
-                                <span className="material-symbols-outlined text-text-main font-bold text-lg">token</span>
-                            </div>
-                            <h2 className="text-xl font-black leading-tight tracking-tight uppercase text-text-main dark:text-slate-100">GIGLIGO</h2>
+                        <Link href="/" className="flex items-center">
+                            <Logo className="h-7 dark:hidden" variant="dark" />
+                            <Logo className="h-7 hidden dark:block" variant="white" />
                         </Link>
                         <nav className="hidden md:flex items-center gap-6">
                             <Link href="/search" className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors">Explore</Link>
@@ -167,11 +165,9 @@ export function Navbar() {
             {menuOpen && (
                 <div className="fixed inset-0 z-60 bg-white dark:bg-background-dark flex flex-col p-8 md:hidden">
                     <div className="flex justify-between items-center mb-10">
-                        <div className="flex items-center gap-3">
-                            <div className="size-7 bg-primary rounded flex items-center justify-center">
-                                <span className="material-symbols-outlined text-text-main font-bold text-sm">token</span>
-                            </div>
-                            <span className="text-lg font-black uppercase text-text-main dark:text-slate-100">GIGLIGO</span>
+                        <div className="flex items-center">
+                            <Logo className="h-6 dark:hidden" variant="dark" />
+                            <Logo className="h-6 hidden dark:block" variant="white" />
                         </div>
                         <button onClick={() => setMenuOpen(false)} className="text-text-main dark:text-slate-100"><X size={28} /></button>
                     </div>

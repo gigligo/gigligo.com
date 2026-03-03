@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Logo } from '@/components/Logo';
 
 function SocialIcon({ name }: { name: string }) {
     switch (name) {
@@ -41,11 +42,9 @@ export function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-12">
                     {/* Brand */}
                     <div className="col-span-2 lg:col-span-1">
-                        <Link href="/" className="flex items-center gap-2 text-text-main dark:text-slate-100 mb-6">
-                            <div className="size-6 bg-primary rounded flex items-center justify-center">
-                                <span className="material-symbols-outlined text-text-main text-xs font-bold">token</span>
-                            </div>
-                            <h2 className="text-base font-black uppercase tracking-tight">GIGLIGO</h2>
+                        <Link href="/" className="flex items-center mb-6">
+                            <Logo className="h-5 dark:hidden" variant="dark" />
+                            <Logo className="h-5 hidden dark:block" variant="white" />
                         </Link>
                         <p className="text-text-muted text-sm leading-relaxed">
                             Connecting businesses with the world&apos;s most talented freelancers to get things done.
