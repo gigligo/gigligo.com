@@ -3,6 +3,15 @@
 import { useState, useEffect, useRef, Suspense, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+
+import { chatApi } from '@/lib/api';
+import { format } from 'date-fns';
+import Link from 'next/link';
+import { Loader2, Zap, Bolt, Search, Plus, Settings, LayoutDashboard, MessageSquare, ClipboardList, Building2, Wallet as WalletIcon, Gavel, UserSearch } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { EmptyState, PageTransition } from '@/components/ui/TacticalUI';
+import { TacticalSpinner } from '@/components/ui/TacticalSpinner';
+
 type Socket = any;
 const io = (url: string, options: any) => {
     return {
@@ -11,13 +20,6 @@ const io = (url: string, options: any) => {
         disconnect: () => { }
     } as Socket;
 };
-import { chatApi } from '@/lib/api';
-import { format } from 'date-fns';
-import Link from 'next/link';
-import { Loader2, Zap, Bolt, Search, Plus, Settings, LayoutDashboard, MessageSquare, ClipboardList, Building2, Wallet as WalletIcon, Gavel, UserSearch } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { EmptyState, PageTransition } from '@/components/ui/TacticalUI';
-import { TacticalSpinner } from '@/components/ui/TacticalSpinner';
 
 function InboxContent() {
     const { data: session, status } = useSession();
