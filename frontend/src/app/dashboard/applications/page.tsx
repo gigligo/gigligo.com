@@ -20,9 +20,12 @@ import {
     FileText,
     History,
     MoreVertical,
-    CheckCircle2
+    CheckCircle2,
+    ArrowLeft
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { EmptyState, PageTransition } from '@/components/ui/TacticalUI';
+import { TacticalSpinner } from '@/components/ui/TacticalSpinner';
 
 function ApplicationsContent() {
     const { data: session, status } = useSession();
@@ -91,85 +94,88 @@ function ApplicationsContent() {
     if (status === 'loading' || loading) {
         return (
             <div className="min-h-screen bg-background-dark flex items-center justify-center">
-                <Loader2 />
+                <TacticalSpinner label="Synchronizing Tactical Data..." />
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
-            <Navbar />
+        <PageTransition>
+            <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
+                <Navbar />
 
-            <main className="flex-1" style={{ paddingTop: 72 }}>
-                {/* Tactical Header */}
-                <div className="relative border-b border-white/5 bg-black/40 overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,124,255,0.05)_0%,transparent_50%)] pointer-events-none" />
+                <main className="flex-1" style={{ paddingTop: 72 }}>
+                    {/* Tactical Header */}
+                    <div className="relative border-b border-white/5 bg-black/40 overflow-hidden">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,124,255,0.05)_0%,transparent_50%)] pointer-events-none" />
 
-                    <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative z-10">
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        >
-                            <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12">
-                                <span className="material-symbols-outlined text-xl group-hover:-translate-x-3 transition-transform">arrow_back</span> Dashboard
-                            </Link>
+                        <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative z-10">
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12 italic">
+                                    <ArrowLeft className="w-5 h-5 group-hover:-translate-x-3 transition-transform" /> Dashboard
+                                </Link>
 
-                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
-                                <div className="space-y-6">
-                                    <h1 className="text-5xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
-                                        {isEmployer ? "Candidate " : "Mission "} <span className="text-primary not-italic">Protocols.</span>
-                                    </h1>
-                                    <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
-                                        {isEmployer
-                                            ? `Orchestrate high-stakes talent acquisition for "${jobDetails?.title || 'Active Project'}" with precision.`
-                                            : "Track your active deployments and authorization status across the global network."}
-                                    </p>
-                                </div>
+                                <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                                    <div className="space-y-6">
+                                        <h1 className="text-5xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
+                                            {isEmployer ? "Candidate " : "Mission "} <span className="text-primary not-italic">Protocols.</span>
+                                        </h1>
+                                        <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
+                                            {isEmployer
+                                                ? `Orchestrate high-stakes talent acquisition for "${jobDetails?.title || 'Active Project'}" with precision.`
+                                                : "Track your active deployments and authorization status across the global network."}
+                                        </p>
+                                    </div>
 
-                                <div className="flex gap-6">
-                                    <div className="bg-white/5 border border-white/10 rounded-3xl px-10 py-6 flex flex-col gap-2 min-w-[140px] shadow-2xl backdrop-blur-3xl">
-                                        <Clock className="text-primary" size={24} />
-                                        <div>
-                                            <p className="text-4xl font-black text-white italic tracking-tighter">{applications.length}</p>
-                                            <p className="text-[9px] text-white/20 uppercase tracking-[0.4em] font-black mt-1">Pending Sync</p>
+                                    <div className="flex gap-6">
+                                        <div className="bg-white/5 border border-white/10 rounded-3xl px-10 py-6 flex flex-col gap-2 min-w-[140px] shadow-2xl backdrop-blur-3xl">
+                                            <Clock className="text-primary" size={24} />
+                                            <div>
+                                                <p className="text-4xl font-black text-white italic tracking-tighter">{applications.length}</p>
+                                                <p className="text-[9px] text-white/20 uppercase tracking-[0.4em] font-black mt-1">Pending Sync</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </div>
                     </div>
-                </div>
 
-                {/* Engagement Grid */}
-                <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24">
-                    {applications.length === 0 ? (
-                        <div className="text-center py-48 bg-white/2 border border-white/5 rounded-[4rem] flex flex-col items-center justify-center">
-                            <span className="material-symbols-outlined text-9xl text-white/5 mb-8 font-thin">grid_view</span>
-                            <h3 className="text-2xl font-black text-white/20 uppercase tracking-[0.5em] italic text-center">No active protocols detected.</h3>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-10">
-                            <AnimatePresence>
-                                {applications.map((app: any, idx) => (
-                                    <ApplicationCard
-                                        key={app.id}
-                                        app={app}
-                                        isEmployer={isEmployer}
-                                        token={token}
-                                        index={idx}
-                                        onAction={handleAction}
-                                        actionLoading={actionLoading}
-                                        session={session}
-                                        router={router}
-                                    />
-                                ))}
-                            </AnimatePresence>
-                        </div>
-                    )}
-                </div>
-            </main>
-        </div>
+                    {/* Engagement Grid */}
+                    <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-24">
+                        {applications.length === 0 ? (
+                            <EmptyState
+                                icon="grid_view"
+                                title="No Protocols Detected"
+                                description="Your mission registry is currently offline. Synchronize with active mandates to initiate deployment."
+                            />
+                        ) : (
+                            <div className="grid grid-cols-1 gap-10">
+                                <AnimatePresence>
+                                    {applications.map((app: any, idx) => (
+                                        <ApplicationCard
+                                            key={app.id}
+                                            app={app}
+                                            isEmployer={isEmployer}
+                                            token={token}
+                                            index={idx}
+                                            onAction={handleAction}
+                                            actionLoading={actionLoading}
+                                            session={session}
+                                            router={router}
+                                        />
+                                    ))}
+                                </AnimatePresence>
+                            </div>
+                        )}
+                    </div>
+                </main>
+            </div>
+        </PageTransition>
     );
 }
 
@@ -362,18 +368,9 @@ function StatusBadge({ status }: { status: string }) {
     );
 }
 
-function Loader2() {
-    return (
-        <div className="flex flex-col items-center gap-6">
-            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin shadow-2xl shadow-primary/20" />
-            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] italic animate-pulse">Synchronizing Tactical Data...</p>
-        </div>
-    );
-}
-
 export default function ApplicationsPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-background-dark flex items-center justify-center"><Loader2 /></div>}>
+        <Suspense fallback={<div className="min-h-screen bg-background-dark flex items-center justify-center"><TacticalSpinner label="Synchronizing Tactical Data..." /></div>}>
             <ApplicationsContent />
         </Suspense>
     );

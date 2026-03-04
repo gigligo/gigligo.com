@@ -70,11 +70,11 @@ export function Navbar() {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled
-                    ? 'bg-white dark:bg-background-dark border-border-light dark:border-slate-800 py-3 shadow-sm'
-                    : 'bg-white dark:bg-background-dark border-border-light dark:border-slate-800 py-3'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled
+                    ? 'bg-white/80 dark:bg-background-dark/80 backdrop-blur-xl border-border-light dark:border-white/10 py-3 shadow-lg shadow-black/5'
+                    : 'bg-white dark:bg-background-dark border-border-light dark:border-white/5 py-4'
                     }`}
-                style={{ height: 72 }}
+                style={{ height: scrolled ? 64 : 80 }}
             >
                 <div className="max-w-7xl mx-auto px-6 md:px-10 h-full flex items-center justify-between">
                     <div className="flex items-center gap-8">
@@ -147,11 +147,11 @@ export function Navbar() {
                             </>
                         ) : (
                             <>
-                                <Link href="/login" className="text-text-main dark:text-white/80 text-sm font-bold hover:text-primary transition-colors border border-border-light/50 px-4 py-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5">
+                                <Link href="/login" className="text-text-main dark:text-white/80 text-[14px] font-bold hover:text-primary transition-all px-4">
                                     Sign In
                                 </Link>
-                                <Link href="/register" className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-2xl h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:bg-primary-dark shadow-sm">
-                                    Join
+                                <Link href="/register" className="flex items-center justify-center rounded-xl h-11 px-6 bg-primary text-white text-[14px] font-bold transition-all hover:scale-105 shadow-xl shadow-primary/20 active:scale-95">
+                                    Get Started
                                 </Link>
                             </>
                         )}

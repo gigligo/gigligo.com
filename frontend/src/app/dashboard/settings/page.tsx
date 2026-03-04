@@ -37,34 +37,34 @@ import { NotificationsView } from './components/NotificationsView';
 
 const SETTINGS_CATEGORIES = [
     {
-        name: 'Identity & Presence',
+        name: 'Profile & Account',
         items: [
-            { id: 'profile', label: 'Public Dossier', icon: User, desc: 'Manage your network visibility' },
-            { id: 'profile_settings', label: 'Core Parameters', icon: Settings, desc: 'Neural localization & vision' },
-            { id: 'contact', label: 'Comm Channels', icon: Mail, desc: 'Primary signal endpoints' },
-            { id: 'verification', label: 'Credential Auth', icon: ShieldCheck, desc: 'Biometric clearance status' },
+            { id: 'profile', label: 'Public Profile', icon: User, desc: 'Manage your visibility' },
+            { id: 'profile_settings', label: 'System Settings', icon: Settings, desc: 'Language & preferences' },
+            { id: 'contact', label: 'Contact Details', icon: Mail, desc: 'Email & phone endpoints' },
+            { id: 'verification', label: 'Identity Verification', icon: ShieldCheck, desc: 'Verification status' },
         ]
     },
     {
-        name: 'Security Shield',
+        name: 'Security & Privacy',
         items: [
-            { id: 'security', label: 'Encryption Protocol', icon: Lock, desc: 'Access keys & rotation' },
-            { id: 'connected_services', label: 'Grid Nodes', icon: Share2, desc: 'External relay synchronization' },
+            { id: 'security', label: 'Password & Security', icon: Lock, desc: 'Access keys & 2FA' },
+            { id: 'connected_services', label: 'Connected Services', icon: Share2, desc: 'External account sync' },
         ]
     },
     {
-        name: 'Financial Treasury',
+        name: 'Finance & Billing',
         items: [
-            { id: 'billing', label: 'Capital Cycles', icon: CreditCard, desc: 'Treasury conduits & influx' },
-            { id: 'withdrawals', label: 'Extraction', icon: ArrowDownToLine, desc: 'Liquidity outflow protocols' },
-            { id: 'membership', label: 'Rank Status', icon: Zap, desc: 'Elite tier mandates' },
-            { id: 'teams', label: 'Unit Management', icon: Users, desc: 'Command hierarchy allocation' },
+            { id: 'billing', label: 'Billing & Payments', icon: CreditCard, desc: 'Payment methods & history' },
+            { id: 'withdrawals', label: 'Withdrawals', icon: ArrowDownToLine, desc: 'Payout protocols' },
+            { id: 'membership', label: 'Membership Plan', icon: Zap, desc: 'Manage your tier' },
+            { id: 'teams', label: 'Team Management', icon: Users, desc: 'Unit roles & access' },
         ]
     },
     {
-        name: 'Signal Preferences',
+        name: 'Notifications',
         items: [
-            { id: 'notifications', label: 'Signal Protocols', icon: Bell, desc: 'Alert frequency calibration' },
+            { id: 'notifications', label: 'Notification Settings', icon: Bell, desc: 'Alert frequency calibration' },
         ]
     }
 ];
@@ -117,48 +117,45 @@ export default function SettingsPage() {
             <Navbar />
 
             <main className="flex-1" style={{ paddingTop: 72 }}>
-                {/* Cinematic Tactical Header */}
-                <div className="relative border-b border-white/5 bg-black/60 overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,124,255,0.08)_0%,transparent_50%)] pointer-events-none" />
-                    <div className="absolute top-0 right-0 w-200 h-200 bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                {/* Premium Dashboard Header */}
+                <div className="relative border-b border-white/5 bg-black/40 overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,124,255,0.05)_0%,transparent_50%)] pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-160 h-160 bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
-                    <div className="max-w-[1400px] mx-auto px-10 md:px-20 py-24 md:py-32 relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-12">
+                    <div className="max-w-[1400px] mx-auto px-10 md:px-20 py-16 md:py-20 relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-10">
                         <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                            className="space-y-6"
+                            className="space-y-4"
                         >
-                            <div className="flex items-center gap-6">
-                                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary border border-primary/20 shadow-3xl shadow-primary/20">
-                                    <Cpu size={32} strokeWidth={1} />
-                                </div>
-                                <h1 className="text-5xl md:text-[5rem] font-black text-white tracking-tighter uppercase italic leading-none">
-                                    Operative <span className="text-primary not-italic">Parameters.</span>
+                            <div className="flex flex-col gap-3">
+                                <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-none">
+                                    Account <span className="text-primary">Settings</span>
                                 </h1>
+                                <p className="text-base md:text-lg font-medium text-white/40 max-w-2xl leading-relaxed">
+                                    Manage your profile details, security preferences, and financial configurations.
+                                </p>
                             </div>
-                            <p className="text-xl font-bold italic text-white/40 leading-tight border-l-2 border-primary/20 pl-8 max-w-2xl">
-                                Calibrate your strategic presence, encryption protocols, and financial mandates for elite performance on the network.
-                            </p>
                         </motion.div>
 
                         <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="flex items-center gap-4 font-mono"
+                            className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-xl"
                         >
                             <div className="text-right">
-                                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">SYSTEM CORE STATUS</p>
-                                <p className="text-2xl font-black italic tracking-tighter text-emerald-500 flex items-center gap-3">
-                                    <Activity size={20} className="animate-pulse" />
-                                    SYNCED_88%
+                                <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest mb-1">Status</p>
+                                <p className="text-lg font-bold tracking-tight text-emerald-500 flex items-center gap-2">
+                                    <Activity size={14} className="animate-pulse" />
+                                    Active
                                 </p>
                             </div>
-                            <div className="w-px h-12 bg-white/10 mx-6" />
+                            <div className="w-px h-8 bg-white/10 mx-2" />
                             <div className="text-right">
-                                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">ENCRYPTION KEY</p>
-                                <p className="text-2xl font-black italic tracking-tighter text-white/60">GGLG-PRM-24</p>
+                                <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest mb-1">Account Tier</p>
+                                <p className="text-lg font-bold tracking-tight text-white/60">Professional</p>
                             </div>
                         </motion.div>
                     </div>
@@ -167,17 +164,17 @@ export default function SettingsPage() {
                 <div className="max-w-[1400px] mx-auto px-10 md:px-20 py-24">
                     <div className="flex flex-col lg:flex-row gap-20 items-start">
 
-                        {/* Tactical Navigation Sidebar */}
-                        <aside className="w-full lg:w-[400px] shrink-0 space-y-16 sticky top-32">
-                            {/* System Search */}
+                        {/* Settings Navigation Sidebar */}
+                        <aside className="w-full lg:w-[320px] shrink-0 space-y-12 sticky top-32">
+                            {/* Search */}
                             <div className="relative group">
-                                <Search size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors" />
+                                <Search size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors" />
                                 <input
                                     type="text"
-                                    placeholder="SEARCH PARAMETERS..."
+                                    placeholder="Search settings..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full h-16 bg-black/40 border border-white/5 rounded-2xl pl-16 pr-6 text-[10px] font-black uppercase tracking-[0.4em] italic text-white placeholder:text-white/10 focus:outline-none focus:border-primary/50 transition-all"
+                                    className="w-full h-12 bg-black/40 border border-white/5 rounded-xl pl-12 pr-6 text-sm font-medium text-white placeholder:text-white/20 focus:outline-none focus:border-primary/40 transition-all"
                                 />
                             </div>
 
@@ -189,30 +186,30 @@ export default function SettingsPage() {
                                     transition={{ delay: idx * 0.1 }}
                                     className="space-y-6"
                                 >
-                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-[0.5em] px-4 italic border-l-2 border-primary/20 ml-4 py-1">
+                                    <h3 className="text-[10px] font-bold text-primary uppercase tracking-widest px-4 border-l-2 border-primary/20 ml-2 py-0.5">
                                         {category.name}
                                     </h3>
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {category.items.map(tab => {
                                             const isActive = activeTab === tab.id;
                                             return (
                                                 <button
                                                     key={tab.id}
                                                     onClick={() => setActiveTab(tab.id)}
-                                                    className={`w-full text-left p-6 rounded-4xl flex items-center gap-6 transition-all duration-700 relative group overflow-hidden border-2 ${isActive
-                                                        ? 'bg-primary/5 border-primary shadow-3xl shadow-primary/10'
-                                                        : 'bg-white/1 border-white/5 text-white/20 hover:bg-white/3 hover:border-white/20'
+                                                    className={`w-full text-left p-4 rounded-xl flex items-center gap-4 transition-all duration-300 relative group overflow-hidden border ${isActive
+                                                        ? 'bg-primary/10 border-primary/30 text-white shadow-lg shadow-black/20'
+                                                        : 'bg-transparent border-transparent text-white/40 hover:bg-white/5 hover:text-white'
                                                         }`}
                                                 >
-                                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-700 ${isActive ? 'bg-primary text-white' : 'bg-black border border-white/5 group-hover:text-primary group-hover:border-primary/20'}`}>
-                                                        <tab.icon size={20} strokeWidth={1.5} />
+                                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'bg-white/5 border border-white/5 text-white/20 group-hover:text-primary group-hover:border-primary/20'}`}>
+                                                        <tab.icon size={16} strokeWidth={2} />
                                                     </div>
-                                                    <div className="flex-1 space-y-1">
-                                                        <span className={`text-[10px] font-black uppercase tracking-[0.3em] block transition-colors duration-700 italic ${isActive ? 'text-white' : 'group-hover:text-white'}`}>{tab.label}</span>
-                                                        <span className={`text-[9px] font-bold italic uppercase tracking-widest block transition-colors duration-700 ${isActive ? 'text-white/40' : 'text-white/10'}`}>{tab.desc}</span>
+                                                    <div className="flex-1">
+                                                        <span className={`text-[13px] font-bold block transition-colors duration-300 ${isActive ? 'text-white' : 'group-hover:text-white'}`}>{tab.label}</span>
+                                                        <span className={`text-[11px] font-medium block transition-colors duration-300 ${isActive ? 'text-white/40' : 'text-white/20'}`}>{tab.desc}</span>
                                                     </div>
                                                     {isActive && (
-                                                        <ChevronRight size={16} className="text-white/40" />
+                                                        <motion.div layoutId="active-pill" className="absolute right-0 top-0 bottom-0 w-1 bg-primary" />
                                                     )}
                                                 </button>
                                             );
@@ -221,12 +218,15 @@ export default function SettingsPage() {
                                 </motion.div>
                             ))}
 
-                            <div className="p-8 rounded-[3rem] bg-linear-to-br from-primary/10 to-transparent border border-primary/20 space-y-4">
-                                <h4 className="text-[10px] font-black text-white italic uppercase tracking-[0.4em]">SYSTEM UPTIME</h4>
-                                <div className="flex items-end gap-3 text-4xl font-black font-mono italic text-white/40">
-                                    999<span className="text-sm pb-1">.82 DAYS</span>
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/5 space-y-4">
+                                <h4 className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Platform Uptime</h4>
+                                <div className="flex items-end gap-2 text-3xl font-bold text-white/40">
+                                    999<span className="text-sm pb-1 font-medium">.82 DAYS</span>
                                 </div>
-                                <p className="text-[9px] font-black text-primary uppercase tracking-[0.3em] italic">STABLE SIGNAL RELAY</p>
+                                <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                    Operational
+                                </p>
                             </div>
                         </aside>
 
@@ -239,10 +239,12 @@ export default function SettingsPage() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
                                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                    className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-20 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden"
+                                    className="bg-white/2 border border-white/5 rounded-3xl backdrop-blur-3xl relative overflow-hidden"
                                 >
-                                    <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-                                    {renderActiveView()}
+                                    <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+                                    <div className="p-1 md:p-1">
+                                        {renderActiveView()}
+                                    </div>
                                 </motion.div>
                             </AnimatePresence>
                         </div>

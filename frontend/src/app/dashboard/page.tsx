@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { creditApi, walletApi, applicationApi, jobApi, orderApi, userStateApi } from '@/lib/api';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { EmptyState, TacticalSkeleton, PageTransition } from '@/components/ui/TacticalUI';
+import { Briefcase, Rocket, Bell, Search, Plus, Settings, Bolt, LayoutDashboard, MessageSquare, ClipboardList, Building2, Wallet as WalletIcon, Gavel, UserSearch } from 'lucide-react';
 
 export default function DashboardPage() {
     const { data: session, status, update: updateSession } = useSession();
@@ -92,264 +94,275 @@ export default function DashboardPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="bg-white/5 border border-white/10 backdrop-blur-3xl rounded-[4rem] p-16 max-w-2xl w-full text-center shadow-2xl"
                 >
-                    <div className="w-32 h-32 bg-red-500/10 text-red-500 rounded-4xl flex items-center justify-center mx-auto mb-10 border border-red-500/20">
-                        <span className="material-symbols-outlined text-6xl font-light">verified_user</span>
+                    <div className="w-24 h-24 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto mb-8 border border-primary/20 shadow-xl">
+                        <span className="material-symbols-outlined text-5xl font-light">verified_user</span>
                     </div>
-                    <h2 className="text-4xl font-black text-white mb-6 uppercase tracking-tighter italic">Strategic <span className="text-red-500 not-italic">Verification.</span></h2>
-                    <p className="text-xl text-white/40 font-bold italic mb-12 leading-tight">
-                        To maintain elite operational integrity, all tactical operatives must complete identity authentication before accessing the executive command center.
+                    <h2 className="text-3xl font-bold text-white mb-4 tracking-tight">Identity Verification Required</h2>
+                    <p className="text-base text-white/40 font-medium mb-10 px-10 leading-relaxed">
+                        To ensure platform security and compliance, please complete your identity verification before accessing the dashboard.
                     </p>
                     {kycStatus === 'UNVERIFIED' || kycStatus === 'REJECTED' ? (
-                        <div className="space-y-6">
-                            <Link href="/dashboard/kyc" className="flex items-center justify-center h-24 rounded-full bg-primary text-white font-black uppercase tracking-[0.3em] text-sm w-full shadow-2xl shadow-primary/30 hover:bg-primary-dark transition-all">
-                                Initialize Authentication Protocol
+                        <div className="space-y-4">
+                            <Link href="/dashboard/settings?tab=verification" className="flex items-center justify-center h-16 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-[11px] w-full shadow-xl shadow-primary/20 hover:bg-primary-dark transition-all">
+                                START VERIFICATION
                             </Link>
                             {kycStatus === 'REJECTED' && (
-                                <p className="text-red-500 text-[10px] font-black uppercase tracking-[0.4em]">Previous submission compromised. Clear biometric data required.</p>
+                                <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest">Verification failed. Please check your documents and try again.</p>
                             )}
                         </div>
                     ) : (
-                        <div className="space-y-6">
-                            <p className="text-primary text-[10px] font-black uppercase tracking-[0.5em] animate-pulse">Encryption analysis in progress...</p>
-                            <button disabled className="w-full h-24 bg-white/5 text-white/20 font-black uppercase tracking-[0.3em] rounded-full text-xs border border-white/10 cursor-not-allowed">
-                                Protocol Pending Approval
+                        <div className="space-y-4">
+                            <p className="text-primary text-[10px] font-bold uppercase tracking-widest animate-pulse">Verification in progress...</p>
+                            <button disabled className="w-full h-16 bg-white/5 text-white/20 font-bold uppercase tracking-widest rounded-xl text-[11px] border border-white/5 cursor-not-allowed">
+                                PENDING APPROVAL
                             </button>
                         </div>
                     )}
-                    <button onClick={() => router.push('/')} className="mt-12 text-[10px] font-black text-white/30 uppercase tracking-[0.4em] hover:text-white transition-all italic">
-                        Abort and Return to Grid
+                    <button onClick={() => router.push('/')} className="mt-10 text-[10px] font-bold text-white/20 uppercase tracking-widest hover:text-white transition-all">
+                        RETURN TO HOME
                     </button>
                 </motion.div>
-            </div>
+            </div >
         );
     }
 
     return (
-        <div className="flex h-screen w-full overflow-hidden bg-background-dark text-white font-sans antialiased selection:bg-primary/30">
-            {/* Sidebar Navigation - Tactical Wing */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-[300px] md:relative transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-all duration-700 ease-[0.16, 1, 0.3, 1] bg-black border-r border-white/5 flex flex-col justify-between shrink-0 shadow-2xl shadow-black`}>
-                <div className="p-10 flex flex-col gap-16">
-                    {/* Logo & HQ */}
-                    <Link href="/" className="flex items-center gap-5 group cursor-pointer">
-                        <div className="h-14 w-14 rounded-2xl bg-white/5 p-1 border border-white/10 group-hover:border-primary/50 transition-all duration-700">
-                            <div className="w-full h-full bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/40">
-                                <span className="material-symbols-outlined text-white text-2xl font-black">bolt</span>
+        <PageTransition>
+            <div className="flex h-screen w-full overflow-hidden bg-background-dark text-white font-sans antialiased selection:bg-primary/30">
+                {/* Sidebar Navigation - Tactical Wing */}
+                <aside className={`fixed inset-y-0 left-0 z-50 w-[300px] md:relative transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-all duration-700 ease-[0.16, 1, 0.3, 1] bg-black border-r border-white/5 flex flex-col justify-between shrink-0 shadow-2xl shadow-black`}>
+                    <div className="p-10 flex flex-col gap-16">
+                        {/* Logo */}
+                        <Link href="/" className="flex items-center gap-3 px-2">
+                            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform duration-500">
+                                <Bolt className="text-white w-5 h-5 font-bold" />
                             </div>
-                        </div>
-                        <div className="flex flex-col">
-                            <h1 className="text-xl font-black tracking-tighter text-white uppercase italic">GIGLIGO.</h1>
-                            <span className="text-[9px] uppercase tracking-[0.6em] text-primary font-black">Executive Command</span>
-                        </div>
-                    </Link>
-
-                    {/* Mission Control Nav */}
-                    <nav className="flex flex-col gap-4">
-                        <NavItem href="/dashboard" icon="dashboard" label="Overview" active />
-                        <NavItem href={isFreelancer ? "/dashboard/applications" : "/dashboard/jobs"} icon="work" label={isFreelancer ? 'Missions' : 'Objectives'} />
-                        <NavItem href="/dashboard/inbox" icon="chat" label="Frequency" />
-                        <NavItem href="/dashboard/projects" icon="assignment" label="Logistics" />
-                        <NavItem href="/dashboard/finance" icon="account_balance" label="Treasury" />
-                        <NavItem href="/dashboard/earnings" icon="payments" label="Yield" />
-                        <NavItem href="/dashboard/contracts" icon="gavel" label="Protocols" />
-                        <NavItem href="/search" icon="person_search" label="Intel Scan" />
-                    </nav>
-                </div>
-
-                <div className="p-10 flex flex-col gap-8">
-                    <Link href="/dashboard/settings" className="flex items-center gap-5 px-6 py-4 rounded-2xl text-white/30 hover:text-white hover:bg-white/5 transition-all duration-500 group">
-                        <span className="material-symbols-outlined text-2xl font-light group-hover:rotate-90 transition-transform duration-700">settings</span>
-                        <span className="text-xs font-black uppercase tracking-[0.4em]">Parameters</span>
-                    </Link>
-
-                    <Link href={isFreelancer ? "/jobs" : "/jobs/post"} className="w-full">
-                        <motion.button
-                            whileHover={{ scale: 1.02, backgroundColor: '#007CFF', color: 'white' }}
-                            whileTap={{ scale: 0.98 }}
-                            className="w-full h-16 rounded-full border border-primary/40 text-primary text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-500 flex items-center justify-center gap-3"
-                        >
-                            <span className="material-symbols-outlined text-lg">{isFreelancer ? 'search' : 'add'}</span>
-                            {isFreelancer ? 'Scan Grid' : 'Deploy Objective'}
-                        </motion.button>
-                    </Link>
-                </div>
-            </aside>
-
-            {/* Main Command Display */}
-            <main className="flex-1 h-full overflow-y-auto bg-background-dark relative">
-                {/* Background Atmosphere */}
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[200px] pointer-events-none opacity-50" />
-
-                <div className="max-w-7xl mx-auto px-12 py-16 flex flex-col gap-20 relative z-10">
-                    {/* Command Header */}
-                    <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
-                        <div className="flex items-center gap-8">
-                            <button
-                                className="md:hidden w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white/40"
-                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            >
-                                <span className="material-symbols-outlined text-3xl">menu</span>
-                            </button>
-                            <div>
-                                <div className="flex items-center gap-6 mb-4">
-                                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase italic leading-none">Command <span className="text-primary not-italic">Center.</span></h2>
-                                    <span className="px-5 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-[10px] font-black tracking-[0.4em] uppercase hidden sm:inline-block">Elite Operational Status</span>
-                                </div>
-                                <p className="text-white/30 font-bold text-xl italic leading-none">Welcome back, {(session?.user as any)?.name?.split(' ')[0] || 'Operative'}. The network is stable.</p>
+                            <div className="flex flex-col">
+                                <h1 className="text-base font-bold tracking-tight text-white uppercase group-hover:text-primary transition-colors">GIGLIGO</h1>
+                                <span className="text-[8px] uppercase tracking-widest text-white/20 font-bold">DASHBOARD</span>
                             </div>
-                        </div>
+                        </Link>
 
-                        <div className="flex items-center gap-10">
-                            <div className="h-16 w-px bg-white/5 hidden lg:block" />
-                            <div className="flex items-center gap-6">
-                                <motion.button
-                                    whileHover={{ scale: 1.1 }}
-                                    className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-white/30 hover:text-white transition-all relative border border-white/5"
-                                >
-                                    <span className="absolute top-3 right-3 w-2 h-2 bg-primary rounded-full shadow-lg shadow-primary"></span>
-                                    <span className="material-symbols-outlined text-2xl font-light">notifications</span>
-                                </motion.button>
-
-                                <div className="flex items-center gap-5">
-                                    <div className="w-16 h-16 rounded-2xl bg-cover bg-center border-2 border-primary/30 p-1" style={{ backgroundImage: `url('https://api.dicebear.com/7.x/avataaars/svg?seed=${(session?.user as any)?.email}&backgroundColor=040300')` }}>
-                                        <div className="w-full h-full bg-background-dark/20 backdrop-blur-sm rounded-lg" />
-                                    </div>
-                                    <div className="hidden lg:flex flex-col">
-                                        <span className="text-[9px] text-white/30 font-black uppercase tracking-[0.4em] mb-1">Rank</span>
-                                        <span className="text-sm font-black text-white tracking-tighter uppercase">PREMIUM AGENT</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
-
-                    {/* Operational Metrics */}
-                    <section className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        <MetricCard
-                            label={isFreelancer ? 'Total Yield' : 'Total Allocation'}
-                            value={`PKR ${wallet?.balancePKR?.toLocaleString() || '0'}`}
-                            subLabel={wallet?.pendingPKR > 0 ? `PKR ${wallet.pendingPKR.toLocaleString()} in transit` : 'Settled funds'}
-                            icon="account_balance_wallet"
-                            color="primary"
-                        />
-                        <MetricCard
-                            label={isFreelancer ? 'Active Engagements' : 'Deployed Missions'}
-                            value={isFreelancer ? applications.filter(a => a.status === 'PENDING').length : myJobs.filter(j => j.status === 'OPEN').length}
-                            subLabel={`${isFreelancer ? applications.length : myJobs.length} accumulated across all cycles`}
-                            icon="rocket_launch"
-                            color="white"
-                        />
-                        <MetricCard
-                            label={isFreelancer ? 'Protocol Units' : 'Successful Hires'}
-                            value={isFreelancer ? credits : myJobs.filter(j => j.status === 'FILLED').length}
-                            subLabel={isFreelancer ? 'Executive intelligence remaining' : 'Elite talent secured'}
-                            icon={isFreelancer ? 'bolt' : 'verified'}
-                            color="primary"
-                            progress={isFreelancer ? (credits / 20) * 100 : undefined}
-                        />
-                    </section>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 pb-20">
-                        {/* Pulse - Recent Activity */}
-                        <section className="lg:col-span-2 flex flex-col gap-10">
-                            <div className="flex items-center justify-between border-b border-white/5 pb-8">
-                                <h3 className="text-3xl font-black uppercase tracking-tighter italic">Mission <span className="text-primary not-italic">Pulse.</span></h3>
-                                <Link className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] hover:text-primary transition-all" href="/dashboard/applications">Analyze All</Link>
-                            </div>
-
-                            <div className="space-y-6">
-                                {isFreelancer && applications.length > 0 ? applications.slice(0, 4).map((app: any) => (
-                                    <ActivityItem
-                                        key={app.id}
-                                        title={`Proposal: ${app.job?.title || 'Data Stream'}`}
-                                        meta={`Commander: ${app.job?.employer?.profile?.fullName || 'Anon'} • Allocation: PKR ${app.job?.budgetMin?.toLocaleString()}`}
-                                        status={app.status}
-                                        icon="database"
-                                    />
-                                )) : isEmployer && myJobs.length > 0 ? myJobs.slice(0, 4).map((job: any) => (
-                                    <ActivityItem
-                                        key={job.id}
-                                        title={`Mission: ${job.title}`}
-                                        meta={`${job._count?.applications || 0} Operatives Engaged • Range: PKR ${job.budgetMin?.toLocaleString()} - ${job.budgetMax?.toLocaleString()}`}
-                                        status={job.status}
-                                        icon="rocket"
-                                    />
-                                )) : (
-                                    <div className="py-24 text-center bg-white/5 rounded-[3rem] border border-dashed border-white/10">
-                                        <span className="material-symbols-outlined text-6xl text-white/5 font-thin mb-6">sensors</span>
-                                        <p className="text-[10px] text-white/30 font-black uppercase tracking-[0.4em]">No active signal detected.</p>
-                                    </div>
-                                )}
-                            </div>
-                        </section>
-
-                        {/* Top Intel - Recommendations */}
-                        <section className="flex flex-col gap-10">
-                            <div className="flex items-center justify-between border-b border-white/5 pb-8">
-                                <h3 className="text-3xl font-black uppercase tracking-tighter italic">{isFreelancer ? 'Top <span className="text-primary not-italic">Intel.</span>' : 'Top <span className="text-primary not-italic">Assets.</span>'}</h3>
-                                <button className="text-white/20 hover:text-white transition-all"><span className="material-symbols-outlined font-light">tune</span></button>
-                            </div>
-
-                            <div className="space-y-8">
-                                {isFreelancer ? (
-                                    recommendedJobs.length > 0 ? recommendedJobs.slice(0, 3).map((job: any) => (
-                                        <motion.div
-                                            key={job.id}
-                                            whileHover={{ y: -5 }}
-                                            className="bg-white/5 border border-white/10 p-8 rounded-4xl shadow-2xl backdrop-blur-3xl group"
-                                        >
-                                            <div className="flex justify-between items-start mb-6">
-                                                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center font-black text-white text-xs shadow-lg shadow-primary/30 uppercase">
-                                                    {job.employer?.profile?.fullName?.[0] || 'C'}
-                                                </div>
-                                                <span className="px-3 py-1 bg-primary/10 text-primary text-[8px] font-black uppercase tracking-[0.4em] rounded-full border border-primary/20">{job.matchScore}% SYNC</span>
-                                            </div>
-                                            <Link href={`/jobs/${job.id}`} className="block">
-                                                <h4 className="text-white font-black text-xl uppercase tracking-tighter mb-2 group-hover:text-primary transition-all leading-tight italic">{job.title}</h4>
-                                            </Link>
-                                            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.3em] mb-6 italic">{job.employer?.profile?.fullName || 'COMMANDER'}</p>
-                                            <div className="flex flex-wrap gap-2 mb-8">
-                                                {job.skills?.slice(0, 2).map((skill: any) => (
-                                                    <span key={skill.id} className="px-3 py-1 bg-white/5 rounded-full text-[8px] text-white/40 font-black uppercase tracking-[0.3em] border border-white/5">{skill.name}</span>
-                                                ))}
-                                            </div>
-                                            <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                                                <span className="text-white font-black text-lg tracking-tighter uppercase italic">PKR {job.budgetMax?.toLocaleString()}</span>
-                                                <span className="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
-                                            </div>
-                                        </motion.div>
-                                    )) : (
-                                        <div className="p-10 text-center bg-white/5 rounded-[3rem] border border-white/10">
-                                            <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.4em] leading-relaxed">Update tactical competencies to calibrate AI matchmaking engines.</p>
-                                        </div>
-                                    )
-                                ) : (
-                                    /* Asset Spotlight Placeholder */
-                                    <div className="bg-white/5 border border-white/10 p-10 rounded-[3.5rem] relative overflow-hidden group">
-                                        <div className="absolute top-0 left-0 w-full h-1 bg-primary/20" />
-                                        <div className="flex items-center gap-6 mb-8 text-primary">
-                                            <span className="material-symbols-outlined text-5xl font-thin">verified</span>
-                                            <span className="text-[10px] font-black uppercase tracking-[0.5em]">OPERATIVE OF THE CYCLE</span>
-                                        </div>
-                                        <h4 className="text-2xl font-black uppercase tracking-tighter text-white italic mb-2">Systems Architect <span className="text-primary not-italic">X.</span></h4>
-                                        <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.3em] mb-10 leading-relaxed italic">Expert specialization in neural network deployment and cloud security infrastructure.</p>
-                                        <button className="w-full h-16 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.4em] rounded-full text-[9px] hover:bg-white/10 transition-all">Scan Full Dossier</button>
-                                    </div>
-                                )}
-                            </div>
-                        </section>
+                        {/* Navigation */}
+                        <nav className="flex flex-col gap-1.5">
+                            <NavItem href="/dashboard" icon={LayoutDashboard} label="Overview" active />
+                            <NavItem href={isFreelancer ? "/dashboard/applications" : "/dashboard/jobs"} icon={Briefcase} label={isFreelancer ? 'Applications' : 'My Jobs'} />
+                            <NavItem href="/dashboard/inbox" icon={MessageSquare} label="Messages" />
+                            <NavItem href="/dashboard/projects" icon={ClipboardList} label="Projects" />
+                            <NavItem href="/dashboard/finance" icon={Building2} label="Finance" />
+                            <NavItem href="/dashboard/earnings" icon={WalletIcon} label="Earnings" />
+                            <NavItem href="/dashboard/contracts" icon={Gavel} label="Contracts" />
+                            <NavItem href="/search" icon={UserSearch} label="Browse" />
+                        </nav>
                     </div>
-                </div>
-            </main>
-        </div>
+
+                    <div className="p-8 flex flex-col gap-6">
+                        <Link href="/dashboard/settings" className="flex items-center gap-4 px-4 py-3 rounded-lg text-white/30 hover:text-white hover:bg-white/5 transition-all duration-300 group">
+                            <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-700" />
+                            <span className="text-xs font-bold">Settings</span>
+                        </Link>
+
+                        <Link href={isFreelancer ? "/jobs" : "/jobs/post"} className="w-full">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="w-full h-11 rounded-xl bg-primary text-white text-[11px] font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-3"
+                            >
+                                <span className="material-symbols-outlined text-base">{isFreelancer ? 'search' : 'add'}</span>
+                                {isFreelancer ? 'Find Jobs' : 'Post Job'}
+                            </motion.button>
+                        </Link>
+                    </div>
+                </aside>
+
+                {/* Main Command Display */}
+                <main className="flex-1 h-full overflow-y-auto bg-background-dark relative">
+                    {/* Background Atmosphere */}
+                    <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[200px] pointer-events-none opacity-50" />
+
+                    <div className="max-w-7xl mx-auto px-12 py-16 flex flex-col gap-20 relative z-10">
+                        {/* Command Header */}
+                        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                            <div className="flex items-center gap-6">
+                                <button
+                                    className="md:hidden w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white/40"
+                                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                >
+                                    <span className="material-symbols-outlined text-2xl">menu</span>
+                                </button>
+                                <div>
+                                    <div className="flex items-center gap-4 mb-1">
+                                        <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Dashboard</h2>
+                                        <span className="px-3 py-0.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-[8px] font-bold tracking-widest uppercase hidden sm:inline-block">Professional</span>
+                                    </div>
+                                    <p className="text-white/30 font-medium text-base">Welcome back, {(session?.user as any)?.name?.split(' ')[0] || 'User'}.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-6">
+                                <div className="h-12 w-px bg-white/5 hidden lg:block" />
+                                <div className="flex items-center gap-5">
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        className="w-11 h-11 bg-white/5 rounded-xl flex items-center justify-center text-white/20 hover:text-white transition-all relative border border-white/5 group"
+                                    >
+                                        <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_8px_rgba(0,124,255,0.6)] group-hover:scale-150 transition-transform"></span>
+                                        <Bell className="w-5 h-5 font-light" />
+                                    </motion.button>
+
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-11 h-11 rounded-xl bg-cover bg-center border border-white/10 p-0.5 shadow-lg" style={{ backgroundImage: `url('https://api.dicebear.com/7.x/avataaars/svg?seed=${(session?.user as any)?.email}&backgroundColor=040300')` }}>
+                                            <div className="w-full h-full bg-black/20 backdrop-blur-sm rounded-[9px]" />
+                                        </div>
+                                        <div className="hidden lg:flex flex-col">
+                                            <span className="text-[8px] text-white/20 font-bold uppercase tracking-widest mb-0.5">Tier</span>
+                                            <span className="text-xs font-bold text-white tracking-tight">PRO MEMBER</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+
+                        {/* Operational Metrics */}
+                        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <MetricCard
+                                label={isFreelancer ? 'Total Earnings' : 'Total Spent'}
+                                value={`PKR ${wallet?.balancePKR?.toLocaleString() || '0'}`}
+                                subLabel={wallet?.pendingPKR > 0 ? `PKR ${wallet.pendingPKR.toLocaleString()} in transit` : 'Available funds'}
+                                icon="account_balance_wallet"
+                                color="primary"
+                            />
+                            <MetricCard
+                                label={isFreelancer ? 'Active Applications' : 'Open Jobs'}
+                                value={isFreelancer ? applications.filter(a => a.status === 'PENDING').length : myJobs.filter(j => j.status === 'OPEN').length}
+                                subLabel={`${isFreelancer ? applications.length : myJobs.length} total entries`}
+                                icon="rocket_launch"
+                                color="white"
+                            />
+                            <MetricCard
+                                label={isFreelancer ? 'Available Bid Credits' : 'Successful Hires'}
+                                value={isFreelancer ? credits : myJobs.filter(j => j.status === 'FILLED').length}
+                                subLabel={isFreelancer ? 'Platform currency balance' : 'Team members onboarded'}
+                                icon={isFreelancer ? 'bolt' : 'verified'}
+                                color="primary"
+                                progress={isFreelancer ? (credits / 20) * 100 : undefined}
+                            />
+                        </section>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 pb-20">
+                            {/* Pulse - Recent Activity */}
+                            <section className="lg:col-span-2 flex flex-col gap-10">
+                                <div className="flex items-center justify-between border-b border-white/5 pb-6">
+                                    <h3 className="text-2xl font-bold tracking-tight">Recent <span className="text-primary">Activity</span></h3>
+                                    <Link className="text-sm font-bold text-white/40 hover:text-primary transition-all" href="/dashboard/applications">View All</Link>
+                                </div>
+
+                                <div className="space-y-6">
+                                    {isFreelancer && applications.length > 0 ? applications.slice(0, 4).map((app: any) => (
+                                        <ActivityItem
+                                            key={app.id}
+                                            title={`Proposal: ${app.job?.title || 'Data Stream'}`}
+                                            meta={`Commander: ${app.job?.employer?.profile?.fullName || 'Anon'} • Allocation: PKR ${app.job?.budgetMin?.toLocaleString()}`}
+                                            status={app.status}
+                                            icon="database"
+                                        />
+                                    )) : isEmployer && myJobs.length > 0 ? myJobs.slice(0, 4).map((job: any) => (
+                                        <ActivityItem
+                                            key={job.id}
+                                            title={`Mission: ${job.title}`}
+                                            meta={`${job._count?.applications || 0} Operatives Engaged • Range: PKR ${job.budgetMin?.toLocaleString()} - ${job.budgetMax?.toLocaleString()}`}
+                                            status={job.status}
+                                            icon="rocket"
+                                        />
+                                    )) : (
+                                        <EmptyState
+                                            icon={isFreelancer ? Rocket : Briefcase}
+                                            title="No Pulse Detected"
+                                            description={isFreelancer ? "You haven't applied to any missions yet. Initiate your first engagement and track progress here." : "No active missions under your command. Post your first requirement to recruit top-tier talent."}
+                                            action={{
+                                                label: isFreelancer ? "EXPLORE MISSIONS" : "DEPLOY MISSION",
+                                                onClick: () => router.push(isFreelancer ? "/search" : "/jobs/post")
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                            </section>
+
+                            {/* Top Recommendations */}
+                            <section className="flex flex-col gap-8">
+                                <div className="flex items-center justify-between border-b border-white/5 pb-6">
+                                    <h3 className="text-xl font-bold tracking-tight">{isFreelancer ? 'Recommended Jobs' : 'Top Talent'}</h3>
+                                    <button className="text-white/20 hover:text-white transition-all"><span className="material-symbols-outlined text-xl">tune</span></button>
+                                </div>
+
+                                <div className="space-y-8">
+                                    {isFreelancer ? (
+                                        recommendedJobs.length > 0 ? recommendedJobs.slice(0, 3).map((job: any) => (
+                                            <motion.div
+                                                key={job.id}
+                                                whileHover={{ y: -4 }}
+                                                className="bg-white/5 border border-white/10 p-6 rounded-2xl shadow-xl backdrop-blur-3xl group"
+                                            >
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="w-10 h-10 bg-primary/20 text-primary border border-primary/20 rounded-lg flex items-center justify-center font-bold text-xs">
+                                                        {job.employer?.profile?.fullName?.[0] || 'C'}
+                                                    </div>
+                                                    <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[8px] font-bold uppercase tracking-widest rounded-full border border-emerald-500/20">{job.matchScore}% MATCH</span>
+                                                </div>
+                                                <Link href={`/jobs/${job.id}`} className="block">
+                                                    <h4 className="text-white font-bold text-lg tracking-tight mb-1 group-hover:text-primary transition-all leading-tight">{job.title}</h4>
+                                                </Link>
+                                                <p className="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-4">{job.employer?.profile?.fullName || 'Employer'}</p>
+                                                <div className="flex flex-wrap gap-1.5 mb-6">
+                                                    {job.skills?.slice(0, 2).map((skill: any) => (
+                                                        <span key={skill.id} className="px-2 py-0.5 bg-white/5 rounded-md text-[8px] text-white/40 font-bold uppercase tracking-widest border border-white/5">{skill.name}</span>
+                                                    ))}
+                                                </div>
+                                                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                                                    <span className="text-white font-bold text-base tracking-tight">PKR {job.budgetMax?.toLocaleString()}</span>
+                                                    <span className="material-symbols-outlined text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+                                                </div>
+                                            </motion.div>
+                                        )) : (
+                                            <EmptyState
+                                                icon="radar"
+                                                title="Signal Lost"
+                                                description="Matchmaking engine requiring more tactical intel. Calibrate your profile to synchronize with relevant mandates."
+                                            />
+                                        )
+                                    ) : (
+                                        /* Asset Spotlight Placeholder */
+                                        <div className="bg-white/2 border border-white/5 p-8 rounded-2xl relative overflow-hidden group shadow-xl">
+                                            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
+                                                <span className="material-symbols-outlined text-8xl">verified</span>
+                                            </div>
+                                            <div className="flex items-center gap-4 mb-6 text-primary">
+                                                <span className="material-symbols-outlined text-3xl">verified</span>
+                                                <span className="text-[10px] font-bold uppercase tracking-widest">Featured Talent</span>
+                                            </div>
+                                            <h4 className="text-xl font-bold text-white mb-1">Systems Architect</h4>
+                                            <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest mb-8 leading-relaxed">
+                                                Specialized in cloud infrastructure & security protocols.
+                                            </p>
+                                            <button className="w-full h-12 bg-primary/10 border border-primary/20 text-primary font-bold uppercase tracking-widest rounded-xl text-[10px] hover:bg-primary hover:text-white transition-all">View Full Profile</button>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </PageTransition>
     );
 }
 
-function NavItem({ href, icon, label, active = false }: { href: string, icon: string, label: string, active?: boolean }) {
+function NavItem({ href, icon: Icon, label, active = false }: { href: string; icon: any; label: string; active?: boolean }) {
     return (
-        <Link href={href} className={`flex items-center gap-5 px-6 py-4 rounded-2xl transition-all duration-700 group relative ${active ? 'bg-primary text-white shadow-xl shadow-primary/30' : 'text-white/30 hover:text-white hover:bg-white/5'}`}>
-            <span className={`material-symbols-outlined text-2xl font-light ${active ? 'text-white' : 'group-hover:text-primary'} transition-colors duration-700`}>{icon}</span>
-            <span className="text-xs font-black uppercase tracking-[0.4em]">{label}</span>
-            {active && <motion.div layoutId="nav-active" className="absolute left-0 w-1.5 h-6 bg-white rounded-r-full" />}
+        <Link href={href} className={`flex items-center gap-3.5 px-3 py-2.5 rounded-lg transition-all duration-300 group relative ${active ? 'bg-primary/10 text-primary border border-primary/10 shadow-sm' : 'text-white/30 hover:text-white hover:bg-white/5 border border-transparent'}`}>
+            <Icon className={`w-4 h-4 ${active ? 'text-primary font-bold' : 'group-hover:text-primary'} transition-colors duration-300`} />
+            <span className="text-[13px] font-bold">{label}</span>
+            {active && <motion.div layoutId="nav-active" className="absolute left-0 w-1 h-5 bg-primary rounded-r-full" />}
         </Link>
     );
 }
@@ -358,26 +371,26 @@ function MetricCard({ label, value, subLabel, icon, color, progress }: any) {
     return (
         <motion.div
             whileHover={{ y: -5 }}
-            className="bg-white/5 rounded-[4rem] p-12 border border-white/10 shadow-3xl shadow-black relative overflow-hidden group"
+            className="bg-white/2 rounded-3xl p-8 border border-white/5 shadow-2xl shadow-black relative overflow-hidden group"
         >
-            <div className="absolute top-0 left-0 w-full h-1 bg-white/5" />
-            <div className="flex justify-between items-start mb-10">
-                <div className="flex flex-col gap-2">
-                    <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic">{label}</span>
-                    <h3 className="text-4xl font-black text-white tracking-tighter uppercase italic">{value}</h3>
+            <div className="absolute top-0 left-0 w-full h-1 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="flex justify-between items-start mb-8">
+                <div className="flex flex-col gap-1">
+                    <span className="text-xs font-bold text-primary uppercase tracking-widest">{label}</span>
+                    <h3 className="text-3xl font-bold text-white tracking-tight">{value}</h3>
                 </div>
-                <div className={`p-4 rounded-2xl ${color === 'primary' ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-white/5 text-white/50 border border-white/10'}`}>
+                <div className={`p-3.5 rounded-xl ${color === 'primary' ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-white/5 text-white/50 border border-white/10'}`}>
                     <span className="material-symbols-outlined text-2xl font-light">{icon}</span>
                 </div>
             </div>
-            <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.4em] italic mb-6">{subLabel}</p>
+            <p className="text-xs text-white/30 font-medium mb-6">{subLabel}</p>
             {progress !== undefined && (
                 <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                     <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="h-full bg-primary shadow-[0_0_10px_rgba(0,124,255,0.5)]"
+                        className="h-full bg-primary shadow-[0_0_10px_rgba(0,124,255,0.4)]"
                     />
                 </div>
             )}
@@ -388,16 +401,16 @@ function MetricCard({ label, value, subLabel, icon, color, progress }: any) {
 function ActivityItem({ title, meta, status, icon }: any) {
     return (
         <motion.div
-            whileHover={{ x: 10 }}
-            className="p-8 bg-white/2 border border-white/5 rounded-4xl hover:bg-white/4 hover:border-white/10 transition-all duration-700 cursor-pointer group flex items-center justify-between gap-6"
+            whileHover={{ x: 5 }}
+            className="p-6 bg-white/1 border border-white/5 rounded-2xl hover:bg-white/3 hover:border-white/10 transition-all duration-500 cursor-pointer group flex items-center justify-between gap-6"
         >
-            <div className="flex items-center gap-8">
-                <div className="h-16 w-16 rounded-3xl bg-white/5 text-primary flex items-center justify-center shrink-0 border border-white/5 group-hover:border-primary/40 transition-all duration-700">
+            <div className="flex items-center gap-6">
+                <div className="h-14 w-14 rounded-2xl bg-white/5 text-primary flex items-center justify-center shrink-0 border border-white/5 group-hover:border-primary/40 transition-all duration-500">
                     <span className="material-symbols-outlined text-2xl font-light">{icon}</span>
                 </div>
                 <div>
-                    <p className="text-white font-black text-lg tracking-tighter uppercase italic mb-1">{title}</p>
-                    <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.4em] italic">{meta}</p>
+                    <p className="text-white font-bold text-lg tracking-tight mb-0.5">{title}</p>
+                    <p className="text-white/20 text-xs font-medium">{meta}</p>
                 </div>
             </div>
             <StatusBadge status={status} />
@@ -412,7 +425,7 @@ function StatusBadge({ status }: { status: string }) {
     if (['REJECTED', 'EXPIRED', 'TERMINATED'].includes(status)) style = "bg-red-500/10 text-red-500 border border-red-500/20";
 
     return (
-        <span className={`px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.4em] italic ${style}`}>
+        <span className={`px-4 py-1.5 rounded-full text-[8px] font-bold uppercase tracking-widest ${style}`}>
             {status}
         </span>
     );

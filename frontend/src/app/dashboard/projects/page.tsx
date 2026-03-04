@@ -3,90 +3,94 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { PageTransition } from '@/components/ui/TacticalUI';
+import { ArrowLeft, ArrowRight, Plus } from 'lucide-react';
 
 export default function ProjectsDashboardPage() {
     return (
-        <div className="min-h-screen bg-background-dark text-white font-sans selection:bg-primary/30 antialiased overflow-x-hidden">
-            {/* Background Atmosphere */}
-            <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-primary/10 to-transparent pointer-events-none" />
+        <PageTransition>
+            <div className="min-h-screen bg-background-dark text-white font-sans selection:bg-primary/30 antialiased overflow-x-hidden">
+                {/* Background Atmosphere */}
+                <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-primary/10 to-transparent pointer-events-none" />
 
-            <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-32 relative z-10">
-                {/* Tactical Header */}
-                <header className="mb-32">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                        <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12">
-                            <span className="material-symbols-outlined text-xl group-hover:-translate-x-3 transition-transform">arrow_back</span> Return to Command
-                        </Link>
-
-                        <div className="flex flex-col gap-6">
-                            <h1 className="text-6xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
-                                Active <span className="text-primary not-italic">Logistics.</span>
-                            </h1>
-                            <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
-                                Orchestrate high-stakes operations with surgical precision. All active contracts and deliverables synchronized in real-time.
-                            </p>
-                        </div>
-                    </motion.div>
-                </header>
-
-                {/* Logistics Grid */}
-                <div className="grid grid-cols-1 gap-12">
-                    <ProjectItem
-                        id="1"
-                        title="Series A Fundraising Deck"
-                        status="In Progress"
-                        description="Finalizing financial projections and neural pitch-deck optimization."
-                        dueDate="Oct 24, 2026"
-                        image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
-                        priority="High"
-                    />
-
-                    <ProjectItem
-                        id="2"
-                        title="Executive Branding Strategy"
-                        status="Active"
-                        description="Calibrating visual identity protocols and core value alignment."
-                        dueDate="Nov 02, 2026"
-                        image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800"
-                        priority="Medium"
-                    />
-
-                    <ProjectItem
-                        id="3"
-                        title="Q4 Global Expansion Plan"
-                        status="Protocol Sync"
-                        description="Analyzing EMEA market entry points and regulatory barrier modulation."
-                        dueDate="Dec 15, 2026"
-                        image="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?auto=format&fit=crop&q=80&w=800"
-                        priority="Low"
-                    />
-                </div>
-
-                {/* Deployment Action */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="mt-32 flex flex-col items-center gap-10"
-                >
-                    <div className="h-20 w-px bg-white/10" />
-                    <Link href="/jobs/post">
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="bg-primary text-white px-20 py-6 text-xs font-black tracking-[0.4em] uppercase shadow-2xl shadow-primary/30 flex items-center gap-6 rounded-full"
+                <div className="max-w-[1440px] mx-auto px-10 md:px-20 py-32 relative z-10">
+                    {/* Tactical Header */}
+                    <header className="mb-32">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            <span className="material-symbols-outlined">add</span>
-                            Initialize New Operation
-                        </motion.button>
-                    </Link>
-                </motion.div>
+                            <Link href="/dashboard" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-primary transition-colors mb-12 italic">
+                                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-3 transition-transform" /> Return to Command
+                            </Link>
+
+                            <div className="flex flex-col gap-6">
+                                <h1 className="text-6xl md:text-[8rem] font-black tracking-tighter text-white leading-[0.8] uppercase italic">
+                                    Active <span className="text-primary not-italic">Logistics.</span>
+                                </h1>
+                                <p className="text-xl md:text-2xl font-bold italic text-white/40 max-w-2xl leading-relaxed">
+                                    Orchestrate high-stakes operations with surgical precision. All active contracts and deliverables synchronized in real-time.
+                                </p>
+                            </div>
+                        </motion.div>
+                    </header>
+
+                    {/* Logistics Grid */}
+                    <div className="grid grid-cols-1 gap-12">
+                        <ProjectItem
+                            id="1"
+                            title="Series A Fundraising Deck"
+                            status="In Progress"
+                            description="Finalizing financial projections and neural pitch-deck optimization."
+                            dueDate="Oct 24, 2026"
+                            image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+                            priority="High"
+                        />
+
+                        <ProjectItem
+                            id="2"
+                            title="Executive Branding Strategy"
+                            status="Active"
+                            description="Calibrating visual identity protocols and core value alignment."
+                            dueDate="Nov 02, 2026"
+                            image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800"
+                            priority="Medium"
+                        />
+
+                        <ProjectItem
+                            id="3"
+                            title="Q4 Global Expansion Plan"
+                            status="Protocol Sync"
+                            description="Analyzing EMEA market entry points and regulatory barrier modulation."
+                            dueDate="Dec 15, 2026"
+                            image="https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?auto=format&fit=crop&q=80&w=800"
+                            priority="Low"
+                        />
+                    </div>
+
+                    {/* Deployment Action */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="mt-32 flex flex-col items-center gap-10"
+                    >
+                        <div className="h-20 w-px bg-white/10" />
+                        <Link href="/jobs/post">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-primary text-white px-20 py-6 text-xs font-black tracking-[0.4em] uppercase shadow-2xl shadow-primary/30 flex items-center gap-6 rounded-full italic"
+                            >
+                                <Plus className="w-5 h-5" />
+                                Initialize New Operation
+                            </motion.button>
+                        </Link>
+                    </motion.div>
+                </div>
             </div>
-        </div>
+        </PageTransition>
     );
 }
 
@@ -137,7 +141,7 @@ function ProjectItem({ id, title, status, description, dueDate, image, priority 
                         whileTap={{ scale: 0.9 }}
                         className="bg-white/5 hover:bg-primary border border-white/10 hover:border-primary text-white w-20 h-20 flex items-center justify-center rounded-2xl transition-all duration-500 shadow-xl group/btn"
                     >
-                        <span className="material-symbols-outlined text-3xl font-light group-hover/btn:scale-125 transition-transform duration-500">arrow_forward</span>
+                        <ArrowRight className="w-6 h-6 font-light group-hover/btn:scale-125 transition-transform duration-500" />
                     </motion.button>
                 </Link>
             </div>

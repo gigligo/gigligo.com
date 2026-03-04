@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
-import { PageTransition } from '@/components/ui/PageTransition';
+import { PageTransition } from '@/components/ui/TacticalUI';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {

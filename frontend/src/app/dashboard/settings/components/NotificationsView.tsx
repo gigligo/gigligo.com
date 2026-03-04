@@ -44,20 +44,20 @@ export function NotificationsView() {
     return (
         <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="space-y-4">
-                <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Signal Protocols</h2>
-                <p className="text-xl font-bold italic text-white/40 leading-tight border-l-2 border-primary/20 pl-6">Calibrate incoming data streams and alert frequencies for your operative terminal.</p>
+                <h2 className="text-3xl font-bold text-white tracking-tight">Signal Protocols</h2>
+                <p className="text-lg font-medium text-white/40 leading-tight">Calibrate your notification preferences and alert frequencies.</p>
             </div>
 
-            <div className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden space-y-16">
+            <div className="bg-white/2 border border-white/5 rounded-3xl p-10 md:p-14 backdrop-blur-3xl shadow-2xl shadow-black relative overflow-hidden space-y-12">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
 
                 {/* Email Section */}
                 <div className="space-y-10">
-                    <div className="flex items-center gap-6">
-                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
-                            <Mail size={24} strokeWidth={1.5} />
+                    <div className="flex items-center gap-5">
+                        <div className="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-xl shadow-black">
+                            <Mail size={20} strokeWidth={1.5} />
                         </div>
-                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">SMTP Uplink</h3>
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Email Notifications</h3>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6">
@@ -91,11 +91,11 @@ export function NotificationsView() {
 
                 {/* Push Section */}
                 <div className="space-y-10">
-                    <div className="flex items-center gap-6">
-                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
-                            <Bell size={24} strokeWidth={1.5} />
+                    <div className="flex items-center gap-5">
+                        <div className="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-xl shadow-black">
+                            <Bell size={20} strokeWidth={1.5} />
                         </div>
-                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Real-Time Pings</h3>
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Push Alerts</h3>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6">
@@ -120,11 +120,11 @@ export function NotificationsView() {
 
                 {/* SMS Section */}
                 <div className="space-y-10">
-                    <div className="flex items-center gap-6">
-                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
-                            <Smartphone size={24} strokeWidth={1.5} />
+                    <div className="flex items-center gap-5">
+                        <div className="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-xl shadow-black">
+                            <Smartphone size={20} strokeWidth={1.5} />
                         </div>
-                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Cellular Backup</h3>
+                        <h3 className="text-2xl font-bold text-white tracking-tight">SMS Security</h3>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6">
@@ -147,18 +147,18 @@ export function NotificationsView() {
                     </div>
                 </div>
 
-                <div className="flex justify-end pt-12 border-t border-white/5">
+                <div className="flex justify-end pt-8 border-t border-white/5">
                     <button
                         onClick={handleSave}
                         disabled={saving}
-                        className="h-20 px-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-primary-dark transition-all shadow-3xl shadow-primary/40 flex items-center gap-6 italic active:scale-95 disabled:opacity-20"
+                        className="h-16 px-12 bg-primary text-white text-[12px] font-bold uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-xl shadow-primary/30 flex items-center gap-4 active:scale-95 disabled:opacity-20"
                     >
                         {saving ? (
-                            <Loader2 className="animate-spin" size={24} />
+                            <Loader2 className="animate-spin" size={20} />
                         ) : (
                             <>
-                                SAVE SIGNAL PREFERENCES
-                                <Save size={24} />
+                                SAVE CHANGES
+                                <Save size={18} />
                             </>
                         )}
                     </button>
@@ -170,18 +170,18 @@ export function NotificationsView() {
 
 function ToggleRow({ title, description, icon: Icon, checked, onChange, disabled = false, mandatory = false }: any) {
     return (
-        <label className={`flex items-center justify-between gap-10 p-8 rounded-4xl border transition-all duration-500 cursor-pointer group ${disabled ? 'opacity-30' : 'hover:bg-white/2 border-white/5 hover:border-primary/20'
+        <label className={`flex items-center justify-between gap-6 p-6 rounded-2xl border transition-all duration-500 cursor-pointer group ${disabled ? 'opacity-30' : 'hover:bg-white/2 border-white/5 hover:border-primary/20'
             } ${checked && !disabled ? 'bg-primary/3 border-primary/20' : ''}`}>
-            <div className="flex items-center gap-8 min-w-0">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${checked ? 'bg-primary/20 text-primary' : 'bg-black text-white/10 group-hover:text-white/30'}`}>
-                    <Icon size={20} strokeWidth={1.5} />
+            <div className="flex items-center gap-6 min-w-0">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-500 ${checked ? 'bg-primary/20 text-primary' : 'bg-black text-white/10 group-hover:text-white/30'}`}>
+                    <Icon size={18} strokeWidth={1.5} />
                 </div>
-                <div className="space-y-2 truncate">
-                    <div className="flex items-center gap-4">
-                        <h4 className="text-xl font-black text-white italic uppercase tracking-tighter">{title}</h4>
-                        {mandatory && <span className="text-[8px] font-black text-primary uppercase tracking-[0.2em] border border-primary/20 px-3 py-1 rounded-full italic pulse">Critical Protocol</span>}
+                <div className="space-y-1 truncate">
+                    <div className="flex items-center gap-3">
+                        <h4 className="text-lg font-bold text-white tracking-tight">{title}</h4>
+                        {mandatory && <span className="text-[8px] font-bold text-primary uppercase tracking-widest border border-primary/20 px-2 py-0.5 rounded-full">Required</span>}
                     </div>
-                    <p className="text-sm font-bold italic text-white/20 leading-relaxed max-w-xl truncate md:whitespace-normal">{description}</p>
+                    <p className="text-xs font-medium text-white/20 leading-relaxed max-w-xl truncate md:whitespace-normal">{description}</p>
                 </div>
             </div>
 

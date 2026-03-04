@@ -35,8 +35,8 @@ export function ProfileView({ userData }: { userData: any; token: string; apiUrl
     return (
         <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="space-y-4">
-                <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Public Dossier</h2>
-                <p className="text-xl font-bold italic text-white/40 leading-tight border-l-2 border-primary/20 pl-6">Manage your strategic persona and professional identity across the global network.</p>
+                <h2 className="text-3xl font-bold text-white tracking-tight">Public Profile</h2>
+                <p className="text-lg font-medium text-white/40 leading-tight">Manage your professional identity and how others see you on the platform.</p>
             </div>
 
             <div className="space-y-12">
@@ -44,39 +44,39 @@ export function ProfileView({ userData }: { userData: any; token: string; apiUrl
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden group"
+                    className="bg-white/2 border border-white/5 rounded-3xl p-10 md:p-14 backdrop-blur-3xl shadow-2xl shadow-black relative overflow-hidden group"
                 >
                     <div className="absolute top-0 inset-x-0 h-48 bg-linear-to-b from-primary/10 via-primary/5 to-transparent opacity-30 pointer-events-none" />
 
                     <div className="relative z-10 flex flex-col md:flex-row items-center md:items-end gap-12 pt-24">
                         <div className="relative group/avatar">
-                            <div className="w-48 h-48 rounded-[3rem] overflow-hidden border-4 border-black shadow-3xl bg-black flex items-center justify-center shrink-0 relative">
+                            <div className="w-40 h-40 rounded-2xl overflow-hidden border-2 border-white/10 shadow-xl bg-black flex items-center justify-center shrink-0 relative">
                                 {userData?.profile?.avatar ? (
-                                    <Image src={userData.profile.avatar} alt="Avatar" fill className="object-cover transition-transform duration-700 group-hover/avatar:scale-110" sizes="192px" />
+                                    <Image src={userData.profile.avatar} alt="Avatar" fill className="object-cover transition-transform duration-700 group-hover/avatar:scale-105" sizes="160px" />
                                 ) : (
-                                    <User className="text-white/10 w-24 h-24" strokeWidth={1} />
+                                    <User className="text-white/10 w-20 h-20" strokeWidth={1} />
                                 )}
                                 <div className="absolute inset-0 bg-primary/40 backdrop-blur-sm opacity-0 group-hover/avatar:opacity-100 transition-all duration-500 flex flex-col items-center justify-center cursor-pointer text-white gap-2">
                                     <Camera size={32} />
-                                    <span className="text-[10px] font-black uppercase tracking-widest italic">Update Signal</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest">Update Photo</span>
                                 </div>
                             </div>
-                            <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-2xl border-4 border-black">
-                                <ImageIcon size={20} />
+                            <div className="absolute -bottom-3 -right-3 w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-xl border-4 border-black">
+                                <ImageIcon size={18} />
                             </div>
                         </div>
 
-                        <div className="flex-1 text-center md:text-left space-y-6">
-                            <div className="space-y-2">
-                                <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Visual Identity</h3>
-                                <p className="text-sm font-bold italic text-white/20 max-w-md">Synchronize your professional optics. High-resolution imagery mandatory for verified operatives.</p>
+                        <div className="flex-1 text-center md:text-left space-y-4">
+                            <div className="space-y-1">
+                                <h3 className="text-2xl font-bold text-white tracking-tight">Visual Identity</h3>
+                                <p className="text-sm font-medium text-white/40 max-w-md">Update your profile photo and cover image. High-quality imagery helps build trust.</p>
                             </div>
                             <div className="flex gap-4 justify-center md:justify-start">
-                                <button className="h-14 px-8 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-2xl shadow-primary/30 hover:bg-primary-dark transition-all italic active:scale-95">
-                                    UPLOAD AVATAR
+                                <button className="h-12 px-8 bg-primary text-white text-[11px] font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-primary/25 hover:bg-primary-dark transition-all active:scale-95">
+                                    UPLOAD PHOTO
                                 </button>
-                                <button className="h-14 px-8 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-white/10 transition-all italic">
-                                    UPDATE COVER
+                                <button className="h-12 px-8 bg-white/5 border border-white/10 text-white text-[11px] font-bold uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all">
+                                    CHANGE COVER
                                 </button>
                             </div>
                         </div>
@@ -88,101 +88,101 @@ export function ProfileView({ userData }: { userData: any; token: string; apiUrl
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-16 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden"
+                    className="bg-white/2 border border-white/5 rounded-3xl p-10 md:p-14 backdrop-blur-3xl shadow-2xl shadow-black relative overflow-hidden"
                 >
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
 
-                    <div className="flex items-center gap-6 mb-12">
-                        <div className="w-14 h-14 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-2xl shadow-black">
-                            <FileText size={24} strokeWidth={1.5} />
+                    <div className="flex items-center gap-5 mb-10">
+                        <div className="w-12 h-12 rounded-xl bg-black border border-white/5 flex items-center justify-center text-primary shadow-xl shadow-black">
+                            <FileText size={20} strokeWidth={1.5} />
                         </div>
-                        <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Core Parameters</h3>
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Profile Details</h3>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
-                        <div className="space-y-4">
-                            <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] italic pl-4">First Designation</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest block pl-4">First Name</label>
                             <input
                                 type="text"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
-                                className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-5 text-xl font-black italic tracking-tighter text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/10"
-                                placeholder="JANE"
+                                className="w-full bg-black/40 border border-white/5 rounded-xl px-6 py-4 text-base font-medium text-white focus:outline-none focus:border-primary/40 transition-all placeholder:text-white/10"
+                                placeholder="Jane"
                             />
                         </div>
-                        <div className="space-y-4">
-                            <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] italic pl-4">Last Designation</label>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest block pl-4">Last Name</label>
                             <input
                                 type="text"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
-                                className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-5 text-xl font-black italic tracking-tighter text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/10"
-                                placeholder="DOE"
+                                className="w-full bg-black/40 border border-white/5 rounded-xl px-6 py-4 text-base font-medium text-white focus:outline-none focus:border-primary/40 transition-all placeholder:text-white/10"
+                                placeholder="Doe"
                             />
                         </div>
                     </div>
 
-                    <div className="space-y-4 mb-10">
-                        <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] italic pl-4">Professional Title / Role</label>
+                    <div className="space-y-2 mb-8">
+                        <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest block pl-4">Professional Title</label>
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-5 text-xl font-black italic tracking-tighter text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/10"
-                            placeholder="EXECUTIVE CREATIVE OPERATIVE"
+                            className="w-full bg-black/40 border border-white/5 rounded-xl px-6 py-4 text-base font-medium text-white focus:outline-none focus:border-primary/40 transition-all placeholder:text-white/10"
+                            placeholder="Creative Director"
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
-                        <div className="space-y-4">
-                            <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] italic pl-4">Geographic Node</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest block pl-4">Location</label>
                             <div className="relative">
-                                <MapPin className="absolute left-8 top-1/2 -translate-y-1/2 text-primary" size={20} />
+                                <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/40" size={18} />
                                 <input
                                     type="text"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
-                                    className="w-full bg-black/40 border border-white/5 rounded-2xl pl-16 pr-8 py-5 text-xl font-black italic tracking-tighter text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/10"
-                                    placeholder="CITY, COUNTRY"
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl pl-14 pr-6 py-4 text-base font-medium text-white focus:outline-none focus:border-primary/40 transition-all placeholder:text-white/10"
+                                    placeholder="London, UK"
                                 />
                             </div>
                         </div>
-                        <div className="space-y-4">
-                            <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] italic pl-4">Global Matrix (Website)</label>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest block pl-4">Website</label>
                             <div className="relative">
-                                <Globe className="absolute left-8 top-1/2 -translate-y-1/2 text-primary" size={20} />
+                                <Globe className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/40" size={18} />
                                 <input
                                     type="url"
-                                    className="w-full bg-black/40 border border-white/5 rounded-2xl pl-16 pr-8 py-5 text-xl font-black italic tracking-tighter text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/10 font-mono"
-                                    placeholder="HTTPS://MATRIX.NETWORK"
+                                    className="w-full bg-black/40 border border-white/5 rounded-xl pl-14 pr-6 py-4 text-base font-medium text-white focus:outline-none focus:border-primary/40 transition-all placeholder:text-white/10 font-mono"
+                                    placeholder="https://portfolio.me"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="space-y-4 mb-12">
-                        <label className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] italic pl-4">Operational Biography</label>
+                    <div className="space-y-2 mb-10">
+                        <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest block pl-4">Bio</label>
                         <textarea
                             value={bio}
                             onChange={(e) => setBio(e.target.value)}
                             rows={6}
-                            className="w-full bg-black/40 border border-white/5 rounded-4xl px-8 py-6 text-xl font-black italic tracking-tighter text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/10 resize-none leading-relaxed"
-                            placeholder="DESCRIBE YOUR STRATEGIC CAREER ARC..."
+                            className="w-full bg-black/40 border border-white/5 rounded-2xl px-6 py-5 text-base font-medium text-white focus:outline-none focus:border-primary/40 transition-all placeholder:text-white/10 resize-none leading-relaxed"
+                            placeholder="Write a brief professional introduction..."
                         ></textarea>
                     </div>
 
-                    <div className="flex justify-end pt-12 border-t border-white/5">
+                    <div className="flex justify-end pt-10 border-t border-white/5">
                         <button
                             onClick={handleSave}
                             disabled={saving}
-                            className="h-20 px-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-primary-dark transition-all shadow-3xl shadow-primary/40 flex items-center gap-6 italic active:scale-95 disabled:opacity-20"
+                            className="h-16 px-12 bg-primary text-white text-[11px] font-bold uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-xl shadow-primary/25 flex items-center gap-4 active:scale-95 disabled:opacity-20"
                         >
                             {saving ? (
-                                <Loader2 className="animate-spin" size={24} />
+                                <Loader2 className="animate-spin" size={20} />
                             ) : (
                                 <>
-                                    SAVE DOSSIER
-                                    <CheckCircle2 size={24} />
+                                    SAVE PROFILE
+                                    <CheckCircle2 size={20} />
                                 </>
                             )}
                         </button>

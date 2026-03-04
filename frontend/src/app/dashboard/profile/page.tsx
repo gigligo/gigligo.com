@@ -5,7 +5,8 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { profileApi } from '@/lib/api';
-import { Plus, Trash2, Edit2, Loader2, Link as LinkIcon, Briefcase, GraduationCap, Image as ImageIcon, MapPin, User, DollarSign, ShieldCheck, Zap } from 'lucide-react';
+import { Plus, Trash2, Edit2, Loader2, Link as LinkIcon, Briefcase, GraduationCap, Image as ImageIcon, MapPin, User, DollarSign, ShieldCheck, Zap, X, Upload } from 'lucide-react';
+import { PageTransition } from '@/components/ui/TacticalUI';
 import NextImage from 'next/image';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -83,316 +84,517 @@ export default function ProfileEditorPage() {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
-            <Navbar />
+        <PageTransition>
+            <div className="flex flex-col min-h-screen bg-background-dark text-white font-sans antialiased selection:bg-primary/30 overflow-x-hidden">
+                <Navbar />
 
-            <main className="flex-1 w-full max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative" style={{ paddingTop: 100 }}>
-                {/* Background Glow */}
-                <div className="absolute top-24 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+                <main className="flex-1 w-full max-w-[1440px] mx-auto px-10 md:px-20 py-24 relative" style={{ paddingTop: 100 }}>
+                    {/* Background Glow */}
+                    <div className="absolute top-24 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
 
-                <header className="mb-24 relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                        <div className="flex items-center gap-6 mb-8">
-                            <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center shadow-2xl shadow-primary/30">
-                                <Zap className="text-white fill-current" size={28} />
+                    <header className="mb-20 relative z-10">
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                            <div className="flex flex-col gap-4 mb-8">
+                                <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                                    Profile <span className="text-primary">Settings</span>
+                                </h1>
+                                <p className="text-base md:text-lg font-medium text-white/30 max-w-2xl">
+                                    Manage your professional identity, experience, and portfolio across the platform.
+                                </p>
                             </div>
-                            <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase italic leading-none">
-                                Professional <span className="text-primary not-italic">Identity.</span>
-                            </h1>
-                        </div>
-                        <p className="text-xl md:text-2xl font-bold italic text-white/30 max-w-3xl leading-relaxed">
-                            Configure your high-level dossier. This information is publicized to elite employers and tactical partners across the GIGLIGO network.
-                        </p>
-                    </motion.div>
-                </header>
+                        </motion.div>
+                    </header>
 
-                <div className="flex flex-col lg:flex-row gap-20 relative z-10">
-                    {/* Tactical Sidebar */}
-                    <aside className="w-full lg:w-80 shrink-0 space-y-12 sticky top-32">
-                        <div className="space-y-4">
-                            <TabButton active={activeTab === 'basic'} onClick={() => setActiveTab('basic')} icon={<User size={20} />} label="CORE DOSSIER" />
-                            <TabButton active={activeTab === 'experience'} onClick={() => setActiveTab('experience')} icon={<Briefcase size={20} />} label="FIELD OPS" />
-                            <TabButton active={activeTab === 'education'} onClick={() => setActiveTab('education')} icon={<GraduationCap size={20} />} label="CREDENTIALS" />
-                            <TabButton active={activeTab === 'portfolio'} onClick={() => setActiveTab('portfolio')} icon={<ImageIcon size={20} />} label="ARCHIVES" />
-                        </div>
+                    <div className="flex flex-col lg:flex-row gap-20 relative z-10">
+                        {/* Tactical Sidebar */}
+                        <aside className="w-full lg:w-80 shrink-0 space-y-12 sticky top-32">
+                            <div className="space-y-2">
+                                <TabButton active={activeTab === 'basic'} onClick={() => setActiveTab('basic')} icon={<User size={18} />} label="Personal Information" />
+                                <TabButton active={activeTab === 'experience'} onClick={() => setActiveTab('experience')} icon={<Briefcase size={18} />} label="Work Experience" />
+                                <TabButton active={activeTab === 'education'} onClick={() => setActiveTab('education')} icon={<GraduationCap size={18} />} label="Education" />
+                                <TabButton active={activeTab === 'portfolio'} onClick={() => setActiveTab('portfolio')} icon={<ImageIcon size={18} />} label="Portfolio" />
+                            </div>
 
-                        <div className="pt-12 border-t border-white/5">
-                            <Link href={`/profile/${profile.id}`} target="_blank" className="w-full group px-8 py-5 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between hover:bg-white/10 transition-all duration-500">
-                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 group-hover:text-white transition-colors">Broadcast Live</span>
-                                <span className="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
-                            </Link>
-                        </div>
-                    </aside>
+                            <div className="pt-8 border-t border-white/5">
+                                <Link href={`/profile/${profile.id}`} target="_blank" className="w-full group px-6 py-4 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-between hover:bg-white/10 transition-all duration-300">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/30 group-hover:text-white transition-colors">View Public Profile</span>
+                                    <span className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </Link>
+                            </div>
+                        </aside>
 
-                    {/* Operational Workspace */}
-                    <div className="flex-1 bg-white/2 border border-white/5 rounded-[4rem] p-12 md:p-20 backdrop-blur-3xl shadow-3xl shadow-black relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+                        {/* Operational Workspace */}
+                        <div className="flex-1 bg-white/2 border border-white/5 rounded-3xl p-8 md:p-12 backdrop-blur-3xl shadow-2xl shadow-black relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-                        <AnimatePresence mode="wait">
-                            {/* ══ CORE DOSSIER TAB ══ */}
-                            {activeTab === 'basic' && (
-                                <motion.form
-                                    key="basic"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    onSubmit={handleBasicSubmit}
-                                    className="space-y-16"
-                                >
-                                    <div className="flex flex-col lg:flex-row items-center gap-12 pb-16 border-b border-white/5">
-                                        <div className="relative group shrink-0">
-                                            <div className="w-48 h-48 rounded-[3rem] overflow-hidden bg-black border border-white/10 shadow-2xl flex items-center justify-center relative group-hover:scale-105 transition-all duration-700">
-                                                {profile.avatarUrl ? (
-                                                    <NextImage src={profile.avatarUrl} alt="Avatar" fill className="object-cover opacity-80 group-hover:opacity-100 transition-opacity" sizes="200px" />
-                                                ) : (
-                                                    <User size={64} className="text-white/10" />
-                                                )}
-                                                <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-700 cursor-pointer backdrop-blur-sm">
-                                                    <label className="text-white text-[10px] font-black uppercase tracking-[0.4em] cursor-pointer">
-                                                        UPLINK IMG
-                                                        <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
-                                                            if (!e.target.files || !e.target.files[0]) return;
-                                                            const fd = new FormData();
-                                                            fd.append('image', e.target.files[0]);
-                                                            try {
-                                                                await profileApi.updateAvatar(token, fd);
-                                                                toast.success('Visual ID synchronized.');
-                                                                loadProfile();
-                                                            } catch (err: any) {
-                                                                toast.error(err.message);
-                                                            }
-                                                        }} />
-                                                    </label>
+                            <AnimatePresence mode="wait">
+                                {/* ══ CORE DOSSIER TAB ══ */}
+                                {activeTab === 'basic' && (
+                                    <motion.form
+                                        key="basic"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        onSubmit={handleBasicSubmit}
+                                        className="space-y-16"
+                                    >
+                                        <div className="flex flex-col lg:flex-row items-center gap-8 pb-10 border-b border-white/5">
+                                            <div className="relative group shrink-0">
+                                                <div className="w-32 h-32 rounded-3xl overflow-hidden bg-black border border-white/10 shadow-xl flex items-center justify-center relative transition-all duration-500">
+                                                    {profile.avatarUrl ? (
+                                                        <NextImage src={profile.avatarUrl} alt="Avatar" fill className="object-cover opacity-90 group-hover:opacity-100 transition-opacity" sizes="200px" />
+                                                    ) : (
+                                                        <User size={48} className="text-white/10" />
+                                                    )}
+                                                    <div className="absolute inset-0 bg-primary/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-500 cursor-pointer backdrop-blur-sm">
+                                                        <label className="text-white text-[9px] font-bold uppercase tracking-widest cursor-pointer">
+                                                            Change Photo
+                                                            <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
+                                                                if (!e.target.files || !e.target.files[0]) return;
+                                                                const fd = new FormData();
+                                                                fd.append('image', e.target.files[0]);
+                                                                try {
+                                                                    await profileApi.updateAvatar(token, fd);
+                                                                    toast.success('Avatar updated successfully.');
+                                                                    loadProfile();
+                                                                } catch (err: any) {
+                                                                    toast.error(err.message);
+                                                                }
+                                                            }} />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-primary rounded-xl flex items-center justify-center shadow-lg border-2 border-background-dark">
+                                                    <ShieldCheck className="text-white" size={16} />
                                                 </div>
                                             </div>
-                                            <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-2xl border-4 border-background-dark">
-                                                <ShieldCheck className="text-white" size={24} />
+                                            <div className="flex-1 space-y-1 text-center lg:text-left">
+                                                <h3 className="text-xl font-bold text-white tracking-tight">Profile Image</h3>
+                                                <p className="text-sm font-medium text-white/30 max-w-lg">A professional photo increases your chances of getting hired by 3x.</p>
                                             </div>
                                         </div>
-                                        <div className="flex-1 space-y-4 text-center lg:text-left">
-                                            <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Tactical Visualization</h3>
-                                            <p className="text-lg font-bold italic text-white/30 max-w-lg leading-relaxed">Your professional biometric avatar. High-definition visuals enhance network trust and operative credibility.</p>
-                                        </div>
-                                    </div>
 
-                                    <div className="grid md:grid-cols-2 gap-12">
-                                        <InputField name="fullName" defaultValue={profile.fullName} label="FULL LEGAL NAME" required />
-                                        <InputField name="location" defaultValue={profile.location} label="OPERATIONAL BASE" icon={<MapPin size={18} />} />
-                                    </div>
-
-                                    <div className="space-y-6">
-                                        <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-primary italic">PROFESSIONAL DIRECTIVE</label>
-                                        <textarea name="bio" defaultValue={profile.bio} rows={6} className="w-full bg-black/40 border border-white/5 rounded-3xl p-8 text-lg font-bold italic text-white focus:border-primary/50 focus:outline-none transition-all placeholder:text-white/5" placeholder="Define your professional mission and tactical advantages..." />
-                                    </div>
-
-                                    <div className="max-w-xs">
-                                        <InputField type="number" name="hourlyRate" defaultValue={profile.hourlyRate} label="CAPITAL MANDATE (PKR/HR)" icon={<DollarSign size={18} />} />
-                                    </div>
-
-                                    <div className="pt-16 border-t border-white/5">
-                                        <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-12">Signal Uplinks</h2>
-                                        <div className="grid md:grid-cols-2 gap-12">
-                                            <InputField name="websiteUrl" defaultValue={profile.websiteUrl} label="INTEL REPOSITORY (SITE)" icon={<LinkIcon size={18} />} />
-                                            <InputField name="linkedinUrl" defaultValue={profile.linkedinUrl} label="NETWORK FREQUENCY (LINKEDIN)" icon={<LinkIcon size={18} />} />
-                                            <InputField name="githubUrl" defaultValue={profile.githubUrl} label="CODE ARCHIVES (GITHUB)" icon={<LinkIcon size={18} />} />
-                                        </div>
-                                    </div>
-
-                                    <div className="pt-20">
-                                        <motion.button
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            type="submit"
-                                            className="px-16 py-6 bg-primary text-white text-xs font-black uppercase tracking-[0.4em] rounded-full shadow-2xl shadow-primary/30 hover:bg-primary-dark transition-all italic"
-                                        >
-                                            SYNCHRONIZE DOSSIER
-                                        </motion.button>
-                                    </div>
-                                </motion.form>
-                            )}
-
-                            {/* ══ EXPERIENCE TAB ══ */}
-                            {activeTab === 'experience' && (
-                                <motion.div
-                                    key="experience"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    className="space-y-12"
-                                >
-                                    <div className="flex justify-between items-center mb-16">
-                                        <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter leading-none">Field <span className="text-primary not-italic">Ops.</span></h2>
-                                        <button onClick={() => setShowExpModal(true)} className="px-8 py-4 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl flex items-center gap-4 hover:bg-primary hover:border-primary transition-all duration-500 italic">
-                                            <Plus size={18} /> INITIALIZE LOG
-                                        </button>
-                                    </div>
-
-                                    {profile.experiences?.length === 0 ? (
-                                        <div className="text-center py-32 bg-black/20 rounded-[3rem] border border-white/5">
-                                            <span className="material-symbols-outlined text-8xl text-white/5 mb-6">history_edu</span>
-                                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">No active operations detected in history.</p>
-                                        </div>
-                                    ) : (
-                                        <div className="grid grid-cols-1 gap-8">
-                                            {profile.experiences?.map((exp: any) => (
-                                                <div key={exp.id} className="p-10 bg-black/40 border border-white/5 rounded-[3rem] flex justify-between items-center group hover:border-primary/30 transition-all duration-700">
-                                                    <div className="space-y-4">
-                                                        <div className="flex items-center gap-6">
-                                                            <h3 className="text-2xl font-black text-white italic uppercase tracking-tight">{exp.title}</h3>
-                                                            <span className="text-primary font-black text-[9px] uppercase tracking-[0.4em]">@ {exp.company}</span>
-                                                        </div>
-                                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">
-                                                            {formatDate(exp.startDate)} — {exp.isCurrent ? 'ACTIVE' : formatDate(exp.endDate)}
-                                                        </p>
-                                                        <p className="text-lg font-bold italic text-white/40 max-w-2xl leading-relaxed">{exp.description}</p>
-                                                    </div>
-                                                    <button onClick={() => deleteExp(exp.id)} className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all duration-500">
-                                                        <Trash2 size={24} />
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </motion.div>
-                            )}
-
-                            {/* ══ EDUCATION TAB ══ */}
-                            {activeTab === 'education' && (
-                                <motion.div
-                                    key="education"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    className="space-y-12"
-                                >
-                                    <div className="flex justify-between items-center mb-16">
-                                        <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Academic <span className="text-primary not-italic">Intel.</span></h2>
-                                        <button onClick={() => setShowEduModal(true)} className="px-8 py-4 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl flex items-center gap-4 hover:bg-primary hover:border-primary transition-all duration-500 italic">
-                                            <Plus size={18} /> ADD CREDENTIAL
-                                        </button>
-                                    </div>
-
-                                    {profile.educations?.length === 0 ? (
-                                        <div className="text-center py-32 bg-black/20 rounded-[3rem] border border-white/5">
-                                            <span className="material-symbols-outlined text-8xl text-white/5 mb-6">school</span>
-                                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">No educational protocols found.</p>
-                                        </div>
-                                    ) : (
-                                        <div className="grid grid-cols-1 gap-8">
-                                            {profile.educations?.map((edu: any) => (
-                                                <div key={edu.id} className="p-10 bg-black/40 border border-white/5 rounded-[3rem] flex justify-between items-center group hover:border-primary/30 transition-all duration-700">
-                                                    <div className="space-y-4">
-                                                        <h3 className="text-2xl font-black text-white italic uppercase tracking-tight">{edu.degree}</h3>
-                                                        <p className="text-primary font-black text-[9px] uppercase tracking-[0.4em]">{edu.institution}</p>
-                                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">{edu.startYear} — {edu.endYear || 'PRESENT'}</p>
-                                                    </div>
-                                                    <button onClick={() => deleteEdu(edu.id)} className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all duration-500">
-                                                        <Trash2 size={24} />
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </motion.div>
-                            )}
-
-                            {/* ══ PORTFOLIO TAB ══ */}
-                            {activeTab === 'portfolio' && (
-                                <motion.div
-                                    key="portfolio"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    className="space-y-12"
-                                >
-                                    <div className="flex justify-between items-center mb-16">
-                                        <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Tactical <span className="text-primary not-italic">Archives.</span></h2>
-                                        <button onClick={() => setShowPortModal(true)} className="px-8 py-4 bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl flex items-center gap-4 hover:bg-primary hover:border-primary transition-all duration-500 italic">
-                                            <Plus size={18} /> UPLINK PROJECT
-                                        </button>
-                                    </div>
-
-                                    {profile.portfolioItems?.length === 0 ? (
-                                        <div className="text-center py-32 bg-black/20 rounded-[3rem] border border-white/5">
-                                            <span className="material-symbols-outlined text-8xl text-white/5 mb-6">inventory_2</span>
-                                            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">No archived intelligence discovered.</p>
-                                        </div>
-                                    ) : (
                                         <div className="grid md:grid-cols-2 gap-10">
-                                            {profile.portfolioItems?.map((port: any) => (
-                                                <div key={port.id} className="bg-black/40 border border-white/5 rounded-[3rem] overflow-hidden flex flex-col group hover:border-primary/50 transition-all duration-700 shadow-2xl relative">
-                                                    <div className="h-64 bg-black overflow-hidden relative">
-                                                        {port.imageUrl ? (
-                                                            <a href={port.imageUrl} target="_blank" rel="noreferrer">
-                                                                <NextImage src={`${port.imageUrl}`} alt={port.title} fill className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-1000 ease-[0.16, 1, 0.3, 1]" sizes="(max-width: 768px) 100vw, 33vw" />
-                                                            </a>
-                                                        ) : (
-                                                            <div className="w-full h-full flex items-center justify-center text-white/5 bg-white/2"><ImageIcon size={64} strokeWidth={1} /></div>
-                                                        )}
-                                                        <div className="absolute top-6 right-6">
-                                                            <button onClick={() => deletePort(port.id)} className="w-12 h-12 bg-black/80 backdrop-blur-3xl rounded-xl flex items-center justify-center text-white/40 hover:text-red-500 transition-colors shadow-black shadow-2xl">
-                                                                <Trash2 size={20} />
-                                                            </button>
+                                            <InputField name="fullName" defaultValue={profile.fullName} label="FULL NAME" required />
+                                            <InputField name="location" defaultValue={profile.location} label="LOCATION" icon={<MapPin size={18} />} />
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-primary/60">Bio & Summary</label>
+                                            <textarea name="bio" defaultValue={profile.bio} rows={6} className="w-full bg-black/40 border border-white/5 rounded-2xl p-6 text-base font-medium text-white focus:border-primary/50 focus:outline-none transition-all placeholder:text-white/5" placeholder="Define your professional mission and tactical advantages..." />
+                                        </div>
+
+                                        <div className="max-w-xs">
+                                            <InputField type="number" name="hourlyRate" defaultValue={profile.hourlyRate} label="HOURLY RATE (PKR)" icon={<DollarSign size={18} />} />
+                                        </div>
+
+                                        <div className="pt-12 border-t border-white/5">
+                                            <h2 className="text-2xl font-bold text-white mb-8 tracking-tight">Website & Socials</h2>
+                                            <div className="grid md:grid-cols-2 gap-10">
+                                                <InputField name="websiteUrl" defaultValue={profile.websiteUrl} label="WEBSITE" icon={<LinkIcon size={18} />} />
+                                                <InputField name="linkedinUrl" defaultValue={profile.linkedinUrl} label="LINKEDIN" icon={<LinkIcon size={18} />} />
+                                                <InputField name="githubUrl" defaultValue={profile.githubUrl} label="GITHUB" icon={<LinkIcon size={18} />} />
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-12">
+                                            <motion.button
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                                type="submit"
+                                                className="px-8 py-3.5 bg-primary text-white text-[13px] font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
+                                            >
+                                                Save Changes
+                                            </motion.button>
+                                        </div>
+                                    </motion.form>
+                                )}
+
+                                {/* ══ EXPERIENCE TAB ══ */}
+                                {activeTab === 'experience' && (
+                                    <motion.div
+                                        key="experience"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        className="space-y-12"
+                                    >
+                                        <div className="flex justify-between items-center mb-10">
+                                            <h2 className="text-2xl font-bold text-white tracking-tight">Work Experience</h2>
+                                            <button onClick={() => setShowExpModal(true)} className="px-5 py-2.5 bg-primary/10 border border-primary/20 text-primary text-[11px] font-bold uppercase tracking-widest rounded-xl flex items-center gap-3 hover:bg-primary hover:text-white transition-all duration-300">
+                                                <Plus size={16} /> ADD EXPERIENCE
+                                            </button>
+                                        </div>
+
+                                        {profile.experiences?.length === 0 ? (
+                                            <div className="text-center py-32 bg-black/20 rounded-[3rem] border border-white/5">
+                                                <span className="material-symbols-outlined text-8xl text-white/5 mb-6">history_edu</span>
+                                                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">No active operations detected in history.</p>
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-1 gap-8">
+                                                {profile.experiences?.map((exp: any) => (
+                                                    <div key={exp.id} className="p-8 bg-black/20 border border-white/5 rounded-2xl flex justify-between items-center group hover:border-primary/30 transition-all duration-500">
+                                                        <div className="space-y-3">
+                                                            <div className="flex items-center gap-4">
+                                                                <h3 className="text-xl font-bold text-white">{exp.title}</h3>
+                                                                <span className="text-primary font-bold text-[10px] uppercase tracking-widest">@{exp.company}</span>
+                                                            </div>
+                                                            <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">
+                                                                {formatDate(exp.startDate)} — {exp.isCurrent ? 'PRESENT' : formatDate(exp.endDate)}
+                                                            </p>
+                                                            <p className="text-base text-white/40 max-w-2xl leading-relaxed">{exp.description}</p>
+                                                        </div>
+                                                        <button onClick={() => deleteExp(exp.id)} className="w-11 h-11 bg-white/5 rounded-xl flex items-center justify-center text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all duration-300">
+                                                            <Trash2 size={20} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                )}
+
+                                {/* ══ EDUCATION TAB ══ */}
+                                {activeTab === 'education' && (
+                                    <motion.div
+                                        key="education"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        className="space-y-12"
+                                    >
+                                        <div className="flex justify-between items-center mb-10">
+                                            <h2 className="text-2xl font-bold text-white tracking-tight">Education</h2>
+                                            <button onClick={() => setShowEduModal(true)} className="px-5 py-2.5 bg-primary/10 border border-primary/20 text-primary text-[11px] font-bold uppercase tracking-widest rounded-xl flex items-center gap-3 hover:bg-primary hover:text-white transition-all duration-300">
+                                                <Plus size={16} /> ADD EDUCATION
+                                            </button>
+                                        </div>
+
+                                        {profile.educations?.length === 0 ? (
+                                            <div className="text-center py-32 bg-black/20 rounded-[3rem] border border-white/5">
+                                                <span className="material-symbols-outlined text-8xl text-white/5 mb-6">school</span>
+                                                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">No educational protocols found.</p>
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-1 gap-8">
+                                                {profile.educations?.map((edu: any) => (
+                                                    <div key={edu.id} className="p-8 bg-black/20 border border-white/5 rounded-2xl flex justify-between items-center group hover:border-primary/30 transition-all duration-500">
+                                                        <div className="space-y-3">
+                                                            <h3 className="text-xl font-bold text-white">{edu.degree}</h3>
+                                                            <p className="text-primary font-bold text-[10px] uppercase tracking-widest">{edu.institution}</p>
+                                                            <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">{edu.startYear} — {edu.endYear || 'PRESENT'}</p>
+                                                        </div>
+                                                        <button onClick={() => deleteEdu(edu.id)} className="w-11 h-11 bg-white/5 rounded-xl flex items-center justify-center text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all duration-300">
+                                                            <Trash2 size={20} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                )}
+
+                                {/* ══ PORTFOLIO TAB ══ */}
+                                {activeTab === 'portfolio' && (
+                                    <motion.div
+                                        key="portfolio"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        className="space-y-12"
+                                    >
+                                        <div className="flex justify-between items-center mb-10">
+                                            <h2 className="text-2xl font-bold text-white tracking-tight">Portfolio</h2>
+                                            <button onClick={() => setShowPortModal(true)} className="px-5 py-2.5 bg-primary/10 border border-primary/20 text-primary text-[11px] font-bold uppercase tracking-widest rounded-xl flex items-center gap-3 hover:bg-primary hover:text-white transition-all duration-300">
+                                                <Plus size={16} /> ADD PROJECT
+                                            </button>
+                                        </div>
+
+                                        {profile.portfolioItems?.length === 0 ? (
+                                            <div className="text-center py-32 bg-black/20 rounded-[3rem] border border-white/5">
+                                                <span className="material-symbols-outlined text-8xl text-white/5 mb-6">inventory_2</span>
+                                                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] italic">No archived intelligence discovered.</p>
+                                            </div>
+                                        ) : (
+                                            <div className="grid md:grid-cols-2 gap-10">
+                                                {profile.portfolioItems?.map((port: any) => (
+                                                    <div key={port.id} className="bg-black/20 border border-white/5 rounded-2xl overflow-hidden flex flex-col group hover:border-primary/30 transition-all duration-500 shadow-xl relative">
+                                                        <div className="h-56 bg-black/40 overflow-hidden relative">
+                                                            {port.imageUrl ? (
+                                                                <NextImage src={`${port.imageUrl}`} alt={port.title} fill className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700" sizes="(max-width: 768px) 100vw, 33vw" />
+                                                            ) : (
+                                                                <div className="w-full h-full flex items-center justify-center text-white/5"><ImageIcon size={48} strokeWidth={1} /></div>
+                                                            )}
+                                                            <div className="absolute top-4 right-4 translate-y-2 opacity-0 group-hover:opacity-100 transition-all">
+                                                                <button onClick={() => deletePort(port.id)} className="w-10 h-10 bg-black/80 backdrop-blur-md rounded-lg flex items-center justify-center text-white/40 hover:text-red-500 transition-colors">
+                                                                    <Trash2 size={18} />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-8 flex-1 flex flex-col gap-4">
+                                                            <h3 className="text-xl font-bold text-white tracking-tight leading-none">{port.title}</h3>
+                                                            <p className="text-sm font-medium text-white/30 leading-relaxed line-clamp-2">{port.description}</p>
+
+                                                            {port.linkUrl && (
+                                                                <div className="mt-auto pt-6 border-t border-white/5">
+                                                                    <a href={port.linkUrl} target="_blank" rel="noreferrer" className="text-primary text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2">
+                                                                        <LinkIcon size={12} /> View Project
+                                                                    </a>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
-                                                    <div className="p-10 flex-1 flex flex-col gap-6">
-                                                        <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter leading-none">{port.title}</h3>
-                                                        <p className="text-lg font-bold italic text-white/30 leading-relaxed line-clamp-3">{port.description}</p>
-
-                                                        {port.linkUrl && (
-                                                            <div className="mt-auto pt-6 border-t border-white/5">
-                                                                <a href={port.linkUrl} target="_blank" rel="noreferrer" className="text-primary text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors flex items-center gap-3 italic">
-                                                                    <LinkIcon size={14} /> Intelligence Uplink
-                                                                </a>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </div>
-                </div>
-            </main>
+                </main>
 
-            {/* Modals with Cinematic Aesthetic */}
-            <AnimatePresence>
-                {showExpModal && <OperationsModal type="Experience" onClose={() => setShowExpModal(false)} token={token} onSuccess={loadProfile} />}
-                {showEduModal && <OperationsModal type="Education" onClose={() => setShowEduModal(false)} token={token} onSuccess={loadProfile} />}
-                {showPortModal && <OperationsModal type="Portfolio" onClose={() => setShowPortModal(false)} token={token} onSuccess={loadProfile} />}
-            </AnimatePresence>
-        </div>
+                {/* Modals with Cinematic Aesthetic */}
+                <AnimatePresence>
+                    {showExpModal && <ExperienceModal isOpen={showExpModal} onClose={() => setShowExpModal(false)} onSave={async (formData: any) => {
+                        try {
+                            const data = {
+                                title: formData.title,
+                                company: formData.company,
+                                startDate: new Date(formData.startDate).toISOString(),
+                                isCurrent: formData.isCurrent === 'on',
+                                endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
+                                description: formData.description
+                            };
+                            await profileApi.addExperience(token, data);
+                            toast.success('Experience added successfully.');
+                            loadProfile();
+                            setShowExpModal(false);
+                        } catch (err: any) {
+                            toast.error(err.message);
+                        }
+                    }} />}
+                    {showEduModal && <EducationModal isOpen={showEduModal} onClose={() => setShowEduModal(false)} onSave={async (formData: any) => {
+                        try {
+                            const data = {
+                                degree: formData.degree,
+                                institution: formData.institution,
+                                startYear: parseInt(formData.startYear),
+                                endYear: formData.endYear ? parseInt(formData.endYear) : null,
+                                description: formData.description // EducationModal doesn't have description in the new structure, but keeping for safety if it's added later
+                            };
+                            await profileApi.addEducation(token, data);
+                            toast.success('Education added successfully.');
+                            loadProfile();
+                            setShowEduModal(false);
+                        } catch (err: any) {
+                            toast.error(err.message);
+                        }
+                    }} />}
+                    {showPortModal && <PortfolioModal isOpen={showPortModal} onClose={() => setShowPortModal(false)} onSave={async (formData: any) => {
+                        try {
+                            const fd = new FormData();
+                            fd.append('title', formData.title);
+                            fd.append('linkUrl', formData.linkUrl);
+                            fd.append('description', formData.description);
+                            if (formData.imageUrl) {
+                                // Assuming imageUrl is a direct URL after upload, not a file
+                                // If it's a file, the modal's internal logic should handle the upload and pass the URL
+                                // For now, if imageUrl is present, we'll assume it's the final URL.
+                                // The original OperationsModal used `fd` directly, implying file upload.
+                                // The new PortfolioModal handles upload internally and passes `imageUrl`.
+                                // So, we just pass the imageUrl as part of the data.
+                                fd.append('imageUrl', formData.imageUrl);
+                            }
+                            await profileApi.addPortfolioItem(token, fd);
+                            toast.success('Portfolio item added successfully.');
+                            loadProfile();
+                            setShowPortModal(false);
+                        } catch (err: any) {
+                            toast.error(err.message);
+                        }
+                    }} />}
+                </AnimatePresence>
+            </div>
+        </PageTransition>
     );
 }
 
 function TabButton({ active, onClick, icon, label }: { active: boolean, onClick: () => void, icon: any, label: string }) {
     return (
-        <button onClick={onClick} className={`w-full text-left px-10 py-5 rounded-2xl flex items-center gap-6 transition-all duration-700 relative overflow-hidden group ${active ? 'text-white' : 'text-white/20 hover:text-white hover:bg-white/5'}`}>
+        <button onClick={onClick} className={`w-full text-left px-5 py-3 rounded-xl flex items-center gap-4 transition-all duration-300 relative overflow-hidden group ${active ? 'text-primary bg-primary/10 border border-primary/20' : 'text-white/30 hover:text-white hover:bg-white/5 border border-transparent'}`}>
+            <span className={`relative z-10 transition-colors duration-300 ${active ? 'text-primary' : 'group-hover:text-primary'}`}>{icon}</span>
+            <span className="relative z-10 text-[13px] font-bold leading-none">{label}</span>
             {active && (
-                <motion.div layoutId="profile-tab-bg" className="absolute inset-0 bg-primary z-0 shadow-2xl shadow-primary/30" />
+                <motion.div layoutId="profile-tab-indicator" className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full shadow-lg" />
             )}
-            <span className={`relative z-10 transition-colors duration-700 ${active ? 'text-white' : 'group-hover:text-primary'}`}>{icon}</span>
-            <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] italic leading-none">{label}</span>
         </button>
+    );
+}
+
+function ExperienceModal({ isOpen, onClose, onSave }: any) {
+    if (!isOpen) return null;
+    return (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-6 pb-20">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="relative w-full max-w-xl bg-background-dark border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden">
+                <div className="p-10">
+                    <div className="flex justify-between items-center mb-10">
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Add Experience</h3>
+                        <button onClick={onClose} className="text-white/20 hover:text-white transition-colors"><X size={24} /></button>
+                    </div>
+                    <form onSubmit={(e: any) => {
+                        e.preventDefault();
+                        const fd = new FormData(e.target);
+                        onSave(Object.fromEntries(fd));
+                    }} className="space-y-8">
+                        <InputField name="title" label="JOB TITLE" placeholder="e.g. Senior Software Engineer" required />
+                        <InputField name="company" label="COMPANY" placeholder="e.g. Google" required />
+                        <div className="grid grid-cols-2 gap-8">
+                            <InputField name="startDate" type="date" label="START DATE" required />
+                            <InputField name="endDate" type="date" label="END DATE" />
+                        </div>
+                        <div className="flex items-center gap-3 py-2">
+                            <input type="checkbox" name="isCurrent" id="isCurrent" className="w-5 h-5 rounded-lg border-white/10 bg-white/5 text-primary focus:ring-primary/20" />
+                            <label htmlFor="isCurrent" className="text-xs font-bold text-white/40 uppercase tracking-widest">I currently work here</label>
+                        </div>
+                        <div className="space-y-3">
+                            <label className="block text-[11px] font-bold uppercase tracking-widest text-white/30">DESCRIPTION</label>
+                            <textarea name="description" className="w-full bg-white/2 border border-white/5 rounded-2xl p-6 text-sm text-white focus:border-primary/50 focus:outline-none transition-all placeholder:text-white/5 min-h-[150px]" placeholder="Describe your responsibilities and achievements..." />
+                        </div>
+                        <div className="pt-6">
+                            <button type="submit" className="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                                SAVE EXPERIENCE
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
+function EducationModal({ isOpen, onClose, onSave }: any) {
+    if (!isOpen) return null;
+    return (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-6 pb-20">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="relative w-full max-w-xl bg-background-dark border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden">
+                <div className="p-10">
+                    <div className="flex justify-between items-center mb-10">
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Add Education</h3>
+                        <button onClick={onClose} className="text-white/20 hover:text-white transition-colors"><X size={24} /></button>
+                    </div>
+                    <form onSubmit={(e: any) => {
+                        e.preventDefault();
+                        const fd = new FormData(e.target);
+                        onSave(Object.fromEntries(fd));
+                    }} className="space-y-8">
+                        <InputField name="institution" label="INSTITUTION" placeholder="e.g. Stanford University" required />
+                        <InputField name="degree" label="DEGREE / CERTIFICATION" placeholder="e.g. B.S. Computer Science" required />
+                        <div className="grid grid-cols-2 gap-8">
+                            <InputField name="startYear" type="number" label="START YEAR" required />
+                            <InputField name="endYear" type="number" label="END YEAR (OR EXPECTED)" />
+                        </div>
+                        <div className="pt-6">
+                            <button type="submit" className="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                                SAVE CREDENTIALS
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
+function PortfolioModal({ isOpen, onClose, onSave }: any) {
+    const [uploading, setUploading] = useState(false);
+    const [imageUrl, setImageUrl] = useState('');
+
+    if (!isOpen) return null;
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const data = Object.fromEntries(fd);
+        onSave({ ...data, imageUrl });
+    };
+
+    return (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-6 pb-20">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="relative w-full max-w-xl bg-background-dark border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden">
+                <div className="p-10">
+                    <div className="flex justify-between items-center mb-10">
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Post Project</h3>
+                        <button onClick={onClose} className="text-white/20 hover:text-white transition-colors"><X size={24} /></button>
+                    </div>
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="space-y-4">
+                            <label className="block text-[11px] font-bold uppercase tracking-widest text-white/30">PROJECT PREVIEW</label>
+                            <div className="w-full h-48 rounded-2xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center overflow-hidden relative group bg-white/2">
+                                {imageUrl ? (
+                                    <>
+                                        <NextImage src={imageUrl} alt="Preview" fill className="object-cover" />
+                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                            <button type="button" onClick={() => setImageUrl('')} className="px-4 py-2 bg-red-500 text-white text-[10px] font-bold rounded-lg capitalize">Remove</button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Upload className={`mb-4 ${uploading ? 'animate-bounce text-primary' : 'text-white/10'}`} size={32} />
+                                        <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onChange={async (e) => {
+                                            if (!e.target.files?.[0]) return;
+                                            setUploading(true);
+                                            const body = new FormData();
+                                            body.append('image', e.target.files[0]);
+                                            try {
+                                                const res = await fetch('/api/upload', { method: 'POST', body });
+                                                const { url } = await res.json();
+                                                setImageUrl(url);
+                                            } catch (err) { toast.error('Upload failed'); }
+                                            setUploading(false);
+                                        }} />
+                                        <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">{uploading ? 'TRANSMITTING...' : 'UPLOAD ARCHIVE (JPG/PNG)'}</p>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        <InputField name="title" label="PROJECT TITLE" placeholder="e.g. E-Commerce Platform" required />
+                        <div className="space-y-3">
+                            <label className="block text-[11px] font-bold uppercase tracking-widest text-white/30">DESCRIPTION</label>
+                            <textarea name="description" className="w-full bg-white/2 border border-white/5 rounded-2xl p-6 text-sm text-white focus:border-primary/50 focus:outline-none transition-all placeholder:text-white/5 min-h-[100px]" placeholder="Briefly explain your role and the tech stack used..." />
+                        </div>
+                        <InputField name="linkUrl" label="PROJECT LINK" placeholder="e.g. https://github.com/..." />
+
+                        <div className="pt-6">
+                            <button type="submit" className="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                                PUBLISH TO PORTFOLIO
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </motion.div>
+        </div>
     );
 }
 
 function InputField({ label, icon, ...props }: any) {
     return (
-        <div className="space-y-4">
-            <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-primary italic">{label}</label>
+        <div className="space-y-2">
+            <label className="block text-[11px] font-bold uppercase tracking-widest text-white/30">{label}</label>
             <div className="relative">
-                {icon && <div className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20">{icon}</div>}
+                {icon && <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20">{icon}</div>}
                 <input
                     {...props}
-                    className={`w-full bg-black/40 border border-white/5 rounded-2xl ${icon ? 'pl-16' : 'px-8'} py-5 text-sm font-bold italic text-white focus:border-primary/50 focus:outline-none transition-all placeholder:text-white/5`}
+                    className={`w-full bg-white/2 border border-white/5 rounded-xl ${icon ? 'pl-12' : 'px-5'} py-3 text-sm font-medium text-white focus:border-primary/50 focus:outline-none transition-all placeholder:text-white/5 shadow-sm`}
                 />
             </div>
         </div>
@@ -402,123 +604,4 @@ function InputField({ label, icon, ...props }: any) {
 function formatDate(date: string) {
     if (!date) return '';
     return new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
-}
-
-// Unified Tactical Modal
-function OperationsModal({ type, onClose, token, onSuccess }: any) {
-    const [submitting, setSubmitting] = useState(false);
-
-    const onSubmit = async (e: any) => {
-        e.preventDefault();
-        setSubmitting(true);
-        const fd = new FormData(e.target);
-
-        try {
-            if (type === 'Experience') {
-                const data = {
-                    title: fd.get('title'),
-                    company: fd.get('company'),
-                    startDate: new Date(fd.get('startDate') as string).toISOString(),
-                    isCurrent: fd.get('isCurrent') === 'on',
-                    endDate: fd.get('endDate') ? new Date(fd.get('endDate') as string).toISOString() : null,
-                    description: fd.get('description')
-                };
-                await profileApi.addExperience(token, data);
-            } else if (type === 'Education') {
-                const data = {
-                    degree: fd.get('degree'),
-                    institution: fd.get('institution'),
-                    startYear: parseInt(fd.get('startYear') as string),
-                    endYear: fd.get('endYear') ? parseInt(fd.get('endYear') as string) : null,
-                    description: fd.get('description')
-                };
-                await profileApi.addEducation(token, data);
-            } else if (type === 'Portfolio') {
-                await profileApi.addPortfolioItem(token, fd);
-            }
-            toast.success(`${type} directive synchronized.`);
-            onSuccess();
-            onClose();
-        } catch (err: any) {
-            toast.error(err.message);
-            setSubmitting(false);
-        }
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-8 backdrop-blur-xl"
-        >
-            <motion.div
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                className="bg-background-dark border border-white/10 p-12 lg:p-16 rounded-[4rem] w-full max-w-2xl shadow-3xl shadow-black relative overflow-hidden"
-            >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-
-                <h3 className="text-4xl font-black text-white italic uppercase tracking-tighter mb-12">Initialize <span className="text-primary not-italic">{type}.</span></h3>
-
-                <form onSubmit={onSubmit} className="space-y-8">
-                    {type === 'Experience' && (
-                        <>
-                            <InputField name="title" label="OPERATIONAL ROLE" required />
-                            <InputField name="company" label="TACTICAL ENTITY (COMPANY)" required />
-                            <div className="grid grid-cols-2 gap-8">
-                                <InputField type="month" name="startDate" label="COMMENCEMENT" required />
-                                <InputField type="month" name="endDate" label="TERMINATION" />
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <input type="checkbox" name="isCurrent" id="isCurrent" className="size-6 bg-black border-white/10 rounded-lg text-primary focus:ring-primary" />
-                                <label htmlFor="isCurrent" className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 italic">STILL ENGAGED AT ENTITY</label>
-                            </div>
-                            <div className="space-y-4">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-primary italic">OPERATIONAL RECAP</label>
-                                <textarea name="description" rows={3} className="w-full bg-black/40 border border-white/5 rounded-2xl p-6 text-sm font-bold italic text-white focus:border-primary/50 focus:outline-none transition-all" />
-                            </div>
-                        </>
-                    )}
-
-                    {type === 'Education' && (
-                        <>
-                            <InputField name="degree" label="CREDENTIAL / MANDATE" required />
-                            <InputField name="institution" label="ACADEMIC COMMAND" required />
-                            <div className="grid grid-cols-2 gap-8">
-                                <InputField type="number" name="startYear" label="INCEPTION YEAR" required />
-                                <InputField type="number" name="endYear" label="GRADUATION YEAR" />
-                            </div>
-                        </>
-                    )}
-
-                    {type === 'Portfolio' && (
-                        <>
-                            <InputField name="title" label="PROJECT CODENAME" required />
-                            <InputField name="linkUrl" label="INTEL LINK (URL)" placeholder="https://" />
-                            <div className="space-y-4">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-primary italic">TACTICAL VISUAL (FILE)</label>
-                                <div className="relative">
-                                    <input type="file" accept="image/*" name="image" className="w-full bg-black/40 border border-white/5 rounded-2xl px-10 py-8 text-[10px] font-black uppercase tracking-[0.4em] text-white italic file:hidden cursor-pointer" />
-                                    <span className="absolute right-10 top-1/2 -translate-y-1/2 text-primary material-symbols-outlined">upload_file</span>
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-primary italic">MISSION SUMMARY</label>
-                                <textarea name="description" rows={3} required className="w-full bg-black/40 border border-white/5 rounded-2xl p-6 text-sm font-bold italic text-white focus:border-primary/50 focus:outline-none transition-all" />
-                            </div>
-                        </>
-                    )}
-
-                    <div className="flex gap-6 pt-12">
-                        <button type="button" onClick={onClose} className="flex-1 px-8 py-5 bg-white/5 rounded-2xl font-black uppercase tracking-[0.4em] text-[10px] text-white/30 hover:text-white transition-all">ABORT</button>
-                        <button type="submit" disabled={submitting} className="flex-1 px-8 py-5 bg-primary text-white rounded-2xl font-black uppercase tracking-[0.4em] text-[10px] shadow-2xl shadow-primary/30 flex items-center justify-center gap-4 hover:bg-primary-dark transition-all disabled:opacity-50 italic">
-                            {submitting ? <Loader2 className="w-4 h-4 animate-spin text-white" /> : 'SYNCHRONIZE'}
-                        </button>
-                    </div>
-                </form>
-            </motion.div>
-        </motion.div>
-    );
 }
