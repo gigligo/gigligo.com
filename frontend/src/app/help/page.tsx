@@ -4,7 +4,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import Link from 'next/link';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 
 const CATEGORIES = [
     {
@@ -81,7 +81,7 @@ export default function HelpCenterPage() {
         })).filter(cat => cat.articles.length > 0)
         : CATEGORIES;
 
-    const fadeIn = {
+    const fadeIn: Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: (i: number) => ({
             opacity: 1,
