@@ -73,7 +73,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
             <div className="min-h-screen bg-white">
                 <Navbar />
                 <div className="pt-48 px-6 text-center">
-                    <h2 className="text-4xl font-black text-background-dark uppercase tracking-tighter">Profile Not Authorized</h2>
+                    <h2 className="text-4xl font-black text-black uppercase tracking-tighter">Profile Not Authorized</h2>
                     <p className="text-text-muted mt-4 font-lora italic text-xl">The mission parameters for this individual are currently restricted.</p>
                     <Link href="/" className="mt-12 inline-block text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-primary pb-2 hover:text-primary transition-colors">
                         Return to Command
@@ -90,7 +90,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
     const joinedDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '';
 
     return (
-        <div className="min-h-screen bg-white text-background-dark font-inter selection:bg-primary/30 antialiased overflow-x-hidden">
+        <div className="min-h-screen bg-white text-black font-inter selection:bg-primary/30 antialiased overflow-x-hidden">
             <Navbar />
 
             {/* Editorial Profile Header */}
@@ -157,7 +157,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                         {/* Action Stack */}
                         <div className="flex flex-col gap-4 shrink-0 w-full md:w-auto">
                             {isSeller && !isSelf && (
-                                <button className="h-16 px-12 bg-background-dark text-white text-[11px] font-black uppercase tracking-[0.4em] hover:bg-[#c9a227] transition-all duration-500">
+                                <button className="h-16 px-12 bg-black text-white text-[11px] font-black uppercase tracking-[0.4em] hover:bg-[#c9a227] transition-all duration-500">
                                     Initiate Contract
                                 </button>
                             )}
@@ -291,7 +291,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                                     {reviews.map((rev: any) => (
                                         <div key={rev.id} className="relative p-10 bg-black/2">
                                             <div className="absolute -left-2 top-10 bottom-10 w-[2px] bg-[#c9a227]" />
-                                            <p className="text-2xl text-background-dark font-lora italic leading-relaxed mb-8">&ldquo;{rev.comment}&rdquo;</p>
+                                            <p className="text-2xl text-black font-lora italic leading-relaxed mb-8">&ldquo;{rev.comment}&rdquo;</p>
                                             <div className="flex items-center justify-between">
                                                 <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">— {rev.reviewer?.profile?.fullName || 'Anonymous Agent'}</span>
                                                 <div className="flex gap-1 text-[#c9a227]">

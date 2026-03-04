@@ -70,7 +70,7 @@ function SearchPageContent() {
     const categories = ['All Categories', 'Design', 'Development', 'Marketing', 'Writing', 'AI & ML', 'Business'];
 
     return (
-        <div className="flex flex-col min-h-screen bg-white text-background-dark font-inter selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-black font-inter selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1" style={{ paddingTop: 72 }}>
@@ -82,7 +82,7 @@ function SearchPageContent() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8 }}
                         >
-                            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-background-dark mb-4 uppercase">
+                            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-black mb-4 uppercase">
                                 Talent Discovery
                             </h1>
                             <p className="text-lg md:text-xl text-text-muted font-medium mb-12 font-lora italic opacity-70">
@@ -98,11 +98,11 @@ function SearchPageContent() {
                                         placeholder="Find Agency, Skills, or Names..."
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
-                                        className="flex-1 bg-transparent border-none px-4 py-2 text-background-dark placeholder:text-text-muted/30 text-lg font-medium outline-none"
+                                        className="flex-1 bg-transparent border-none px-4 py-2 text-black placeholder:text-text-muted/30 text-lg font-medium outline-none"
                                     />
                                     <button
                                         type="submit"
-                                        className="px-8 py-2 bg-background-dark text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-primary transition-all shadow-lg"
+                                        className="px-8 py-2 bg-black text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-primary transition-all shadow-lg"
                                     >
                                         Execute
                                     </button>
@@ -121,7 +121,7 @@ function SearchPageContent() {
                                 onClick={() => setCategory(cat)}
                                 className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 relative py-2 ${category === cat
                                     ? 'text-primary'
-                                    : 'text-text-muted hover:text-background-dark'
+                                    : 'text-text-muted hover:text-black'
                                     }`}
                             >
                                 {cat}
@@ -148,7 +148,7 @@ function SearchPageContent() {
                             className="text-center py-32 border-2 border-dashed border-border-light/40 rounded-[2.5rem]"
                         >
                             <span className="material-symbols-outlined text-6xl text-text-muted/20 mb-6">database_off</span>
-                            <h3 className="text-2xl font-black text-background-dark mb-4 uppercase tracking-tighter">No Talent Found</h3>
+                            <h3 className="text-2xl font-black text-black mb-4 uppercase tracking-tighter">No Talent Found</h3>
                             <p className="text-text-muted font-lora italic">Expand your search criteria or explore other categories.</p>
                         </motion.div>
                     ) : (
@@ -180,7 +180,7 @@ function SearchPageContent() {
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center bg-[#f0f0f2]">
-                                                        <span className="text-4xl font-black text-background-dark/10 tracking-tighter">G.</span>
+                                                        <span className="text-4xl font-black text-black/10 tracking-tighter">G.</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -197,11 +197,11 @@ function SearchPageContent() {
                                                     </div>
                                                 </div>
 
-                                                <h3 className="text-3xl font-black text-background-dark mb-4 tracking-tighter uppercase leading-none group-hover:text-primary transition-colors">
+                                                <h3 className="text-3xl font-black text-black mb-4 tracking-tighter uppercase leading-none group-hover:text-primary transition-colors">
                                                     {gig.seller?.profile?.fullName || 'EXPERT TALENT'}
                                                 </h3>
 
-                                                <p className="text-xl text-background-dark font-bold tracking-tight mb-4 leading-tight opacity-90">
+                                                <p className="text-xl text-black font-bold tracking-tight mb-4 leading-tight opacity-90">
                                                     {gig.title}
                                                 </p>
 

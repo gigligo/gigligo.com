@@ -67,7 +67,7 @@ function JobListContent() {
     const handleSearch = (e: React.FormEvent) => { e.preventDefault(); setPage(1); loadJobs(); };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white text-background-dark font-inter selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-black font-inter selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
             <main className="flex-1" style={{ paddingTop: 72 }}>
 
@@ -91,7 +91,7 @@ function JobListContent() {
                                     value={search}
                                     onChange={e => setSearch(e.target.value)}
                                     placeholder="Find your next mission."
-                                    className="w-full bg-transparent border-0 border-b-2 border-black/5 py-10 text-4xl md:text-7xl font-black text-background-dark placeholder:text-black/5 outline-none focus:border-[#c9a227] transition-colors text-center"
+                                    className="w-full bg-transparent border-0 border-b-2 border-black/5 py-10 text-4xl md:text-7xl font-black text-black placeholder:text-black/5 outline-none focus:border-[#c9a227] transition-colors text-center"
                                 />
                                 <button type="submit" className="absolute right-0 bottom-4 md:bottom-10 group flex items-center gap-2">
                                     <span className="text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Submit</span>
@@ -114,7 +114,7 @@ function JobListContent() {
                                 key={cat} onClick={() => { setCategory(cat); setPage(1); }}
                                 className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all relative py-2 ${category === cat
                                     ? 'text-[#c9a227]'
-                                    : 'text-text-muted hover:text-background-dark'
+                                    : 'text-text-muted hover:text-black'
                                     }`}
                             >
                                 {cat}
@@ -141,7 +141,7 @@ function JobListContent() {
                             className="text-center py-32 border-2 border-dashed border-border-light/40 rounded-[2.5rem]"
                         >
                             <span className="material-symbols-outlined text-6xl text-text-muted/20 mb-6">work_off</span>
-                            <h3 className="text-2xl font-black text-background-dark mb-4 uppercase tracking-tighter">No Missions Available</h3>
+                            <h3 className="text-2xl font-black text-black mb-4 uppercase tracking-tighter">No Missions Available</h3>
                             <p className="text-text-muted font-lora italic">Refine your strategic parameters or check back for new authorizations.</p>
                         </motion.div>
                     ) : (
@@ -175,7 +175,7 @@ function JobListContent() {
                                                     <span className="text-[10px] font-bold text-text-muted/60 uppercase tracking-widest">{job.category}</span>
                                                 </div>
 
-                                                <h3 className="text-4xl md:text-5xl font-black text-background-dark group-hover:text-primary transition-colors line-clamp-2 mb-6 tracking-tighter uppercase leading-[0.9]">
+                                                <h3 className="text-4xl md:text-5xl font-black text-black group-hover:text-primary transition-colors line-clamp-2 mb-6 tracking-tighter uppercase leading-[0.9]">
                                                     {job.title}
                                                 </h3>
 
@@ -231,7 +231,7 @@ function JobListContent() {
                                     key={p} onClick={() => { setPage(p); window.scrollTo({ top: 300, behavior: 'smooth' }); }}
                                     className={`text-xl font-black transition-all relative py-2 ${page === p
                                         ? 'text-[#c9a227]'
-                                        : 'text-text-muted hover:text-background-dark'
+                                        : 'text-text-muted hover:text-black'
                                         }`}>
                                     {String(p).padStart(2, '0')}
                                     {page === p && (
