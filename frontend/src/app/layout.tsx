@@ -31,14 +31,23 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://gigligo.com',
     siteName: 'Gigligo',
-    title: 'Gigligo | Create • Chat • Start',
-    description: 'Access an exclusive network of high-end talent and serious business opportunities. Elevate your projects with GIGLIGO\'s curated elite.',
+    title: 'Gigligo | Built for the 1%',
+    description: 'Access an exclusive network of high-end talent and serious business opportunities. Elevate your projects with Gigligo\'s curated elite.',
+    images: [
+      {
+        url: 'https://gigligo.com/auth-bg.jpg', // Temporarily using the premium auth background
+        width: 1200,
+        height: 630,
+        alt: 'Gigligo - The Elite Freelance Network',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gigligo | Create • Chat • Start',
+    title: 'Gigligo | Built for the 1%',
     description: 'Access an exclusive network of high-end talent and serious business opportunities.',
     creator: '@gigligo',
+    images: ['https://gigligo.com/auth-bg.jpg'],
   },
   robots: {
     index: true,
