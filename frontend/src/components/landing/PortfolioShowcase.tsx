@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -46,7 +47,7 @@ const containerVariants = {
     }
 };
 
-const itemVariants = {
+const itemVariants: import('framer-motion').Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { type: "spring", damping: 20, stiffness: 100 } }
 };
@@ -107,10 +108,12 @@ export function PortfolioShowcase() {
                                     {/* Subtle Dark Overlay for contrast */}
                                     <div className="absolute inset-0 bg-black/5 z-10 group-hover:bg-transparent transition-colors duration-500" />
 
-                                    <img
+                                    <Image
                                         src={item.img}
                                         alt={item.title}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
 
                                     {/* Hover Tag */}
@@ -130,8 +133,8 @@ export function PortfolioShowcase() {
                                             by {item.author}
                                         </p>
                                     </div>
-                                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0">
-                                        <img src={item.avatar} alt={item.author} className="w-full h-full object-cover" />
+                                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 relative">
+                                        <Image src={item.avatar} alt={item.author} fill sizes="48px" className="object-cover" />
                                     </div>
                                 </div>
                             </Link>

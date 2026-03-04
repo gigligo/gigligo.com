@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const trustedLogos = [
     { alt: 'Amazon', src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC0A41-4_rZ4B8gH6sRAjYT6QuySAkWzCaYUBOKOxHPxrMZd2UWUwqkPWD3olnxDZ4FqVX1Ie-vnyyVkSLLWpGz2kVWNC_M80QPvm_HcMmfYwV77RevX5b1tDuqobgwpITp0JZlXVKIh-ktn7CooMpDvFB-zkekoYBeeNYfzO_ZBprD-1U0MvAap-t6RBkpyK-hAufzVZErjFc1mW19umZ-FFult5XAoD-L5CsCHj_XOzoE6njwUfq8ogDyvAtLqzB4Q5L_gj7mr30' },
@@ -37,8 +38,8 @@ export function InfiniteLogoCarousel() {
                     }}
                 >
                     {carouselItems.map((logo, idx) => (
-                        <div key={`${logo.alt}-${idx}`} className="px-8 grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-300">
-                            <img src={logo.src} alt={logo.alt} className="h-6 md:h-8 lg:h-10 object-contain mix-blend-multiply" />
+                        <div key={`${logo.alt}-${idx}`} className="px-8 grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-300 relative h-6 md:h-8 lg:h-10 w-32 shrink-0">
+                            <Image src={logo.src} alt={logo.alt} fill sizes="(max-width: 768px) 128px, 128px" className="object-contain mix-blend-multiply" />
                         </div>
                     ))}
                 </motion.div>
