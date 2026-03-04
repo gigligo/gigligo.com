@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { profileApi, reviewApi } from '@/lib/api';
+import { motion } from 'framer-motion';
 
 export default function PublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params);
@@ -60,8 +61,8 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-background-light flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-[#c9a227] border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -69,13 +70,13 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
     const user = profile?.user;
     if (!user) {
         return (
-            <div className="min-h-screen bg-background-light">
+            <div className="min-h-screen bg-white">
                 <Navbar />
-                <div className="pt-32 px-6 text-center">
-                    <h2 className="text-2xl font-bold text-text-main">User Not Found</h2>
-                    <p className="text-text-muted mt-2">The profile you&apos;re looking for doesn&apos;t exist.</p>
-                    <Link href="/" className="mt-8 inline-block bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-dark transition-colors">
-                        Return Home
+                <div className="pt-48 px-6 text-center">
+                    <h2 className="text-4xl font-black text-background-dark uppercase tracking-tighter">Profile Not Authorized</h2>
+                    <p className="text-text-muted mt-4 font-lora italic text-xl">The mission parameters for this individual are currently restricted.</p>
+                    <Link href="/" className="mt-12 inline-block text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-primary pb-2 hover:text-primary transition-colors">
+                        Return to Command
                     </Link>
                 </div>
             </div>
@@ -89,110 +90,97 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
     const joinedDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '';
 
     return (
-        <div className="min-h-screen bg-background-light text-text-main font-sans antialiased">
+        <div className="min-h-screen bg-white text-background-dark font-inter selection:bg-primary/30 antialiased overflow-x-hidden">
             <Navbar />
 
-            {/* Profile Hero Header */}
-            <section className="relative bg-slate-900 text-white overflow-hidden" style={{ paddingTop: 96 }}>
-                {/* Abstract Background */}
-                <div className="absolute inset-0 opacity-3">
-                    <div className="absolute top-0 right-0 w-96 h-96 border border-white/20 rounded-full -translate-y-1/2 translate-x-1/3"></div>
-                    <div className="absolute bottom-0 left-0 w-56 h-56 border border-white/10 rotate-45 translate-y-1/3"></div>
-                </div>
-
-                <div className="max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-24 relative z-10">
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-8">
-                        {/* Avatar */}
-                        <div className="w-28 h-28 md:w-32 md:h-32 rounded-full ring-4 ring-primary/30 overflow-hidden shrink-0 shadow-2xl shadow-primary/10">
-                            {profile?.avatarUrl ? (
-                                <Image src={profile.avatarUrl} alt={profile.fullName || user.fullName} fill className="object-cover" sizes="160px" />
-                            ) : (
-                                <div className="w-full h-full bg-white/10 flex items-center justify-center text-5xl font-black text-white">
-                                    {(profile?.fullName || user?.fullName)?.[0] || 'U'}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Name & Info */}
-                        <div className="flex-1">
-                            <div className="flex items-center gap-4 mb-3">
-                                <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
-                                    {profile?.fullName || user?.fullName}
-                                </h1>
-                                {(user?.isFoundingMember || user?.role === 'PRO' || profile?.sellerLevel === 'TOP_RATED') && (
-                                    <div className="flex items-center gap-1 px-3 py-1 bg-linear-to-r from-amber-400 to-yellow-600 text-white rounded-lg font-bold text-sm shadow-[0_0_15px_rgba(251,191,36,0.2)]">
-                                        <span className="material-symbols-outlined text-[18px]">verified</span>
-                                        <span>{user?.isFoundingMember ? 'Founding PRO' : 'PRO'}</span>
+            {/* Editorial Profile Header */}
+            <section className="bg-white pt-40 pb-24 border-b border-black/5">
+                <div className="max-w-6xl mx-auto px-6">
+                    <div className="flex flex-col md:flex-row items-center md:items-end gap-16">
+                        {/* B&W Portrait with Gold Stake */}
+                        <div className="relative group">
+                            <div className="absolute -left-4 top-10 bottom-10 w-[2px] bg-[#c9a227] hidden md:block" />
+                            <div className="w-64 h-80 relative overflow-hidden bg-black/5">
+                                {profile?.avatarUrl ? (
+                                    <Image
+                                        src={profile.avatarUrl}
+                                        alt={profile.fullName || user.fullName}
+                                        fill
+                                        className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                                        sizes="300px"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-8xl font-black text-black/5 uppercase">
+                                        {(profile?.fullName || user?.fullName)?.[0]}
                                     </div>
                                 )}
                             </div>
-                            {profile?.bio && (
-                                <p className="text-white/50 text-lg font-normal italic max-w-xl leading-relaxed mb-5">
-                                    &ldquo;{profile.bio.slice(0, 120)}{profile.bio.length > 120 ? '...' : ''}&rdquo;
-                                </p>
-                            )}
-                            <div className="flex flex-wrap items-center gap-4 text-sm text-white/40">
-                                {profile.location && (
-                                    <span className="flex items-center gap-1.5">
-                                        <span className="material-symbols-outlined text-lg">location_on</span>
-                                        {profile.location}
+                        </div>
+
+                        {/* Identity Pillar */}
+                        <div className="flex-1 text-center md:text-left">
+                            <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+                                <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-tight">
+                                    {profile?.fullName || user?.fullName}
+                                </h1>
+                                {profile.sellerLevel === 'TOP_RATED' && (
+                                    <span className="inline-flex items-center gap-2 px-6 py-2 bg-[#c9a227] text-white text-[10px] font-black uppercase tracking-widest rounded-full self-center md:self-auto">
+                                        Elite Operative
                                     </span>
                                 )}
-                                <span className="flex items-center gap-1.5">
-                                    <span className="material-symbols-outlined text-lg">calendar_today</span>
-                                    Joined {joinedDate}
-                                </span>
+                            </div>
+
+                            <p className="text-2xl md:text-3xl text-text-muted font-lora italic leading-relaxed mb-10 max-w-3xl">
+                                {profile?.bio || "No mission bio provided yet."}
+                            </p>
+
+                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-10">
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c9a227] mb-1">Status</span>
+                                    <span className="text-lg font-black uppercase tracking-tighter">Active Agent</span>
+                                </div>
+                                {profile.location && (
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c9a227] mb-1">Base</span>
+                                        <span className="text-lg font-black uppercase tracking-tighter">{profile.location}</span>
+                                    </div>
+                                )}
                                 {profile.hourlyRate > 0 && (
-                                    <span className="flex items-center gap-1.5 text-primary font-semibold">
-                                        PKR {profile.hourlyRate}/hr
-                                    </span>
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c9a227] mb-1">Rate</span>
+                                        <span className="text-lg font-black uppercase tracking-tighter">PKR {profile.hourlyRate}/Hr</span>
+                                    </div>
                                 )}
                             </div>
                         </div>
 
-                        {/* Action Buttons & Social */}
-                        <div className="flex flex-col gap-3 items-start md:items-end shrink-0">
-                            <div className="flex gap-3">
-                                {isSeller && (
-                                    <button className="h-12 px-8 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20 text-sm tracking-wide">
-                                        Hire Me
-                                    </button>
-                                )}
-                                <button className="h-12 px-6 bg-white/5 border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors text-sm">
-                                    Message
+                        {/* Action Stack */}
+                        <div className="flex flex-col gap-4 shrink-0 w-full md:w-auto">
+                            {isSeller && !isSelf && (
+                                <button className="h-16 px-12 bg-background-dark text-white text-[11px] font-black uppercase tracking-[0.4em] hover:bg-[#c9a227] transition-all duration-500">
+                                    Initiate Contract
                                 </button>
-                            </div>
-                            <div className="flex items-center gap-2 mt-2">
-                                {[
-                                    { icon: 'language', href: profile.websiteUrl },
-                                    { icon: 'link', href: profile.linkedinUrl },
-                                    { icon: 'mail', href: profile.githubUrl }
-                                ].filter(s => s.href).map((link, i) => (
-                                    <a key={i} href={link.href} target="_blank" rel="noreferrer" className="w-9 h-9 flex items-center justify-center border border-white/10 rounded-full hover:bg-white/5 hover:border-white/20 transition-all text-white/40 hover:text-white/80">
-                                        <span className="material-symbols-outlined text-lg">{link.icon}</span>
-                                    </a>
-                                ))}
-                            </div>
+                            )}
+                            <button className="h-16 px-12 border-2 border-black text-[11px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-500">
+                                Message Agent
+                            </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Main Content */}
-            <div className="max-w-5xl mx-auto px-6 md:px-12 py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                    {/* Left Sidebar */}
-                    <div className="space-y-6">
-                        {/* Specialization */}
+            {/* Tactical Briefing - Skills & Portfolio */}
+            <div className="max-w-6xl mx-auto px-6 py-32">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-24">
+
+                    {/* Sidebar Stats */}
+                    <div className="space-y-16">
                         {profile.skills && profile.skills.length > 0 && (
-                            <div className="bg-white border border-slate-200 rounded-xl p-6">
-                                <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-primary text-lg">category</span>
-                                    Specialization
-                                </h3>
-                                <div className="flex flex-wrap gap-2">
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c9a227] mb-8">Specializations</h3>
+                                <div className="flex flex-col gap-4">
                                     {profile.skills.map((skill: string) => (
-                                        <span key={skill} className="px-3 py-1.5 bg-background-light border border-border-light rounded-lg text-xs font-semibold text-text-main">
+                                        <span key={skill} className="text-sm font-black uppercase tracking-tighter border-b border-black/5 pb-2">
                                             {skill}
                                         </span>
                                     ))}
@@ -200,153 +188,124 @@ export default function PublicProfilePage({ params }: { params: Promise<{ id: st
                             </div>
                         )}
 
-                        {/* Education */}
                         {educations?.length > 0 && (
-                            <div className="bg-surface-light border border-border-light rounded-xl p-6">
-                                <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-primary text-lg">school</span>
-                                    Education
-                                </h3>
-                                <div className="space-y-3">
+                            <div>
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c9a227] mb-8">Authorizations</h3>
+                                <div className="space-y-8">
                                     {educations.map((edu: any) => (
                                         <div key={edu.id}>
-                                            <p className="font-bold text-text-main text-sm">{edu.degree}</p>
-                                            <p className="text-xs text-text-muted">{edu.institution}</p>
-                                            <p className="text-[11px] text-text-muted/60">{edu.startYear} – {edu.endYear || 'Present'}</p>
+                                            <p className="text-sm font-black uppercase tracking-tighter leading-none mb-2">{edu.degree}</p>
+                                            <p className="text-xs text-text-muted font-lora italic">{edu.institution}</p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         )}
 
-                        {/* Verification */}
-                        <div className="bg-white border border-slate-200 rounded-xl p-6">
-                            <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary text-lg">verified_user</span>
-                                Verifications
-                            </h3>
-                            <div className="space-y-3">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-medium text-text-main">Payment Method</span>
-                                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${user.paymentVerified ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-background-light text-text-muted border border-border-light'}`}>
-                                        {user.paymentVerified ? 'Verified' : 'Unverified'}
-                                    </span>
+                        <div>
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c9a227] mb-8">Verification</h3>
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-text-muted">
+                                    <span>Identity</span>
+                                    <span className={user.kycStatus === 'APPROVED' ? 'text-[#c9a227]' : ''}>{user.kycStatus === 'APPROVED' ? '[SECURE]' : '[PENDING]'}</span>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-medium text-text-main">Identity (KYC)</span>
-                                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${user.kycStatus === 'APPROVED' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-background-light text-text-muted border border-border-light'}`}>
-                                        {user.kycStatus === 'APPROVED' ? 'Verified' : 'Unverified'}
-                                    </span>
+                                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-text-muted">
+                                    <span>Payment</span>
+                                    <span className={user.paymentVerified ? 'text-[#c9a227]' : ''}>{user.paymentVerified ? '[VERIFIED]' : '[UNVERIFIED]'}</span>
                                 </div>
                             </div>
                         </div>
-
-                        {/* Languages */}
-                        {profile.languages?.length > 0 && (
-                            <div className="bg-surface-light border border-border-light rounded-xl p-6">
-                                <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-primary text-lg">translate</span>
-                                    Languages
-                                </h3>
-                                <ul className="space-y-2">
-                                    {profile.languages.map((lang: string, idx: number) => (
-                                        <li key={idx} className="text-sm text-text-main font-medium flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
-                                            {lang}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
                     </div>
 
-                    {/* Right Content Area */}
-                    <div className="lg:col-span-2 space-y-8">
-                        {/* About */}
-                        <div className="bg-white border border-slate-200 rounded-xl p-8">
-                            <h2 className="text-xl font-bold text-text-main mb-5 tracking-tight">About</h2>
-                            <p className="text-text-muted leading-relaxed text-[15px] whitespace-pre-line">
-                                {user.profile?.bio || `${user.fullName} hasn't added a bio yet.`}
-                            </p>
-                        </div>
+                    {/* Main Intel Area */}
+                    <div className="lg:col-span-3 space-y-32">
 
-                        {/* Selected Works / Portfolio */}
+                        {/* Selected Case Studies */}
                         {portfolioItems?.length > 0 && (
-                            <div className="bg-surface-light border border-border-light rounded-xl p-8">
-                                <div className="flex items-center justify-between mb-6">
-                                    <h2 className="text-xl font-bold text-text-main tracking-tight">Selected Works</h2>
-                                    <span className="text-xs text-primary font-bold uppercase tracking-wider cursor-pointer hover:text-primary-dark transition-colors">View All</span>
+                            <div>
+                                <div className="flex items-center justify-between mb-16 border-b border-black pb-8">
+                                    <h2 className="text-4xl font-black uppercase tracking-tighter">Case Studies</h2>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic">Selected Assets</span>
                                 </div>
-                                <div className="grid sm:grid-cols-2 gap-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                                     {portfolioItems.map((port: any) => (
-                                        <div key={port.id} className="border border-border-light rounded-xl overflow-hidden group bg-background-light hover:border-primary/30 transition-all duration-300">
-                                            <div className="h-44 overflow-hidden bg-background-light">
+                                        <div key={port.id} className="group cursor-pointer">
+                                            <div className="aspect-square relative overflow-hidden bg-black/5 mb-8">
                                                 {port.imageUrl ? (
-                                                    <Image src={`${port.imageUrl}`} alt={port.title} fill className="object-cover group-hover:scale-105 transition duration-500" sizes="(max-width: 768px) 100vw, 33vw" />
+                                                    <Image
+                                                        src={`${port.imageUrl}`}
+                                                        alt={port.title}
+                                                        fill
+                                                        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                                                        sizes="400px"
+                                                    />
                                                 ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-text-muted/30">
-                                                        <span className="material-symbols-outlined text-4xl">image</span>
+                                                    <div className="w-full h-full flex items-center justify-center text-4xl font-black text-black/5 grayscale uppercase">
+                                                        Intel Asset
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="p-5">
-                                                <h3 className="font-bold text-text-main mb-1 group-hover:text-primary transition-colors">{port.title}</h3>
-                                                <p className="text-sm text-text-muted line-clamp-2 leading-relaxed">{port.description}</p>
-                                                {port.linkUrl && (
-                                                    <a href={port.linkUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark mt-3 transition-colors">
-                                                        View Live
-                                                        <span className="material-symbols-outlined text-sm">open_in_new</span>
-                                                    </a>
-                                                )}
-                                            </div>
+                                            <h3 className="text-2xl font-black uppercase tracking-tighter mb-4 transition-colors group-hover:text-[#c9a227]">{port.title}</h3>
+                                            <p className="text-lg text-text-muted font-lora italic leading-snug line-clamp-3">{port.description}</p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         )}
 
-                        {/* Experience */}
+                        {/* Mission Timeline */}
                         {experiences?.length > 0 && (
-                            <div className="bg-surface-light border border-border-light rounded-xl p-8">
-                                <h2 className="text-xl font-bold text-text-main mb-6 tracking-tight flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-text-muted/40">work</span>
-                                    Experience
-                                </h2>
-                                <div className="space-y-6">
+                            <div>
+                                <div className="flex items-center justify-between mb-16 border-b border-black pb-8">
+                                    <h2 className="text-4xl font-black uppercase tracking-tighter">Mission Log</h2>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic">Operational History</span>
+                                </div>
+                                <div className="space-y-20">
                                     {experiences.map((exp: any) => (
-                                        <div key={exp.id} className="relative pl-6 border-l-2 border-border-light">
-                                            <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-1.5 ring-4 ring-surface-light"></div>
-                                            <h3 className="font-bold text-text-main">{exp.title}</h3>
-                                            <p className="text-text-muted font-medium text-sm mb-1">{exp.company}</p>
-                                            <p className="text-xs text-text-muted/60 mb-2">
-                                                {new Date(exp.startDate).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })} – {exp.isCurrent ? 'Present' : exp.endDate ? new Date(exp.endDate).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }) : ''}
-                                            </p>
-                                            <p className="text-sm text-text-muted leading-relaxed">{exp.description}</p>
+                                        <div key={exp.id} className="flex flex-col md:flex-row gap-8 relative">
+                                            <div className="absolute -left-6 top-1 bottom-1 w-[2px] bg-[#c9a227] hidden md:block" />
+                                            <div className="md:w-48 shrink-0">
+                                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c9a227]">
+                                                    {new Date(exp.startDate).getFullYear()} — {exp.isCurrent ? 'Current' : new Date(exp.endDate).getFullYear()}
+                                                </span>
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="text-3xl font-black uppercase tracking-tighter mb-2">{exp.title}</h3>
+                                                <p className="text-sm font-black uppercase tracking-tighter text-text-muted mb-6">{exp.company}</p>
+                                                <p className="text-xl text-text-muted font-lora italic leading-relaxed max-w-2xl">{exp.description}</p>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         )}
 
-                        {/* Reviews */}
+                        {/* Debriefing Reviews */}
                         {reviews.length > 0 && (
-                            <div className="bg-surface-light border border-border-light rounded-xl p-8">
-                                <h2 className="text-xl font-bold text-text-main mb-6 tracking-tight">Client Reviews</h2>
-                                <div className="space-y-4">
+                            <div>
+                                <div className="flex items-center justify-between mb-16 border-b border-black pb-8">
+                                    <h2 className="text-4xl font-black uppercase tracking-tighter">Commendations</h2>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic">Mission Feedback</span>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                                     {reviews.map((rev: any) => (
-                                        <div key={rev.id} className="p-5 border border-border-light rounded-xl bg-background-light">
-                                            <div className="flex items-center gap-0.5 mb-3">
-                                                {[1, 2, 3, 4, 5].map(star => (
-                                                    <span key={star} className={`material-symbols-outlined text-lg ${star <= rev.rating ? 'text-primary' : 'text-border-light'}`} style={{ fontVariationSettings: star <= rev.rating ? "'FILL' 1" : "'FILL' 0" }}>star</span>
-                                                ))}
+                                        <div key={rev.id} className="relative p-10 bg-black/2">
+                                            <div className="absolute -left-2 top-10 bottom-10 w-[2px] bg-[#c9a227]" />
+                                            <p className="text-2xl text-background-dark font-lora italic leading-relaxed mb-8">&ldquo;{rev.comment}&rdquo;</p>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">— {rev.reviewer?.profile?.fullName || 'Anonymous Agent'}</span>
+                                                <div className="flex gap-1 text-[#c9a227]">
+                                                    {[...Array(rev.rating)].map((_, i) => (
+                                                        <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                                                    ))}
+                                                </div>
                                             </div>
-                                            <p className="text-sm text-text-muted italic leading-relaxed">&ldquo;{rev.comment}&rdquo;</p>
-                                            <p className="text-xs text-text-muted/60 mt-3 font-semibold">— {rev.reviewer?.profile?.fullName || 'Anonymous'}</p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         )}
+
                     </div>
                 </div>
             </div>

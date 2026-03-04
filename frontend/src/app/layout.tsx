@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, Outfit, Lora } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,6 +14,14 @@ const outfit = Outfit({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
+});
+
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -75,7 +83,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#f8f7f6" />
       </head>
-      <body className={`${inter.className} min-h-screen bg-slate-50 text-text-main flex flex-col items-center w-full`}>
+      <body className={`${inter.variable} ${outfit.variable} ${lora.variable} ${inter.className} min-h-screen bg-slate-50 text-text-main flex flex-col items-center w-full`}>
         <div className="w-full max-w-[1600px] bg-background-light min-h-screen flex flex-col relative shadow-2xl border-x border-border-light/30">
           <Providers>
             <SmoothScrollProvider>
