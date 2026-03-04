@@ -1,27 +1,20 @@
 @import "tailwindcss";
 
-/* stylelint-disable-next-line at-rule-no-unknown */
-@custom-variant dark (&:is(.dark *));
-
-/* stylelint-disable-next-line at-rule-no-unknown */
+/* Minimal V3 Theme Config */
 @theme {
   --color-primary: #007CFF;
   --color-primary-dark: #0062D1;
+  --color-gold: #C9A227;
   --color-background-light: #FFFFFF;
-  --color-background-dark: #040300;
   --color-surface-light: #FFFFFF;
-  --color-surface-dark: #040300;
   --color-nav-bg: #FFFFFF;
-  --color-border-light: #0403001A;
-  /* 10% black */
-  --color-border-dark: #FFFFFF1A;
-  /* 10% white */
-  --color-text-main: #040300;
-  --color-text-muted: #04030099;
-  /* 60% black */
+  --color-border-light: rgba(0, 0, 0, 0.08);
+  --color-text-main: #0B0B0B;
+  --color-text-muted: rgba(11, 11, 11, 0.6);
 
   --font-display: 'Inter', sans-serif;
   --font-sans: 'Inter', sans-serif;
+  --font-lora: 'Lora', serif;
 
   --radius-DEFAULT: 0.5rem;
   --radius-lg: 1rem;
@@ -30,15 +23,19 @@
   --radius-full: 9999px;
 }
 
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+  background-color: #f8f7f6;
+  /* Minimal off-white foundation */
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--color-background-light);
   color: var(--color-text-main);
-}
-
-.dark body {
-  background: var(--color-background-dark);
-  color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Material Symbols Adjustments */
@@ -54,23 +51,10 @@ body {
   font-variation-settings: 'FILL' 1;
 }
 
-/* Abstract geometric pattern for background */
-.bg-pattern {
-  background-image: radial-gradient(var(--color-primary) 0.5px, transparent 0.5px), radial-gradient(var(--color-primary) 0.5px, var(--color-background-light) 0.5px);
-  background-size: 20px 20px;
-  background-position: 0 0, 10px 10px;
-  opacity: 0.03;
-}
-
-.dark .bg-pattern {
-  background-image: radial-gradient(var(--color-primary) 0.5px, transparent 0.5px), radial-gradient(var(--color-primary) 0.5px, var(--color-background-dark) 0.5px);
-  opacity: 0.05;
-}
-
-/* Custom scrollbar for webkit */
+/* Premium Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -78,25 +62,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
-}
-
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
+  background: var(--color-gold);
 }
 
 /* Skeleton Shimmer Animation */
@@ -112,14 +84,14 @@ html {
 
 .skeleton-shimmer {
   background: linear-gradient(90deg,
-      rgba(255, 255, 255, 0.02) 0%,
-      rgba(255, 255, 255, 0.06) 40%,
-      rgba(255, 255, 255, 0.02) 100%);
+      rgba(0, 0, 0, 0.02) 0%,
+      rgba(0, 0, 0, 0.05) 40%,
+      rgba(0, 0, 0, 0.02) 100%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 2s ease-in-out infinite;
 }
 
-/* Scrollbar hide utility */
+/* Utilities */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -127,4 +99,10 @@ html {
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Text Selection */
+::selection {
+  background: rgba(201, 162, 39, 0.2);
+  color: inherit;
 }
