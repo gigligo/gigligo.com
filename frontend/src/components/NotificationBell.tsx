@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import { Bell } from 'lucide-react';
 import { notificationApi } from '@/lib/api';
 import { formatDistanceToNow } from 'date-fns';
-import { io, Socket } from 'socket.io-client';
 import { useRouter } from 'next/navigation';
 
 interface Notification {
@@ -27,36 +26,9 @@ export default function NotificationBell() {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
-    const socketRef = useRef<Socket | null>(null);
     const token = (session as any)?.accessToken;
 
-    // Connect to WebSocket for real-time notifications
-    useEffect(() => {
-        if (!token) return;
-
-        const socket = io(`${API_URL}/notifications`, {
-            auth: { token },
-            transports: ['websocket', 'polling'],
-        });
-
-        socket.on('newNotification', (notification: Notification) => {
-            setNotifications(prev => [notification, ...prev]);
-            setUnreadCount(prev => prev + 1);
-        });
-
-        socket.on('connect_error', () => {
-            // Fallback to polling if WebSocket fails
-        });
-
-        socketRef.current = socket;
-
-        return () => {
-            socket.disconnect();
-            socketRef.current = null;
-        };
-    }, [token]);
-
-    // Fetch unread count every 30s as fallback
+    // Fetch unread count every 30s
     useEffect(() => {
         if (!token) return;
         const fetchCount = async () => {
