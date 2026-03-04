@@ -98,7 +98,7 @@ export default function CheckoutPage({ params, searchParams }: { params: { gigId
                     <div className="lg:col-span-1">
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden sticky top-24">
                             <div className="p-6">
-                                <Button size="lg" variant="accent" fullWidth className="text-base py-4 mb-4">
+                                <Button size="lg" variant="primary" fullWidth className="bg-accent hover:bg-accent/90 text-white text-base py-4 mb-4 border-none">
                                     Pay ${total}
                                 </Button>
                                 <p className="text-[10px] text-center text-muted mb-6">
