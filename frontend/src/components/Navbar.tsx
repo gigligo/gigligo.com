@@ -12,23 +12,8 @@ export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [credits, setCredits] = useState<number | null>(null);
-    const [darkMode, setDarkMode] = useState(false);
     const [moreOpen, setMoreOpen] = useState(false);
 
-    useEffect(() => {
-        const stored = localStorage.getItem('gigligo_dark_mode');
-        if (stored === 'true') {
-            document.documentElement.classList.add('dark');
-            setDarkMode(true);
-        }
-    }, []);
-
-    const toggleDarkMode = () => {
-        const newVal = !darkMode;
-        setDarkMode(newVal);
-        document.documentElement.classList.toggle('dark', newVal);
-        localStorage.setItem('gigligo_dark_mode', String(newVal));
-    };
 
     const token = (session as any)?.accessToken;
     const role = (session as any)?.role;
@@ -71,31 +56,30 @@ export function Navbar() {
         <>
             <header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled
-                    ? 'bg-white/80 dark:bg-background-dark/80 backdrop-blur-xl border-border-light dark:border-white/10 py-3 shadow-lg shadow-black/5'
-                    : 'bg-white dark:bg-background-dark border-border-light dark:border-white/5 py-4'
+                        ? 'bg-white/80 backdrop-blur-xl border-gray-200 py-3 shadow-lg shadow-black/5'
+                        : 'bg-white border-gray-100 py-4'
                     }`}
                 style={{ height: scrolled ? 64 : 80 }}
             >
                 <div className="max-w-7xl mx-auto px-6 md:px-10 h-full flex items-center justify-between">
                     <div className="flex items-center gap-8">
                         <Link href="/" className="flex items-center">
-                            <Logo className="h-28 w-auto dark:hidden" variant="dark" />
-                            <Logo className="h-28 w-auto hidden dark:block" variant="white" />
+                            <Logo className="h-12 w-auto" variant="dark" />
                         </Link>
                         <nav className="hidden md:flex items-center gap-6">
-                            <Link href="/search" className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors">Explore</Link>
-                            <Link href="/register?role=SELLER" className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors">Become a Seller</Link>
-                            <Link href="/jobs" className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors">Browse Jobs</Link>
+                            <Link href="/search" className="text-text-muted text-sm font-semibold hover:text-primary transition-colors">Explore</Link>
+                            <Link href="/register?role=SELLER" className="text-text-muted text-sm font-semibold hover:text-primary transition-colors">Become a Seller</Link>
+                            <Link href="/jobs" className="text-text-muted text-sm font-semibold hover:text-primary transition-colors">Browse Jobs</Link>
                             <div className="relative group">
                                 <button
-                                    className="text-text-muted dark:text-text-muted/60 text-sm font-semibold hover:text-primary transition-colors flex items-center gap-1"
+                                    className="text-text-muted text-sm font-semibold hover:text-primary transition-colors flex items-center gap-1"
                                     onMouseEnter={() => setMoreOpen(true)}
                                     onMouseLeave={() => setMoreOpen(false)}
                                 >
                                     More <span className="material-symbols-outlined text-xs">expand_more</span>
                                 </button>
                                 <div
-                                    className={`absolute top-full left-0 mt-2 w-48 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-2 z-50 transition-all ${moreOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                                    className={`absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-2 z-50 transition-all ${moreOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
                                     onMouseEnter={() => setMoreOpen(true)}
                                     onMouseLeave={() => setMoreOpen(false)}
                                 >
@@ -103,7 +87,7 @@ export function Navbar() {
                                         <Link
                                             key={link.label}
                                             href={link.href}
-                                            className="block px-4 py-2.5 hover:bg-black/5 dark:hover:bg-white/10 text-sm font-medium text-text-main dark:text-white/80 hover:text-primary transition-colors mx-2 rounded-xl"
+                                            className="block px-4 py-2.5 hover:bg-black/5 text-sm font-medium text-text-main hover:text-primary transition-colors mx-2 rounded-xl"
                                         >
                                             {link.label}
                                         </Link>
@@ -123,31 +107,28 @@ export function Navbar() {
                                     </Link>
                                 )}
                                 <NotificationBell />
-                                <button onClick={toggleDarkMode} className="w-9 h-9 rounded-full border border-border-light dark:border-white/10 flex items-center justify-center text-text-muted dark:text-white/80 hover:text-primary hover:border-primary/30 transition-colors" aria-label="Toggle dark mode">
-                                    <span className="material-symbols-outlined text-[18px]">{darkMode ? 'light_mode' : 'dark_mode'}</span>
-                                </button>
                                 <div className="relative group ml-1">
                                     <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm cursor-pointer hover:scale-105 transition-transform shadow-md">
                                         {session.user?.name?.[0] || 'U'}
                                     </div>
-                                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-background-dark border border-border-light dark:border-white/10 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all z-50">
-                                        <div className="px-5 py-3 border-b border-border-light/50 dark:border-white/10 mb-2">
-                                            <p className="text-sm font-bold text-text-main dark:text-white truncate">{session.user?.name}</p>
-                                            <p className="text-xs text-text-muted dark:text-white/60 truncate mt-0.5">{session.user?.email}</p>
+                                    <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all z-50">
+                                        <div className="px-5 py-3 border-b border-gray-100 mb-2">
+                                            <p className="text-sm font-bold text-text-main truncate">{session.user?.name}</p>
+                                            <p className="text-xs text-text-muted truncate mt-0.5">{session.user?.email}</p>
                                         </div>
                                         <div className="px-2 flex flex-col gap-1">
-                                            <Link href="/dashboard" className="block px-4 py-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-xl text-sm font-medium text-text-main dark:text-white/80 transition-colors">Dashboard</Link>
-                                            <Link href="/dashboard/inbox" className="block px-4 py-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-xl text-sm font-medium text-text-main dark:text-white/80 transition-colors">Inbox</Link>
-                                            <Link href="/dashboard/settings" className="block px-4 py-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-xl text-sm font-medium text-text-main dark:text-white/80 transition-colors">Settings</Link>
-                                            <div className="h-px bg-border-light/50 dark:bg-white/5 my-1 mx-2"></div>
-                                            <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl text-sm font-semibold text-red-600 transition-colors">Logout</button>
+                                            <Link href="/dashboard" className="block px-4 py-2 hover:bg-black/5 rounded-xl text-sm font-medium text-text-main transition-colors">Dashboard</Link>
+                                            <Link href="/dashboard/inbox" className="block px-4 py-2 hover:bg-black/5 rounded-xl text-sm font-medium text-text-main transition-colors">Inbox</Link>
+                                            <Link href="/dashboard/settings" className="block px-4 py-2 hover:bg-black/5 rounded-xl text-sm font-medium text-text-main transition-colors">Settings</Link>
+                                            <div className="h-px bg-gray-100 my-1 mx-2"></div>
+                                            <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full text-left px-4 py-2 hover:bg-red-50 rounded-xl text-sm font-semibold text-red-600 transition-colors">Logout</button>
                                         </div>
                                     </div>
                                 </div>
                             </>
                         ) : (
                             <>
-                                <Link href="/login" className="text-text-main dark:text-white/80 text-[14px] font-bold hover:text-primary transition-all px-4">
+                                <Link href="/login" className="text-text-main text-[14px] font-bold hover:text-primary transition-all px-4">
                                     Sign In
                                 </Link>
                                 <Link href="/register" className="flex items-center justify-center rounded-xl h-11 px-6 bg-primary text-white text-[14px] font-bold transition-all hover:scale-105 shadow-xl shadow-primary/20 active:scale-95">
@@ -158,7 +139,7 @@ export function Navbar() {
                     </div>
 
                     <div className="flex md:hidden">
-                        <button className="p-2 text-text-main dark:text-slate-100" onClick={() => setMenuOpen(!menuOpen)}>
+                        <button className="p-2 text-text-main" onClick={() => setMenuOpen(!menuOpen)}>
                             {menuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
@@ -166,13 +147,12 @@ export function Navbar() {
             </header>
 
             {menuOpen && (
-                <div className="fixed inset-0 z-60 bg-white dark:bg-background-dark flex flex-col p-8 md:hidden">
+                <div className="fixed inset-0 z-60 bg-white flex flex-col p-8 md:hidden">
                     <div className="flex justify-between items-center mb-10">
                         <div className="flex items-center">
-                            <Logo className="h-16 w-auto dark:hidden" variant="dark" />
-                            <Logo className="h-16 w-auto hidden dark:block" variant="white" />
+                            <Logo className="h-10 w-auto" variant="dark" />
                         </div>
-                        <button onClick={() => setMenuOpen(false)} className="text-text-main dark:text-white"><X size={28} /></button>
+                        <button onClick={() => setMenuOpen(false)} className="text-text-main"><X size={28} /></button>
                     </div>
                     <nav className="flex flex-col gap-5 text-center">
                         {[
@@ -187,7 +167,7 @@ export function Navbar() {
                             <Link
                                 key={item.label}
                                 href={item.href}
-                                className="text-[22px] font-bold text-text-main dark:text-white"
+                                className="text-[22px] font-bold text-text-main"
                                 onClick={() => setMenuOpen(false)}
                             >
                                 {item.label}
@@ -196,7 +176,7 @@ export function Navbar() {
                     </nav>
                     {!session && (
                         <div className="mt-auto flex flex-col gap-4">
-                            <Link href="/login" className="text-center py-4 text-base font-bold text-text-main dark:text-white border border-border-light dark:border-white/10 rounded-3xl" onClick={() => setMenuOpen(false)}>Sign In</Link>
+                            <Link href="/login" className="text-center py-4 text-base font-bold text-text-main border border-gray-200 rounded-3xl" onClick={() => setMenuOpen(false)}>Sign In</Link>
                             <Link href="/register" className="text-center py-4 text-base font-bold bg-primary text-white rounded-3xl" onClick={() => setMenuOpen(false)}>Join Free</Link>
                         </div>
                     )}

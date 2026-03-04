@@ -135,10 +135,10 @@ export default function NotificationBell() {
         <div ref={ref} className="relative">
             <button
                 onClick={() => setOpen(!open)}
-                className="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                className="relative p-2 rounded-full hover:bg-slate-100 transition-colors"
                 aria-label="Notifications"
             >
-                <Bell size={20} className="text-slate-600 dark:text-offwhite/70" />
+                <Bell size={20} className="text-slate-600" />
                 {unreadCount > 0 && (
                     <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-orange text-white text-[10px] font-bold px-1 animate-pulse">
                         {unreadCount > 99 ? '99+' : unreadCount}
@@ -147,10 +147,10 @@ export default function NotificationBell() {
             </button>
 
             {open && (
-                <div className="absolute right-0 top-12 w-80 md:w-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                <div className="absolute right-0 top-12 w-80 md:w-96 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
                     {/* Header */}
-                    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-white/10">
-                        <h3 className="font-bold text-sm text-slate-900 dark:text-white">Notifications</h3>
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+                        <h3 className="font-bold text-sm text-slate-900">Notifications</h3>
                         {unreadCount > 0 && (
                             <button
                                 onClick={handleMarkAllRead}
@@ -164,7 +164,7 @@ export default function NotificationBell() {
                     {/* List */}
                     <div className="max-h-80 overflow-y-auto">
                         {notifications.length === 0 ? (
-                            <div className="py-12 text-center text-slate-400 dark:text-white/40 text-sm">
+                            <div className="py-12 text-center text-slate-400 text-sm">
                                 <Bell size={28} className="mx-auto mb-2 opacity-30" />
                                 No notifications yet
                             </div>
@@ -173,16 +173,16 @@ export default function NotificationBell() {
                                 <div
                                     key={n.id}
                                     onClick={() => handleNotificationClick(n)}
-                                    className={`px-4 py-3 border-b border-slate-50 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer ${!n.isRead ? 'bg-orange/5 dark:bg-orange/10' : ''}`}
+                                    className={`px-4 py-3 border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer ${!n.isRead ? 'bg-orange/5' : ''}`}
                                 >
                                     <div className="flex gap-3">
                                         <span className="text-lg shrink-0 mt-0.5">{typeIcon[n.type] || '🔔'}</span>
                                         <div className="min-w-0">
-                                            <p className={`text-sm leading-tight ${!n.isRead ? 'font-semibold text-slate-900 dark:text-white' : 'text-slate-600 dark:text-white/60'}`}>
+                                            <p className={`text-sm leading-tight ${!n.isRead ? 'font-semibold text-slate-900' : 'text-slate-600'}`}>
                                                 {n.title}
                                             </p>
-                                            <p className="text-xs text-slate-400 dark:text-white/30 mt-0.5 truncate">{n.message}</p>
-                                            <p className="text-[10px] text-slate-300 dark:text-white/20 mt-1">
+                                            <p className="text-xs text-slate-400 mt-0.5 truncate">{n.message}</p>
+                                            <p className="text-[10px] text-slate-300 mt-1">
                                                 {formatDistanceToNow(new Date(n.createdAt), { addSuffix: true })}
                                             </p>
                                         </div>

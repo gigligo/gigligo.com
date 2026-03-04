@@ -54,10 +54,10 @@ const itemVariants: import('framer-motion').Variants = {
 
 export function ModularFeatures() {
     return (
-        <section className="py-24 sm:py-32 bg-[#FAFBFD] border-t border-border-light/50">
+        <section className="py-16 sm:py-20 bg-[#FAFBFD] border-t border-gray-100">
             <div className="container px-4 md:px-6 max-w-7xl mx-auto">
 
-                <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
+                <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -73,7 +73,7 @@ export function ModularFeatures() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-4xl sm:text-5xl font-bold tracking-tight text-text-main mb-6"
+                        className="text-3xl sm:text-4xl font-bold tracking-tight text-text-main mb-5"
                     >
                         Everything you need to <br className="hidden sm:block" />
                         <span className="text-primary/90">scale with confidence.</span>

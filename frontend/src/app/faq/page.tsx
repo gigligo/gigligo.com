@@ -52,7 +52,7 @@ export default function FAQPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
@@ -97,14 +97,14 @@ export default function FAQPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: i * 0.05 }}
                                 viewport={{ once: true }}
-                                className="rounded-4xl overflow-hidden bg-white dark:bg-white/5 border border-border-light dark:border-white/10 shadow-xl backdrop-blur-3xl transition-all hover:border-primary/40 group"
+                                className="rounded-4xl overflow-hidden bg-white border border-border-light shadow-xl backdrop-blur-3xl transition-all hover:border-primary/40 group"
                             >
                                 <button
                                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
                                     className="w-full flex items-center justify-between p-8 sm:p-10 text-left transition-colors group"
                                 >
-                                    <span className="font-black text-background-dark dark:text-white text-xl md:text-2xl tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors pr-12">{faq.q}</span>
-                                    <div className="w-12 h-12 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shrink-0">
+                                    <span className="font-black text-background-dark text-xl md:text-2xl tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors pr-12">{faq.q}</span>
+                                    <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shrink-0">
                                         <span className={`material-symbols-outlined text-2xl transition-transform duration-500 ease-in-out ${openIndex === i ? 'rotate-45' : ''}`}>
                                             add
                                         </span>
@@ -118,7 +118,7 @@ export default function FAQPage() {
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                                         >
-                                            <div className="px-10 pb-12 text-text-muted dark:text-white/60 text-lg leading-relaxed font-bold border-t border-border-light dark:border-white/5 pt-8">
+                                            <div className="px-10 pb-12 text-text-muted text-lg leading-relaxed font-bold border-t border-border-light pt-8">
                                                 {faq.a}
                                             </div>
                                         </motion.div>

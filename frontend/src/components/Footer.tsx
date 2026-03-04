@@ -1,120 +1,68 @@
+'use client';
+
 import Link from 'next/link';
 import { Logo } from '@/components/Logo';
 
-function SocialIcon({ name }: { name: string }) {
-    switch (name) {
-        case 'twitter':
-            return (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-                </svg>
-            );
-        case 'linkedin':
-            return (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                    <rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" />
-                </svg>
-            );
-        case 'instagram':
-            return (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-            );
-        case 'github':
-            return (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-                </svg>
-            );
-        default:
-            return null;
-    }
-}
-
 export function Footer() {
+    const navLinks = [
+        { label: 'Explore', href: '/search' },
+        { label: 'Jobs', href: '/jobs' },
+        { label: 'Pricing', href: '/pricing' },
+        { label: 'About', href: '/about' },
+        { label: 'Contact', href: '/contact' },
+        { label: 'Blog', href: '/blog' },
+    ];
+
+    const legalLinks = [
+        { label: 'Privacy', href: '/privacy' },
+        { label: 'Terms', href: '/terms' },
+        { label: 'FAQ', href: '/faq' },
+    ];
+
     return (
-        <footer className="bg-white dark:bg-background-dark border-t border-border-light dark:border-white/10 py-16 px-6 relative z-10">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
-                    {/* Brand */}
-                    <div className="col-span-2 lg:col-span-1">
-                        <Link href="/" className="flex items-center mb-6">
-                            <Logo className="h-60 w-auto dark:hidden" variant="dark" />
-                            <Logo className="h-60 w-auto hidden dark:block" variant="white" />
+        <footer className="bg-white border-t border-gray-100">
+            <div className="max-w-7xl mx-auto px-6 md:px-10 py-10">
+                {/* Main Footer Row */}
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8">
+                    {/* Logo + Description */}
+                    <div className="max-w-xs">
+                        <Link href="/" className="inline-block mb-3">
+                            <Logo className="h-8 w-auto" variant="dark" />
                         </Link>
-                        <p className="text-text-muted dark:text-white/60 text-sm font-medium leading-relaxed">
-                            Connecting businesses with the world&apos;s most talented freelancers to get things done.
+                        <p className="text-sm text-text-muted leading-relaxed">
+                            Connecting businesses with talented freelancers worldwide.
                         </p>
-                        <div className="flex gap-4 mt-8">
-                            {(['twitter', 'linkedin', 'instagram', 'github'] as const).map(social => {
-                                const urls: Record<string, string> = {
-                                    twitter: 'https://twitter.com/gigligo',
-                                    linkedin: 'https://linkedin.com/company/gigligo',
-                                    instagram: 'https://instagram.com/gigligo',
-                                    github: 'https://github.com/gigligo',
-                                };
-                                return (
-                                    <a
-                                        key={social}
-                                        href={urls[social]}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-10 h-10 rounded-full border border-border-light dark:border-white/10 flex items-center justify-center text-text-muted/80 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 hover:border-primary hover:text-primary dark:hover:text-primary transition-all duration-300"
-                                        aria-label={social}
-                                    >
-                                        <SocialIcon name={social} />
-                                    </a>
-                                );
-                            })}
-                        </div>
                     </div>
 
-                    {/* Categories */}
-                    <div className="flex flex-col gap-5">
-                        <h4 className="font-bold text-lg text-text-main dark:text-white">Categories</h4>
-                        <ul className="flex flex-col gap-3 text-sm font-medium text-text-muted dark:text-white/60">
-                            <li><Link href="/search?category=Design" className="hover:text-primary transition-colors">Graphics &amp; Design</Link></li>
-                            <li><Link href="/search?category=Marketing" className="hover:text-primary transition-colors">Digital Marketing</Link></li>
-                            <li><Link href="/search?category=Writing" className="hover:text-primary transition-colors">Writing &amp; Translation</Link></li>
-                            <li><Link href="/search?category=video" className="hover:text-primary transition-colors">Video &amp; Animation</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* About */}
-                    <div className="flex flex-col gap-5">
-                        <h4 className="font-bold text-lg text-text-main dark:text-white">About</h4>
-                        <ul className="flex flex-col gap-3 text-sm font-medium text-text-muted dark:text-white/60">
-                            <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-                            <li><Link href="/blog" className="hover:text-primary transition-colors">Press &amp; News</Link></li>
-                            <li><Link href="/referral" className="hover:text-primary transition-colors">Partnerships</Link></li>
-                            <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Support */}
-                    <div className="flex flex-col gap-5">
-                        <h4 className="font-bold text-lg text-text-main dark:text-white">Support</h4>
-                        <ul className="flex flex-col gap-3 text-sm font-medium text-text-muted dark:text-white/60">
-                            <li><Link href="/help" className="hover:text-primary transition-colors">Help Center</Link></li>
-                            <li><Link href="/faq" className="hover:text-primary transition-colors">Trust &amp; Safety</Link></li>
-                            <li><Link href="/register?role=SELLER" className="hover:text-primary transition-colors">Selling on GIGLIGO</Link></li>
-                            <li><Link href="/register" className="hover:text-primary transition-colors">Buying on GIGLIGO</Link></li>
-                            <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-                        </ul>
-                    </div>
+                    {/* Navigation Links */}
+                    <nav className="flex flex-wrap gap-x-6 gap-y-2">
+                        {navLinks.map(link => (
+                            <Link
+                                key={link.label}
+                                href={link.href}
+                                className="text-sm font-medium text-text-muted hover:text-primary transition-colors"
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
                 </div>
 
-                <div className="pt-8 border-t border-border-light/50 dark:border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-text-muted dark:text-white/60 text-sm font-medium">
-                    <p>&copy; GIGLIGO International Ltd. {new Date().getFullYear()}</p>
-                    <div className="flex gap-8">
-                        <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">share</span>
-                        <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">language</span>
-                        <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">currency_exchange</span>
+                {/* Bottom Row */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-gray-100">
+                    <p className="text-xs text-text-muted">
+                        © {new Date().getFullYear()} Gigligo. All rights reserved.
+                    </p>
+                    <div className="flex items-center gap-4">
+                        {legalLinks.map(link => (
+                            <Link
+                                key={link.label}
+                                href={link.href}
+                                className="text-xs text-text-muted hover:text-primary transition-colors"
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>

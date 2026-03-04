@@ -19,7 +19,7 @@ export default function PrivacyPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 antialiased overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark selection:bg-primary/30 antialiased overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
@@ -75,31 +75,31 @@ export default function PrivacyPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                         viewport={{ once: true }}
-                        className="bg-white dark:bg-white/5 border border-border-light dark:border-white/10 rounded-[4rem] p-12 md:p-20 shadow-2xl backdrop-blur-3xl text-text-muted dark:text-white/60 leading-relaxed font-bold space-y-16"
+                        className="bg-white border border-border-light rounded-[4rem] p-12 md:p-20 shadow-2xl backdrop-blur-3xl text-text-muted leading-relaxed font-bold space-y-16"
                     >
                         <section>
-                            <h2 className="text-3xl font-black text-background-dark dark:text-white mb-6 tracking-tighter uppercase italic border-b border-border-light dark:border-white/5 pb-4">01. Collective Intel</h2>
+                            <h2 className="text-3xl font-black text-background-dark mb-6 tracking-tighter uppercase italic border-b border-border-light pb-4">01. Collective Intel</h2>
                             <p className="mb-6 text-lg">
                                 Gigligo collects information that you provide directly to us when utilizing our executive talent marketplace. This includes:
                             </p>
                             <ul className="space-y-6">
                                 <li className="flex gap-4">
                                     <span className="w-1.5 h-1.5 rounded-full bg-primary mt-3 shrink-0" />
-                                    <span><strong className="text-background-dark dark:text-white uppercase tracking-wider text-sm mr-2">Identity Data:</strong> Legal name, government-issued IDs, and biometric data specifically utilized for our Know Your Customer (KYC) / Anti-Money Laundering (AML) verifications.</span>
+                                    <span><strong className="text-background-dark uppercase tracking-wider text-sm mr-2">Identity Data:</strong> Legal name, government-issued IDs, and biometric data specifically utilized for our Know Your Customer (KYC) / Anti-Money Laundering (AML) verifications.</span>
                                 </li>
                                 <li className="flex gap-4">
                                     <span className="w-1.5 h-1.5 rounded-full bg-primary mt-3 shrink-0" />
-                                    <span><strong className="text-background-dark dark:text-white uppercase tracking-wider text-sm mr-2">Financial Data:</strong> Bank account metrics, JazzCash/EasyPaisa routing numbers, and cryptographic wallet addresses handled strictly through our secure escrow infrastructure.</span>
+                                    <span><strong className="text-background-dark uppercase tracking-wider text-sm mr-2">Financial Data:</strong> Bank account metrics, JazzCash/EasyPaisa routing numbers, and cryptographic wallet addresses handled strictly through our secure escrow infrastructure.</span>
                                 </li>
                                 <li className="flex gap-4">
                                     <span className="w-1.5 h-1.5 rounded-full bg-primary mt-3 shrink-0" />
-                                    <span><strong className="text-background-dark dark:text-white uppercase tracking-wider text-sm mr-2">Professional Data:</strong> Resumes, portfolios, academic credentials, and peer reviews.</span>
+                                    <span><strong className="text-background-dark uppercase tracking-wider text-sm mr-2">Professional Data:</strong> Resumes, portfolios, academic credentials, and peer reviews.</span>
                                 </li>
                             </ul>
                         </section>
 
                         <section>
-                            <h2 className="text-3xl font-black text-background-dark dark:text-white mb-6 tracking-tighter uppercase italic border-b border-border-light dark:border-white/5 pb-4">02. Mission Execution</h2>
+                            <h2 className="text-3xl font-black text-background-dark mb-6 tracking-tighter uppercase italic border-b border-border-light pb-4">02. Mission Execution</h2>
                             <p className="mb-6 text-lg">
                                 We utilize the collected data fundamentally to uphold the integrity and security of the Gigligo marketplace. Primary uses encompass:
                             </p>
@@ -112,14 +112,14 @@ export default function PrivacyPage() {
                         </section>
 
                         <section>
-                            <h2 className="text-3xl font-black text-background-dark dark:text-white mb-6 tracking-tighter uppercase italic border-b border-border-light dark:border-white/5 pb-4">03. Retention Protocol</h2>
+                            <h2 className="text-3xl font-black text-background-dark mb-6 tracking-tighter uppercase italic border-b border-border-light pb-4">03. Retention Protocol</h2>
                             <p className="text-lg">
                                 Gigligo retains your profile and transaction history for as long as your account is active, or as necessary to comply with financial auditing regulations (typically 5 years post-account closure). Users retain the right to request a complete cryptographic deletion of their PII (Personally Identifiable Information) by contacting <code>dpo@gigligo.com</code>.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-3xl font-black text-background-dark dark:text-white mb-6 tracking-tighter uppercase italic border-b border-border-light dark:border-white/5 pb-4">04. Encryption Shield</h2>
+                            <h2 className="text-3xl font-black text-background-dark mb-6 tracking-tighter uppercase italic border-b border-border-light pb-4">04. Encryption Shield</h2>
                             <p className="text-lg">
                                 We deploy military-grade structural protections, including AES-256 encryption at rest and TLS 1.3 in transit. Access to KYC biometric data is strictly limited to authorized administrative personnel operating on zero-trust network architectures.
                             </p>

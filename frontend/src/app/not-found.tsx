@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export default function NotFound() {
     return (
-        <div className="min-h-screen bg-white dark:bg-background-dark flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
             {/* Mesh Blurs */}
             <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
@@ -20,7 +20,7 @@ export default function NotFound() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.8 }}
-                    className="w-32 h-32 rounded-4xl bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 text-primary flex items-center justify-center mx-auto mb-12 backdrop-blur-3xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
+                    className="w-32 h-32 rounded-4xl bg-black/5 border border-border-light text-primary flex items-center justify-center mx-auto mb-12 backdrop-blur-3xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
                 >
                     <span className="material-symbols-outlined text-6xl font-light">explore_off</span>
                 </motion.div>
@@ -29,7 +29,7 @@ export default function NotFound() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.8 }}
-                    className="text-[12rem] font-black leading-none tracking-tighter text-background-dark dark:text-white mb-6 opacity-10 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10"
+                    className="text-[12rem] font-black leading-none tracking-tighter text-background-dark mb-6 opacity-10 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10"
                 >
                     404
                 </motion.h1>
@@ -38,7 +38,7 @@ export default function NotFound() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="text-5xl md:text-6xl font-bold text-background-dark dark:text-white mb-6 tracking-tight"
+                    className="text-5xl md:text-6xl font-bold text-background-dark mb-6 tracking-tight"
                 >
                     Lost in Space?
                 </motion.h2>
@@ -47,7 +47,7 @@ export default function NotFound() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
-                    className="text-xl text-text-muted dark:text-white/60 mb-12 max-w-lg mx-auto font-medium"
+                    className="text-xl text-text-muted mb-12 max-w-lg mx-auto font-medium"
                 >
                     The page you're looking for has vanished into the digital void. Let's get you back on track.
                 </motion.p>
@@ -61,7 +61,7 @@ export default function NotFound() {
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Link
                             href="/"
-                            className="inline-block px-12 py-5 bg-background-dark dark:bg-white text-white dark:text-background-dark font-extrabold rounded-full text-lg shadow-2xl transition-all"
+                            className="inline-block px-12 py-5 bg-background-dark text-white font-extrabold rounded-full text-lg shadow-2xl transition-all"
                         >
                             Return to Mission
                         </Link>
@@ -69,7 +69,7 @@ export default function NotFound() {
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Link
                             href="/contact"
-                            className="inline-block px-12 py-5 bg-white dark:bg-white/5 border border-border-light dark:border-white/10 text-background-dark dark:text-white font-bold rounded-full text-lg hover:border-primary transition-all backdrop-blur-xl"
+                            className="inline-block px-12 py-5 bg-white border border-border-light text-background-dark font-bold rounded-full text-lg hover:border-primary transition-all backdrop-blur-xl"
                         >
                             Contact Control
                         </Link>

@@ -70,7 +70,7 @@ function SearchPageContent() {
     const categories = ['All Categories', 'Design', 'Development', 'Marketing', 'Writing', 'AI & ML', 'Business'];
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark font-sans selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1" style={{ paddingTop: 72 }}>
@@ -136,7 +136,7 @@ function SearchPageContent() {
                 </section>
 
                 {/* Categorical Filtering */}
-                <div className="border-b border-border-light dark:border-white/10 bg-white/90 dark:bg-background-dark/95 backdrop-blur-2xl sticky top-[72px] z-30 transition-all duration-500">
+                <div className="border-b border-border-light bg-white/90 backdrop-blur-2xl sticky top-[72px] z-30 transition-all duration-500">
                     <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-center gap-6 overflow-x-auto py-8 no-scrollbar">
                         {categories.map(cat => (
                             <motion.button
@@ -145,7 +145,7 @@ function SearchPageContent() {
                                 onClick={() => setCategory(cat)}
                                 className={`px-10 py-3 rounded-full text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap shadow-sm group ${category === cat
                                     ? 'bg-primary text-white shadow-xl shadow-primary/25 scale-110'
-                                    : 'bg-black/5 dark:bg-white/5 text-text-muted dark:text-white/40 hover:text-primary hover:bg-black/10 dark:hover:bg-white/10'
+                                    : 'bg-black/5 text-text-muted hover:text-primary hover:bg-black/10'
                                     }`}
                             >
                                 {cat}
@@ -162,20 +162,20 @@ function SearchPageContent() {
                     {loading ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                             {[...Array(6)].map((_, i) => (
-                                <div key={i} className="animate-pulse bg-black/5 dark:bg-white/5 rounded-[3.5rem] border border-border-light dark:border-white/10 h-[500px]" />
+                                <div key={i} className="animate-pulse bg-black/5 rounded-[3.5rem] border border-border-light h-[500px]" />
                             ))}
                         </div>
                     ) : gigs.length === 0 ? (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="text-center py-48 border border-dashed border-border-light dark:border-white/10 rounded-[4rem] bg-black/2 dark:bg-white/2 backdrop-blur-3xl"
+                            className="text-center py-48 border border-dashed border-border-light rounded-[4rem] bg-black/2 backdrop-blur-3xl"
                         >
                             <div className="w-32 h-32 bg-primary/10 text-primary rounded-4xl flex items-center justify-center mx-auto mb-10 border border-primary/20 shadow-inner">
                                 <span className="material-symbols-outlined text-6xl font-light">search_off</span>
                             </div>
-                            <h3 className="text-5xl font-black text-background-dark dark:text-white mb-6 uppercase tracking-tighter">Negative Results</h3>
-                            <p className="text-text-muted dark:text-white/50 max-w-md mx-auto mb-16 text-xl font-bold leading-tight uppercase tracking-widest opacity-60">
+                            <h3 className="text-5xl font-black text-background-dark mb-6 uppercase tracking-tighter">Negative Results</h3>
+                            <p className="text-text-muted max-w-md mx-auto mb-16 text-xl font-bold leading-tight uppercase tracking-widest opacity-60">
                                 {(!session || isFreelancer)
                                     ? "Be the first to provide this capability. The marketplace awaits."
                                     : "Adjust search parameters or category filter for wider coverage."}
@@ -199,20 +199,20 @@ function SearchPageContent() {
                                 <motion.div key={gig.id} variants={itemVariants}>
                                     <Link
                                         href={`/gig/${gig.id}`}
-                                        className="group relative flex flex-col bg-white dark:bg-white/5 rounded-[3.5rem] border border-border-light dark:border-white/10 overflow-hidden hover:border-primary transition-all duration-700 h-full shadow-2xl hover:shadow-primary/10 backdrop-blur-3xl"
+                                        className="group relative flex flex-col bg-white rounded-[3.5rem] border border-border-light overflow-hidden hover:border-primary transition-all duration-700 h-full shadow-2xl hover:shadow-primary/10 backdrop-blur-3xl"
                                     >
                                         {/* Cinematic Visualizer */}
-                                        <div className="w-full aspect-6/5 shrink-0 overflow-hidden relative bg-black/5 dark:bg-white/5">
+                                        <div className="w-full aspect-6/5 shrink-0 overflow-hidden relative bg-black/5">
                                             {gig.images && gig.images.length > 0 ? (
                                                 <Image src={gig.images[0]} alt={gig.title} fill className="object-cover transition-transform duration-2000 ease-out group-hover:scale-110" sizes="(max-width: 768px) 100vw, 500px" />
                                             ) : (
-                                                <div className="w-full h-full flex flex-col items-center justify-center text-text-muted/20 dark:text-white/5">
+                                                <div className="w-full h-full flex flex-col items-center justify-center text-text-muted/20">
                                                     <span className="material-symbols-outlined text-8xl font-thin">all_inclusive</span>
                                                 </div>
                                             )}
 
                                             {/* Price Badge - Premium Glass */}
-                                            <div className="absolute bottom-6 left-6 bg-white/20 dark:bg-background-dark/30 backdrop-blur-2xl text-white px-8 py-4 rounded-full border border-white/30 text-base font-black shadow-2xl tracking-tighter shadow-black/40">
+                                            <div className="absolute bottom-6 left-6 bg-white/20 backdrop-blur-2xl text-white px-8 py-4 rounded-full border border-white/30 text-base font-black shadow-2xl tracking-tighter shadow-black/40">
                                                 PKR {gig.basePrice?.toLocaleString()}
                                             </div>
 
@@ -229,36 +229,36 @@ function SearchPageContent() {
                                         <div className="flex-1 p-10 flex flex-col">
                                             {/* Talent Profile */}
                                             <div className="flex items-center gap-5 mb-8">
-                                                <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/10 flex items-center justify-center text-lg font-black text-text-main dark:text-white shrink-0 border border-border-light dark:border-white/10 shadow-inner group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                                                <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center text-lg font-black text-text-main shrink-0 border border-border-light shadow-inner group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
                                                     {gig.seller?.profile?.fullName?.[0] || 'T'}
                                                 </div>
                                                 <div className="overflow-hidden">
-                                                    <span className="text-base font-black text-background-dark dark:text-white block uppercase tracking-tighter leading-none group-hover:text-primary transition-colors truncate mb-1">
+                                                    <span className="text-base font-black text-background-dark block uppercase tracking-tighter leading-none group-hover:text-primary transition-colors truncate mb-1">
                                                         {gig.seller?.profile?.fullName || 'EXPERT TALENT'}
                                                     </span>
-                                                    <span className="text-[10px] text-text-muted dark:text-white/30 uppercase tracking-[0.3em] font-black italic">{gig.category || 'SPECIALIST'}</span>
+                                                    <span className="text-[10px] text-text-muted uppercase tracking-[0.3em] font-black italic">{gig.category || 'SPECIALIST'}</span>
                                                 </div>
                                             </div>
 
                                             {/* Intelligence Briefing */}
-                                            <h3 className="text-3xl font-black text-background-dark dark:text-white line-clamp-2 mb-6 group-hover:text-primary transition-all leading-none tracking-tighter uppercase grayscale group-hover:grayscale-0">
+                                            <h3 className="text-3xl font-black text-background-dark line-clamp-2 mb-6 group-hover:text-primary transition-all leading-none tracking-tighter uppercase grayscale group-hover:grayscale-0">
                                                 {gig.title}
                                             </h3>
 
-                                            <p className="text-base text-text-muted dark:text-white/40 line-clamp-2 leading-snug mb-10 flex-1 font-bold italic">
+                                            <p className="text-base text-text-muted line-clamp-2 leading-snug mb-10 flex-1 font-bold italic">
                                                 {gig.description || 'Superior craftsmanship delivering exponential value across core mission objectives.'}
                                             </p>
 
                                             {/* Core Metrics */}
-                                            <div className="flex items-center justify-between pt-10 border-t border-border-light dark:border-white/5 mt-auto">
+                                            <div className="flex items-center justify-between pt-10 border-t border-border-light mt-auto">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="flex items-center gap-2 px-5 py-2.5 bg-black/3 dark:bg-white/3 rounded-full border border-black/5 dark:border-white/5 shadow-inner">
+                                                    <div className="flex items-center gap-2 px-5 py-2.5 bg-black/3 rounded-full border border-black/5 shadow-inner">
                                                         <span className="material-symbols-outlined text-primary text-xl font-light" style={{ fontVariationSettings: "'FILL' 1" }}>grade</span>
-                                                        <span className="font-black text-background-dark dark:text-white text-base tracking-tighter">{gig.avgRating ? gig.avgRating.toFixed(1) : 'NEW'}</span>
+                                                        <span className="font-black text-background-dark text-base tracking-tighter">{gig.avgRating ? gig.avgRating.toFixed(1) : 'NEW'}</span>
                                                     </div>
-                                                    <span className="text-text-muted dark:text-white/30 font-black text-[9px] uppercase tracking-[0.3em]">({gig.reviewCount || 0} INTEL)</span>
+                                                    <span className="text-text-muted font-black text-[9px] uppercase tracking-[0.3em]">({gig.reviewCount || 0} INTEL)</span>
                                                 </div>
-                                                <div className="w-14 h-14 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center text-background-dark dark:text-white translate-x-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700 border border-transparent group-hover:border-primary/20">
+                                                <div className="w-14 h-14 rounded-full bg-black/5 flex items-center justify-center text-background-dark translate-x-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-700 border border-transparent group-hover:border-primary/20">
                                                     <span className="material-symbols-outlined text-3xl font-thin">arrow_outward</span>
                                                 </div>
                                             </div>
@@ -283,7 +283,7 @@ function SearchPageContent() {
 
 export default function SearchPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
+        <Suspense fallback={<div className="min-h-screen bg-background-light flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
             <SearchPageContent />
         </Suspense>
     );

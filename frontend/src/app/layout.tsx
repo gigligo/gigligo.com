@@ -75,8 +75,8 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#f8f7f6" />
       </head>
-      <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-black text-text-main dark:text-slate-100 flex flex-col items-center w-full`}>
-        <div className="w-full max-w-[1600px] bg-background-light dark:bg-background-dark min-h-screen flex flex-col relative shadow-2xl border-x border-border-light/30 dark:border-border-dark/30">
+      <body className={`${inter.className} min-h-screen bg-slate-50 text-text-main flex flex-col items-center w-full`}>
+        <div className="w-full max-w-[1600px] bg-background-light min-h-screen flex flex-col relative shadow-2xl border-x border-border-light/30">
           <Providers>
             <SmoothScrollProvider>
               {children}

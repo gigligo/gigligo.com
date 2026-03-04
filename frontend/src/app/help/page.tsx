@@ -95,7 +95,7 @@ export default function HelpCenterPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 antialiased overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark selection:bg-primary/30 antialiased overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1 w-full" style={{ paddingTop: 96 }}>
@@ -150,19 +150,19 @@ export default function HelpCenterPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: i * 0.1 }}
                                 viewport={{ once: true }}
-                                className="bg-white dark:bg-white/5 border border-border-light dark:border-white/10 rounded-[3rem] p-10 hover:shadow-2xl hover:border-primary/30 transition-all group backdrop-blur-3xl"
+                                className="bg-white border border-border-light rounded-[3rem] p-10 hover:shadow-2xl hover:border-primary/30 transition-all group backdrop-blur-3xl"
                             >
                                 <div className="flex items-center gap-6 mb-10">
-                                    <div className="w-16 h-16 rounded-3xl bg-black/5 dark:bg-white/5 text-text-muted dark:text-white/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all border border-border-light dark:border-white/10 group-hover:border-primary shadow-inner">
+                                    <div className="w-16 h-16 rounded-3xl bg-black/5 text-text-muted flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all border border-border-light group-hover:border-primary shadow-inner">
                                         <span className="material-symbols-outlined text-3xl font-light">{cat.icon}</span>
                                     </div>
-                                    <h3 className="text-2xl font-black text-background-dark dark:text-white uppercase tracking-tighter italic">{cat.title}</h3>
+                                    <h3 className="text-2xl font-black text-background-dark uppercase tracking-tighter italic">{cat.title}</h3>
                                 </div>
                                 <ul className="space-y-6 px-1">
                                     {cat.articles.map(article => (
                                         <li key={article.title}>
-                                            <Link href={article.slug} className="flex items-center gap-4 text-[13px] font-black uppercase tracking-[0.2em] text-text-muted dark:text-white/40 hover:text-primary transition-all group/link">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-border-light dark:bg-white/10 group-hover/link:bg-primary transition-colors group-hover/link:scale-150" />
+                                            <Link href={article.slug} className="flex items-center gap-4 text-[13px] font-black uppercase tracking-[0.2em] text-text-muted hover:text-primary transition-all group/link">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-border-light group-hover/link:bg-primary transition-colors group-hover/link:scale-150" />
                                                 {article.title}
                                             </Link>
                                         </li>

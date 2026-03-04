@@ -90,7 +90,7 @@ function JobDetailContent() {
     );
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark font-sans selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
 
             <main className="flex-1" style={{ paddingTop: 72 }}>
@@ -172,9 +172,9 @@ function JobDetailContent() {
                             <section>
                                 <div className="flex items-center gap-6 mb-16">
                                     <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic">Mission <span className="text-primary not-italic">Briefing.</span></h2>
-                                    <div className="flex-1 h-px bg-black/5 dark:bg-white/5" />
+                                    <div className="flex-1 h-px bg-black/5" />
                                 </div>
-                                <div className="prose prose-xl prose-invert max-w-none text-text-muted dark:text-white/60 font-bold italic leading-relaxed whitespace-pre-wrap">
+                                <div className="prose prose-xl prose-invert max-w-none text-text-muted font-bold italic leading-relaxed whitespace-pre-wrap">
                                     {job.description}
                                 </div>
                             </section>
@@ -182,33 +182,33 @@ function JobDetailContent() {
                             <section>
                                 <div className="flex items-center gap-6 mb-16">
                                     <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic">Required <span className="text-primary not-italic">Competencies.</span></h2>
-                                    <div className="flex-1 h-px bg-black/5 dark:bg-white/5" />
+                                    <div className="flex-1 h-px bg-black/5" />
                                 </div>
                                 <div className="flex flex-wrap gap-4">
                                     {job.tags?.map((tag: string) => (
-                                        <span key={tag} className="px-10 py-4 bg-black/2 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-full text-xs font-black uppercase tracking-[0.3em] text-text-muted dark:text-white/50 hover:border-primary/50 hover:text-primary transition-all duration-500 shadow-xl cursor-default">
+                                        <span key={tag} className="px-10 py-4 bg-black/2 border border-black/5 rounded-full text-xs font-black uppercase tracking-[0.3em] text-text-muted hover:border-primary/50 hover:text-primary transition-all duration-500 shadow-xl cursor-default">
                                             {tag}
                                         </span>
                                     )) || (
-                                            <p className="text-text-muted dark:text-white/30 italic font-bold">Generalist talent required. Apply within.</p>
+                                            <p className="text-text-muted italic font-bold">Generalist talent required. Apply within.</p>
                                         )}
                                 </div>
                             </section>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                <div className="bg-black/2 dark:bg-white/5 border border-black/5 dark:border-white/10 p-12 rounded-[3rem] shadow-2xl backdrop-blur-3xl relative overflow-hidden group">
+                                <div className="bg-black/2 border border-black/5 p-12 rounded-[3rem] shadow-2xl backdrop-blur-3xl relative overflow-hidden group">
                                     <span className="material-symbols-outlined absolute top-8 right-8 text-primary opacity-5 group-hover:opacity-20 transition-all text-8xl font-thin">group</span>
                                     <span className="block text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4">Operative Pool</span>
-                                    <div className="text-7xl font-black tracking-tighter text-background-dark dark:text-white mb-2">{job._count?.applications || 0}</div>
-                                    <span className="text-sm font-black text-text-muted dark:text-white/20 uppercase tracking-[0.3em]">ACTIVE APPLICATIONS</span>
+                                    <div className="text-7xl font-black tracking-tighter text-background-dark mb-2">{job._count?.applications || 0}</div>
+                                    <span className="text-sm font-black text-text-muted uppercase tracking-[0.3em]">ACTIVE APPLICATIONS</span>
                                 </div>
-                                <div className="bg-black/2 dark:bg-white/5 border border-black/5 dark:border-white/10 p-12 rounded-[3rem] shadow-2xl backdrop-blur-3xl relative overflow-hidden group">
+                                <div className="bg-black/2 border border-black/5 p-12 rounded-[3rem] shadow-2xl backdrop-blur-3xl relative overflow-hidden group">
                                     <span className="material-symbols-outlined absolute top-8 right-8 text-primary opacity-5 group-hover:opacity-20 transition-all text-8xl font-thin">schedule</span>
                                     <span className="block text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-4">Deadlines</span>
-                                    <div className="text-6xl font-black tracking-tighter text-background-dark dark:text-white mb-2 uppercase italic leading-none pt-4">
+                                    <div className="text-6xl font-black tracking-tighter text-background-dark mb-2 uppercase italic leading-none pt-4">
                                         {job.deadline ? new Date(job.deadline).toLocaleDateString('en-PK', { month: 'short', day: '2-digit' }) : 'OPEN'}
                                     </div>
-                                    <span className="text-sm font-black text-text-muted dark:text-white/20 uppercase tracking-[0.3em]">MISSION EXPIRATION</span>
+                                    <span className="text-sm font-black text-text-muted uppercase tracking-[0.3em]">MISSION EXPIRATION</span>
                                 </div>
                             </div>
                         </div>
@@ -216,27 +216,27 @@ function JobDetailContent() {
                         {/* Tactical Action Grid */}
                         <div className="lg:col-span-1">
                             <div className="sticky top-32 space-y-10">
-                                <div className="bg-white dark:bg-background-dark/80 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-[4rem] p-12 md:p-16 shadow-2xl relative overflow-hidden">
+                                <div className="bg-white backdrop-blur-3xl border border-black/5 rounded-[4rem] p-12 md:p-16 shadow-2xl relative overflow-hidden">
                                     <div className="absolute top-0 left-0 w-full h-1 bg-primary/20" />
 
                                     {job.status !== 'OPEN' ? (
                                         <div className="text-center py-10">
                                             <span className="material-symbols-outlined text-6xl text-white/5 font-thin mb-6">lock</span>
                                             <h3 className="text-2xl font-black uppercase tracking-tighter italic">Mission <span className="text-primary not-italic">Concluded.</span></h3>
-                                            <p className="text-[10px] text-text-muted dark:text-white/30 font-black uppercase tracking-[0.4em] mt-6 leading-relaxed">This operational window is now closed to new applicants.</p>
+                                            <p className="text-[10px] text-text-muted font-black uppercase tracking-[0.4em] mt-6 leading-relaxed">This operational window is now closed to new applicants.</p>
                                         </div>
                                     ) : !session ? (
                                         <div className="space-y-10">
                                             <div className="text-center">
                                                 <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 italic">Secure <span className="text-primary not-italic">Access.</span></h3>
-                                                <p className="text-sm text-text-muted dark:text-white/40 font-bold italic uppercase tracking-widest leading-tight">Identity authentication required to view mission parameters.</p>
+                                                <p className="text-sm text-text-muted font-bold italic uppercase tracking-widest leading-tight">Identity authentication required to view mission parameters.</p>
                                             </div>
                                             <div className="space-y-4">
                                                 <Link href="/login" className="block">
                                                     <button className="w-full h-20 bg-primary text-white font-black uppercase tracking-[0.3em] rounded-full text-xs shadow-2xl shadow-primary/30 transition-all">Authenticate Base</button>
                                                 </Link>
                                                 <Link href="/register?role=SELLER" className="block">
-                                                    <button className="w-full h-20 bg-white dark:bg-white/5 border border-border-light dark:border-white/10 text-background-dark dark:text-white font-black uppercase tracking-[0.2em] rounded-full text-xs hover:bg-black/5 dark:hover:bg-white/10 transition-all">New Identity</button>
+                                                    <button className="w-full h-20 bg-white border border-border-light text-background-dark font-black uppercase tracking-[0.2em] rounded-full text-xs hover:bg-black/5 transition-all">New Identity</button>
                                                 </Link>
                                             </div>
                                         </div>
@@ -244,7 +244,7 @@ function JobDetailContent() {
                                         <div className="text-center py-10">
                                             <span className="material-symbols-outlined text-6xl text-primary/20 font-thin mb-6">admin_panel_settings</span>
                                             <h3 className="text-2xl font-black uppercase tracking-tighter italic">Command <span className="text-primary not-italic">Restriction.</span></h3>
-                                            <p className="text-[10px] text-text-muted dark:text-white/30 font-black uppercase tracking-[0.4em] mt-6 leading-relaxed">Only tactical operatives can apply to active missions.</p>
+                                            <p className="text-[10px] text-text-muted font-black uppercase tracking-[0.4em] mt-6 leading-relaxed">Only tactical operatives can apply to active missions.</p>
                                         </div>
                                     ) : success ? (
                                         <motion.div
@@ -256,7 +256,7 @@ function JobDetailContent() {
                                                 <span className="material-symbols-outlined text-4xl">check_circle</span>
                                             </div>
                                             <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 italic text-emerald-500">Mission <span className="not-italic">Acquired.</span></h3>
-                                            <p className="text-[10px] text-text-muted dark:text-white/30 font-black uppercase tracking-[0.4em] mb-10">YOUR PROPOSAL HAS BEEN DEPLOYED TO COMMANDER.</p>
+                                            <p className="text-[10px] text-text-muted font-black uppercase tracking-[0.4em] mb-10">YOUR PROPOSAL HAS BEEN DEPLOYED TO COMMANDER.</p>
                                             <Link href="/dashboard/applications" className="text-[10px] font-black uppercase tracking-[0.5em] text-primary hover:tracking-[0.8em] transition-all duration-700">View Deployment Status →</Link>
                                         </motion.div>
                                     ) : !showApplyForm ? (
@@ -265,9 +265,9 @@ function JobDetailContent() {
                                                 <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em]">Capital Requirements</span>
                                                 <div className="flex items-center justify-between">
                                                     <span className="text-2xl font-black uppercase tracking-tighter italic whitespace-nowrap">Intelligence Cost</span>
-                                                    <span className="text-3xl font-black text-background-dark dark:text-white tracking-tighter">01 INTEL</span>
+                                                    <span className="text-3xl font-black text-background-dark tracking-tighter">01 INTEL</span>
                                                 </div>
-                                                <span className="text-[9px] text-text-muted dark:text-white/20 font-black uppercase tracking-[0.4em] mt-2 italic">RESERVE REMAINING: {credits} UNIT</span>
+                                                <span className="text-[9px] text-text-muted font-black uppercase tracking-[0.4em] mt-2 italic">RESERVE REMAINING: {credits} UNIT</span>
                                             </div>
 
                                             {credits < 1 ? (

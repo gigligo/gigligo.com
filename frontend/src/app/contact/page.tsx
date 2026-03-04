@@ -14,168 +14,152 @@ export default function ContactPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        // Simulate API call
         await new Promise(r => setTimeout(r, 1500));
         setSubmitted(true);
         setLoading(false);
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-text-main selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
-            <main className="flex-1 max-w-7xl mx-auto px-6 py-12 w-full" style={{ paddingTop: 96 }}>
-                <div className="grid lg:grid-cols-2 gap-24 py-16">
+            <main className="flex-1 max-w-6xl mx-auto px-6 py-12 w-full" style={{ paddingTop: 80 }}>
+                <div className="grid lg:grid-cols-2 gap-16 py-12">
                     {/* Left — Info */}
-                    <div className="relative">
+                    <div>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                            transition={{ duration: 0.6 }}
                         >
-                            <h1 className="text-6xl md:text-[7rem] font-black tracking-tighter mb-10 leading-[0.9] uppercase">
-                                Get in <br /><span className="text-primary italic">Touch.</span>
+                            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">
+                                Get in <span className="text-primary">Touch.</span>
                             </h1>
-                            <p className="text-2xl text-text-muted dark:text-white/60 font-medium mb-16 leading-tight max-w-xl">
-                                Have a question or need expert guidance? Pakistan's talent engine is ready to scale your vision.
+                            <p className="text-lg text-text-muted font-medium mb-12 leading-relaxed max-w-md">
+                                Have a question or need expert guidance? We&apos;re ready to help scale your vision.
                             </p>
 
-                            <div className="space-y-10">
-                                <ContactInfo icon={<Mail className="w-6 h-6" />} label="Digital Pipeline" value="giglido.com@gmail.com" href="mailto:giglido.com@gmail.com" />
-                                <ContactInfo icon={<Phone className="w-6 h-6" />} label="Direct Link" value="+92 308 7666622" href="tel:+923087666622" />
-                                <ContactInfo icon={<MapPin className="w-6 h-6" />} label="Base Ops" value="Islamabad, Pakistan" />
-                                <ContactInfo icon={<Clock className="w-6 h-6" />} label="Availability" value="Mon–Sat, 9:00 AM – 6:00 PM PKT" />
+                            <div className="space-y-6">
+                                <ContactInfo icon={<Mail className="w-5 h-5" />} label="Email" value="gigligo.com@gmail.com" href="mailto:gigligo.com@gmail.com" />
+                                <ContactInfo icon={<Phone className="w-5 h-5" />} label="Phone" value="+92 308 7666622" href="tel:+923087666622" />
+                                <ContactInfo icon={<MapPin className="w-5 h-5" />} label="Location" value="Islamabad, Pakistan" />
+                                <ContactInfo icon={<Clock className="w-5 h-5" />} label="Hours" value="Mon–Sat, 9 AM – 6 PM PKT" />
                             </div>
 
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                                className="mt-20 p-10 bg-black/5 dark:bg-white/5 rounded-[3rem] border border-border-light dark:border-white/10 backdrop-blur-3xl"
-                            >
-                                <h3 className="font-black text-[10px] uppercase tracking-[0.4em] mb-6 opacity-40">Specialized Channels</h3>
-                                <div className="space-y-4">
-                                    <p className="text-[13px] font-bold text-text-muted dark:text-white/40 flex items-center gap-4">
-                                        <span className="w-2 h-2 rounded-full bg-primary" />
-                                        ENTERPRISE: <a href="mailto:giglido.com@gmail.com" className="text-background-dark dark:text-white hover:text-primary transition-colors">enterprise@gigligo.com</a>
+                            <div className="mt-10 p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                                <h3 className="font-semibold text-xs uppercase tracking-widest text-text-muted mb-4">Specialized Channels</h3>
+                                <div className="space-y-2">
+                                    <p className="text-sm text-text-muted flex items-center gap-3">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                        Enterprise: <a href="mailto:enterprise@gigligo.com" className="text-text-main font-medium hover:text-primary transition-colors">enterprise@gigligo.com</a>
                                     </p>
-                                    <p className="text-[13px] font-bold text-text-muted dark:text-white/40 flex items-center gap-4">
-                                        <span className="w-2 h-2 rounded-full bg-primary" />
-                                        PRESS: <a href="mailto:giglido.com@gmail.com" className="text-background-dark dark:text-white hover:text-primary transition-colors">media@gigligo.com</a>
+                                    <p className="text-sm text-text-muted flex items-center gap-3">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                        Press: <a href="mailto:media@gigligo.com" className="text-text-main font-medium hover:text-primary transition-colors">media@gigligo.com</a>
                                     </p>
                                 </div>
-                            </motion.div>
+                            </div>
                         </motion.div>
                     </div>
 
-                    {/* Right — Form Container */}
+                    {/* Right — Form */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="bg-white dark:bg-white/5 rounded-[4rem] p-10 md:p-16 shadow-2xl border border-border-light dark:border-white/10 relative overflow-hidden backdrop-blur-2xl"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100"
                     >
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-
                         <AnimatePresence mode="wait">
                             {submitted ? (
                                 <motion.div
                                     key="success"
-                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    className="flex flex-col items-center justify-center py-20 text-center"
+                                    exit={{ opacity: 0 }}
+                                    className="flex flex-col items-center justify-center py-16 text-center"
                                 >
-                                    <div className="w-32 h-32 bg-primary/10 text-primary rounded-4xl flex items-center justify-center mb-10 border border-primary/20 shadow-2xl">
-                                        <Check size={48} strokeWidth={3} />
+                                    <div className="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6 border border-primary/20">
+                                        <Check size={32} strokeWidth={2.5} />
                                     </div>
-                                    <h2 className="text-4xl font-black text-background-dark dark:text-white mb-4 uppercase tracking-tighter">Transmission Sent</h2>
-                                    <p className="text-text-muted dark:text-white/60 font-medium max-w-xs mx-auto mb-12 text-lg leading-tight">We've received your coordinates and will respond within 12 hours.</p>
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
+                                    <h2 className="text-2xl font-bold text-text-main mb-3">Message Sent</h2>
+                                    <p className="text-text-muted font-medium max-w-xs mx-auto mb-8 text-sm leading-relaxed">We&apos;ve received your message and will respond within 12 hours.</p>
+                                    <button
                                         onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }}
-                                        className="px-12 py-5 bg-background-dark dark:bg-white text-white dark:text-background-dark rounded-full text-sm font-black uppercase tracking-widest shadow-2xl transition-all"
+                                        className="px-6 py-3 bg-text-main text-white rounded-xl text-sm font-semibold hover:bg-text-main/90 transition-all"
                                     >
-                                        Initiate New Protocol
-                                    </motion.button>
+                                        Send Another
+                                    </button>
                                 </motion.div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                                    <div className="mb-10">
-                                        <h2 className="text-3xl font-black text-background-dark dark:text-white uppercase tracking-tighter">Send a Signal</h2>
-                                        <div className="h-1 w-20 bg-primary mt-4 rounded-full" />
+                                <form onSubmit={handleSubmit} className="space-y-5">
+                                    <div className="mb-6">
+                                        <h2 className="text-xl font-bold text-text-main">Send a Message</h2>
+                                        <div className="h-0.5 w-12 bg-primary mt-3 rounded-full" />
                                     </div>
 
-                                    <div className="grid md:grid-cols-2 gap-8">
+                                    <div className="grid md:grid-cols-2 gap-5">
                                         <div>
-                                            <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.3em] mb-3 block px-1">Identity</label>
+                                            <label className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2 block">Name</label>
                                             <input
                                                 type="text" required
                                                 value={formData.name}
                                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                                className="w-full px-6 py-5 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] focus:outline-none focus:border-primary transition-all font-bold placeholder:text-text-muted/30 shadow-inner"
-                                                placeholder="Legal Name"
+                                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-text-main text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all font-medium placeholder:text-text-muted/40"
+                                                placeholder="Your name"
                                             />
                                         </div>
-
                                         <div>
-                                            <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.3em] mb-3 block px-1">Email Link</label>
+                                            <label className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2 block">Email</label>
                                             <input
                                                 type="email" required
                                                 value={formData.email}
                                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                                className="w-full px-6 py-5 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] focus:outline-none focus:border-primary transition-all font-bold placeholder:text-text-muted/30 shadow-inner"
-                                                placeholder="name@domain.com"
+                                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-text-main text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all font-medium placeholder:text-text-muted/40"
+                                                placeholder="name@email.com"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.3em] mb-3 block px-1">Subject Protocol</label>
-                                        <div className="relative group">
-                                            <select
-                                                value={formData.subject}
-                                                onChange={e => setFormData({ ...formData, subject: e.target.value })}
-                                                required
-                                                className="w-full px-6 py-5 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] focus:outline-none focus:border-primary transition-all font-bold shadow-inner appearance-none pr-12"
-                                            >
-                                                <option value="">Select Command</option>
-                                                <option value="general">MISSION INQUIRY</option>
-                                                <option value="support">TECHNICAL OPS</option>
-                                                <option value="billing">FINANCIAL INFRA</option>
-                                                <option value="partnership">STRATEGIC ALLIANCE</option>
-                                            </select>
-                                            <span className="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 text-text-muted dark:text-white/20 pointer-events-none group-hover:text-primary transition-colors">expand_more</span>
-                                        </div>
+                                        <label className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2 block">Subject</label>
+                                        <select
+                                            value={formData.subject}
+                                            onChange={e => setFormData({ ...formData, subject: e.target.value })}
+                                            required
+                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-text-main text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all font-medium appearance-none"
+                                        >
+                                            <option value="">Select a topic</option>
+                                            <option value="general">General Inquiry</option>
+                                            <option value="support">Technical Support</option>
+                                            <option value="billing">Billing</option>
+                                            <option value="partnership">Partnership</option>
+                                        </select>
                                     </div>
 
                                     <div>
-                                        <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.3em] mb-3 block px-1">Brief Details</label>
+                                        <label className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2 block">Message</label>
                                         <textarea
-                                            required rows={5}
+                                            required rows={4}
                                             value={formData.message}
                                             onChange={e => setFormData({ ...formData, message: e.target.value })}
-                                            className="w-full px-6 py-5 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] focus:outline-none focus:border-primary transition-all font-bold placeholder:text-text-muted/30 shadow-inner resize-none appearance-none"
-                                            placeholder="Transmit your message here..."
+                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-text-main text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all font-medium placeholder:text-text-muted/40 resize-none"
+                                            placeholder="Your message..."
                                         />
                                     </div>
 
-                                    <motion.button
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
+                                    <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full py-6 bg-primary text-white font-black rounded-full text-sm uppercase tracking-widest shadow-2xl shadow-primary/25 disabled:opacity-50 transition-all flex items-center justify-center gap-3"
+                                        className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary/90 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                                     >
                                         {loading ? (
-                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                                         ) : (
                                             <>
-                                                <Send size={18} strokeWidth={3} />
-                                                Transmit Signal
+                                                <Send size={16} />
+                                                Send Message
                                             </>
                                         )}
-                                    </motion.button>
+                                    </button>
                                 </form>
                             )}
                         </AnimatePresence>
@@ -189,21 +173,18 @@ export default function ContactPage() {
 
 function ContactInfo({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: string; href?: string }) {
     return (
-        <motion.div
-            whileHover={{ x: 10 }}
-            className="flex items-start gap-6 group"
-        >
-            <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-text-muted dark:text-white/30 group-hover:bg-primary group-hover:text-white transition-all border border-border-light dark:border-white/10 group-hover:border-primary group-hover:shadow-xl group-hover:shadow-primary/20 shrink-0">
+        <div className="flex items-center gap-4 group">
+            <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-text-muted group-hover:bg-primary group-hover:text-white transition-all border border-gray-100 shrink-0">
                 {icon}
             </div>
             <div>
-                <p className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.3em] mb-2">{label}</p>
+                <p className="text-[10px] font-semibold text-text-muted uppercase tracking-widest mb-0.5">{label}</p>
                 {href ? (
-                    <a href={href} className="text-2xl font-black text-background-dark dark:text-white hover:text-primary transition-all tracking-tighter uppercase">{value}</a>
+                    <a href={href} className="text-base font-semibold text-text-main hover:text-primary transition-colors">{value}</a>
                 ) : (
-                    <p className="text-2xl font-black text-background-dark dark:text-white tracking-tighter uppercase leading-none">{value}</p>
+                    <p className="text-base font-semibold text-text-main">{value}</p>
                 )}
             </div>
-        </motion.div>
+        </div>
     );
 }

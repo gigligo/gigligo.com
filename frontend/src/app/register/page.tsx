@@ -4,6 +4,7 @@ import React, { Suspense, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { Logo } from '@/components/Logo';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function RegisterContent() {
@@ -169,7 +170,7 @@ function RegisterContent() {
     };
 
     return (
-        <div className="min-h-screen w-full flex bg-white dark:bg-background-dark">
+        <div className="min-h-screen w-full flex bg-white">
             {/* Left Side: Branding / Visual (Hidden on smaller screens) */}
             <div className="hidden lg:flex w-1/2 relative overflow-hidden bg-black text-white p-12 flex-col justify-between">
                 <div className="absolute inset-0 bg-[url('/auth-bg.jpg')] bg-cover bg-center opacity-40 mix-blend-luminosity" />
@@ -178,7 +179,7 @@ function RegisterContent() {
                 {/* Brand Logo */}
                 <div className="relative z-10 flex items-center gap-2">
                     <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
-                        <span className="font-display text-4xl font-black tracking-tighter uppercase">gigligo<span className="text-primary italic">.com</span></span>
+                        <Logo variant="white" className="h-12" />
                     </Link>
                 </div>
 
@@ -214,7 +215,8 @@ function RegisterContent() {
                 <div className="max-w-md w-full relative z-10">
                     <div className="text-center mb-10 lg:text-left">
                         <Link href="/" className="inline-block lg:hidden hover:opacity-80 transition-opacity mb-8">
-                            <span className="font-display text-3xl font-black tracking-tighter text-background-dark dark:text-white uppercase">gigligo<span className="text-primary italic">.com</span></span>
+                            <Logo variant="dark" className="h-10" />
+                            <Logo variant="white" className="h-10 hidden" />
                         </Link>
 
                         <AnimatePresence mode="wait">
@@ -225,8 +227,8 @@ function RegisterContent() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                 >
-                                    <h1 className="text-4xl lg:text-5xl font-bold text-background-dark dark:text-white mt-10 tracking-tight">Create account</h1>
-                                    <p className="text-text-muted dark:text-white/60 mt-3 font-medium text-lg">Join the elite Gigligo community</p>
+                                    <h1 className="text-4xl lg:text-5xl font-bold text-background-dark mt-10 tracking-tight">Create account</h1>
+                                    <p className="text-text-muted mt-3 font-medium text-lg">Join the elite Gigligo community</p>
                                 </motion.div>
                             ) : (
                                 <motion.div
@@ -235,17 +237,17 @@ function RegisterContent() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                 >
-                                    <h1 className="text-3xl font-bold text-background-dark dark:text-white mt-10 tracking-tight">Verify email</h1>
-                                    <p className="text-text-muted dark:text-white/60 mt-3 font-medium">We sent a code to <strong className="text-background-dark dark:text-white">{email}</strong></p>
+                                    <h1 className="text-3xl font-bold text-background-dark mt-10 tracking-tight">Verify email</h1>
+                                    <p className="text-text-muted mt-3 font-medium">We sent a code to <strong className="text-background-dark">{email}</strong></p>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
 
                     {!otpStep && (
-                        <div className="text-center lg:text-left mb-10 border-b border-border-light dark:border-white/5 pb-8">
-                            <p className="text-[11px] text-text-muted dark:text-white/40 leading-relaxed max-w-[90%] lg:max-w-none font-bold uppercase tracking-widest mx-auto lg:mx-0">
-                                By continuing, you agree to the <Link href="/terms" className="text-background-dark dark:text-white underline underline-offset-4">Terms</Link> and <Link href="/privacy" className="text-background-dark dark:text-white underline underline-offset-4">Privacy</Link>.
+                        <div className="text-center lg:text-left mb-10 border-b border-border-light pb-8">
+                            <p className="text-[11px] text-text-muted leading-relaxed max-w-[90%] lg:max-w-none font-bold uppercase tracking-widest mx-auto lg:mx-0">
+                                By continuing, you agree to the <Link href="/terms" className="text-background-dark underline underline-offset-4">Terms</Link> and <Link href="/privacy" className="text-background-dark underline underline-offset-4">Privacy</Link>.
                             </p>
                         </div>
                     )}
@@ -264,46 +266,46 @@ function RegisterContent() {
                         <>
                             <form onSubmit={handleCredentialsRegister} className="space-y-6 mb-10">
                                 <div>
-                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Full Name</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-3 block px-1">Full Name</label>
                                     <input
                                         type="text"
                                         required
                                         value={fullName}
                                         onChange={e => setFullName(e.target.value)}
-                                        className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
+                                        className="w-full px-5 py-4 bg-black/5 border border-border-light rounded-2xl text-background-dark text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
                                         placeholder="John Doe"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Email</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-3 block px-1">Email</label>
                                     <input
                                         type="email"
                                         required
                                         value={email}
                                         onChange={e => setEmail(e.target.value)}
-                                        className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
+                                        className="w-full px-5 py-4 bg-black/5 border border-border-light rounded-2xl text-background-dark text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
                                         placeholder="name@domain.com"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Password</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-3 block px-1">Password</label>
                                     <input
                                         type="password"
                                         required
                                         value={password}
                                         onChange={e => setPassword(e.target.value)}
-                                        className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
+                                        className="w-full px-5 py-4 bg-black/5 border border-border-light rounded-2xl text-background-dark text-[15px] font-bold focus:outline-none focus:border-primary transition-all placeholder:text-text-muted/40"
                                         placeholder="••••••••"
                                         minLength={6}
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-white/40 mb-3 block px-1">Account Role</label>
+                                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-3 block px-1">Account Role</label>
                                     <div className="relative group">
                                         <select
                                             value={role}
                                             onChange={e => setRole(e.target.value)}
-                                            className="w-full px-5 py-4 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-[15px] font-bold focus:outline-none focus:border-primary transition-all appearance-none pr-10"
+                                            className="w-full px-5 py-4 bg-black/5 border border-border-light rounded-2xl text-background-dark text-[15px] font-bold focus:outline-none focus:border-primary transition-all appearance-none pr-10"
                                         >
                                             <option value="SELLER">Freelancer / Seller</option>
                                             <option value="BUYER">Employer / Buyer</option>
@@ -318,11 +320,11 @@ function RegisterContent() {
                                             id="terms"
                                             checked={acceptedTerms}
                                             onChange={e => setAcceptedTerms(e.target.checked)}
-                                            className="w-5 h-5 rounded-lg border-2 border-border-light dark:border-white/10 text-primary focus:ring-primary/20 bg-transparent cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                                            className="w-5 h-5 rounded-lg border-2 border-border-light text-primary focus:ring-primary/20 bg-transparent cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
                                         />
                                         {acceptedTerms && <span className="material-symbols-outlined absolute inset-0 flex items-center justify-center text-white text-[14px] pointer-events-none">check</span>}
                                     </div>
-                                    <label htmlFor="terms" className="text-[12px] text-text-muted dark:text-white/50 cursor-pointer font-bold select-none">
+                                    <label htmlFor="terms" className="text-[12px] text-text-muted cursor-pointer font-bold select-none">
                                         I accept all policies
                                     </label>
                                 </div>
@@ -331,7 +333,7 @@ function RegisterContent() {
                                     whileTap={{ scale: 0.98 }}
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full py-4 bg-background-dark dark:bg-white dark:text-background-dark text-white font-extrabold rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50 transition-all text-[15px]"
+                                    className="w-full py-4 bg-background-dark text-white font-extrabold rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50 transition-all text-[15px]"
                                 >
                                     {isLoading ? 'Architecting Account...' : 'Create Account'}
                                 </motion.button>
@@ -339,8 +341,8 @@ function RegisterContent() {
 
 
                             <div className="relative mb-10">
-                                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border-light dark:border-white/10"></div></div>
-                                <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-[0.3em]"><span className="bg-white dark:bg-background-dark px-6 text-text-muted dark:text-white/30 backdrop-blur-xl">OR</span></div>
+                                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border-light"></div></div>
+                                <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-[0.3em]"><span className="bg-white px-6 text-text-muted backdrop-blur-xl">OR</span></div>
                             </div>
 
                             <motion.button
@@ -352,7 +354,7 @@ function RegisterContent() {
                                     signIn('google', { callbackUrl });
                                 }}
                                 disabled={isLoading}
-                                className="w-full py-4 bg-white dark:bg-white/5 text-background-dark dark:text-white font-bold rounded-2xl border border-border-light dark:border-white/10 hover:border-primary transition-all text-[15px] flex items-center justify-center gap-4 disabled:opacity-50"
+                                className="w-full py-4 bg-white text-background-dark font-bold rounded-2xl border border-border-light hover:border-primary transition-all text-[15px] flex items-center justify-center gap-4 disabled:opacity-50"
                             >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -363,9 +365,9 @@ function RegisterContent() {
                                 {isLoading ? 'Connecting...' : 'Continue with Google'}
                             </motion.button>
 
-                            <p className="mt-10 text-center text-[15px] text-text-muted dark:text-white/50 font-bold">
+                            <p className="mt-10 text-center text-[15px] text-text-muted font-bold">
                                 Already have an account?{' '}
-                                <Link href="/login" className="text-primary hover:text-primary/70 dark:text-white dark:hover:text-primary underline underline-offset-8 transition-colors">Sign in</Link>
+                                <Link href="/login" className="text-primary hover:text-primary/70 underline underline-offset-8 transition-colors">Sign in</Link>
                             </p>
                         </>
                     ) : (
@@ -382,7 +384,7 @@ function RegisterContent() {
                                         value={digit}
                                         onChange={e => handleOtpChange(i, e.target.value)}
                                         onKeyDown={e => handleOtpKeyDown(i, e)}
-                                        className="w-12 h-16 text-center text-2xl font-black bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white focus:outline-none focus:border-primary transition-all shadow-sm"
+                                        className="w-12 h-16 text-center text-2xl font-black bg-black/5 border border-border-light rounded-2xl text-background-dark focus:outline-none focus:border-primary transition-all shadow-sm"
                                         autoFocus={i === 0}
                                     />
                                 ))}
@@ -402,14 +404,14 @@ function RegisterContent() {
                                 <button
                                     onClick={handleResendOtp}
                                     disabled={resendCooldown > 0}
-                                    className="text-[14px] text-background-dark dark:text-white hover:text-primary font-bold disabled:text-text-muted/40 transition-colors"
+                                    className="text-[14px] text-background-dark hover:text-primary font-bold disabled:text-text-muted/40 transition-colors"
                                 >
                                     {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
                                 </button>
                                 <br />
                                 <button
                                     onClick={() => { setOtpStep(false); setError(''); setOtpCode(['', '', '', '', '', '']); }}
-                                    className="text-[13px] font-bold text-text-muted hover:text-background-dark dark:hover:text-white transition-colors"
+                                    className="text-[13px] font-bold text-text-muted hover:text-background-dark transition-colors"
                                 >
                                     ← Back to start
                                 </button>
@@ -424,7 +426,7 @@ function RegisterContent() {
 
 export default function RegisterPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white dark:bg-background-dark"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
             <RegisterContent />
         </Suspense>
     );

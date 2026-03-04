@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
             <main className="flex-1 flex items-center justify-center px-6" style={{ paddingTop: 96 }}>
                 <div className="w-full max-w-xl py-20">
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="bg-white dark:bg-white/5 border border-border-light dark:border-white/10 rounded-[4rem] p-12 md:p-20 shadow-2xl backdrop-blur-3xl relative overflow-hidden"
+                        className="bg-white border border-border-light rounded-[4rem] p-12 md:p-20 shadow-2xl backdrop-blur-3xl relative overflow-hidden"
                     >
                         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none opacity-50" />
 
@@ -74,20 +74,20 @@ export default function ForgotPasswordPage() {
                                         <span className="material-symbols-outlined text-4xl font-light">lock_reset</span>
                                     </div>
                                     <h1 className="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tighter italic">Key Recovery.</h1>
-                                    <p className="text-xl text-text-muted dark:text-white/50 mb-12 font-medium leading-tight max-w-sm">Enter your registered email link to receive a reset authorization code.</p>
+                                    <p className="text-xl text-text-muted mb-12 font-medium leading-tight max-w-sm">Enter your registered email link to receive a reset authorization code.</p>
 
                                     {error && <p className="text-red-500 text-xs font-black uppercase tracking-widest bg-red-500/5 p-4 rounded-2xl mb-8 border border-red-500/20">{error}</p>}
 
                                     <form onSubmit={handleSendCode} className="space-y-6">
                                         <div>
-                                            <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.4em] mb-3 block px-1">Signal Destination</label>
+                                            <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.4em] mb-3 block px-1">Signal Destination</label>
                                             <input
                                                 type="email"
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 required
                                                 placeholder="name@domain.com"
-                                                className="w-full px-8 py-6 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-lg focus:outline-none focus:border-primary transition-all font-black placeholder:text-text-muted/20 shadow-inner"
+                                                className="w-full px-8 py-6 bg-black/5 border border-border-light rounded-2xl text-background-dark text-lg focus:outline-none focus:border-primary transition-all font-black placeholder:text-text-muted/20 shadow-inner"
                                             />
                                         </div>
                                         <motion.button
@@ -100,7 +100,7 @@ export default function ForgotPasswordPage() {
                                             {loading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Transmit Code"}
                                         </motion.button>
                                     </form>
-                                    <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] mt-10 text-text-muted dark:text-white/30">
+                                    <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] mt-10 text-text-muted">
                                         Found your key?{' '}
                                         <Link href="/login" className="text-primary hover:underline underline-offset-4">Mission Login</Link>
                                     </p>
@@ -119,13 +119,13 @@ export default function ForgotPasswordPage() {
                                         <span className="material-symbols-outlined text-4xl font-light">security</span>
                                     </div>
                                     <h1 className="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tighter italic">Authorize Reset.</h1>
-                                    <p className="text-xl text-text-muted dark:text-white/50 mb-12 font-medium leading-tight max-w-sm">{success}</p>
+                                    <p className="text-xl text-text-muted mb-12 font-medium leading-tight max-w-sm">{success}</p>
 
                                     {error && <p className="text-red-500 text-xs font-black uppercase tracking-widest bg-red-500/5 p-4 rounded-2xl mb-8 border border-red-500/20">{error}</p>}
 
                                     <form onSubmit={handleResetPassword} className="space-y-8">
                                         <div>
-                                            <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.4em] mb-3 block px-1">Authorization Code</label>
+                                            <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.4em] mb-3 block px-1">Authorization Code</label>
                                             <input
                                                 type="text"
                                                 value={code}
@@ -133,30 +133,30 @@ export default function ForgotPasswordPage() {
                                                 required
                                                 maxLength={6}
                                                 placeholder="123456"
-                                                className="w-full px-8 py-6 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-3xl text-center tracking-[0.5em] focus:outline-none focus:border-primary transition-all font-black shadow-inner"
+                                                className="w-full px-8 py-6 bg-black/5 border border-border-light rounded-2xl text-background-dark text-3xl text-center tracking-[0.5em] focus:outline-none focus:border-primary transition-all font-black shadow-inner"
                                             />
                                         </div>
                                         <div className="grid md:grid-cols-2 gap-6">
                                             <div>
-                                                <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.4em] mb-3 block px-1">New Cipher</label>
+                                                <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.4em] mb-3 block px-1">New Cipher</label>
                                                 <input
                                                     type="password"
                                                     value={newPassword}
                                                     onChange={(e) => setNewPassword(e.target.value)}
                                                     required
                                                     placeholder="********"
-                                                    className="w-full px-6 py-5 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-sm focus:outline-none focus:border-primary transition-all font-bold shadow-inner"
+                                                    className="w-full px-6 py-5 bg-black/5 border border-border-light rounded-2xl text-background-dark text-sm focus:outline-none focus:border-primary transition-all font-bold shadow-inner"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="text-[10px] font-black text-text-muted dark:text-white/30 uppercase tracking-[0.4em] mb-3 block px-1">Confirm Cipher</label>
+                                                <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.4em] mb-3 block px-1">Confirm Cipher</label>
                                                 <input
                                                     type="password"
                                                     value={confirmPassword}
                                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                                     required
                                                     placeholder="********"
-                                                    className="w-full px-6 py-5 bg-black/5 dark:bg-white/5 border border-border-light dark:border-white/10 rounded-2xl text-background-dark dark:text-white text-sm focus:outline-none focus:border-primary transition-all font-bold shadow-inner"
+                                                    className="w-full px-6 py-5 bg-black/5 border border-border-light rounded-2xl text-background-dark text-sm focus:outline-none focus:border-primary transition-all font-bold shadow-inner"
                                                 />
                                             </div>
                                         </div>
@@ -183,12 +183,12 @@ export default function ForgotPasswordPage() {
                                     <div className="w-32 h-32 bg-green-500/10 text-green-500 rounded-[3rem] flex items-center justify-center mx-auto mb-10 border border-green-500/20 shadow-2xl">
                                         <span className="material-symbols-outlined text-6xl font-light">task_alt</span>
                                     </div>
-                                    <h1 className="text-4xl md:text-5xl font-black text-background-dark dark:text-white mb-6 uppercase tracking-tighter italic">Ciphers Reset.</h1>
-                                    <p className="text-xl text-text-muted dark:text-white/50 mb-12 font-medium leading-tight max-w-sm mx-auto">Your access keys have been successfully updated. You may now re-enter the network.</p>
+                                    <h1 className="text-4xl md:text-5xl font-black text-background-dark mb-6 uppercase tracking-tighter italic">Ciphers Reset.</h1>
+                                    <p className="text-xl text-text-muted mb-12 font-medium leading-tight max-w-sm mx-auto">Your access keys have been successfully updated. You may now re-enter the network.</p>
                                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                         <Link
                                             href="/login"
-                                            className="inline-block px-14 py-6 bg-background-dark dark:bg-white text-white dark:text-background-dark font-black rounded-full text-sm uppercase tracking-[0.2em] shadow-2xl transition-all"
+                                            className="inline-block px-14 py-6 bg-background-dark text-white font-black rounded-full text-sm uppercase tracking-[0.2em] shadow-2xl transition-all"
                                         >
                                             Proceed to Login
                                         </Link>

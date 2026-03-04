@@ -67,7 +67,7 @@ function JobListContent() {
     const handleSearch = (e: React.FormEvent) => { e.preventDefault(); setPage(1); loadJobs(); };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark font-sans selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
             <main className="flex-1" style={{ paddingTop: 72 }}>
 
@@ -124,7 +124,7 @@ function JobListContent() {
                 </section>
 
                 {/* Vertical Filter Rails */}
-                <div className="border-b border-border-light dark:border-white/10 bg-white/90 dark:bg-background-dark/95 backdrop-blur-2xl sticky top-[72px] z-30">
+                <div className="border-b border-border-light bg-white/90 backdrop-blur-2xl sticky top-[72px] z-30">
                     <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-center gap-6 overflow-x-auto py-8 no-scrollbar">
                         {CATEGORIES.map(cat => (
                             <motion.button
@@ -132,7 +132,7 @@ function JobListContent() {
                                 key={cat} onClick={() => { setCategory(cat); setPage(1); }}
                                 className={`px-10 py-3 rounded-full text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap shadow-sm ${category === cat
                                     ? 'bg-primary text-white shadow-xl shadow-primary/25 scale-110'
-                                    : 'bg-black/5 dark:bg-white/5 text-text-muted dark:text-white/40 hover:text-primary hover:bg-black/10 dark:hover:bg-white/10'
+                                    : 'bg-black/5 text-text-muted hover:text-primary hover:bg-black/10'
                                     }`}>
                                 {cat}
                             </motion.button>
@@ -145,20 +145,20 @@ function JobListContent() {
                     {loading ? (
                         <div className="space-y-10">
                             {[...Array(4)].map((_, i) => (
-                                <div key={i} className="animate-pulse bg-black/5 dark:bg-white/5 rounded-[4rem] border border-border-light dark:border-white/10 p-12 h-64" />
+                                <div key={i} className="animate-pulse bg-black/5 rounded-[4rem] border border-border-light p-12 h-64" />
                             ))}
                         </div>
                     ) : jobs.length === 0 ? (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="text-center py-48 border border-dashed border-border-light dark:border-white/10 rounded-[4rem] bg-black/2 dark:bg-white/2 backdrop-blur-3xl"
+                            className="text-center py-48 border border-dashed border-border-light rounded-[4rem] bg-black/2 backdrop-blur-3xl"
                         >
                             <div className="w-32 h-32 bg-primary/10 text-primary rounded-4xl flex items-center justify-center mx-auto mb-10 border border-primary/20 shadow-inner">
                                 <span className="material-symbols-outlined text-6xl font-light">work_off</span>
                             </div>
                             <h3 className="text-5xl font-black mb-6 uppercase tracking-tighter">Zero Objectives</h3>
-                            <p className="text-text-muted dark:text-white/50 max-w-sm mx-auto mb-16 text-xl font-bold leading-tight uppercase tracking-widest opacity-60">
+                            <p className="text-text-muted max-w-sm mx-auto mb-16 text-xl font-bold leading-tight uppercase tracking-widest opacity-60">
                                 {(!session || isEmployer)
                                     ? "Initiate a project sequence by deploying your first mission request."
                                     : "Mission data is restricted. Check back for future authorizations."}
@@ -181,7 +181,7 @@ function JobListContent() {
                             {jobs.map((job: any) => (
                                 <motion.div key={job.id} variants={itemVariants}>
                                     <Link href={`/jobs/${job.id}`} className="group block">
-                                        <div className="bg-white dark:bg-white/5 rounded-[4rem] border border-border-light dark:border-white/10 p-12 md:p-16 hover:border-primary transition-all duration-700 relative overflow-hidden shadow-2xl hover:shadow-primary/5 backdrop-blur-3xl">
+                                        <div className="bg-white rounded-[4rem] border border-border-light p-12 md:p-16 hover:border-primary transition-all duration-700 relative overflow-hidden shadow-2xl hover:shadow-primary/5 backdrop-blur-3xl">
                                             {/* Dynamic Scan Line Effect */}
                                             <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-primary/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1500 ease-in-out" />
 
@@ -199,42 +199,42 @@ function JobListContent() {
                                                         <span className="text-[9px] font-black text-primary bg-primary/5 px-5 py-2 rounded-full border border-primary/20 uppercase tracking-[0.3em]">{job.jobType}</span>
                                                     </div>
 
-                                                    <h3 className="text-4xl md:text-5xl font-black text-background-dark dark:text-white group-hover:text-primary transition-all line-clamp-1 mb-6 tracking-tighter uppercase grayscale group-hover:grayscale-0">
+                                                    <h3 className="text-4xl md:text-5xl font-black text-background-dark group-hover:text-primary transition-all line-clamp-1 mb-6 tracking-tighter uppercase grayscale group-hover:grayscale-0">
                                                         {job.title}
                                                     </h3>
-                                                    <p className="text-xl text-text-muted dark:text-white/40 line-clamp-2 leading-tight mb-12 font-bold italic">{job.description}</p>
+                                                    <p className="text-xl text-text-muted line-clamp-2 leading-tight mb-12 font-bold italic">{job.description}</p>
 
                                                     <div className="flex flex-wrap items-center gap-10">
                                                         <div className="flex items-center gap-4">
-                                                            <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center border border-border-light dark:border-white/10 group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner">
+                                                            <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center border border-border-light group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner">
                                                                 <span className="material-symbols-outlined text-3xl font-light">account_circle</span>
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <span className="text-[9px] font-black text-text-muted dark:text-white/20 uppercase tracking-[0.3em] mb-1">Commander</span>
+                                                                <span className="text-[9px] font-black text-text-muted uppercase tracking-[0.3em] mb-1">Commander</span>
                                                                 <span className="text-sm font-black uppercase tracking-tighter">{job.employer?.profile?.fullName || 'ANONYMOUS'}</span>
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-4">
-                                                            <div className="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center border border-border-light dark:border-white/10 group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner">
+                                                            <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center border border-border-light group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner">
                                                                 <span className="material-symbols-outlined text-3xl font-light">group_add</span>
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <span className="text-[9px] font-black text-text-muted dark:text-white/20 uppercase tracking-[0.3em] mb-1">Forces</span>
+                                                                <span className="text-[9px] font-black text-text-muted uppercase tracking-[0.3em] mb-1">Forces</span>
                                                                 <span className="text-sm font-black uppercase tracking-tighter">{job._count?.applications || 0} OPERATIVES</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div className="md:text-right shrink-0 flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-8 border-t md:border-t-0 md:border-l border-border-light dark:border-white/5 pt-10 md:pt-0 md:pl-16">
+                                                <div className="md:text-right shrink-0 flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-8 border-t md:border-t-0 md:border-l border-border-light pt-10 md:pt-0 md:pl-16">
                                                     <div className="flex flex-col md:items-end">
-                                                        <span className="text-[10px] text-text-muted dark:text-white/30 uppercase tracking-[0.4em] font-black mb-2 italic">Compensation</span>
+                                                        <span className="text-[10px] text-text-muted uppercase tracking-[0.4em] font-black mb-2 italic">Compensation</span>
                                                         <span className="text-4xl font-black text-primary tracking-tighter uppercase leading-none">
                                                             PKR {job.budgetMax?.toLocaleString()}
-                                                            <span className="text-lg text-text-muted dark:text-white/30 block mt-1 font-bold">MAX INTEL</span>
+                                                            <span className="text-lg text-text-muted block mt-1 font-bold">MAX INTEL</span>
                                                         </span>
                                                     </div>
-                                                    <div className="w-20 h-20 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center text-text-muted dark:text-white/20 scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 border border-transparent group-hover:border-primary/20 shadow-2xl">
+                                                    <div className="w-20 h-20 rounded-full bg-black/5 flex items-center justify-center text-text-muted scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 border border-transparent group-hover:border-primary/20 shadow-2xl">
                                                         <span className="material-symbols-outlined text-4xl font-thin">arrow_outward</span>
                                                     </div>
                                                 </div>
@@ -255,7 +255,7 @@ function JobListContent() {
                                     key={p} onClick={() => { setPage(p); window.scrollTo({ top: 300, behavior: 'smooth' }); }}
                                     className={`w-16 h-16 rounded-3xl text-sm font-black transition-all duration-500 border ${page === p
                                         ? 'bg-primary text-white border-primary shadow-2xl shadow-primary/30 scale-125'
-                                        : 'bg-white dark:bg-white/5 border-border-light dark:border-white/10 text-text-muted dark:text-white/40 hover:border-primary/50'}`}>
+                                        : 'bg-white border-border-light text-text-muted hover:border-primary/50'}`}>
                                     {String(p).padStart(2, '0')}
                                 </motion.button>
                             ))}
@@ -275,7 +275,7 @@ function JobListContent() {
 
 export default function JobsPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
+        <Suspense fallback={<div className="min-h-screen bg-background-light flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
             <JobListContent />
         </Suspense>
     );

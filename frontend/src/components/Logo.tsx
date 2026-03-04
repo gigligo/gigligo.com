@@ -12,9 +12,9 @@ export function Logo({
         <Image
             src={variant === 'white' ? '/logo-white.svg' : '/logo.svg'}
             alt="GIGLIGO"
-            width={340}
-            height={90}
-            className={`${className} w-auto`}
+            width={200}
+            height={50}
+            className={`${className} w-auto object-contain`}
             priority
         />
     );

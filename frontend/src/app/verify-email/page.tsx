@@ -35,7 +35,7 @@ export default function VerifyEmailPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white selection:bg-primary/30 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-white text-background-dark selection:bg-primary/30 overflow-x-hidden">
             <Navbar />
             <main className="flex-1 flex items-center justify-center px-6" style={{ paddingTop: 96 }}>
                 <div className="max-w-xl w-full py-20">
@@ -45,16 +45,16 @@ export default function VerifyEmailPage() {
                                 key="success"
                                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                                className="bg-white dark:bg-white/5 border border-border-light dark:border-white/10 rounded-[4rem] p-12 md:p-20 text-center shadow-2xl backdrop-blur-3xl relative overflow-hidden"
+                                className="bg-white border border-border-light rounded-[4rem] p-12 md:p-20 text-center shadow-2xl backdrop-blur-3xl relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 w-64 h-64 bg-green-500/10 rounded-full blur-3xl pointer-events-none opacity-50" />
                                 <div className="w-32 h-32 rounded-4xl bg-green-500/10 text-green-500 flex items-center justify-center mx-auto mb-10 border border-green-500/20 shadow-2xl relative z-10">
                                     <span className="material-symbols-outlined text-6xl font-light">check_circle</span>
                                 </div>
-                                <h1 className="text-4xl md:text-5xl font-black text-background-dark dark:text-white mb-4 uppercase tracking-tighter italic relative z-10">Identity Verified.</h1>
-                                <p className="text-xl text-text-muted dark:text-white/60 mb-12 font-medium leading-tight max-w-sm mx-auto relative z-10">Verification complete. Your account is now fully authorized for market operations.</p>
+                                <h1 className="text-4xl md:text-5xl font-black text-background-dark mb-4 uppercase tracking-tighter italic relative z-10">Identity Verified.</h1>
+                                <p className="text-xl text-text-muted mb-12 font-medium leading-tight max-w-sm mx-auto relative z-10">Verification complete. Your account is now fully authorized for market operations.</p>
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="relative z-10">
-                                    <Link href="/dashboard" className="inline-block px-14 py-6 bg-background-dark dark:bg-white text-white dark:text-background-dark font-black rounded-full text-sm uppercase tracking-[0.2em] shadow-2xl transition-all">
+                                    <Link href="/dashboard" className="inline-block px-14 py-6 bg-background-dark text-white font-black rounded-full text-sm uppercase tracking-[0.2em] shadow-2xl transition-all">
                                         Enter Dashboard
                                     </Link>
                                 </motion.div>
@@ -64,14 +64,14 @@ export default function VerifyEmailPage() {
                                 key="form"
                                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                                className="bg-white dark:bg-white/5 border border-border-light dark:border-white/10 rounded-[4rem] p-12 md:p-20 text-center shadow-2xl backdrop-blur-3xl relative overflow-hidden"
+                                className="bg-white border border-border-light rounded-[4rem] p-12 md:p-20 text-center shadow-2xl backdrop-blur-3xl relative overflow-hidden"
                             >
                                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none opacity-50" />
                                 <div className="w-32 h-32 rounded-4xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-10 border border-primary/20 shadow-2xl relative z-10">
                                     <span className="material-symbols-outlined text-6xl font-light">mark_email_read</span>
                                 </div>
-                                <h1 className="text-4xl md:text-5xl font-black text-background-dark dark:text-white mb-4 uppercase tracking-tighter italic relative z-10">Verify Access.</h1>
-                                <p className="text-xl text-text-muted dark:text-white/60 mb-12 font-medium leading-tight max-w-sm mx-auto relative z-10">
+                                <h1 className="text-4xl md:text-5xl font-black text-background-dark mb-4 uppercase tracking-tighter italic relative z-10">Verify Access.</h1>
+                                <p className="text-xl text-text-muted mb-12 font-medium leading-tight max-w-sm mx-auto relative z-10">
                                     We've transmitted a 6-digit verification code to your email. Enter it to authorize this device.
                                 </p>
 
@@ -90,7 +90,7 @@ export default function VerifyEmailPage() {
                                                     document.getElementById(`code-${i - 1}`)?.focus();
                                                 }
                                             }}
-                                            className="w-14 h-20 text-center text-3xl font-black border-2 border-border-light dark:border-white/10 rounded-3xl bg-black/5 dark:bg-white/5 text-background-dark dark:text-white focus:outline-none focus:border-primary focus:bg-white dark:focus:bg-white/10 transition-all shadow-inner"
+                                            className="w-14 h-20 text-center text-3xl font-black border-2 border-border-light rounded-3xl bg-black/5 text-background-dark focus:outline-none focus:border-primary focus:bg-white transition-all shadow-inner"
                                         />
                                     ))}
                                 </div>
@@ -109,7 +109,7 @@ export default function VerifyEmailPage() {
                                     )}
                                 </motion.button>
 
-                                <p className="mt-8 text-[11px] font-black uppercase tracking-[0.3em] text-text-muted dark:text-white/30 relative z-10">
+                                <p className="mt-8 text-[11px] font-black uppercase tracking-[0.3em] text-text-muted relative z-10">
                                     Didn't receive signal?{' '}
                                     <button className="text-primary hover:underline underline-offset-4">Retransmit Code</button>
                                 </p>

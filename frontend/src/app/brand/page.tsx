@@ -19,7 +19,7 @@ export default function HorizonLogoStory() {
     };
 
     return (
-        <div className="min-h-screen bg-white dark:bg-background-dark text-background-dark dark:text-white font-sans antialiased overflow-x-hidden selection:bg-primary/30">
+        <div className="min-h-screen bg-white text-background-dark font-sans antialiased overflow-x-hidden selection:bg-primary/30">
             {/* Minimalist Navigation */}
             <nav className="absolute top-0 w-full z-50 p-10 flex justify-between items-center text-white mix-blend-difference">
                 <Link href="/" className="font-black tracking-[0.4em] uppercase hover:text-primary transition-all text-[10px] flex items-center gap-3 group">
@@ -89,7 +89,7 @@ export default function HorizonLogoStory() {
                 </section>
 
                 {/* Strategic Stages */}
-                <section className="py-48 bg-white dark:bg-background-dark px-6 border-b border-border-light dark:border-white/5 relative">
+                <section className="py-48 bg-white px-6 border-b border-border-light relative">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
                     <div className="max-w-6xl mx-auto">
@@ -101,7 +101,7 @@ export default function HorizonLogoStory() {
                             >
                                 Three Pillars of <br /><span className="text-primary italic">Evolution.</span>
                             </motion.h2>
-                            <p className="text-text-muted dark:text-white/40 text-xl font-bold max-w-2xl mx-auto italic leading-tight">
+                            <p className="text-text-muted text-xl font-bold max-w-2xl mx-auto italic leading-tight">
                                 Our philosophy is embedded in every pixel. The horizon line guides you through the essential phases of digital career expansion.
                             </p>
                         </div>
@@ -119,15 +119,15 @@ export default function HorizonLogoStory() {
                                     transition={{ delay: i * 0.2 }}
                                     className="group relative"
                                 >
-                                    <div className="text-[8rem] font-black text-black/3 dark:text-white/3 absolute -top-20 -left-6 lining-nums group-hover:text-primary/10 transition-colors pointer-events-none">
+                                    <div className="text-[8rem] font-black text-black/3 absolute -top-20 -left-6 lining-nums group-hover:text-primary/10 transition-colors pointer-events-none">
                                         {stage.num}
                                     </div>
-                                    <div className="relative z-10 p-10 rounded-[3rem] border border-border-light dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-3xl hover:border-primary/40 transition-all shadow-2xl hover:shadow-primary/5">
+                                    <div className="relative z-10 p-10 rounded-[3rem] border border-border-light bg-white/50 backdrop-blur-3xl hover:border-primary/40 transition-all shadow-2xl hover:shadow-primary/5">
                                         <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-10 border border-primary/20 shadow-inner group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
                                             <span className="material-symbols-outlined text-3xl font-light">{stage.icon}</span>
                                         </div>
                                         <h3 className="text-3xl font-black mb-4 uppercase tracking-tighter italic">{stage.title}</h3>
-                                        <p className="text-text-muted dark:text-white/50 leading-snug font-bold">
+                                        <p className="text-text-muted leading-snug font-bold">
                                             {stage.desc}
                                         </p>
                                     </div>
